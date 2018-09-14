@@ -7,8 +7,10 @@ menuBarTop.position = guiCoord(0, 0, 0, 0)
 menuBarTop.parent = workshop.interface
 
 local menuFile = menuBarTop:createItem("File")
-local menuNew = menuFile:createItem("New")
-local makeBlock = menuFile:createItem("New block")
+local menuFileNew = menuFile:createItem("New")
+
+local menuInsert = menuBarTop:createItem("Insert")
+local makeBlock = menuInsert:createItem("New block")
 
 -- Block creation function. Creates a new block and positions it relative to the user's camera.
 makeBlock:mouseLeftPressed(function ()
