@@ -10,7 +10,7 @@ local menuFile = menuBarTop:createItem("File")
 local menuFileNew = menuFile:createItem("New")
 
 local menuInsert = menuBarTop:createItem("Insert")
-local makeBlock = menuInsert:createItem("New block")
+local makeBlock = menuInsert:createItem("Block")
 
 -- Block creation function. Creates a new block and positions it relative to the user's camera.
 makeBlock:mouseLeftPressed(function ()
