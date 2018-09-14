@@ -16,11 +16,8 @@ makeBlock:mouseLeftPressed(function ()
 	newBlock.parent = workspace
 
 	local camera = workspace.camera
-	local cameraPos = camera.position
-	-- not sure if this how to get look vector
+
 	local lookVector = camera.rotation * vector3(0, 0, 1)
-	-- absolutely no idea where this positions it.
-	local addVector = vector3(2, 0, 0)
-	newBlock.position = lookVector + addVector
+	newBlock.position = lookVector * 10
 
 end)
