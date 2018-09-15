@@ -35,7 +35,7 @@ end)
 -- Record changes for undo/redo WIP
 local history = {}
 local dirty = {} -- record things that have changed since last action
-local changedEvents = {} -- store handlers to disconnect 
+local currentStep = 0 -- the current point in history used to undo 
 
 local function objectChanged(property)
 	-- TODO: self is a reference to an event object
@@ -47,6 +47,7 @@ local function objectChanged(property)
 	end
 	
 	if not dirty[self.object][property] then
+		-- mark the property as changed  
 		dirty[self.object][property] = self.object[property]
 	end
 end
@@ -62,7 +63,17 @@ local function savePoint()
 		newPoint[object] = properties
 	end
 	
+	if currentPoint < #history then
+		-- the user just undoed
+		-- lets overwrite the no longer history
+		local historySize = #history
+		for i = currentpoint+1, historySize do
+			table.remove(history, i)
+		end
+	end
+	
 	table.insert(history, newPoint)
+	currentPoint = #history
 	dirty = {}
 end
 
@@ -73,4 +84,15 @@ end
 
 workspace:childAdded(function(child)
 	child:changed(objectChanged)
+end)
+
+menuEditUndo:mouseLeftPressed(function ()
+	currentPoint = currentPoint - 1
+	local snapShot = history[currentPoint] 
+	
+	for object, properties in pairs(snapShot) do
+		for property, value in pairs(properties) do
+			object[property] = value
+		end
+	end
 end)
