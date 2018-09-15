@@ -31,3 +31,46 @@ menuInsertBlock:mouseLeftPressed(function ()
 	local lookVector = camera.rotation * vector3(0, 0, 1)
 	newBlock.position = camera.position + (lookVector * 10)
 end)
+
+-- Record changes for undo/redo WIP
+local history = {}
+local dirty = {} -- record things that have changed since last action
+local changedEvents = {} -- store handlers to disconnect 
+
+local function objectChanged(property)
+	-- TODO: self is a reference to an event object
+	-- self.object is what the event is about
+	-- self:disconnect() is used to disconnect this handler
+	
+	if not dirty[self.object] then 
+		dirty[self.object] = {}
+	end
+	
+	if not dirty[self.object][property] then
+		dirty[self.object][property] = self.object[property]
+	end
+end
+
+local function savePoint()
+	local newPoint = {}
+	
+	for object, properties in pairs(dirty) do
+		--local thisObject = {}
+		--for property, oldValue in pairs(properties) do
+		--	table.insert(thi
+		--end
+		newPoint[object] = properties
+	end
+	
+	table.insert(history, newPoint)
+	dirty = {}
+end
+
+-- hook existing objects
+for _,v in pairs(workspace.children) do
+	v:changed(objectChanged)
+end
+
+workspace:childAdded(function(child)
+	child:changed(objectChanged)
+end)
