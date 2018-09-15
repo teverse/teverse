@@ -1,6 +1,8 @@
  -- Copyright (c) 2018 teverse.com
  -- workshop.lua
 
+workshop.interface:setTheme(enums.themes.dark)
+
 local menuBarTop = engine.guiMenuBar()
 menuBarTop.size = guiCoord(1, 0, 0, 19)
 menuBarTop.position = guiCoord(0, 0, 0, 0)
