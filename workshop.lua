@@ -18,8 +18,29 @@ local menuEdit = menuBarTop:createItem("Edit")
 local menuEditUndo = menuEdit:createItem("Undo")
 local menuEditRedo = menuEdit:createItem("Redo")
 
+local workspaceTheme = menuBarTop:createItem("Theme")
+local darkTheme = menuBarTop:createItem("Dark Mode")
+local brightTheme = menuBarTop:createItem("Bright mode") -- if people want to blind themselves, let them.
+
 local menuInsert = menuBarTop:createItem("Insert")
 local menuInsertBlock = menuInsert:createItem("Block")
+
+darkTheme:mouseLeftPressed(function ()
+	-- Set theme to dark mode when dark mode button clicked.
+	workshop.interface:setTheme(enum.themes.dark)
+end)
+brightTheme:mouseLeftPressed(function ()
+	-- Set theme to bright/blind mode when bright mode button clicked.
+	local success,message = pcall(function () 
+		workshop.interface:setTheme(enum.themes.light)
+	end)
+	-- TODO: make sure this is an actual theme
+	-- pcall just to be safe
+	if not success then
+		-- again, just to be safe, tostring on the message.
+		error("workshop.lua: Color theme error: "..tostring(message))
+	end
+end)
 
 -- Block creation function. Creates a new block and positions it relative to the user's camera
 menuInsertBlock:mouseLeftPressed(function ()
