@@ -36,11 +36,13 @@ end)
 local history = {}
 local dirty = {} -- record things that have changed since last action
 local currentStep = 0 -- the current point in history used to undo 
+local goingBack = false
 
 local function objectChanged(property)
 	-- TODO: self is a reference to an event object
 	-- self.object is what the event is about
 	-- self:disconnect() is used to disconnect this handler
+	if goingBack then return end 
 	
 	if not dirty[self.object] then 
 		dirty[self.object] = {}
@@ -89,10 +91,12 @@ end)
 menuEditUndo:mouseLeftPressed(function ()
 	currentPoint = currentPoint - 1
 	local snapShot = history[currentPoint] 
-	
+		
+	goingBack = true
 	for object, properties in pairs(snapShot) do
 		for property, value in pairs(properties) do
 			object[property] = value
 		end
 	end
+	goingBack = false
 end)
