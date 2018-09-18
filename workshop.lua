@@ -30,8 +30,8 @@ menuInsertBlock:mouseLeftPressed(function ()
 		
 	local lookVector = camera.rotation * vector3(0, 0, 1)
 	newBlock.position = camera.position + (lookVector * 10)
-	newBlock.Size = vector3.new(2,1,4)
-	newBlock.anchored = true
+	--newBlock.Size = vector3.new(2,1,4)
+	--newBlock.anchored = true
 end)
 
 -- Record changes for undo/redo WIP
