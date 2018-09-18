@@ -30,10 +30,13 @@ menuInsertBlock:mouseLeftPressed(function ()
 		
 	local lookVector = camera.rotation * vector3(0, 0, 1)
 	newBlock.position = camera.position + (lookVector * 10)
+	newBlock.Size = vector3.new(2,1,4)
+	newBlock.anchored = true
 end)
 
 -- Record changes for undo/redo WIP
 local history = {}
+local deletedHistory = {} -- redo WIP
 local dirty = {} -- record things that have changed since last action
 local currentStep = 0 -- the current point in history used to undo 
 local goingBack = false
@@ -91,12 +94,34 @@ end)
 menuEditUndo:mouseLeftPressed(function ()
 	currentPoint = currentPoint - 1
 	local snapShot = history[currentPoint] 
+	local newPoint = {}
 		
 	goingBack = true
 	for object, properties in pairs(snapShot) do
 		for property, value in pairs(properties) do
+			newPoint[object] = properties
 			object[property] = value
 		end
 	end
+	table.insert(deletedHistory, newPoint)
+	if #deletedHistory > 50 then
+		table.remove(deletedHistory,1)
+	end
 	goingBack = false
 end)
+
+menuEditRedo:mouseLeftPressed(function ()
+	local snapShot = deletedHistory[currentPoint]
+	currentPoint = currentPoint + 1
+	local newPoint = {}
+		
+	goingBack = true
+	for object,properties in pairs(snapShot) do
+		for property,value in pairs(properties) do
+			newPoint[object] = properties
+			object[property] = value
+		end
+	end
+	table.insert(history,newPoint)
+	goingBack = false
+end
