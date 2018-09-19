@@ -24,18 +24,23 @@ local menuInsertBlock = menuInsert:createItem("Block")
 -- Block creation function. Creates a new block and positions it relative to the user's camera
 menuInsertBlock:mouseLeftPressed(function ()
 	local newBlock = engine.block("block")
+	newBlock.colour = colour(1,0,0)
+	newBlock.size = vector3(1,1,1)
 	newBlock.parent = workspace
 
 	local camera = workspace.camera
 		
 	local lookVector = camera.rotation * vector3(0, 0, 1)
-	newBlock.position = camera.position + (lookVector * 10)
+	newBlock.position = camera.position - (lookVector * 10)
 end)
 
--- Record changes for undo/redo WIP
+--
+-- Undo/Redo History system
+-- 
+
 local history = {}
 local dirty = {} -- record things that have changed since last action
-local currentStep = 0 -- the current point in history used to undo 
+local currentPoint = 0 -- the current point in history used to undo 
 local goingBack = false
 
 local function objectChanged(property)
@@ -91,7 +96,8 @@ end)
 menuEditUndo:mouseLeftPressed(function ()
 	currentPoint = currentPoint - 1
 	local snapShot = history[currentPoint] 
-		
+	if not snapShot then snapShot = {} end
+
 	goingBack = true
 	for object, properties in pairs(snapShot) do
 		for property, value in pairs(properties) do
@@ -99,4 +105,85 @@ menuEditUndo:mouseLeftPressed(function ()
 		end
 	end
 	goingBack = false
+end)
+
+-- 
+-- Workshop camera
+-- Currently modified from the Wiki Tutorial
+--
+
+-- The distance the camera is from the target
+local target = vector3(0,0,0) -- A virtual point that the camera
+local currentDistance = 20
+
+-- The amount the camera moves when you use the scrollwheel
+local zoomStep     = 3
+local rotateStep   = -0.0045
+local moveStep     = 0.5 -- how fast the camera moves
+
+local camera = workspace.camera
+
+-- Setup the initial position of the camera
+camera.position = target - vector3(0, -5, currentDistance)
+camera:lookAt(target)
+
+local function updatePosition()
+	local lookVector = camera.rotation * vector3(0, 0, 1)
+	camera.position = target + (lookVector * currentDistance)
+	camera:lookAt(target)
+end
+
+engine.input:mouseScrolled(function( input )
+	currentDistance = currentDistance - (input.movement.y * zoomStep)
+	updatePosition()
+end)
+
+engine.input:mouseMoved(function( input )
+	if engine.input:isMouseButtonDown( enums.mouseButton.right ) then
+
+		local pitch = quaternion():setEuler(input.movement.y * rotateStep, 0, 0)
+		local yaw = quaternion():setEuler(0, input.movement.x * rotateStep, 0)
+
+		-- Applied seperately to avoid camera flipping on the wrong axis.
+		camera.rotation = yaw * camera.rotation;
+		camera.rotation = camera.rotation * pitch
+		--updatePosition()
+	end
+end)
+
+
+local cameraKeyEventLooping = false
+
+-- These key events trigger a loop that will continuously move the camera until all keys are released.
+engine.input:keyPressed(function( inputObj )
+
+    if inputObj.key == enums.key.w or
+       inputObj.key == enums.key.a or
+       inputObj.key == enums.key.s or
+       inputObj.key == enums.key.d and 
+       not cameraKeyEventLooping then
+
+    	cameraKeyEventLooping = true
+
+    	repeat
+			local cameraPos = camera.position
+			if engine.input:isKeyDown(enums.key.w) then
+				cameraPos = cameraPos - (camera.rotation * vector3(0, 0, 1) * moveStep)
+
+			elseif engine.input:isKeyDown(enums.key.s) then
+				cameraPos = cameraPos + (camera.rotation * vector3(0, 0, 1) * moveStep)
+
+			elseif engine.input:isKeyDown(enums.key.a) then
+				cameraPos = cameraPos - (camera.rotation * vector3(1, 0, 0) * moveStep)
+
+			elseif engine.input:isKeyDown(enums.key.d) then
+				cameraPos = cameraPos + (camera.rotation * vector3(1, 0, 0) * moveStep)
+			end
+
+			cameraKeyEventLooping = (cameraPos ~= camera.position) -- If there's no keys down, stop the loop!
+			camera.position = cameraPos
+
+			wait(0.0001)
+		until not cameraKeyEventLooping
+	end
 end)
