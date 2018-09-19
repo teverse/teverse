@@ -1,7 +1,8 @@
  -- Copyright (c) 2018 teverse.com
  -- workshop.lua
 
---workshop.interface:setTheme(enums.themes.dark) -- not added to API
+ -- This script has access to 'engine.workshop' APIs.
+ -- Contains everything needed to grow your own workshop.
 
 --
 -- Undo/Redo History system
@@ -59,7 +60,6 @@ for _,v in pairs(workspace.children) do
 end
 
 workspace:childAdded(function(child)
-	print("child added")
 	child:changed(objectChanged)
 	if not goingBack then
 		dirty[child].new = true
@@ -105,7 +105,7 @@ end
 local menuBarTop = engine.guiMenuBar()
 menuBarTop.size = guiCoord(1, 0, 0, 24)
 menuBarTop.position = guiCoord(0, 0, 0, 0)
-menuBarTop.parent = workshop.interface
+menuBarTop.parent = engine.workshop.interface
 
 local menuFile = menuBarTop:createItem("File")
 local menuFileNew = menuFile:createItem("New Scene")
@@ -116,11 +116,19 @@ local menuFileSaveAs = menuFile:createItem("Save Scene As")
 local menuEdit = menuBarTop:createItem("Edit")
 local menuEditUndo = menuEdit:createItem("Undo")
 local menuEditRedo = menuEdit:createItem("Redo")
-menuEditUndo:mouseLeftPressed(undo)
-menuEditRedo:mouseLeftPressed(redo)
 
 local menuInsert = menuBarTop:createItem("Insert")
 local menuInsertBlock = menuInsert:createItem("Block")
+
+-- Define events to handle undo/redo button clicks
+menuEditUndo:mouseLeftPressed(undo)
+menuEditRedo:mouseLeftPressed(redo)
+
+-- Define place loading events
+menuFileOpen:mouseLeftPressed(function()
+	-- Tell the Workshop APIs to initate a game load.
+	engine.workshop:openFileDialogue()
+end)
 
 -- Block creation function. Creates a new block and positions it relative to the user's camera
 menuInsertBlock:mouseLeftPressed(function ()
@@ -210,7 +218,7 @@ engine.input:keyPressed(function( inputObj )
 			cameraKeyEventLooping = (cameraPos ~= camera.position) -- If there's no keys down, stop the loop!
 			camera.position = cameraPos
 
-			wait(0.0001)
+			wait(0.001)
 		until not cameraKeyEventLooping
 	end
 end)
