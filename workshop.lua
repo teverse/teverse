@@ -198,7 +198,9 @@ engine.input:keyPressed(function( inputObj )
     if inputObj.key == enums.key.w or
        inputObj.key == enums.key.a or
        inputObj.key == enums.key.s or
-       inputObj.key == enums.key.d and 
+       inputObj.key == enums.key.d or
+       inputObj.key == enums.key.q or
+       inputObj.key == enums.key.e and 
        not cameraKeyEventLooping then
 
     	cameraKeyEventLooping = true
@@ -213,6 +215,10 @@ engine.input:keyPressed(function( inputObj )
 				cameraPos = cameraPos - (camera.rotation * vector3(1, 0, 0) * moveStep)
 			elseif engine.input:isKeyDown(enums.key.d) then
 				cameraPos = cameraPos + (camera.rotation * vector3(1, 0, 0) * moveStep)
+			elseif engine.input:isKeyDown(enums.key.q) then
+				cameraPos = cameraPos - (camera.rotation * vector3(0, 1, 0) * moveStep)
+			elseif engine.input:isKeyDown(enums.key.e) then
+				cameraPos = cameraPos + (camera.rotation * vector3(0, 1, 0) * moveStep)
 			end
 
 			cameraKeyEventLooping = (cameraPos ~= camera.position) -- If there's no keys down, stop the loop!
