@@ -107,6 +107,25 @@ menuEditUndo:mouseLeftPressed(function ()
 	goingBack = false
 end)
 
+menuEditRedo:mouseLeftPressed(function ()
+	if currentpoint >= #history then
+		return print("Debug: can't redo.")
+	end
+
+	currentPoint = currentPoint + 1
+	local snapShot = history[currentPoint] 
+	if not snapShot then return print("Debug: no snapshot found") end
+
+	goingBack = true
+	for object, properties in pairs(snapShot) do
+		for property, value in pairs(properties) do
+			object[property] = value
+		end
+	end
+	goingBack = false
+end)
+
+
 -- 
 -- Workshop camera
 -- Currently modified from the Wiki Tutorial
@@ -169,13 +188,10 @@ engine.input:keyPressed(function( inputObj )
 			local cameraPos = camera.position
 			if engine.input:isKeyDown(enums.key.w) then
 				cameraPos = cameraPos - (camera.rotation * vector3(0, 0, 1) * moveStep)
-
 			elseif engine.input:isKeyDown(enums.key.s) then
 				cameraPos = cameraPos + (camera.rotation * vector3(0, 0, 1) * moveStep)
-
 			elseif engine.input:isKeyDown(enums.key.a) then
 				cameraPos = cameraPos - (camera.rotation * vector3(1, 0, 0) * moveStep)
-
 			elseif engine.input:isKeyDown(enums.key.d) then
 				cameraPos = cameraPos + (camera.rotation * vector3(1, 0, 0) * moveStep)
 			end
