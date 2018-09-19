@@ -3,37 +3,6 @@
 
 --workshop.interface:setTheme(enums.themes.dark) -- not added to API
 
-local menuBarTop = engine.guiMenuBar()
-menuBarTop.size = guiCoord(1, 0, 0, 24)
-menuBarTop.position = guiCoord(0, 0, 0, 0)
-menuBarTop.parent = workshop.interface
-
-local menuFile = menuBarTop:createItem("File")
-local menuFileNew = menuFile:createItem("New Scene")
-local menuFileOpen = menuFile:createItem("Open Scene")
-local menuFileSave = menuFile:createItem("Save Scene")
-local menuFileSaveAs = menuFile:createItem("Save Scene As")
-
-local menuEdit = menuBarTop:createItem("Edit")
-local menuEditUndo = menuEdit:createItem("Undo")
-local menuEditRedo = menuEdit:createItem("Redo")
-
-local menuInsert = menuBarTop:createItem("Insert")
-local menuInsertBlock = menuInsert:createItem("Block")
-
--- Block creation function. Creates a new block and positions it relative to the user's camera
-menuInsertBlock:mouseLeftPressed(function ()
-	local newBlock = engine.block("block")
-	newBlock.colour = colour(1,0,0)
-	newBlock.size = vector3(1,1,1)
-	newBlock.parent = workspace
-
-	local camera = workspace.camera
-		
-	local lookVector = camera.rotation * vector3(0, 0, 1)
-	newBlock.position = camera.position - (lookVector * 10)
-end)
-
 --
 -- Undo/Redo History system
 -- 
@@ -90,10 +59,14 @@ for _,v in pairs(workspace.children) do
 end
 
 workspace:childAdded(function(child)
+	print("child added")
 	child:changed(objectChanged)
+	if not goingBack then
+		dirty[child].new = true
+	end
 end)
 
-menuEditUndo:mouseLeftPressed(function ()
+function undo()
 	currentPoint = currentPoint - 1
 	local snapShot = history[currentPoint] 
 	if not snapShot then snapShot = {} end
@@ -105,9 +78,9 @@ menuEditUndo:mouseLeftPressed(function ()
 		end
 	end
 	goingBack = false
-end)
+end
 
-menuEditRedo:mouseLeftPressed(function ()
+function redo()
 	if currentpoint >= #history then
 		return print("Debug: can't redo.")
 	end
@@ -123,8 +96,46 @@ menuEditRedo:mouseLeftPressed(function ()
 		end
 	end
 	goingBack = false
-end)
+end
 
+ -- 
+ -- UI
+ --
+
+local menuBarTop = engine.guiMenuBar()
+menuBarTop.size = guiCoord(1, 0, 0, 24)
+menuBarTop.position = guiCoord(0, 0, 0, 0)
+menuBarTop.parent = workshop.interface
+
+local menuFile = menuBarTop:createItem("File")
+local menuFileNew = menuFile:createItem("New Scene")
+local menuFileOpen = menuFile:createItem("Open Scene")
+local menuFileSave = menuFile:createItem("Save Scene")
+local menuFileSaveAs = menuFile:createItem("Save Scene As")
+
+local menuEdit = menuBarTop:createItem("Edit")
+local menuEditUndo = menuEdit:createItem("Undo")
+local menuEditRedo = menuEdit:createItem("Redo")
+menuEditUndo:mouseLeftPressed(undo)
+menuEditRedo:mouseLeftPressed(redo)
+
+local menuInsert = menuBarTop:createItem("Insert")
+local menuInsertBlock = menuInsert:createItem("Block")
+
+-- Block creation function. Creates a new block and positions it relative to the user's camera
+menuInsertBlock:mouseLeftPressed(function ()
+	local newBlock = engine.block("block")
+	newBlock.colour = colour(1,0,0)
+	newBlock.size = vector3(1,1,1)
+	newBlock.parent = workspace
+
+	local camera = workspace.camera
+		
+	local lookVector = camera.rotation * vector3(0, 0, 1)
+	newBlock.position = camera.position - (lookVector * 10)
+
+	savePoint() -- for undo/redo
+end)
 
 -- 
 -- Workshop camera
@@ -203,3 +214,5 @@ engine.input:keyPressed(function( inputObj )
 		until not cameraKeyEventLooping
 	end
 end)
+
+savePoint() -- Create a point.
