@@ -249,6 +249,13 @@ savePoint() -- Create a point.
 -- Selection System
 --
 
+--testing purposes
+local newBlock = engine.block("block")
+newBlock.colour = colour(1,0,0)
+newBlock.size = vector3(1,11,1)
+newBlock.position = vector3(0,0,0)
+newBlock.parent = workspace
+
 -- This block is used to show an outline around things we're hovering.
 local outlineHoverBlock = engine.block("workshopHoverOutlineWireframe")
 outlineHoverBlock.wireframe = true
@@ -268,3 +275,8 @@ outlineSelectedBlock.opacity = 0
 
 local selectedItems = {}
 
+engine.graphics:frameDrawn(function()
+
+	local mouseHit = engine.physics:rayTestScreen( engine.input.mousePosition ) -- accepts vector2 or number,number
+	if mouseHit then print(mouseHit) end
+end)
