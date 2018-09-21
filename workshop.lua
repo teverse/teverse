@@ -130,6 +130,20 @@ menuFileOpen:mouseLeftPressed(function()
 	engine.workshop:openFileDialogue()
 end)
 
+menuFileNew:mouseLeftPressed(function()
+	engine.workshop:newGame()
+end)
+
+menuFileOpen:mouseLeftPressed(function()
+	engine.workshop:saveGame() -- returns boolean
+end)
+
+menuFileOpen:mouseLeftPressed(function()
+	engine.workshop:saveGameAsDialogue()
+end)
+
+
+
 -- Block creation function. Creates a new block and positions it relative to the user's camera
 menuInsertBlock:mouseLeftPressed(function ()
 	local newBlock = engine.block("block")
@@ -230,3 +244,27 @@ engine.input:keyPressed(function( inputObj )
 end)
 
 savePoint() -- Create a point.
+
+--
+-- Selection System
+--
+
+-- This block is used to show an outline around things we're hovering.
+local outlineHoverBlock = engine.block("workshopHoverOutlineWireframe")
+outlineHoverBlock.wireframe = true
+outlineHoverBlock.anchored = true
+outlineHoverBlock.physics = false
+outlineHoverBlock.colour = colour(1, 1, 0)
+outlineHoverBlock.opacity = 0
+
+-- This block is used to outline selected items
+local outlineSelectedBlock = engine.block("workshopSelectedOutlineWireframe")
+outlineSelectedBlock.wireframe = true
+outlineSelectedBlock.anchored = true
+outlineSelectedBlock.physics = false
+outlineSelectedBlock.colour = colour(0, 1, 1)
+outlineSelectedBlock.opacity = 0
+
+
+local selectedItems = {}
+
