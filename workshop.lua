@@ -61,7 +61,7 @@ end
 
 workspace:childAdded(function(child)
 	child:changed(objectChanged)
-	if not goingBack then
+	if not goingBack and dirty[child] then
 		dirty[child].new = true
 	end
 end)
@@ -253,8 +253,9 @@ savePoint() -- Create a point.
 local newBlock = engine.block("block")
 newBlock.colour = colour(1,0,0)
 newBlock.size = vector3(1,11,1)
-newBlock.position = vector3(0,0,0)
+newBlock.position = vector3(5,0,0)
 newBlock.parent = workspace
+--testing purposes
 
 -- This block is used to show an outline around things we're hovering.
 local outlineHoverBlock = engine.block("workshopHoverOutlineWireframe")
@@ -275,8 +276,52 @@ outlineSelectedBlock.opacity = 0
 
 local selectedItems = {}
 
-engine.graphics:frameDrawn(function()
-
+--WIP
+engine.graphics:frameDrawn(function()	
 	local mouseHit = engine.physics:rayTestScreen( engine.input.mousePosition ) -- accepts vector2 or number,number
-	if mouseHit then print(mouseHit) end
+	if mouseHit then 
+		outlineHoverBlock.size = mouseHit.size
+		outlineHoverBlock.position = mouseHit.position
+		outlineHoverBlock.opacity = 1
+	else
+		outlineHoverBlock.opacity = 0
+	end
+
+	if #selectedItems > 0 then
+		outlineSelectedBlock.opacity = 1
+
+		local averagePosition = vector3(0, 0, 0)
+		local totalSize = vector3(0, 0, 0)
+
+		for i, v in pairs(selectedItems) do
+			averagePosition = averagePosition + v.position
+			totalSize.x = math.max(v.size.x, totalSize.x)
+			totalSize.y = math.max(v.size.y, totalSize.y)
+			totalSize.z = math.max(v.size.z, totalSize.z)
+		end
+
+		averagePosition = averagePosition/#selectedItems
+		outlineSelectedBlock.position = averagePosition
+		outlineSelectedBlock.size = totalSize
+	else
+		outlineSelectedBlock.opacity = 0
+	end
+end)
+
+engine.input:mouseLeftPressed(function( input )
+	local mouseHit = engine.physics:rayTestScreen( engine.input.mousePosition )
+	if not mouseHit then
+		-- User clicked empty space, deselect everything??
+		selectedItems = {}
+	end
+
+	for i,v in pairs(selectedItems) do
+		if v == mouseHit then
+			-- deselect
+			table.remove(selectedItems, i)
+			return
+		end
+	end
+
+	table.insert(selectedItems, mouseHit)
 end)
