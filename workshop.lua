@@ -159,6 +159,11 @@ menuInsertBlock:mouseLeftPressed(function ()
 	savePoint() -- for undo/redo
 end)
 
+local windowProperties = engine.guiWindow()
+windowProperties.size = guiCoord(0, 220, 0.5, -12)
+windowProperties.position = guiCoord(1, -220, 0, 24)
+windowProperties.parent = engine.workshop.interface
+
 -- 
 -- Workshop camera
 -- Currently modified from the Wiki Tutorial
@@ -252,8 +257,8 @@ savePoint() -- Create a point.
 --testing purposes
 local newBlock = engine.block("block")
 newBlock.colour = colour(1,0,0)
-newBlock.size = vector3(1,11,1)
-newBlock.position = vector3(5,0,0)
+newBlock.size = vector3(1,10,1)
+newBlock.position = vector3(0,0,0)
 newBlock.parent = workspace
 --testing purposes
 
@@ -275,6 +280,7 @@ outlineSelectedBlock.opacity = 0
 
 
 local selectedItems = {}
+local redraw = true -- a way to stop updating the selection box when nothing has happened.
 
 --WIP
 engine.graphics:frameDrawn(function()	
@@ -287,23 +293,30 @@ engine.graphics:frameDrawn(function()
 		outlineHoverBlock.opacity = 0
 	end
 
-	if #selectedItems > 0 then
+	if #selectedItems > 0 and redraw then
 		outlineSelectedBlock.opacity = 1
-
-		local averagePosition = vector3(0, 0, 0)
-		local totalSize = vector3(0, 0, 0)
+		
+		-- used to calculate bounding box area...
+		local upper = selectedItems[1].position + (selectedItems[1].size/2)
+		local lower = selectedItems[1].position - (selectedItems[1].size/2)
 
 		for i, v in pairs(selectedItems) do
-			averagePosition = averagePosition + v.position
-			totalSize.x = math.max(v.size.x, totalSize.x)
-			totalSize.y = math.max(v.size.y, totalSize.y)
-			totalSize.z = math.max(v.size.z, totalSize.z)
+			local topLeft = v.position + (v.size/2)
+			local btmRight = v.position - (v.size/2)
+			
+		
+			upper.x = math.max(topLeft.x, upper.x)
+			upper.y = math.max(topLeft.y, upper.y)
+			upper.z = math.max(topLeft.z, upper.z)
+
+			lower.x = math.min(btmRight.x, lower.x)
+			lower.y = math.min(btmRight.y, lower.y)
+			lower.z = math.min(btmRight.z, lower.z)
 		end
 
-		averagePosition = averagePosition/#selectedItems
-		outlineSelectedBlock.position = averagePosition
-		outlineSelectedBlock.size = totalSize
-	else
+		outlineSelectedBlock.position = (upper+lower)/2
+		outlineSelectedBlock.size = upper-lower
+	elseif #selectedItems == 0 then
 		outlineSelectedBlock.opacity = 0
 	end
 end)
@@ -313,15 +326,22 @@ engine.input:mouseLeftPressed(function( input )
 	if not mouseHit then
 		-- User clicked empty space, deselect everything??
 		selectedItems = {}
+		return
 	end
 
-	for i,v in pairs(selectedItems) do
-		if v == mouseHit then
-			-- deselect
-			table.remove(selectedItems, i)
-			return
+	if not engine.input:isKeyDown(enums.key.leftShift) then
+		-- deselect everything and move on
+		selectedItems = {}
+	else
+		for i,v in pairs(selectedItems) do
+			if v == mouseHit then
+				-- deselect
+				table.remove(selectedItems, i)
+				return
+			end
 		end
 	end
 
 	table.insert(selectedItems, mouseHit)
 end)
+
