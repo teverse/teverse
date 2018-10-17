@@ -306,6 +306,13 @@ engine.graphics:frameDrawn(function()
 		outlineHoverBlock.opacity = 0
 	end
 
+	-- update "Selected" text b/c it can't just say "0 selected items"...
+	if #txtProperty == 1 then
+		txtProperty.text = #selectedItems .. " Selected Item"
+	else
+		txtProperty.text = #selectedItems .. " Selected Items"	
+	end
+		
 	if #selectedItems > 0 and redraw then
 		outlineSelectedBlock.opacity = 1
 		
