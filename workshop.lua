@@ -158,11 +158,24 @@ menuInsertBlock:mouseLeftPressed(function ()
 
 	savePoint() -- for undo/redo
 end)
-
-local windowProperties = engine.guiWindow()
+windowProperties = engine.guiWindow()
 windowProperties.size = guiCoord(0, 220, 0.5, -12)
 windowProperties.position = guiCoord(1, -220, 0, 24)
 windowProperties.parent = engine.workshop.interface
+windowProperties.text = "Properties"
+windowProperties.fontSize = 10
+windowProperties.fontFile = "OpenSans-Regular"
+
+local txtProperty = engine.guiTextBox()
+txtProperty.size = guiCoord(1, -50, 0, 50)
+txtProperty.position = guiCoord(0, 0, 0, 0)
+txtProperty.fontSize = 9
+txtProperty.fontFile = "OpenSans-Regular"
+txtProperty.text = "0 Selected Items"
+txtProperty.parent = windowProperties
+txtProperty.textColour = colour(1,0,0)
+
+
 
 -- 
 -- Workshop camera
