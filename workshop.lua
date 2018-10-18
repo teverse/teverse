@@ -209,12 +209,12 @@ camera:lookAt(target)
 -- Camera key input values
 local cameraKeyEventLooping = false
 local cameraKeyArray = {
-	[enum.key.w] = vector3(0, 0, -1),
-	[enum.key.s] = vector3(0, 0, 1),
-	[enum.key.a] = vector3(-1, 0, 0),
-	[enum.key.d] = vector3(1, 0, 0),
-	[enum.key.q] = vector3(0, -1, 0),
-	[enum.key.e] = vector3(0, 1, 0)
+	[enums.key.w] = vector3(0, 0, -1),
+	[enums.key.s] = vector3(0, 0, 1),
+	[enums.key.a] = vector3(-1, 0, 0),
+	[enums.key.d] = vector3(1, 0, 0),
+	[enums.key.q] = vector3(0, -1, 0),
+	[enums.key.e] = vector3(0, 1, 0)
 }
 
 local function updatePosition()
