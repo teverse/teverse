@@ -359,7 +359,7 @@ engine.input:mouseLeftPressed(function( input )
 	elseif #selectedItems == 0 then
 		outlineSelectedBlock.opacity = 0
 	end
-		
-	txtProperty.text = #selectedItems .. " item" + (#selectedItems == 1 and "" or "s") + " selected"
+
+	txtProperty.text = #selectedItems .. " item" .. (#selectedItems == 1 and "" or "s") .. " selected"
 end)
 
