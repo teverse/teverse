@@ -9,9 +9,9 @@
 -- 
 
 local history = {}
-local dirty = {} -- record things that have changed since last action
-local currentPoint = 0 -- the current point in history used to undo 
-local goingBack = false
+local dirty = {} -- Records changes made since last action
+local currentPoint = 0 -- The current point in the history array that is used to undo
+local goingBack = false -- Used to prevent objectChanged from functioning while undoing
 
 local function objectChanged(property)
 	-- TODO: self is a reference to an event object
@@ -33,10 +33,6 @@ local function savePoint()
 	local newPoint = {}
 	
 	for object, properties in pairs(dirty) do
-		--local thisObject = {}
-		--for property, oldValue in pairs(properties) do
-		--	table.insert(thi
-		--end
 		newPoint[object] = properties
 	end
 	
@@ -67,21 +63,25 @@ workspace:childAdded(function(child)
 end)
 
 function undo()
+	if currentPoint == 0 then return end
+	
 	currentPoint = currentPoint - 1
 	local snapShot = history[currentPoint] 
 	if not snapShot then snapShot = {} end
 
 	goingBack = true
+	
 	for object, properties in pairs(snapShot) do
 		for property, value in pairs(properties) do
 			object[property] = value
 		end
 	end
+	
 	goingBack = false
 end
 
 function redo()
-	if currentpoint >= #history then
+	if currentPoint >= #history then
 		return print("Debug: can't redo.")
 	end
 
@@ -90,11 +90,13 @@ function redo()
 	if not snapShot then return print("Debug: no snapshot found") end
 
 	goingBack = true
+	
 	for object, properties in pairs(snapShot) do
 		for property, value in pairs(properties) do
 			object[property] = value
 		end
 	end
+	
 	goingBack = false
 end
 
