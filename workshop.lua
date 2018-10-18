@@ -311,20 +311,25 @@ engine.input:mouseLeftPressed(function( input )
 		return
 	end
 
+	local doSelect = true
+
 	if not engine.input:isKeyDown(enums.key.leftShift) then
 		-- deselect everything and move on
 		selectedItems = {}
-		table.insert(selectedItems, mouseHit)
 	else
 		for i,v in pairs(selectedItems) do
 			if v == mouseHit then
 				-- deselect
 				table.remove(selectedItems, i)
-				return
+				doSelect = false
 			end
 		end
 	end
-		
+
+	if doSelect then
+		table.insert(selectedItems, mouseHit)
+	end
+	
 	if #selectedItems > 1 then
 		outlineSelectedBlock.opacity = 1
 		
