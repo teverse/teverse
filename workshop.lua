@@ -329,7 +329,7 @@ engine.input:mouseLeftPressed(function( input )
 	if doSelect then
 		table.insert(selectedItems, mouseHit)
 	end
-	
+
 	if #selectedItems > 1 then
 		outlineSelectedBlock.opacity = 1
 		
@@ -355,7 +355,7 @@ engine.input:mouseLeftPressed(function( input )
 	elseif #selectedItems == 1 then
 		outlineSelectedBlock.opacity = 1
 		outlineSelectedBlock.position = selectedItems[1].position
-		outlineSelectedBlock.position = selectedItems[1].size
+		outlineSelectedBlock.size = selectedItems[1].size
 	elseif #selectedItems == 0 then
 		outlineSelectedBlock.opacity = 0
 	end
