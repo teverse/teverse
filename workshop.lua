@@ -103,6 +103,9 @@ end
 -- 
 -- UI
 --
+
+local normalFontName = "OpenSans-Regular"
+local boldFontName = "OpenSans-Bold"
  
 -- Menu Bar Creation
 
@@ -167,24 +170,79 @@ end)
 
 -- Properties Window
 
-windowProperties = engine.guiWindow()
+local windowProperties = engine.guiWindow()
 windowProperties.size = guiCoord(0, 220, 0.5, -12)
 windowProperties.position = guiCoord(1, -220, 0, 24)
 windowProperties.parent = engine.workshop.interface
 windowProperties.text = "Properties"
 windowProperties.fontSize = 10
-windowProperties.fontFile = "OpenSans-Regular"
+windowProperties.fontFile = normalFontName
+
+local function generateLabel(text, parent)
+	local lbl = engine.guiTextBox()
+	lbl.size = guiCoord(1, 0, 0, 14)
+	lbl.position = guiCoord(0, 0, 0, 0)
+	lbl.fontSize = 9
+	lbl.fontFile = normalFontName
+	lbl.text = text
+	lbl.align = enums.align.middleLeft
+	if parent then
+		lbl.parent = parent
+	end
+	lbl.textColour = colour(1, 1, 1)
+
+	return lbl
+end
+
+local function generateInputBox(text, parent)
+	local lbl = engine.guiTextBox()
+	lbl.size = guiCoord(1, 0, 0, 14)
+	lbl.position = guiCoord(0, 0, 0, 0)
+	lbl.fontSize = 9
+	lbl.fontFile = normalFontName
+	lbl.text = text
+	lbl.wrap = false
+	lbl.align = enums.align.middleLeft
+	if parent then
+		lbl.parent = parent
+	end
+	lbl.textColour = colour(1, 0, 1)
+
+	return lbl
+end
 
 -- Selected Integer Text
 
-local txtProperty = engine.guiTextBox()
-txtProperty.size = guiCoord(1, -50, 0, 50)
-txtProperty.position = guiCoord(0, 0, 0, 0)
-txtProperty.fontSize = 9
-txtProperty.fontFile = "OpenSans-Regular"
-txtProperty.text = "0 items selected"
-txtProperty.parent = windowProperties
-txtProperty.textColour = colour(1,0,0)
+local txtProperty = generateLabel("0 items selected", windowProperties)
+txtProperty.name = "txtProperty"
+txtProperty.alpha = 0.4
+
+local function generateProperties( instance )
+	local members = engine.workshop:getMembersOfInstance( instance )
+
+	for _,v in pairs(windowProperties.children) do
+		if v.name ~= "txtProperty" then
+			v:destroy()
+		end
+	end
+
+	local y = 16
+
+ 	for _,property in pairs (members) do
+		print(property, instance[property])
+		local lblProp = generateLabel(property, windowProperties)
+		lblProp.position = guiCoord(0,3,0,y)
+		lblProp.size = guiCoord(0.5, -6, 0, 14)
+
+		local txtProp = generateInputBox(tostring(instance[property]), windowProperties)
+		txtProp.position = guiCoord(0.5,0,0,y)
+		txtProp.size = guiCoord(0.5, 0, 0, 14)
+
+		y = y + 16
+	end
+end
+
+generateProperties(txtProperty)
 
 -- 
 -- Workshop Camera
@@ -243,19 +301,25 @@ engine.input:mouseMoved(function( input )
 end)
 
 engine.input:keyPressed(function( inputObj )
-	if cameraKeyArray[inputObj.key] and (not cameraKeyEventLooping) then
+	if cameraKeyArray[inputObj.key] and not cameraKeyEventLooping then
 		cameraKeyEventLooping = true
 		
 		repeat
 			local cameraPos = camera.position
-			
-			cameraPos = cameraPos + (camera.rotation * cameraKeyArray[inputObj.key] * moveStep)
+
+			for key, vector in pairs(cameraKeyArray) do
+				-- check this key is pressed (still)
+				if engine.input:isKeyDown(key) then
+					cameraPos = cameraPos + (camera.rotation * vector * moveStep)
+				end
+			end
+
 			cameraKeyEventLooping = (cameraPos ~= camera.position)
-			camera.position = cameraPos
-				
+			camera.position = cameraPos	
+
 			wait(0.001)
-		until
-			not cameraKeyEventLooping
+
+		until not cameraKeyEventLooping
 	end
 end)
 
@@ -308,6 +372,8 @@ engine.input:mouseLeftPressed(function( input )
 	if not mouseHit then
 		-- User clicked empty space, deselect everything??
 		selectedItems = {}
+		outlineSelectedBlock.opacity = 0
+		txtProperty.text = "0 items selected"
 		return
 	end
 
@@ -315,7 +381,7 @@ engine.input:mouseLeftPressed(function( input )
 
 	if not engine.input:isKeyDown(enums.key.leftShift) then
 		-- deselect everything and move on
-		selectedItems = {}
+		selectedItems = {}	
 	else
 		for i,v in pairs(selectedItems) do
 			if v == mouseHit then
