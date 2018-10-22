@@ -180,9 +180,10 @@ windowProperties.fontFile = normalFontName
 
 local function generateLabel(text, parent)
 	local lbl = engine.guiTextBox()
-	lbl.size = guiCoord(1, 0, 0, 14)
+	lbl.size = guiCoord(1, 0, 0, 16)
 	lbl.position = guiCoord(0, 0, 0, 0)
 	lbl.fontSize = 9
+	lbl.hasBackground = false
 	lbl.fontFile = normalFontName
 	lbl.text = text
 	lbl.align = enums.align.middleLeft
@@ -196,8 +197,9 @@ end
 
 local function generateInputBox(text, parent)
 	local lbl = engine.guiTextBox()
-	lbl.size = guiCoord(1, 0, 0, 14)
+	lbl.size = guiCoord(1, 0, 0, 21)
 	lbl.position = guiCoord(0, 0, 0, 0)
+	lbl.backgroundColour = colour(8/255, 8/255, 11/255)
 	lbl.fontSize = 9
 	lbl.fontFile = normalFontName
 	lbl.text = text
@@ -215,7 +217,8 @@ end
 
 local txtProperty = generateLabel("0 items selected", windowProperties)
 txtProperty.name = "txtProperty"
-txtProperty.alpha = 0.4
+
+txtProperty.textColour = colour(1,0,0)
 
 local function generateProperties( instance )
 	local members = engine.workshop:getMembersOfInstance( instance )
@@ -228,17 +231,19 @@ local function generateProperties( instance )
 
 	local y = 16
 
- 	for _,property in pairs (members) do
-		print(property, instance[property])
-		local lblProp = generateLabel(property, windowProperties)
+	table.sort( members, function( a,b ) return a.property < b.property end ) -- alphabetical sort
+
+ 	for i, prop in pairs (members) do
+		print(prop.property, instance[prop.property], prop.writable)
+		local lblProp = generateLabel(prop.property, windowProperties)
 		lblProp.position = guiCoord(0,3,0,y)
 		lblProp.size = guiCoord(0.5, -6, 0, 14)
 
-		local txtProp = generateInputBox(tostring(instance[property]), windowProperties)
+		local txtProp = generateInputBox(tostring(instance[prop.property]), windowProperties)
 		txtProp.position = guiCoord(0.5,0,0,y)
-		txtProp.size = guiCoord(0.5, 0, 0, 14)
+		txtProp.size = guiCoord(0.5, 0, 0, 21)
 
-		y = y + 16
+		y = y + 22
 	end
 end
 
