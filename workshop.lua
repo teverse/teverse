@@ -104,8 +104,8 @@ end
 -- UI
 --
 
-local normalFontName = "OpenSans-Regular"
-local boldFontName = "OpenSans-Bold"
+local normalFontName = "Roboto-Regular"
+local boldFontName = "Roboto-Bold"
  
 -- Menu Bar Creation
 
@@ -170,9 +170,10 @@ end)
 
 -- Properties Window
 
+
 local windowProperties = engine.guiWindow()
 windowProperties.size = guiCoord(0, 220, 0.5, -12)
-windowProperties.position = guiCoord(1, -220, 0, 24)
+windowProperties.position = guiCoord(1, -225, 0, 24)
 windowProperties.parent = engine.workshop.interface
 windowProperties.text = "Properties"
 windowProperties.fontSize = 10
@@ -185,8 +186,8 @@ local function generateLabel(text, parent)
 	lbl.fontSize = 9
 	lbl.hasBackground = false
 	lbl.fontFile = normalFontName
-	lbl.text = text
-	lbl.align = enums.align.middleLeft
+	lbl.text = tostring(text)
+	lbl.align = enums.align.middle
 	if parent then
 		lbl.parent = parent
 	end
@@ -202,13 +203,13 @@ local function generateInputBox(text, parent)
 	lbl.backgroundColour = colour(8/255, 8/255, 11/255)
 	lbl.fontSize = 9
 	lbl.fontFile = normalFontName
-	lbl.text = text
+	lbl.text = tostring(text)
 	lbl.wrap = false
-	lbl.align = enums.align.middleLeft
+	lbl.align = enums.align.middle
 	if parent then
 		lbl.parent = parent
 	end
-	lbl.textColour = colour(1, 0, 1)
+	lbl.textColour = colour(1, 1, 1)
 
 	return lbl
 end
@@ -217,7 +218,6 @@ end
 
 local txtProperty = generateLabel("0 items selected", windowProperties)
 txtProperty.name = "txtProperty"
-
 txtProperty.textColour = colour(1,0,0)
 
 local function generateProperties( instance )
@@ -234,14 +234,54 @@ local function generateProperties( instance )
 	table.sort( members, function( a,b ) return a.property < b.property end ) -- alphabetical sort
 
  	for i, prop in pairs (members) do
-		print(prop.property, instance[prop.property], prop.writable)
+		--print(prop.property, instance[prop.property], prop.writable)
 		local lblProp = generateLabel(prop.property, windowProperties)
 		lblProp.position = guiCoord(0,3,0,y)
 		lblProp.size = guiCoord(0.5, -6, 0, 14)
 
-		local txtProp = generateInputBox(tostring(instance[prop.property]), windowProperties)
-		txtProp.position = guiCoord(0.5,0,0,y)
-		txtProp.size = guiCoord(0.5, 0, 0, 21)
+		local propContainer = engine.guiFrame() 
+		propContainer.parent = windowProperties
+		propContainer.size = guiCoord(0.5, -9, 0, 21) -- Compensates for the natural padding inside a guiWindow.
+		propContainer.position = guiCoord(0.5,0,0,y)
+		propContainer.alpha = 0
+
+		local value = instance[prop.property]
+		local propertyType = type(value)
+
+		if propertyType == "vector2" then
+
+			local txtProp = generateInputBox(value.x, propContainer)
+			txtProp.position = guiCoord(0,0,0,0)
+			txtProp.size = guiCoord(0.5, -1, 1, 0)
+
+			local txtProp = generateInputBox(value.y, propContainer)
+			txtProp.position = guiCoord(0.5,2,0,0)
+			txtProp.size = guiCoord(0.5, -1, 1, 0)
+		elseif propertyType == "colour" then
+
+			local txtProp = generateInputBox(value.r, propContainer)
+			txtProp.position = guiCoord(0,0,0,0)
+			txtProp.size = guiCoord(0.25, -1, 1, 0)
+
+			local txtProp = generateInputBox(value.g, propContainer)
+			txtProp.position = guiCoord(0.25,1,0,0)
+			txtProp.size = guiCoord(0.25, -1, 1, 0)
+
+			local txtProp = generateInputBox(value.b, propContainer)
+			txtProp.position = guiCoord(0.5,2,0,0)
+			txtProp.size = guiCoord(0.25, -1, 1, 0)
+
+			local colourPreview = engine.guiFrame() 
+			colourPreview.parent = propContainer
+			colourPreview.size = guiCoord(0.25, -10, 1, -12)
+			colourPreview.position = guiCoord(0.75, 7, 0, 6)
+			colourPreview.backgroundColour = value
+
+		else
+			local txtProp = generateInputBox(value, propContainer)
+			txtProp.position = guiCoord(0,0,0,0)
+			txtProp.size = guiCoord(1, 0, 1, 0)
+		end
 
 		y = y + 22
 	end
