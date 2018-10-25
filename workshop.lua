@@ -104,8 +104,8 @@ end
 -- UI
 --
 
-local normalFontName = "Roboto-Regular"
-local boldFontName = "Roboto-Bold"
+local normalFontName = "OpenSans-Regular"
+local boldFontName = "OpenSans-Bold"
  
 -- Menu Bar Creation
 
@@ -168,32 +168,39 @@ menuInsertBlock:mouseLeftPressed(function ()
 	savePoint() -- for undo/redo
 end)
 
--- Properties Window
-
-
 local windowProperties = engine.guiWindow()
-windowProperties.size = guiCoord(0, 220, 0.5, -12)
-windowProperties.position = guiCoord(1, -225, 0, 24)
+windowProperties.size = guiCoord(0, 240, 0.5, -12)
+windowProperties.position = guiCoord(1, -245, 0, 24)
 windowProperties.parent = engine.workshop.interface
 windowProperties.text = "Properties"
 windowProperties.fontSize = 10
 windowProperties.fontFile = normalFontName
+
+
 
 local function generateLabel(text, parent)
 	local lbl = engine.guiTextBox()
 	lbl.size = guiCoord(1, 0, 0, 16)
 	lbl.position = guiCoord(0, 0, 0, 0)
 	lbl.fontSize = 9
-	lbl.hasBackground = false
+	lbl.guiStyle = enums.guiStyle.noBackground
 	lbl.fontFile = normalFontName
 	lbl.text = tostring(text)
-	lbl.align = enums.align.middle
-	if parent then
-		lbl.parent = parent
-	end
+	lbl.wrap = false
+	lbl.align = enums.align.middleLeft
+	lbl.parent = parent or engine.workshop.interface
 	lbl.textColour = colour(1, 1, 1)
 
 	return lbl
+end
+
+local function setReadOnly( textbox, value )
+	textbox.readOnly = value
+	if value then
+		textbox.alpha = 0.4
+	else
+		textbox.alpha = 1
+	end
 end
 
 local function generateInputBox(text, parent)
@@ -204,6 +211,7 @@ local function generateInputBox(text, parent)
 	lbl.fontSize = 9
 	lbl.fontFile = normalFontName
 	lbl.text = tostring(text)
+	lbl.readOnly = false
 	lbl.wrap = false
 	lbl.align = enums.align.middle
 	if parent then
@@ -234,42 +242,57 @@ local function generateProperties( instance )
 	table.sort( members, function( a,b ) return a.property < b.property end ) -- alphabetical sort
 
  	for i, prop in pairs (members) do
-		--print(prop.property, instance[prop.property], prop.writable)
-		local lblProp = generateLabel(prop.property, windowProperties)
-		lblProp.position = guiCoord(0,3,0,y)
-		lblProp.size = guiCoord(0.5, -6, 0, 14)
-
-		local propContainer = engine.guiFrame() 
-		propContainer.parent = windowProperties
-		propContainer.size = guiCoord(0.5, -9, 0, 21) -- Compensates for the natural padding inside a guiWindow.
-		propContainer.position = guiCoord(0.5,0,0,y)
-		propContainer.alpha = 0
 
 		local value = instance[prop.property]
 		local propertyType = type(value)
+		local readOnly = not prop.writable
+
+		if type(value) == "function" or type(value) == "table" then
+			-- not really a property.
+			goto continue -- Jumps to the ::continue:: label
+		end
+
+		local lblProp = generateLabel(prop.property, windowProperties)
+		lblProp.position = guiCoord(0,3,0,y)
+		lblProp.size = guiCoord(0.46, -6, 0, 15)
+		lblProp.name = "Property" 
+
+		
+		local propContainer = engine.guiFrame() 
+		propContainer.parent = windowProperties
+		propContainer.name = "Container"
+		propContainer.size = guiCoord(0.54, -9, 0, 21) -- Compensates for the natural padding inside a guiWindow.
+		propContainer.position = guiCoord(0.45,0,0,y)
+		propContainer.alpha = 0
 
 		if propertyType == "vector2" then
 
 			local txtProp = generateInputBox(value.x, propContainer)
 			txtProp.position = guiCoord(0,0,0,0)
 			txtProp.size = guiCoord(0.5, -1, 1, 0)
+			setReadOnly(txtProp, readOnly)
 
 			local txtProp = generateInputBox(value.y, propContainer)
 			txtProp.position = guiCoord(0.5,2,0,0)
 			txtProp.size = guiCoord(0.5, -1, 1, 0)
+			setReadOnly(txtProp, readOnly)
+
 		elseif propertyType == "colour" then
 
 			local txtProp = generateInputBox(value.r, propContainer)
 			txtProp.position = guiCoord(0,0,0,0)
 			txtProp.size = guiCoord(0.25, -1, 1, 0)
+			setReadOnly(txtProp, readOnly)
 
 			local txtProp = generateInputBox(value.g, propContainer)
 			txtProp.position = guiCoord(0.25,1,0,0)
 			txtProp.size = guiCoord(0.25, -1, 1, 0)
+			setReadOnly(txtProp, readOnly)
 
 			local txtProp = generateInputBox(value.b, propContainer)
 			txtProp.position = guiCoord(0.5,2,0,0)
 			txtProp.size = guiCoord(0.25, -1, 1, 0)
+			setReadOnly(txtProp, readOnly)
 
 			local colourPreview = engine.guiFrame() 
 			colourPreview.parent = propContainer
@@ -281,14 +304,16 @@ local function generateProperties( instance )
 			local txtProp = generateInputBox(value, propContainer)
 			txtProp.position = guiCoord(0,0,0,0)
 			txtProp.size = guiCoord(1, 0, 1, 0)
+			setReadOnly(txtProp, readOnly)
 		end
 
 		y = y + 22
+
+		::continue::
 	end
 end
 
 generateProperties(txtProperty)
-
 -- 
 -- Workshop Camera
 -- Altered from https://wiki.teverse.com/tutorials/base-camera
@@ -346,6 +371,9 @@ engine.input:mouseMoved(function( input )
 end)
 
 engine.input:keyPressed(function( inputObj )
+
+	if inputObj.systemHandled then return end
+
 	if cameraKeyArray[inputObj.key] and not cameraKeyEventLooping then
 		cameraKeyEventLooping = true
 		
