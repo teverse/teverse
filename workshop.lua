@@ -248,8 +248,11 @@ local function generateProperties( instance )
 		local readOnly = not prop.writable
 
 		if type(value) == "function" or type(value) == "table" then
-			-- not really a property.
-			goto continue -- Jumps to the ::continue:: label
+			-- Lua doesn't come with a "continue"
+			-- Teverse uses LuaJIT,
+			-- Here's a fancy functionality:
+			-- Jumps to the ::continue:: label
+			goto continue 
 		end
 
 		local lblProp = generateLabel(prop.property, windowProperties)
