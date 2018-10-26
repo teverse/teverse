@@ -176,6 +176,11 @@ windowProperties.text = "Properties"
 windowProperties.fontSize = 10
 windowProperties.fontFile = normalFontName
 
+local scrollViewProperties = engine.guiScrollView("scrollView")
+scrollViewProperties.size = guiCoord(1,-5,1,-5)
+scrollViewProperties.parent = windowProperties
+scrollViewProperties.position = guiCoord(0,0,0,0)
+scrollViewProperties.guiStyle = enums.guiStyle.noBackground
 
 
 local function generateLabel(text, parent)
@@ -203,6 +208,7 @@ local function setReadOnly( textbox, value )
 	end
 end
 
+
 local function generateInputBox(text, parent)
 	local lbl = engine.guiTextBox()
 	lbl.size = guiCoord(1, 0, 0, 21)
@@ -213,7 +219,7 @@ local function generateInputBox(text, parent)
 	lbl.text = tostring(text)
 	lbl.readOnly = false
 	lbl.wrap = false
-	lbl.align = enums.align.middle
+	lbl.align = enums.align.middleLeft
 	if parent then
 		lbl.parent = parent
 	end
@@ -224,16 +230,16 @@ end
 
 -- Selected Integer Text
 
-local txtProperty = generateLabel("0 items selected", windowProperties)
+local txtProperty = generateLabel("0 items selected", scrollViewProperties)
 txtProperty.name = "txtProperty"
 txtProperty.textColour = colour(1,0,0)
 
 local function generateProperties( instance )
 	local members = engine.workshop:getMembersOfInstance( instance )
 
-	for _,v in pairs(windowProperties.children) do
+	for _,v in pairs(scrollViewProperties.children) do
 		if v.name ~= "txtProperty" then
-			v:destroy()
+			--v:destroy()
 		end
 	end
 
@@ -255,14 +261,18 @@ local function generateProperties( instance )
 			goto continue 
 		end
 
-		local lblProp = generateLabel(prop.property, windowProperties)
+		local lblProp = generateLabel(prop.property, scrollViewProperties)
 		lblProp.position = guiCoord(0,3,0,y)
-		lblProp.size = guiCoord(0.46, -6, 0, 15)
+		lblProp.size = guiCoord(0.47, -6, 0, 15)
 		lblProp.name = "Property" 
+
+		if readOnly then
+			lblProp.alpha = 0.5
+		end
 
 		
 		local propContainer = engine.guiFrame() 
-		propContainer.parent = windowProperties
+		propContainer.parent = scrollViewProperties
 		propContainer.name = "Container"
 		propContainer.size = guiCoord(0.54, -9, 0, 21) -- Compensates for the natural padding inside a guiWindow.
 		propContainer.position = guiCoord(0.45,0,0,y)
@@ -314,6 +324,8 @@ local function generateProperties( instance )
 
 		::continue::
 	end
+
+	scrollViewProperties.canvasSize = guiCoord(1,0,0,y+40)
 end
 
 generateProperties(txtProperty)
@@ -504,4 +516,3 @@ engine.input:mouseLeftPressed(function( input )
 
 	txtProperty.text = #selectedItems .. " item" .. (#selectedItems == 1 and "" or "s") .. " selected"
 end)
-
