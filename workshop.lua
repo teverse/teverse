@@ -13,7 +13,7 @@ local dirty = {} -- Records changes made since last action
 local currentPoint = 0 -- The current point in the history array that is used to undo
 local goingBack = false -- Used to prevent objectChanged from functioning while undoing
 
-local function objectChanged(property)
+local function objectChanged(property, value)
 	-- TODO: self is a reference to an event object
 	-- self.object is what the event is about
 	-- self:disconnect() is used to disconnect this handler
@@ -22,7 +22,7 @@ local function objectChanged(property)
 	if not dirty[self.object] then 
 		dirty[self.object] = {}
 	end
-	
+
 	if not dirty[self.object][property] then
 		-- mark the property as changed  
 		dirty[self.object][property] = self.object[property]
@@ -174,6 +174,7 @@ windowProperties.position = guiCoord(1, -245, 0, 24)
 windowProperties.parent = engine.workshop.interface
 windowProperties.text = "Properties"
 windowProperties.fontSize = 10
+windowProperties.backgroundColour = colour(1/20, 1/20, 1/20)
 windowProperties.fontFile = normalFontName
 
 local scrollViewProperties = engine.guiScrollView("scrollView")
@@ -202,7 +203,7 @@ end
 local function setReadOnly( textbox, value )
 	textbox.readOnly = value
 	if value then
-		textbox.alpha = 0.4
+		textbox.alpha = 0.3
 	else
 		textbox.alpha = 1
 	end
@@ -219,7 +220,7 @@ local function generateInputBox(text, parent)
 	lbl.text = tostring(text)
 	lbl.readOnly = false
 	lbl.wrap = false
-	lbl.align = enums.align.middleLeft
+	lbl.align = enums.align.middle
 	if parent then
 		lbl.parent = parent
 	end
@@ -239,7 +240,7 @@ local function generateProperties( instance )
 
 	for _,v in pairs(scrollViewProperties.children) do
 		if v.name ~= "txtProperty" then
-			--v:destroy()
+			v:destroy()
 		end
 	end
 
@@ -253,7 +254,7 @@ local function generateProperties( instance )
 		local propertyType = type(value)
 		local readOnly = not prop.writable
 
-		if type(value) == "function" or type(value) == "table" then
+		if propertyType == "function" or propertyType == "table" or propertyType == "quaternion" then
 			-- Lua doesn't come with a "continue"
 			-- Teverse uses LuaJIT,
 			-- Here's a fancy functionality:
@@ -313,11 +314,81 @@ local function generateProperties( instance )
 			colourPreview.position = guiCoord(0.75, 7, 0, 6)
 			colourPreview.backgroundColour = value
 
+		elseif propertyType == "vector3" then
+
+			local txtProp = generateInputBox(value.x, propContainer)
+			txtProp.position = guiCoord(0,0,0,0)
+			txtProp.size = guiCoord(1/3, -1, 1, 0)
+			setReadOnly(txtProp, readOnly)
+
+			local txtProp = generateInputBox(value.y, propContainer)
+			txtProp.position = guiCoord(1/3,1,0,0)
+			txtProp.size = guiCoord(1/3, -1, 1, 0)
+			setReadOnly(txtProp, readOnly)
+
+			local txtProp = generateInputBox(value.z, propContainer)
+			txtProp.position = guiCoord(2/3,2,0,0)
+			txtProp.size = guiCoord(1/3, -1, 1, 0)
+			setReadOnly(txtProp, readOnly)
+
+
+		elseif propertyType == "guiCoord" then
+
+			local txtProp = generateInputBox(value.scaleX, propContainer)
+			txtProp.position = guiCoord(0,0,0,0)
+			txtProp.size = guiCoord(0.25, -1, 1, 0)
+			setReadOnly(txtProp, readOnly)
+
+			local txtProp = generateInputBox(value.offsetX, propContainer)
+			txtProp.position = guiCoord(0.25,1,0,0)
+			txtProp.size = guiCoord(0.25, -1, 1, 0)
+			setReadOnly(txtProp, readOnly)
+
+			local txtProp = generateInputBox(value.scaleY, propContainer)
+			txtProp.position = guiCoord(0.5,2,0,0)
+			txtProp.size = guiCoord(0.25, -1, 1, 0)
+			setReadOnly(txtProp, readOnly)
+
+			local txtProp = generateInputBox(value.offsetY, propContainer)
+			txtProp.position = guiCoord(0.75,2,0,0)
+			txtProp.size = guiCoord(0.25, -1, 1, 0)
+			setReadOnly(txtProp, readOnly)
+
+		elseif propertyType == "boolean" then
+
+			local boolProp = engine.guiButton()
+			boolProp.parent = propContainer
+			boolProp.position = guiCoord(0,0,0,2)
+			boolProp.size = guiCoord(1, 0, 1, 0)
+			boolProp.text = ""
+			boolProp.guiStyle = enums.guiStyle.checkBox
+			boolProp.selected = value
+
+			boolProp:mouseLeftPressed(function()
+				boolProp.selected = not boolProp.selected
+				instance[prop.property] = boolProp.selected
+			end)
+
+		elseif isInstance(value) then
+			--TODO: Allow user to select instance using explorer...
+			local placeholder = generateLabel(" . " .. propertyType .. " . ", propContainer)
+			placeholder.position = guiCoord(0,0,0,0)
+			placeholder.size = guiCoord(1, 0, 1, 0)
+			placeholder.align = enums.align.middle
+			placeholder.alpha = 0.6
+
 		else
 			local txtProp = generateInputBox(value, propContainer)
-			txtProp.position = guiCoord(0,0,0,0)
+			txtProp.position = guiCoord(0,1,0,0)
 			txtProp.size = guiCoord(1, 0, 1, 0)
 			setReadOnly(txtProp, readOnly)
+
+			txtProp:changed(function(k,v)
+				print(k,v)
+				if k == "text" then
+					print("changed")
+				end
+			end)
 		end
 
 		y = y + 22
@@ -328,7 +399,7 @@ local function generateProperties( instance )
 	scrollViewProperties.canvasSize = guiCoord(1,0,0,y+40)
 end
 
-generateProperties(txtProperty)
+
 -- 
 -- Workshop Camera
 -- Altered from https://wiki.teverse.com/tutorials/base-camera
@@ -424,6 +495,7 @@ newBlock.size = vector3(1,10,1)
 newBlock.position = vector3(0,0,0)
 newBlock.parent = workspace
 --testing purposes
+generateProperties(newBlock)
 
 -- This block is used to show an outline around things we're hovering.
 local outlineHoverBlock = engine.block("workshopHoverOutlineWireframe")
