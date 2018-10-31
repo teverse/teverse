@@ -220,6 +220,7 @@ local function generateInputBox(text, parent)
 	lbl.text = tostring(text)
 	lbl.readOnly = false
 	lbl.wrap = true
+	lbl.multiline = false
 	lbl.align = enums.align.middle
 	if parent then
 		lbl.parent = parent
@@ -235,7 +236,15 @@ local txtProperty = generateLabel("0 items selected", windowProperties)
 txtProperty.name = "txtProperty"
 txtProperty.textColour = colour(1,0,0)
 
+local event = nil -- stores the instance changed event so we can disconnect it
+
 local function generateProperties( instance )
+
+	if event then
+		event:disconnect()
+		event = nil
+	end
+
 	for _,v in pairs(scrollViewProperties.children) do
 		if v.name ~= "txtProperty" then
 
@@ -246,6 +255,49 @@ local function generateProperties( instance )
 	if not instance then 
 		scrollViewProperties.canvasSize = guiCoord(1,0,1,0)
 	return end
+
+	event = instance:changed(function(key,value,oldValue)
+		for _,v in pairs(scrollViewProperties.children) do
+			if v.name == key then
+				local propertyType = type(value)
+				if propertyType == "vector2" then
+
+					v.x.text = tostring(value.x)
+					v.y.text = tostring(value.y)
+
+				elseif propertyType == "colour" then
+
+					v.r.text = tostring(value.r)
+					v.g.text = tostring(value.g)
+					v.b.text = tostring(value.b)
+
+				elseif propertyType == "vector3" then
+
+					v.x.text = tostring(value.x)
+					v.y.text = tostring(value.y)
+					v.z.text = tostring(value.z)
+
+				elseif propertyType == "guiCoord" then
+
+					v.scaleX.text = tostring(value.scaleX)
+					v.scaleY.text = tostring(value.scaleY)
+					v.offsetX.text = tostring(value.offsetX)
+					v.offsetY.text = tostring(value.offsetY)
+
+				elseif propertyType == "boolean" then
+
+					v.bool.selected = value
+
+				elseif isInstance(value) then
+					
+				elseif propertyType == "number" then
+					v.number.text = tostring(value)
+				else
+					v.input.text = tostring(value)
+				end
+			end
+		end
+	end)
 
 	local members = engine.workshop:getMembersOfInstance( instance )
 
@@ -276,11 +328,10 @@ local function generateProperties( instance )
 		if readOnly then
 			lblProp.alpha = 0.5
 		end
-
 		
 		local propContainer = engine.guiFrame() 
 		propContainer.parent = scrollViewProperties
-		propContainer.name = "Container"
+		propContainer.name = prop.property
 		propContainer.size = guiCoord(0.54, -9, 0, 21) -- Compensates for the natural padding inside a guiWindow.
 		propContainer.position = guiCoord(0.45,0,0,y)
 		propContainer.alpha = 0
@@ -288,11 +339,13 @@ local function generateProperties( instance )
 		if propertyType == "vector2" then
 
 			local txtProp = generateInputBox(value.x, propContainer)
+			txtProp.name = "x"
 			txtProp.position = guiCoord(0,0,0,0)
 			txtProp.size = guiCoord(0.5, -1, 1, 0)
 			setReadOnly(txtProp, readOnly)
 
 			local txtProp = generateInputBox(value.y, propContainer)
+			txtProp.name = "y"
 			txtProp.position = guiCoord(0.5,2,0,0)
 			txtProp.size = guiCoord(0.5, -1, 1, 0)
 			setReadOnly(txtProp, readOnly)
@@ -300,153 +353,145 @@ local function generateProperties( instance )
 		elseif propertyType == "colour" then
 
 			local colourPreview = engine.guiFrame() 
+			colourPreview.name = "preview"
 			colourPreview.parent = propContainer
 			colourPreview.size = guiCoord(0.25, -10, 1, -12)
 			colourPreview.position = guiCoord(0.75, 7, 0, 6)
 			colourPreview.backgroundColour = value
 
 			local txtR = generateInputBox(value.r, propContainer)
+			txtR.name = "r"
 			txtR.position = guiCoord(0,0,0,0)
 			txtR.size = guiCoord(0.25, -1, 1, 0)
 			setReadOnly(txtR, readOnly)
 
-			txtR:changed(function(key, value, oldValue)
-				if key == "text" then
+			txtR:textInput(function(value) -- Only fires when a user types in the box.
 					local col = instance[prop.property]
 					col.r = tonumber(value)
 					instance[prop.property] = col
 					colourPreview.backgroundColour = col
-				end
 			end)
 
 			local txtG = generateInputBox(value.g, propContainer)
+			txtG.name = "g"
 			txtG.position = guiCoord(0.25,1,0,0)
 			txtG.size = guiCoord(0.25, -1, 1, 0)
 			setReadOnly(txtG, readOnly)
 
-			txtG:changed(function(key, value, oldValue)
-				if key == "text" then
+			txtG:textInput(function(value) -- Only fires when a user types in the box.
 					local col = instance[prop.property]
 					col.g = tonumber(value)
 					instance[prop.property] = col
-					colourPreview.backgroundColour = col
-				end
+					colourPreview.backgroundColour = col				
 			end)
 
 			local txtB = generateInputBox(value.b, propContainer)
+			txtB.name = "b"
 			txtB.position = guiCoord(0.5,2,0,0)
 			txtB.size = guiCoord(0.25, -1, 1, 0)
 			setReadOnly(txtB, readOnly)
 
-			txtB:changed(function(key, value, oldValue)
-				if key == "text" then
+			txtB:textInput(function(value) -- Only fires when a user types in the box.
 					local col = instance[prop.property]
 					col.b = tonumber(value)
 					instance[prop.property] = col
 					colourPreview.backgroundColour = col
-				end
 			end)
 
 		elseif propertyType == "vector3" then
 
 			local txtX = generateInputBox(value.x, propContainer)
 			txtX.position = guiCoord(0,0,0,0)
+			txtX.name = "x"
 			txtX.size = guiCoord(1/3, -1, 1, 0)
 			setReadOnly(txtX, readOnly)
 
-			txtX:changed(function(key, value, oldValue)
-				if key == "text" then
+			txtX:textInput(function(value) -- Only fires when a user types in the box.
 					local vec = instance[prop.property]
 					vec.x = tonumber(value)
 					instance[prop.property] = vec
-				end
 			end)
 
 
 			local txtY = generateInputBox(value.y, propContainer)
+			txtY.name = "y"
 			txtY.position = guiCoord(1/3,1,0,0)
 			txtY.size = guiCoord(1/3, -1, 1, 0)
 			setReadOnly(txtY, readOnly)
 
-			txtY:changed(function(key, value, oldValue)
-				if key == "text" then
+			txtY:textInput(function(value) -- Only fires when a user types in the box.
 					local vec = instance[prop.property]
 					vec.y = tonumber(value)
 					instance[prop.property] = vec
-				end
 			end)
 
 			local txtZ = generateInputBox(value.z, propContainer)
+			txtZ.name = "z"
 			txtZ.position = guiCoord(2/3,2,0,0)
 			txtZ.size = guiCoord(1/3, -1, 1, 0)
 			setReadOnly(txtZ, readOnly)
 
-			txtZ:changed(function(key, value, oldValue)
-				if key == "text" then
+			txtZ:textInput(function(value) -- Only fires when a user types in the box.
 					local vec = instance[prop.property]
 					vec.z = tonumber(value)
 					instance[prop.property] = vec
-				end
 			end)
 
 
 		elseif propertyType == "guiCoord" then
 
 			local scaleX = generateInputBox(value.scaleX, propContainer)
+			scaleX.name = "scaleX"
 			scaleX.position = guiCoord(0,0,0,0)
 			scaleX.size = guiCoord(0.25, -1, 1, 0)
 			setReadOnly(scaleX, readOnly)
 
-			scaleX:changed(function(key, value, oldValue)
-				if key == "text" then
+			scaleX:textInput(function(value) -- Only fires when a user types in the box.
 					local coord = instance[prop.property]
 					coord.scaleX = tonumber(value)
 					instance[prop.property] = coord
-				end
 			end)
 
 			local offsetX = generateInputBox(value.offsetX, propContainer)
+			offsetX.name = "offsetX"
 			offsetX.position = guiCoord(0.25,1,0,0)
 			offsetX.size = guiCoord(0.25, -1, 1, 0)
 			setReadOnly(offsetX, readOnly)
 
-			offsetX:changed(function(key, value, oldValue)
-				if key == "text" then
+			offsetX:textInput(function(value) -- Only fires when a user types in the box.
 					local coord = instance[prop.property]
 					coord.offsetX = tonumber(value)
 					instance[prop.property] = coord
-				end
 			end)
 
 			local scaleY = generateInputBox(value.scaleY, propContainer)
+			scaleY.name = "scaleY"
 			scaleY.position = guiCoord(0.5,2,0,0)
 			scaleY.size = guiCoord(0.25, -1, 1, 0)
 			setReadOnly(scaleY, readOnly)
 
-			scaleY:changed(function(key, value, oldValue)
-				if key == "text" then
+			scaleY:textInput(function(value) -- Only fires when a user types in the box.
 					local coord = instance[prop.property]
 					coord.scaleY = tonumber(value)
 					instance[prop.property] = coord
-				end
 			end)
 
 			local offsetY = generateInputBox(value.offsetY, propContainer)
+			offsetY.name = "offsetY"
 			offsetY.position = guiCoord(0.75,2,0,0)
 			offsetY.size = guiCoord(0.25, -1, 1, 0)
 			setReadOnly(offsetY, readOnly)
 
-			offsetY:changed(function(key, value, oldValue)
-				if key == "text" then
+			offsetY:textInput(function(value) -- Only fires when a user types in the box.
 					local coord = instance[prop.property]
 					coord.offsetY = tonumber(value)
 					instance[prop.property] = coord
-				end
 			end)
 
 		elseif propertyType == "boolean" then
 
 			local boolProp = engine.guiButton()
+			boolProp.name = "bool"
 			boolProp.parent = propContainer
 			boolProp.position = guiCoord(0,0,0,2)
 			boolProp.size = guiCoord(1, 0, 1, 0)
@@ -469,26 +514,24 @@ local function generateProperties( instance )
 		elseif propertyType == "number" then
 
 			local txtProp = generateInputBox(value, propContainer)
+			txtProp.name = "number"
 			txtProp.position = guiCoord(0,1,0,0)
 			txtProp.size = guiCoord(1, 0, 1, 0)
 			setReadOnly(txtProp, readOnly)
 
-			txtProp:changed(function(key, value, oldValue)
-				if key == "text" then
+			txtProp:textInput(function(value) -- Only fires when a user types in the box.
 					instance[prop.property] = tonumber(value)
-				end
 			end)
 
 		else
 			local txtProp = generateInputBox(value, propContainer)
+			txtProp.name = "input"
 			txtProp.position = guiCoord(0,1,0,0)
 			txtProp.size = guiCoord(1, 0, 1, 0)
 			setReadOnly(txtProp, readOnly)
 
-			txtProp:changed(function(key, value, oldValue)
-				if key == "text" then
+			txtProp:textInput(function(value) -- Only fires when a user types in the box.
 					instance[prop.property] = value
-				end
 			end)
 		end
 
