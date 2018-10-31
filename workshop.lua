@@ -178,9 +178,9 @@ windowProperties.backgroundColour = colour(1/20, 1/20, 1/20)
 windowProperties.fontFile = normalFontName
 
 local scrollViewProperties = engine.guiScrollView("scrollView")
-scrollViewProperties.size = guiCoord(1,-5,1,-5)
+scrollViewProperties.size = guiCoord(1,-5,1,-20)
 scrollViewProperties.parent = windowProperties
-scrollViewProperties.position = guiCoord(0,0,0,0)
+scrollViewProperties.position = guiCoord(0,0,0,15)
 scrollViewProperties.guiStyle = enums.guiStyle.noBackground
 
 
@@ -219,7 +219,7 @@ local function generateInputBox(text, parent)
 	lbl.fontFile = normalFontName
 	lbl.text = tostring(text)
 	lbl.readOnly = false
-	lbl.wrap = false
+	lbl.wrap = true
 	lbl.align = enums.align.middle
 	if parent then
 		lbl.parent = parent
@@ -231,22 +231,28 @@ end
 
 -- Selected Integer Text
 
-local txtProperty = generateLabel("0 items selected", scrollViewProperties)
+local txtProperty = generateLabel("0 items selected", windowProperties)
 txtProperty.name = "txtProperty"
 txtProperty.textColour = colour(1,0,0)
 
 local function generateProperties( instance )
-	local members = engine.workshop:getMembersOfInstance( instance )
-
 	for _,v in pairs(scrollViewProperties.children) do
 		if v.name ~= "txtProperty" then
+
 			v:destroy()
+
 		end
 	end
+	if not instance then 
+		scrollViewProperties.canvasSize = guiCoord(1,0,1,0)
+	return end
 
-	local y = 16
+	local members = engine.workshop:getMembersOfInstance( instance )
+
+	local y = 0
 
 	table.sort( members, function( a,b ) return a.property < b.property end ) -- alphabetical sort
+
 
  	for i, prop in pairs (members) do
 
@@ -293,66 +299,150 @@ local function generateProperties( instance )
 
 		elseif propertyType == "colour" then
 
-			local txtProp = generateInputBox(value.r, propContainer)
-			txtProp.position = guiCoord(0,0,0,0)
-			txtProp.size = guiCoord(0.25, -1, 1, 0)
-			setReadOnly(txtProp, readOnly)
-
-			local txtProp = generateInputBox(value.g, propContainer)
-			txtProp.position = guiCoord(0.25,1,0,0)
-			txtProp.size = guiCoord(0.25, -1, 1, 0)
-			setReadOnly(txtProp, readOnly)
-
-			local txtProp = generateInputBox(value.b, propContainer)
-			txtProp.position = guiCoord(0.5,2,0,0)
-			txtProp.size = guiCoord(0.25, -1, 1, 0)
-			setReadOnly(txtProp, readOnly)
-
 			local colourPreview = engine.guiFrame() 
 			colourPreview.parent = propContainer
 			colourPreview.size = guiCoord(0.25, -10, 1, -12)
 			colourPreview.position = guiCoord(0.75, 7, 0, 6)
 			colourPreview.backgroundColour = value
 
+			local txtR = generateInputBox(value.r, propContainer)
+			txtR.position = guiCoord(0,0,0,0)
+			txtR.size = guiCoord(0.25, -1, 1, 0)
+			setReadOnly(txtR, readOnly)
+
+			txtR:changed(function(key, value, oldValue)
+				if key == "text" then
+					local col = instance[prop.property]
+					col.r = tonumber(value)
+					instance[prop.property] = col
+					colourPreview.backgroundColour = col
+				end
+			end)
+
+			local txtG = generateInputBox(value.g, propContainer)
+			txtG.position = guiCoord(0.25,1,0,0)
+			txtG.size = guiCoord(0.25, -1, 1, 0)
+			setReadOnly(txtG, readOnly)
+
+			txtG:changed(function(key, value, oldValue)
+				if key == "text" then
+					local col = instance[prop.property]
+					col.g = tonumber(value)
+					instance[prop.property] = col
+					colourPreview.backgroundColour = col
+				end
+			end)
+
+			local txtB = generateInputBox(value.b, propContainer)
+			txtB.position = guiCoord(0.5,2,0,0)
+			txtB.size = guiCoord(0.25, -1, 1, 0)
+			setReadOnly(txtB, readOnly)
+
+			txtB:changed(function(key, value, oldValue)
+				if key == "text" then
+					local col = instance[prop.property]
+					col.b = tonumber(value)
+					instance[prop.property] = col
+					colourPreview.backgroundColour = col
+				end
+			end)
+
 		elseif propertyType == "vector3" then
 
-			local txtProp = generateInputBox(value.x, propContainer)
-			txtProp.position = guiCoord(0,0,0,0)
-			txtProp.size = guiCoord(1/3, -1, 1, 0)
-			setReadOnly(txtProp, readOnly)
+			local txtX = generateInputBox(value.x, propContainer)
+			txtX.position = guiCoord(0,0,0,0)
+			txtX.size = guiCoord(1/3, -1, 1, 0)
+			setReadOnly(txtX, readOnly)
 
-			local txtProp = generateInputBox(value.y, propContainer)
-			txtProp.position = guiCoord(1/3,1,0,0)
-			txtProp.size = guiCoord(1/3, -1, 1, 0)
-			setReadOnly(txtProp, readOnly)
+			txtX:changed(function(key, value, oldValue)
+				if key == "text" then
+					local vec = instance[prop.property]
+					vec.x = tonumber(value)
+					instance[prop.property] = vec
+				end
+			end)
 
-			local txtProp = generateInputBox(value.z, propContainer)
-			txtProp.position = guiCoord(2/3,2,0,0)
-			txtProp.size = guiCoord(1/3, -1, 1, 0)
-			setReadOnly(txtProp, readOnly)
+
+			local txtY = generateInputBox(value.y, propContainer)
+			txtY.position = guiCoord(1/3,1,0,0)
+			txtY.size = guiCoord(1/3, -1, 1, 0)
+			setReadOnly(txtY, readOnly)
+
+			txtY:changed(function(key, value, oldValue)
+				if key == "text" then
+					local vec = instance[prop.property]
+					vec.y = tonumber(value)
+					instance[prop.property] = vec
+				end
+			end)
+
+			local txtZ = generateInputBox(value.z, propContainer)
+			txtZ.position = guiCoord(2/3,2,0,0)
+			txtZ.size = guiCoord(1/3, -1, 1, 0)
+			setReadOnly(txtZ, readOnly)
+
+			txtZ:changed(function(key, value, oldValue)
+				if key == "text" then
+					local vec = instance[prop.property]
+					vec.z = tonumber(value)
+					instance[prop.property] = vec
+				end
+			end)
 
 
 		elseif propertyType == "guiCoord" then
 
-			local txtProp = generateInputBox(value.scaleX, propContainer)
-			txtProp.position = guiCoord(0,0,0,0)
-			txtProp.size = guiCoord(0.25, -1, 1, 0)
-			setReadOnly(txtProp, readOnly)
+			local scaleX = generateInputBox(value.scaleX, propContainer)
+			scaleX.position = guiCoord(0,0,0,0)
+			scaleX.size = guiCoord(0.25, -1, 1, 0)
+			setReadOnly(scaleX, readOnly)
 
-			local txtProp = generateInputBox(value.offsetX, propContainer)
-			txtProp.position = guiCoord(0.25,1,0,0)
-			txtProp.size = guiCoord(0.25, -1, 1, 0)
-			setReadOnly(txtProp, readOnly)
+			scaleX:changed(function(key, value, oldValue)
+				if key == "text" then
+					local coord = instance[prop.property]
+					coord.scaleX = tonumber(value)
+					instance[prop.property] = coord
+				end
+			end)
 
-			local txtProp = generateInputBox(value.scaleY, propContainer)
-			txtProp.position = guiCoord(0.5,2,0,0)
-			txtProp.size = guiCoord(0.25, -1, 1, 0)
-			setReadOnly(txtProp, readOnly)
+			local offsetX = generateInputBox(value.offsetX, propContainer)
+			offsetX.position = guiCoord(0.25,1,0,0)
+			offsetX.size = guiCoord(0.25, -1, 1, 0)
+			setReadOnly(offsetX, readOnly)
 
-			local txtProp = generateInputBox(value.offsetY, propContainer)
-			txtProp.position = guiCoord(0.75,2,0,0)
-			txtProp.size = guiCoord(0.25, -1, 1, 0)
-			setReadOnly(txtProp, readOnly)
+			offsetX:changed(function(key, value, oldValue)
+				if key == "text" then
+					local coord = instance[prop.property]
+					coord.offsetX = tonumber(value)
+					instance[prop.property] = coord
+				end
+			end)
+
+			local scaleY = generateInputBox(value.scaleY, propContainer)
+			scaleY.position = guiCoord(0.5,2,0,0)
+			scaleY.size = guiCoord(0.25, -1, 1, 0)
+			setReadOnly(scaleY, readOnly)
+
+			scaleY:changed(function(key, value, oldValue)
+				if key == "text" then
+					local coord = instance[prop.property]
+					coord.scaleY = tonumber(value)
+					instance[prop.property] = coord
+				end
+			end)
+
+			local offsetY = generateInputBox(value.offsetY, propContainer)
+			offsetY.position = guiCoord(0.75,2,0,0)
+			offsetY.size = guiCoord(0.25, -1, 1, 0)
+			setReadOnly(offsetY, readOnly)
+
+			offsetY:changed(function(key, value, oldValue)
+				if key == "text" then
+					local coord = instance[prop.property]
+					coord.offsetY = tonumber(value)
+					instance[prop.property] = coord
+				end
+			end)
 
 		elseif propertyType == "boolean" then
 
@@ -376,6 +466,18 @@ local function generateProperties( instance )
 			placeholder.size = guiCoord(1, 0, 1, 0)
 			placeholder.align = enums.align.middle
 			placeholder.alpha = 0.6
+		elseif propertyType == "number" then
+
+			local txtProp = generateInputBox(value, propContainer)
+			txtProp.position = guiCoord(0,1,0,0)
+			txtProp.size = guiCoord(1, 0, 1, 0)
+			setReadOnly(txtProp, readOnly)
+
+			txtProp:changed(function(key, value, oldValue)
+				if key == "text" then
+					instance[prop.property] = tonumber(value)
+				end
+			end)
 
 		else
 			local txtProp = generateInputBox(value, propContainer)
@@ -383,10 +485,9 @@ local function generateProperties( instance )
 			txtProp.size = guiCoord(1, 0, 1, 0)
 			setReadOnly(txtProp, readOnly)
 
-			txtProp:changed(function(k,v)
-				print(k,v)
-				if k == "text" then
-					print("changed")
+			txtProp:changed(function(key, value, oldValue)
+				if key == "text" then
+					instance[prop.property] = value
 				end
 			end)
 		end
@@ -398,7 +499,7 @@ local function generateProperties( instance )
 
 	scrollViewProperties.canvasSize = guiCoord(1,0,0,y+40)
 end
-
+generateProperties(txtProperty)
 
 -- 
 -- Workshop Camera
@@ -495,7 +596,6 @@ newBlock.size = vector3(1,10,1)
 newBlock.position = vector3(0,0,0)
 newBlock.parent = workspace
 --testing purposes
-generateProperties(newBlock)
 
 -- This block is used to show an outline around things we're hovering.
 local outlineHoverBlock = engine.block("workshopHoverOutlineWireframe")
@@ -528,12 +628,17 @@ engine.graphics:frameDrawn(function()
 end)
 
 engine.input:mouseLeftPressed(function( input )
+	
+	if input.systemHandled then return end
+
 	local mouseHit = engine.physics:rayTestScreen( engine.input.mousePosition )
+
 	if not mouseHit then
 		-- User clicked empty space, deselect everything??
 		selectedItems = {}
 		outlineSelectedBlock.opacity = 0
 		txtProperty.text = "0 items selected"
+		generateProperties( nil )
 		return
 	end
 
@@ -554,6 +659,7 @@ engine.input:mouseLeftPressed(function( input )
 
 	if doSelect then
 		table.insert(selectedItems, mouseHit)
+		generateProperties(mouseHit)
 	end
 
 	if #selectedItems > 1 then
@@ -588,3 +694,4 @@ engine.input:mouseLeftPressed(function( input )
 
 	txtProperty.text = #selectedItems .. " item" .. (#selectedItems == 1 and "" or "s") .. " selected"
 end)
+
