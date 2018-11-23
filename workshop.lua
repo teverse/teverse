@@ -3,6 +3,8 @@
 
  -- This script has access to 'engine.workshop' APIs.
  -- Contains everything needed to grow your own workshop.
+ -- TODO: tidy everything up
+ 
 
 --
 -- Undo/Redo History system
@@ -106,6 +108,13 @@ end
 
 local normalFontName = "OpenSans-Regular"
 local boldFontName = "OpenSans-Bold"
+
+local themeColourWindow = colour(1/33, 1/33, 1/29)
+local themeColourWindowText = colour(1, 1, 1)
+
+local themeColourButton = colour(8/255, 8/255, 11/255)
+local themeColourButtonHighlighted = colour(10/255, 10/255, 11/255)
+local themeColourButtonText = colour(1, 1, 1)
  
 -- Menu Bar Creation
 
@@ -166,21 +175,25 @@ menuInsertBlock:mouseLeftPressed(function ()
 	newBlock.position = camera.position - (lookVector * 10)
 
 	savePoint() -- for undo/redo
+
+
 end)
 
 local windowProperties = engine.guiWindow()
-windowProperties.size = guiCoord(0, 240, 0.5, -12)
-windowProperties.position = guiCoord(1, -245, 0, 24)
+windowProperties.size = guiCoord(0, 240, 0.6, -10)
+windowProperties.position = guiCoord(1, -240, 0.4, 10)
 windowProperties.parent = engine.workshop.interface
 windowProperties.text = "Properties"
+windowProperties.name = "windowProperties"
 windowProperties.fontSize = 10
-windowProperties.backgroundColour = colour(1/20, 1/20, 1/20)
+windowProperties.backgroundColour = themeColourWindow
+windowProperties.textColour = themeColourWindowText
 windowProperties.fontFile = normalFontName
 
 local scrollViewProperties = engine.guiScrollView("scrollView")
 scrollViewProperties.size = guiCoord(1,-5,1,-20)
 scrollViewProperties.parent = windowProperties
-scrollViewProperties.position = guiCoord(0,0,0,15)
+scrollViewProperties.position = guiCoord(0,0,0,16)
 scrollViewProperties.guiStyle = enums.guiStyle.noBackground
 
 
@@ -195,7 +208,7 @@ local function generateLabel(text, parent)
 	lbl.wrap = false
 	lbl.align = enums.align.middleLeft
 	lbl.parent = parent or engine.workshop.interface
-	lbl.textColour = colour(1, 1, 1)
+	lbl.textColour = themeColourWindowText
 
 	return lbl
 end
@@ -203,7 +216,7 @@ end
 local function setReadOnly( textbox, value )
 	textbox.readOnly = value
 	if value then
-		textbox.alpha = 0.3
+		textbox.alpha = 0.8
 	else
 		textbox.alpha = 1
 	end
@@ -214,7 +227,7 @@ local function generateInputBox(text, parent)
 	local lbl = engine.guiTextBox()
 	lbl.size = guiCoord(1, 0, 0, 21)
 	lbl.position = guiCoord(0, 0, 0, 0)
-	lbl.backgroundColour = colour(8/255, 8/255, 11/255)
+	lbl.backgroundColour = themeColourButton
 	lbl.fontSize = 9
 	lbl.fontFile = normalFontName
 	lbl.text = tostring(text)
@@ -225,7 +238,7 @@ local function generateInputBox(text, parent)
 	if parent then
 		lbl.parent = parent
 	end
-	lbl.textColour = colour(1, 1, 1)
+	lbl.textColour = themeColourButtonText
 
 	return lbl
 end
@@ -234,7 +247,8 @@ end
 
 local txtProperty = generateLabel("0 items selected", windowProperties)
 txtProperty.name = "txtProperty"
-txtProperty.textColour = colour(1,0,0)
+txtProperty.textColour = themeColourWindowText
+txtProperty.alpha = 0.9
 
 local event = nil -- stores the instance changed event so we can disconnect it
 
@@ -245,10 +259,14 @@ local function generateProperties( instance )
 		event = nil
 	end
 
+
+
 	for _,v in pairs(scrollViewProperties.children) do
 		if v.name ~= "txtProperty" then
+			if v.className == "guiFrame" then
 
-			v:destroy()
+			end
+			v:destroy() -- error
 
 		end
 	end
@@ -256,48 +274,54 @@ local function generateProperties( instance )
 		scrollViewProperties.canvasSize = guiCoord(1,0,1,0)
 	return end
 
-	event = instance:changed(function(key,value,oldValue)
-		for _,v in pairs(scrollViewProperties.children) do
-			if v.name == key then
-				local propertyType = type(value)
-				if propertyType == "vector2" then
 
-					v.x.text = tostring(value.x)
-					v.y.text = tostring(value.y)
+	-- TODO: Add a way to properly verify an event exists.
 
-				elseif propertyType == "colour" then
+	if instance and instance.events and instance.events["changed"] then
+		event = instance:changed(function(key,value,oldValue)
+			for _,v in pairs(scrollViewProperties.children) do
+				if v.name == key then
+					local propertyType = type(value)
+					if propertyType == "vector2" then
 
-					v.r.text = tostring(value.r)
-					v.g.text = tostring(value.g)
-					v.b.text = tostring(value.b)
+						v.x.text = tostring(value.x)
+						v.y.text = tostring(value.y)
 
-				elseif propertyType == "vector3" then
+					elseif propertyType == "colour" then
 
-					v.x.text = tostring(value.x)
-					v.y.text = tostring(value.y)
-					v.z.text = tostring(value.z)
+						v.r.text = tostring(value.r)
+						v.g.text = tostring(value.g)
+						v.b.text = tostring(value.b)
 
-				elseif propertyType == "guiCoord" then
+					elseif propertyType == "vector3" then
 
-					v.scaleX.text = tostring(value.scaleX)
-					v.scaleY.text = tostring(value.scaleY)
-					v.offsetX.text = tostring(value.offsetX)
-					v.offsetY.text = tostring(value.offsetY)
+						v.x.text = tostring(value.x)
+						v.y.text = tostring(value.y)
+						v.z.text = tostring(value.z)
 
-				elseif propertyType == "boolean" then
+					elseif propertyType == "guiCoord" then
 
-					v.bool.selected = value
+						v.scaleX.text = tostring(value.scaleX)
+						v.scaleY.text = tostring(value.scaleY)
+						v.offsetX.text = tostring(value.offsetX)
+						v.offsetY.text = tostring(value.offsetY)
 
-				elseif isInstance(value) then
-					
-				elseif propertyType == "number" then
-					v.number.text = tostring(value)
-				else
-					v.input.text = tostring(value)
+					elseif propertyType == "boolean" then
+
+						v.bool.selected = value
+
+					elseif isInstance(value) then
+						
+					elseif propertyType == "number" then
+						v.number.text = tostring(value)
+					else
+						v.input.text = tostring(value)
+					end
 				end
 			end
-		end
-	end)
+		end)
+	 end
+
 
 	local members = engine.workshop:getMembersOfInstance( instance )
 
@@ -335,12 +359,13 @@ local function generateProperties( instance )
 		propContainer.size = guiCoord(0.54, -9, 0, 21) -- Compensates for the natural padding inside a guiWindow.
 		propContainer.position = guiCoord(0.45,0,0,y)
 		propContainer.alpha = 0
+	
 
 		if propertyType == "vector2" then
 
 			local txtProp = generateInputBox(value.x, propContainer)
 			txtProp.name = "x"
-			txtProp.position = guiCoord(0,0,0,0)
+			txtProp.position = guiCoord(0,1,0,0)
 			txtProp.size = guiCoord(0.5, -1, 1, 0)
 			setReadOnly(txtProp, readOnly)
 
@@ -361,7 +386,7 @@ local function generateProperties( instance )
 
 			local txtR = generateInputBox(value.r, propContainer)
 			txtR.name = "r"
-			txtR.position = guiCoord(0,0,0,0)
+			txtR.position = guiCoord(0,1,0,0)
 			txtR.size = guiCoord(0.25, -1, 1, 0)
 			setReadOnly(txtR, readOnly)
 
@@ -387,7 +412,7 @@ local function generateProperties( instance )
 
 			local txtB = generateInputBox(value.b, propContainer)
 			txtB.name = "b"
-			txtB.position = guiCoord(0.5,2,0,0)
+			txtB.position = guiCoord(0.5,1,0,0)
 			txtB.size = guiCoord(0.25, -1, 1, 0)
 			setReadOnly(txtB, readOnly)
 
@@ -442,7 +467,7 @@ local function generateProperties( instance )
 
 			local scaleX = generateInputBox(value.scaleX, propContainer)
 			scaleX.name = "scaleX"
-			scaleX.position = guiCoord(0,0,0,0)
+			scaleX.position = guiCoord(0,1,0,0)
 			scaleX.size = guiCoord(0.25, -1, 1, 0)
 			setReadOnly(scaleX, readOnly)
 
@@ -633,12 +658,13 @@ savePoint() -- Create a point.
 --
 
 --testing purposes
-local newBlock = engine.block("block")
+local newBlock = engine.block("block1")
 newBlock.colour = colour(1,0,0)
 newBlock.size = vector3(1,10,1)
 newBlock.position = vector3(0,0,0)
 newBlock.parent = workspace
---testing purposes
+
+
 
 -- This block is used to show an outline around things we're hovering.
 local outlineHoverBlock = engine.block("workshopHoverOutlineWireframe")
@@ -737,4 +763,423 @@ engine.input:mouseLeftPressed(function( input )
 
 	txtProperty.text = #selectedItems .. " item" .. (#selectedItems == 1 and "" or "s") .. " selected"
 end)
+
+
+--
+-- hierarchy gui
+-- temporary, didn't have time to add what I wanted
+--
+
+--[[
+local windowHierarchy = engine.guiWindow()
+windowHierarchy.size = guiCoord(0, 240, 0.4, -12)
+windowHierarchy.position = guiCoord(1, -240, 0, 22)
+windowHierarchy.parent = engine.workshop.interface
+windowHierarchy.text = "Hierarchy"
+windowHierarchy.name = "windowHierarchy"
+windowHierarchy.fontSize = 10
+windowHierarchy.backgroundColour = themeColourWindow
+windowHierarchy.fontFile = normalFontName
+windowHierarchy.textColour = themeColourWindowText
+
+local scrollViewHierarchy = engine.guiScrollView("scrollView")
+scrollViewHierarchy.size = guiCoord(1,-5,1,-33)
+scrollViewHierarchy.parent = windowHierarchy
+scrollViewHierarchy.position = guiCoord(0,0,0,23)
+scrollViewHierarchy.guiStyle = enums.guiStyle.noBackground
+
+local function createItemButton(text)
+	local btn = engine.guiButton()
+	btn.text = text
+	btn.align = enums.align.middleLeft
+	btn.position = guiCoord(0,0,0,0)
+	btn.size = guiCoord(1, -50, 0, 21)
+	btn.backgroundColour = themeColourButton
+	btn.textColour = themeColourWindowText
+	btn.fontSize = 9
+	btn.wrap = false
+	btn.fontFile = normalFontName
+	return btn
+end
+
+local backBtn = createItemButton(" ")
+backBtn.parent = windowHierarchy
+backBtn.guiStyle = enums.guiStyle.noBackground
+
+local path = { }
+
+local function generatePathString()
+	local str = ""
+	for _,v in pairs(path) do
+		str = str .. v.name .. "."
+	end
+	return str
+end
+
+local function crawlItem(item, isRoot)
+
+	if not (type(item) == "table" or isInstance(item)) then return end
+
+	local name = item.name or "unnamed"
+
+	local btn = createItemButton(name)
+	btn.position = guiCoord(0, 0, 0, #scrollViewHierarchy.children * 22)
+	btn.parent = scrollViewHierarchy
+
+	local lastPress = 0
+
+	btn:mouseLeftPressed(function()
+		if (os.clock() - lastPress) < 0.5 then
+			--double press	
+			if item.parent then
+				table.insert(path, item.parent)
+			elseif #path == 0 and item ~= engine then
+				table.insert(path, engine)
+			end
+			if #path > 0 then
+				backBtn.text = " < " .. path[#path].name
+			end
+			
+
+			for _,v in pairs(scrollViewHierarchy.children) do
+				v:destroy() 
+			end
+			
+			if isInstance(item) then
+				for i,v in pairs(item.children) do
+					local b = crawlItem(v)
+				end 
+			else
+				for i,v in pairs(item) do
+					local b = crawlItem(v)
+				end 
+			end
+		elseif isInstance(item) then
+			-- one press
+			if not engine.input:isKeyDown(enums.key.leftShift) then
+				-- deselect everything and move on
+				selectedItems = { item }	
+				generateProperties( item )
+				if item.position and type(item.position) == "vector3" then
+					outlineSelectedBlock.opacity = 1
+					outlineSelectedBlock.position = selectedItems[1].position
+					outlineSelectedBlock.size = selectedItems[1].size
+				else
+					outlineSelectedBlock.opacity = 0
+				end
+			else
+				for i,v in pairs(selectedItems) do
+					if v == mouseHit then
+						-- deselect
+						table.remove(selectedItems, i)
+						doSelect = false
+					end
+				end
+			end
+		end
+		lastPress = os.clock()
+	end)
+
+	scrollViewHierarchy.canvasSize = guiCoord(1, 0, 0, (#scrollViewHierarchy.children * 22) )
+
+	return btn
+end
+
+backBtn:mouseLeftPressed(function()
+	if #path > 0 then
+		for _,v in pairs(scrollViewHierarchy.children) do
+			v:destroy()
+		end
+
+		if isInstance(path[#path]) then
+				for i,v in pairs(path[#path].children) do
+					local b = crawlItem(v)
+				end 
+			else
+				for i,v in pairs(path[#path]) do
+					local b = crawlItem(v)
+				end 
+			end
+		table.remove(path)
+		if #path == 0 then
+			backBtn.text = ""
+		else
+			backBtn.text = " < " .. path[#path].name
+		end
+	end
+end)
+
+crawlItem(engine, true)
+]]
+
+-- Output is currently here for ease of testing.
+
+local windowOutput = engine.guiWindow()
+windowOutput.size = guiCoord(0, 420, 0, 166)
+windowOutput.position = guiCoord(0, 100, 1, -166)
+windowOutput.parent = engine.workshop.interface
+windowOutput.text = "Output Console"
+windowOutput.name = "windowOutput"
+windowOutput.draggable = true
+windowOutput.fontSize = 10
+windowOutput.guiStyle = enums.guiStyle.basic
+windowOutput.backgroundColour = themeColourWindow
+windowOutput.fontFile = normalFontName
+windowOutput.textColour = themeColourWindowText
+
+
+
+local scrollViewOutput = engine.guiScrollView("scrollView")
+scrollViewOutput.size = guiCoord(1,-10,1,0)
+scrollViewOutput.parent = windowOutput
+scrollViewOutput.position = guiCoord(0,0,0,0)
+scrollViewOutput.guiStyle = enums.guiStyle.noBackground
+scrollViewOutput.canvasSize = guiCoord(1,0,0,110)
+
+
+local lbl = engine.guiTextBox()
+lbl.size = guiCoord(1, -10, 0, 50)
+lbl.position = guiCoord(0, 0, 0, 0)
+lbl.guiStyle = enums.guiStyle.noBackground
+lbl.fontSize = 9
+lbl.fontFile = normalFontName
+lbl.text = "Test output, lacks stuff."
+lbl.readOnly = true
+lbl.wrap = true
+lbl.multiline = true
+lbl.align = enums.align.topLeft
+lbl.parent = scrollViewOutput
+lbl.textColour = colour(1, 1, 1)
+
+local outputLines = {}
+
+engine.debug:output(function(msg, type)
+
+	if #outputLines > 250 then
+		table.remove(outputLines, 1)
+	end
+	table.insert(outputLines, {os.clock(), msg, type})
+	local text = ""
+
+	for _,v in pairs (outputLines) do
+		local colour = (v[3] == 1) and "#ff0000" or "#ffffff"
+		text = string.format("#7cc0f4[%.3f] %s%s\n%s", v[1], colour, v[2], text)
+	end
+
+	text = #outputLines .. " lines. " .. text:len() .. " characters\n" .. text 
+
+	-- This function is deprecated.
+	lbl:setText(text)
+
+	local textSize = lbl:getTextSize()
+	lbl.size = guiCoord(1, -10, 0, textSize.y)
+	scrollViewOutput.canvasSize = guiCoord(1, 0, 0, textSize.y)
+end)
+
+-- Hierarchy
+
+local windowHierarchy = engine.guiWindow()
+windowHierarchy.size = guiCoord(0, 240, 0.4, -12)
+windowHierarchy.position = guiCoord(1, -240, 0, 22)
+windowHierarchy.parent = engine.workshop.interface
+windowHierarchy.text = "Hierarchy"
+windowHierarchy.name = "windowHierarchy"
+windowHierarchy.fontSize = 10
+windowHierarchy.backgroundColour = themeColourWindow
+windowHierarchy.fontFile = normalFontName
+windowHierarchy.textColour = themeColourWindowText
+
+local scrollViewHierarchy = engine.guiScrollView("scrollView")
+scrollViewHierarchy.size = guiCoord(1,-5,1,-33)
+scrollViewHierarchy.parent = windowHierarchy
+scrollViewHierarchy.position = guiCoord(0,0,0,23)
+scrollViewHierarchy.guiStyle = enums.guiStyle.noBackground
+scrollViewHierarchy.canvasSize = guiCoord(1,0,6,0)
+
+local hierachy = {}
+local lastPress = 0
+local buttonTemplate; 
+local function updateBtnText(btn)
+	local children = 0
+	if not isInstance(hierachy[btn.parent][1]) then
+		for _,v in pairs(hierachy[btn.parent][1]) do
+			if isInstance(v) then
+				children = children + 1
+			end
+		end
+	elseif hierachy[btn.parent][1].children then
+		children = #hierachy[btn.parent][1].children
+	end
+
+	if (children > 0) then
+		if hierachy[btn.parent][2] then
+			btn:setText("#707070[-]#".. themeColourButtonText:getHex() .." " .. hierachy[btn.parent][1].name)
+		else
+			btn:setText("#707070[+]#".. themeColourButtonText:getHex() .." " .. hierachy[btn.parent][1].name)
+		end
+	else
+		btn:setText("   #".. themeColourButtonText:getHex() .." " .. hierachy[btn.parent][1].name)
+	end
+end
+
+local function fixSizes(v, i)
+	--v.size = guiCoord(1, -20, 0, (#v.children + i) * 22)
+	local y = 0
+	for i,oo in pairs(v.children) do
+		local pos = oo.position
+		pos.offsetY = y
+		oo.position = pos
+		y = y + oo.size.offsetY + 1
+	end
+	v.size = guiCoord(1, -20, 0, y)
+	if v.parent.className == "guiFrame" and v.parent ~= scrollViewHierarchy then
+		fixSizes(v.parent)
+	elseif v.parent == scrollViewHierarchy then
+		local y = 0
+		for _,oo in pairs(scrollViewHierarchy.children) do
+			y = y + oo.size.offsetY + 1
+		end
+		scrollViewHierarchy.canvasSize = guiCoord(1, 0, 0, y)
+
+	end
+end
+
+local function hierachyBtnPressed()
+	local btn = self.object
+	print(btn.name, btn.parent.name)
+	local item = hierachy[btn.parent][1] 
+
+	if engine.input:isKeyDown(enums.key.leftShift) then
+		--Add this item to selection
+		local doSelect = true
+		for i,v in pairs(selectedItems) do
+			if v == mouseHit then
+				table.remove(selectedItems, i)
+				doSelect = false
+			end
+		end
+		if doSelect then
+			table.insert(selectedItems, mouseHit)
+			generateProperties(mouseHit)
+		end
+	else
+		if os.clock() - lastPress < 0.2 then
+			-- double press
+			if hierachy[btn.parent][2] then
+				-- already expanded
+				--btn.backgroundColour = colour(0.1,0,0)
+				local i = 0
+				local myPosition = tonumber(btn.parent.name)
+				for _,v in pairs(btn.parent.children) do
+					if v.className == "guiFrame" then
+						i=i+1
+						hierachy[v] = nil
+						v:destroy()
+					end
+				end
+			
+				print(#btn.children .. "children removed")
+				fixSizes(btn.parent)
+				
+				--[[for _,v in pairs(btn.parent.parent.children) do
+					if v.className == "guiFrame" and tonumber(v.name) > myPosition then
+						v.position = v.position - guiCoord(0,0,0,i*22)
+					end
+				end]]
+
+				hierachy[btn.parent][2] = not hierachy[btn.parent][2]
+			else
+				-- expand this option
+				--btn.backgroundColour = colour(0,0.1,0)
+				local myPosition = tonumber(btn.parent.name)
+				print("My Position", myPosition)
+				local i = 0
+				if isInstance(item) then 
+					if item.children then
+						for _,v in pairs(item.children) do
+							i=i+1
+							local newBtn = buttonTemplate(v.name or "unnamed")
+							newBtn.parent = btn.parent
+							newBtn.position = guiCoord(0,5,0,i*22)
+							fixSizes(btn.parent)
+							newBtn.name = tostring(i)
+							hierachy[newBtn] = {v, false}
+							updateBtnText(newBtn.btn)
+						end
+						hierachy[btn.parent][2] = not hierachy[btn.parent][2]
+					end
+				else
+					for _,v in pairs(item) do
+						if type(v) == "table" or isInstance(v) then
+							i=i+1
+							local newBtn = buttonTemplate(v.name or "unnamed")
+							newBtn.parent = btn.parent
+							newBtn.position = guiCoord(0,5,0,i*22)
+							fixSizes(btn.parent)
+							newBtn.name = tostring(i)
+							hierachy[newBtn] = {v, false}
+							updateBtnText(newBtn.btn)
+						end
+					end
+					hierachy[btn.parent][2] = not hierachy[btn.parent][2]
+				end
+				--move everything down by the new size.
+				--[[for _,v in pairs(btn.parent.parent.children) do
+					if v.className == "guiFrame" and tonumber(v.name) > myPosition then
+						v.position = v.position + guiCoord(0,0,0,i*22)
+					end
+				end]]
+			end
+			lastPress = 0
+			
+		elseif isInstance(item) then
+			-- deselect everything and move on
+			selectedItems = { item }	
+			generateProperties( item )
+			if item.position and type(item.position) == "vector3" then
+				outlineSelectedBlock.opacity = 1
+				outlineSelectedBlock.position = selectedItems[1].position
+				outlineSelectedBlock.size = selectedItems[1].size
+			else
+				outlineSelectedBlock.opacity = 0
+			end
+		end
+	end
+	updateBtnText(btn)
+	lastPress = os.clock()
+end
+
+buttonTemplate = function (text)
+	local frame = engine.guiFrame()
+	frame.position = guiCoord(0,5,0,0)
+	frame.size = guiCoord(1, -10, 0, 21)
+	--frame.backgroundColour = colour(0.2,0,0)
+	frame.alpha = 0
+	frame.parent = engine.workshop.interface
+	frame.name = "0"
+
+	local btn = engine.guiButton()
+	btn.text = text
+	btn.align = enums.align.middleLeft
+	btn.position = guiCoord(0,3,0,0)
+	btn.size = guiCoord(1, -6, 0, 21)
+	btn.backgroundColour = themeColourButton
+	btn.textColour = themeColourWindowText
+	btn.fontSize = 9
+	btn.wrap = false
+	btn.fontFile = normalFontName
+	btn.parent = frame
+	btn.name = "btn"
+
+	btn:mouseLeftPressed(hierachyBtnPressed)
+
+	return frame
+end
+
+
+local root = buttonTemplate("engine")
+root.parent = scrollViewHierarchy
+hierachy[root] = {engine, false}
+updateBtnText(root.btn)
+
 
