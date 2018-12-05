@@ -109,10 +109,10 @@ end
 local normalFontName = "OpenSans-Regular"
 local boldFontName = "OpenSans-Bold"
 
-local themeColourWindow = colour(8/255, 8/255, 9/255)
+local themeColourWindow = colour(8/255, 8/255, 8/255)
 local themeColourWindowText = colour(1, 1, 1)
 
-local themeColourButton = colour(15/255, 15/255, 16/255)
+local themeColourButton = colour(15/255, 15/255, 15/255)
 local themeColourButtonHighlighted = colour(17/255, 17/255, 17/255)
 local themeColourButtonText = colour(1, 1, 1)
  
@@ -165,8 +165,8 @@ end)
 
 menuInsertBlock:mouseLeftPressed(function ()
 	local newBlock = engine.block("block")
-	newBlock.colour = colour(1,0,0)
-	newBlock.size = vector3(1,1,1)
+	newBlock.colour = colour(1, 0, 0)
+	newBlock.size = vector3(1, 1, 1)
 	newBlock.parent = workspace
 
 	local camera = workspace.camera
@@ -192,9 +192,9 @@ windowProperties.fontFile = normalFontName
 windowProperties.guiStyle = enums.guiStyle.windowNoCloseButton
 
 local scrollViewProperties = engine.guiScrollView("scrollView")
-scrollViewProperties.size = guiCoord(1,-5,1,-20)
+scrollViewProperties.size = guiCoord(1, -5, 1, -20)
 scrollViewProperties.parent = windowProperties
-scrollViewProperties.position = guiCoord(0,0,0,16)
+scrollViewProperties.position = guiCoord(0, 0, 0, 16)
 scrollViewProperties.guiStyle = enums.guiStyle.noBackground
 
 
@@ -363,7 +363,7 @@ local function generateProperties( instance )
 		propContainer.parent = scrollViewProperties
 		propContainer.name = prop.property
 		propContainer.size = guiCoord(0.54, -9, 0, 21) -- Compensates for the natural padding inside a guiWindow.
-		propContainer.position = guiCoord(0.45,0,0,y)
+		propContainer.position = guiCoord(0.45, 0, 0, y)
 		propContainer.alpha = 0
 	
 
@@ -371,13 +371,13 @@ local function generateProperties( instance )
 
 			local txtProp = generateInputBox(value.x, propContainer)
 			txtProp.name = "x"
-			txtProp.position = guiCoord(0,1,0,0)
+			txtProp.position = guiCoord(0, 1, 0, 0)
 			txtProp.size = guiCoord(0.5, -1, 1, 0)
 			setReadOnly(txtProp, readOnly)
 
 			local txtProp = generateInputBox(value.y, propContainer)
 			txtProp.name = "y"
-			txtProp.position = guiCoord(0.5,2,0,0)
+			txtProp.position = guiCoord(0.5, 2, 0, 0)
 			txtProp.size = guiCoord(0.5, -1, 1, 0)
 			setReadOnly(txtProp, readOnly)
 
@@ -392,7 +392,7 @@ local function generateProperties( instance )
 
 			local txtR = generateInputBox(value.r, propContainer)
 			txtR.name = "r"
-			txtR.position = guiCoord(0,1,0,0)
+			txtR.position = guiCoord(0, 1, 0, 0)
 			txtR.size = guiCoord(0.25, -1, 1, 0)
 			setReadOnly(txtR, readOnly)
 
@@ -405,7 +405,7 @@ local function generateProperties( instance )
 
 			local txtG = generateInputBox(value.g, propContainer)
 			txtG.name = "g"
-			txtG.position = guiCoord(0.25,1,0,0)
+			txtG.position = guiCoord(0.25, 1, 0, 0)
 			txtG.size = guiCoord(0.25, -1, 1, 0)
 			setReadOnly(txtG, readOnly)
 
@@ -418,7 +418,7 @@ local function generateProperties( instance )
 
 			local txtB = generateInputBox(value.b, propContainer)
 			txtB.name = "b"
-			txtB.position = guiCoord(0.5,1,0,0)
+			txtB.position = guiCoord(0.5, 1, 0, 0)
 			txtB.size = guiCoord(0.25, -1, 1, 0)
 			setReadOnly(txtB, readOnly)
 
@@ -432,7 +432,7 @@ local function generateProperties( instance )
 		elseif propertyType == "vector3" then
 
 			local txtX = generateInputBox(value.x, propContainer)
-			txtX.position = guiCoord(0,0,0,0)
+			txtX.position = guiCoord(0, 0, 0, 0)
 			txtX.name = "x"
 			txtX.size = guiCoord(1/3, -1, 1, 0)
 			setReadOnly(txtX, readOnly)
@@ -446,7 +446,7 @@ local function generateProperties( instance )
 
 			local txtY = generateInputBox(value.y, propContainer)
 			txtY.name = "y"
-			txtY.position = guiCoord(1/3,1,0,0)
+			txtY.position = guiCoord(1/3, 1, 0, 0)
 			txtY.size = guiCoord(1/3, -1, 1, 0)
 			setReadOnly(txtY, readOnly)
 
@@ -458,7 +458,7 @@ local function generateProperties( instance )
 
 			local txtZ = generateInputBox(value.z, propContainer)
 			txtZ.name = "z"
-			txtZ.position = guiCoord(2/3,2,0,0)
+			txtZ.position = guiCoord(2/3, 2, 0, 0)
 			txtZ.size = guiCoord(1/3, -1, 1, 0)
 			setReadOnly(txtZ, readOnly)
 
@@ -484,7 +484,7 @@ local function generateProperties( instance )
 			end
 
 			txtX = generateInputBox(asEuler.x, propContainer)
-			txtX.position = guiCoord(0,0,0,0)
+			txtX.position = guiCoord(0, 0, 0, 0)
 			txtX.name = "x"
 			txtX.size = guiCoord(1/3, -1, 1, 0)
 			setReadOnly(txtX, readOnly)
@@ -494,7 +494,7 @@ local function generateProperties( instance )
 
 			txtY = generateInputBox(asEuler.y, propContainer)
 			txtY.name = "y"
-			txtY.position = guiCoord(1/3,1,0,0)
+			txtY.position = guiCoord(1/3, 1, 0, 0)
 			txtY.size = guiCoord(1/3, -1, 1, 0)
 			setReadOnly(txtY, readOnly)
 
@@ -502,7 +502,7 @@ local function generateProperties( instance )
 
 			txtZ = generateInputBox(asEuler.z, propContainer)
 			txtZ.name = "z"
-			txtZ.position = guiCoord(2/3,2,0,0)
+			txtZ.position = guiCoord(2/3, 2, 0, 0)
 			txtZ.size = guiCoord(1/3, -1, 1, 0)
 			setReadOnly(txtZ, readOnly)
 
@@ -513,7 +513,7 @@ local function generateProperties( instance )
 
 			local scaleX = generateInputBox(value.scaleX, propContainer)
 			scaleX.name = "scaleX"
-			scaleX.position = guiCoord(0,1,0,0)
+			scaleX.position = guiCoord(0, 1, 0, 0)
 			scaleX.size = guiCoord(0.25, -1, 1, 0)
 			setReadOnly(scaleX, readOnly)
 
@@ -525,7 +525,7 @@ local function generateProperties( instance )
 
 			local offsetX = generateInputBox(value.offsetX, propContainer)
 			offsetX.name = "offsetX"
-			offsetX.position = guiCoord(0.25,1,0,0)
+			offsetX.position = guiCoord(0.25, 1, 0, 0)
 			offsetX.size = guiCoord(0.25, -1, 1, 0)
 			setReadOnly(offsetX, readOnly)
 
@@ -537,7 +537,7 @@ local function generateProperties( instance )
 
 			local scaleY = generateInputBox(value.scaleY, propContainer)
 			scaleY.name = "scaleY"
-			scaleY.position = guiCoord(0.5,2,0,0)
+			scaleY.position = guiCoord(0.5, 2, 0, 0)
 			scaleY.size = guiCoord(0.25, -1, 1, 0)
 			setReadOnly(scaleY, readOnly)
 
@@ -549,7 +549,7 @@ local function generateProperties( instance )
 
 			local offsetY = generateInputBox(value.offsetY, propContainer)
 			offsetY.name = "offsetY"
-			offsetY.position = guiCoord(0.75,2,0,0)
+			offsetY.position = guiCoord(0.75, 2, 0, 0)
 			offsetY.size = guiCoord(0.25, -1, 1, 0)
 			setReadOnly(offsetY, readOnly)
 
@@ -564,7 +564,7 @@ local function generateProperties( instance )
 			local boolProp = engine.guiButton()
 			boolProp.name = "bool"
 			boolProp.parent = propContainer
-			boolProp.position = guiCoord(0,0,0,2)
+			boolProp.position = guiCoord(0, 0, 0, 2)
 			boolProp.size = guiCoord(1, 0, 1, 0)
 			boolProp.text = ""
 			boolProp.guiStyle = enums.guiStyle.checkBox
@@ -578,7 +578,7 @@ local function generateProperties( instance )
 		elseif isInstance(value) then
 			--TODO: Allow user to select instance using explorer...
 			local placeholder = generateLabel(" . " .. propertyType .. " . ", propContainer)
-			placeholder.position = guiCoord(0,0,0,0)
+			placeholder.position = guiCoord(0, 0, 0, 0)
 			placeholder.size = guiCoord(1, 0, 1, 0)
 			placeholder.align = enums.align.middle
 			placeholder.alpha = 0.6
@@ -586,7 +586,7 @@ local function generateProperties( instance )
 
 			local txtProp = generateInputBox(value, propContainer)
 			txtProp.name = "number"
-			txtProp.position = guiCoord(0,1,0,0)
+			txtProp.position = guiCoord(0, 1, 0, 0)
 			txtProp.size = guiCoord(1, 0, 1, 0)
 			setReadOnly(txtProp, readOnly)
 
@@ -597,7 +597,7 @@ local function generateProperties( instance )
 		else
 			local txtProp = generateInputBox(value, propContainer)
 			txtProp.name = "input"
-			txtProp.position = guiCoord(0,1,0,0)
+			txtProp.position = guiCoord(0, 1, 0, 0)
 			txtProp.size = guiCoord(1, 0, 1, 0)
 			setReadOnly(txtProp, readOnly)
 
@@ -622,7 +622,7 @@ generateProperties(txtProperty)
 --
 
 -- The distance the camera is from the target
-local target = vector3(0,0,0) -- A virtual point that the camera
+local target = vector3(0, 0, 0) -- A virtual point that the camera
 local currentDistance = 20
 
 -- The amount the camera moves when you use the scrollwheel
@@ -706,27 +706,27 @@ savePoint() -- Create a point.
 
 --testing purposes
 local newBlock = engine.block("base")
-newBlock.colour = colour(1,1,1)
-newBlock.size = vector3(100,1,100)
-newBlock.position = vector3(0,-1,0)
+newBlock.colour = colour(1, 1, 1)
+newBlock.size = vector3(100, 1, 100)
+newBlock.position = vector3(0, -1, 0)
 newBlock.parent = workspace
 
 local newBlock = engine.block("block1")
-newBlock.colour = colour(1,0,0)
-newBlock.size = vector3(1,1,1)
-newBlock.position = vector3(0,0,0)
+newBlock.colour = colour(1, 0, 0)
+newBlock.size = vector3(1, 1, 1)
+newBlock.position = vector3(0, 0, 0)
 newBlock.parent = workspace
 
 local newBlock = engine.block("block2")
-newBlock.colour = colour(0,1,0)
-newBlock.size = vector3(1,1,1)
-newBlock.position = vector3(0,1,0)
+newBlock.colour = colour(0, 1, 0)
+newBlock.size = vector3(1, 1, 1)
+newBlock.position = vector3(0, 1, 0)
 newBlock.parent = workspace
 
 local newBlock = engine.block("phy")
-newBlock.colour = colour(0,0,1)
-newBlock.size = vector3(1,0.5,1)
-newBlock.position = vector3(0.5,11,0)
+newBlock.colour = colour(0, 0, 1)
+newBlock.size = vector3(1, 0.5, 1)
+newBlock.position = vector3(0.5, 11, 0)
 newBlock.parent = workspace
 
 
@@ -825,8 +825,8 @@ engine.input:mouseLeftPressed(function( input )
 		local lower = selectedItems[1].position - (selectedItems[1].size/2) or vector3(0.1, 0.1, 0.1)
 
 		for i, v in pairs(selectedItems) do
-			local topLeft = v.position + (v.size/2)or vector3(0.1, 0.1, 0.1)
-			local btmRight = v.position - (v.size/2)or vector3(0.1, 0.1, 0.1)
+			local topLeft = v.position + (v.size/2) or vector3(0.1, 0.1, 0.1)
+			local btmRight = v.position - (v.size/2) or vector3(0.1, 0.1, 0.1)
 		
 			upper.x = math.max(topLeft.x, upper.x)
 			upper.y = math.max(topLeft.y, upper.y)
@@ -901,11 +901,11 @@ end)
 
 
 local scrollViewOutput = engine.guiScrollView("scrollView")
-scrollViewOutput.size = guiCoord(1,-20,1,-25)
+scrollViewOutput.size = guiCoord(1, -20, 1, -25)
 scrollViewOutput.parent = windowOutput
-scrollViewOutput.position = guiCoord(0,10,0,25)
+scrollViewOutput.position = guiCoord(0, 10, 0, 25)
 scrollViewOutput.guiStyle = enums.guiStyle.noBackground
-scrollViewOutput.canvasSize = guiCoord(1,0,0,110)
+scrollViewOutput.canvasSize = guiCoord(1, 0, 0, 110)
 
 
 local lbl = engine.guiTextBox()
@@ -961,11 +961,11 @@ windowHierarchy.textColour = themeColourWindowText
 windowHierarchy.guiStyle = enums.guiStyle.windowNoCloseButton
 
 local scrollViewHierarchy = engine.guiScrollView("scrollView")
-scrollViewHierarchy.size = guiCoord(1,-5,1,-33)
+scrollViewHierarchy.size = guiCoord(1, -5, 1, -33)
 scrollViewHierarchy.parent = windowHierarchy
-scrollViewHierarchy.position = guiCoord(0,0,0,23)
+scrollViewHierarchy.position = guiCoord(0, 0, 0, 23)
 scrollViewHierarchy.guiStyle = enums.guiStyle.noBackground
-scrollViewHierarchy.canvasSize = guiCoord(1,0,6,0)
+scrollViewHierarchy.canvasSize = guiCoord(1, 0, 6, 0)
 
 local lastPress = 0
 local buttonTemplate; 
@@ -1030,7 +1030,7 @@ local function expandBtn(btn, item)
 							i=i+1
 							local newBtn = buttonTemplate(v.name or "unnamed")
 							newBtn.parent = btn.parent
-							newBtn.position = guiCoord(0,20,0,i*22)
+							newBtn.position = guiCoord(0, 20, 0, i * 22)
 							fixSizes(btn.parent)
 							newBtn.name = tostring(i)
 							hierachy[newBtn] = {v, false}
@@ -1044,7 +1044,7 @@ local function expandBtn(btn, item)
 							i=i+1
 							local newBtn = buttonTemplate(v.name)
 							newBtn.parent = btn.parent
-							newBtn.position = guiCoord(0,20,0,i*22)
+							newBtn.position = guiCoord(0, 20, 0, i * 22)
 							fixSizes(btn.parent)
 							newBtn.name = tostring(i)
 							hierachy[newBtn] = {v, false}
@@ -1129,7 +1129,7 @@ local function hierachyBtnPressed()
 			-- double press
 			if hierachy[btn.parent][2] then
 				-- already expanded
-				--btn.backgroundColour = colour(0.1,0,0)
+				--btn.backgroundColour = colour(0.1, 0, 0)
 				local i = 0
 				local myPosition = tonumber(btn.parent.name)
 				--[[for _,v in pairs(btn.parent.children) do
@@ -1153,7 +1153,7 @@ local function hierachyBtnPressed()
 				
 				--[[for _,v in pairs(btn.parent.parent.children) do
 					if v.className == "guiFrame" and tonumber(v.name) > myPosition then
-						v.position = v.position - guiCoord(0,0,0,i*22)
+						v.position = v.position - guiCoord(0, 0, 0, i * 22)
 					end
 				end]]
 
@@ -1190,7 +1190,7 @@ end
 
 buttonTemplate = function (text)
 	local frame = engine.guiFrame()
-	frame.position = guiCoord(0,20,0,0)
+	frame.position = guiCoord(0, 20, 0, 0)
 	frame.size = guiCoord(1, -20, 0, 21)
 	--frame.backgroundColour = colour(0.2,0,0)
 	frame.alpha = 0
@@ -1217,7 +1217,7 @@ end
 
 local root = buttonTemplate("engine")
 root.parent = scrollViewHierarchy
-root.position = guiCoord(0,0,0,0)
+root.position = guiCoord(0, 0, 0, 0)
 hierachy[root] = {engine, false}
 updateBtnText(root.btn)
 
@@ -1237,7 +1237,7 @@ windowAssets.fontFile = normalFontName
 windowAssets.textColour = themeColourWindowText
 
 local newLight = engine.light("light1")
-newLight.offsetPosition = vector3(3,4,0)
+newLight.offsetPosition = vector3(3, 4, 0)
 newLight.parent = workspace
 newLight.parent = newBlock
 
