@@ -153,6 +153,37 @@ end)
 menuFileOpen:mouseLeftReleased(function()
 	-- Tell the Workshop APIs to initate a game load.
 	engine.workshop:openFileDialogue()
+
+	--temporary fix:
+	local last250 = {}
+	local folderCount = 0
+	for i,v in pairs(workspace.children) do
+		table.insert(last250, v)
+		if (#last250 >= 70) then
+			folderCount = folderCount + 1
+			fixParent = engine.folder()
+			fixParent.name = "Folder " .. folderCount
+			fixParent.parent = workspace
+
+			for _,vv in pairs(last250) do
+				vv.parent = fixParent
+			end
+			last250 = {}
+		end
+	end
+
+	if (#last250 >= 10) then
+			folderCount = folderCount + 1
+			fixParent = engine.folder()
+			fixParent.name = "Folder " .. folderCount
+			fixParent.parent = workspace
+
+			for _,vv in pairs(last250) do
+				vv.parent = fixParent
+			end
+			last250 = {}
+		end
+	last250 = nil
 end)
 
 menuFileSave:mouseLeftReleased(function()
@@ -946,7 +977,10 @@ engine.debug:output(function(msg, type)
 	lbl.size = guiCoord(1, -10, 0, textSize.y)
 	scrollViewOutput.canvasSize = guiCoord(1, 0, 0, textSize.y)
 end)
+
 -- Hierarchy
+
+
 
 local windowHierarchy = engine.guiWindow()
 windowHierarchy.size = guiCoord(0, 240, 0.4, -12)
@@ -1028,12 +1062,15 @@ local function expandBtn(btn, item)
 					if item.children then
 						for _,v in pairs(item.children) do
 							i=i+1
+					
 							local newBtn = buttonTemplate(v.name or "unnamed")
 							newBtn.parent = btn.parent
 							newBtn.position = guiCoord(0,20,0,i*22)
-							fixSizes(btn.parent)
+							
 							newBtn.name = tostring(i)
+
 							hierachy[newBtn] = {v, false}
+							fixSizes(btn.parent)
 							updateBtnText(newBtn.btn)
 						end
 						hierachy[btn.parent][2] = not hierachy[btn.parent][2]
@@ -1042,15 +1079,21 @@ local function expandBtn(btn, item)
 					for _,v in pairs(item) do
 						if (type(v) == "table" and v.name ~= nil) or isInstance(v) then
 							i=i+1
+	
+								
+			
 							local newBtn = buttonTemplate(v.name)
 							newBtn.parent = btn.parent
 							newBtn.position = guiCoord(0,20,0,i*22)
-							fixSizes(btn.parent)
+							
 							newBtn.name = tostring(i)
+						
 							hierachy[newBtn] = {v, false}
+								fixSizes(btn.parent)
 							updateBtnText(newBtn.btn)
 						end
 					end
+
 					hierachy[btn.parent][2] = not hierachy[btn.parent][2]
 				end
 
