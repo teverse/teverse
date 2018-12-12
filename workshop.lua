@@ -34,7 +34,7 @@ end
 local function savePoint()
 	local newPoint = {}
 	
-	for object, properties in pairs(dirty) do
+	for object, properties in pairs(dirty) do	
 		newPoint[object] = properties
 	end
 	
@@ -59,7 +59,10 @@ end
 
 workspace:childAdded(function(child)
 	child:changed(objectChanged)
+
 	if not goingBack and dirty[child] then
+		currentPoint = currentPoint + 1
+		table.insert(history, {child = "Created"})
 		dirty[child].new = true
 	end
 end)
@@ -74,8 +77,12 @@ function undo()
 	goingBack = true
 	
 	for object, properties in pairs(snapShot) do
-		for property, value in pairs(properties) do
-			object[property] = value
+		if properties == "Created" then
+			object:destroy()
+		else
+			for property, value in pairs(properties) do
+				object[property] = value
+			end
 		end
 	end
 	
