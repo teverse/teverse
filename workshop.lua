@@ -154,36 +154,7 @@ menuFileOpen:mouseLeftReleased(function()
 	-- Tell the Workshop APIs to initate a game load.
 	engine.workshop:openFileDialogue()
 
-	--temporary fix:
-	local last250 = {}
-	local folderCount = 0
-	for i,v in pairs(workspace.children) do
-		table.insert(last250, v)
-		if (#last250 >= 70) then
-			folderCount = folderCount + 1
-			fixParent = engine.folder()
-			fixParent.name = "Folder " .. folderCount
-			fixParent.parent = workspace
-
-			for _,vv in pairs(last250) do
-				vv.parent = fixParent
-			end
-			last250 = {}
-		end
-	end
-
-	if (#last250 >= 10) then
-			folderCount = folderCount + 1
-			fixParent = engine.folder()
-			fixParent.name = "Folder " .. folderCount
-			fixParent.parent = workspace
-
-			for _,vv in pairs(last250) do
-				vv.parent = fixParent
-			end
-			last250 = {}
-		end
-	last250 = nil
+	
 end)
 
 menuFileSave:mouseLeftReleased(function()
@@ -652,10 +623,6 @@ generateProperties(txtProperty)
 -- Altered from https://wiki.teverse.com/tutorials/base-camera
 --
 
--- The distance the camera is from the target
-local target = vector3(0,0,0) -- A virtual point that the camera
-local currentDistance = 20
-
 -- The amount the camera moves when you use the scrollwheel
 local zoomStep = 3
 local rotateStep = -0.0045
@@ -664,8 +631,7 @@ local moveStep = 0.5 -- how fast the camera moves
 local camera = workspace.camera
 
 -- Setup the initial position of the camera
-camera.position = target - vector3(0, -5, currentDistance)
-camera:lookAt(target)
+camera.position = vector3(0, -5, 10)
 
 -- Camera key input values
 local cameraKeyEventLooping = false
@@ -678,16 +644,13 @@ local cameraKeyArray = {
 	[enums.key.e] = vector3(0, 1, 0)
 }
 
-local function updatePosition()
-	local lookVector = camera.rotation * vector3(0, 0, 1)
-	
-	camera.position = target + (lookVector * currentDistance)
-	camera:lookAt(target)
-end
-
 engine.input:mouseScrolled(function( input )
-	currentDistance = currentDistance - (input.movement.y * zoomStep)
-	updatePosition()
+	if input.systemHandled then return end
+
+	local cameraPos = camera.position
+	cameraPos = cameraPos + (camera.rotation * (cameraKeyArray[enums.key.w] * input.movement.y * zoomStep))
+	camera.position = cameraPos	
+
 end)
 
 engine.input:mouseMoved(function( input )
@@ -787,7 +750,7 @@ local function validateItems()
 	end
 end
 local focusOnObjectInHierarchy;
-local hierachy = {}
+local hierarchy = {  }
 
 engine.graphics:frameDrawn(function()	
 	local mouseHit = engine.physics:rayTestScreen( engine.input.mousePosition ) -- accepts vector2 or number,number
@@ -814,11 +777,11 @@ engine.input:mouseLeftPressed(function( input )
 		outlineSelectedBlock.opacity = 0
 		txtProperty.text = "0 items selected"
 		generateProperties( nil )
-		for btn,v in pairs(hierachy) do
+		--[[for btn,v in pairs(hierachy) do
 			if btn.btn.backgroundColour ~= themeColourButton then
 				 btn.btn.backgroundColour = themeColourButton
 			end
-		end	
+		end	]]
 		return
 	end
 
@@ -827,11 +790,11 @@ engine.input:mouseLeftPressed(function( input )
 	if not engine.input:isKeyDown(enums.key.leftShift) then
 		-- deselect everything and move on
 		selectedItems = {}
-		for btn,v in pairs(hierachy) do
+		--[[for btn,v in pairs(hierachy) do
 			if btn.btn.backgroundColour ~= themeColourButton then
 				 btn.btn.backgroundColour = themeColourButton
 			end
-		end	
+		end	]]
 	else
 		for i,v in pairs(selectedItems) do
 			if v == mouseHit then
@@ -843,7 +806,7 @@ engine.input:mouseLeftPressed(function( input )
 	end
 
 	if doSelect then
-		focusOnObjectInHierarchy(mouseHit)
+	--	focusOnObjectInHierarchy(mouseHit)
 		table.insert(selectedItems, mouseHit)
 		generateProperties(mouseHit)
 	end
@@ -910,26 +873,7 @@ codeInputBox.wrap = true
 codeInputBox.multiline = false
 codeInputBox.align = enums.align.middleLeft
 
-local lastCmd = ""
-codeInputBox:keyPressed(function(inputObj)
-	if inputObj.key == enums.key['return'] then
-		-- Note: workshop:loadString is not the same as the standard lua loadstring 
-		-- This method will load and run the string immediately
-		-- Returns a boolean indicating success and an error message if success is false.
-		local success, result = engine.workshop:loadString(codeInputBox.text)
-		lastCmd = codeInputBox.text
-
-		print(" > " .. codeInputBox.text:sub(0,50))
-		codeInputBox.text = ""
-		if not success then
-			error(result, 2)
-		end
-	elseif inputObj.key == enums.key['up'] then
-		codeInputBox.text = lastCmd
-	end
-end)
-
-
+local outputLines = {}
 
 local scrollViewOutput = engine.guiScrollView("scrollView")
 scrollViewOutput.size = guiCoord(1,-20,1,-25)
@@ -953,7 +897,35 @@ lbl.align = enums.align.topLeft
 lbl.parent = scrollViewOutput
 lbl.textColour = colour(1, 1, 1)
 
-local outputLines = {}
+
+local lastCmd = ""
+codeInputBox:keyPressed(function(inputObj)
+	if inputObj.key == enums.key['return'] then
+
+		if (codeInputBox.text == "clear" or codeInputBox.text == " clear") then
+			outputLines = {}
+			lbl:setText("")
+			codeInputBox.text = ""
+			return
+		end
+		-- Note: workshop:loadString is not the same as the standard lua loadstring 
+		-- This method will load and run the string immediately
+		-- Returns a boolean indicating success and an error message if success is false.
+		local input = string.gsub(codeInputBox.text, "##", "#")
+
+		local success, result = engine.workshop:loadString(input)
+		lastCmd = input
+
+		print(" > " .. input:sub(0,50))
+		codeInputBox.text = ""
+		if not success then
+			error(result, 2)
+		end
+	elseif inputObj.key == enums.key['up'] then
+		codeInputBox.text = lastCmd
+	end
+end)
+
 
 engine.debug:output(function(msg, type)
 
@@ -979,8 +951,13 @@ engine.debug:output(function(msg, type)
 end)
 
 -- Hierarchy
+-- This hierarchy only loads a certain number of elements into the gui
+-- this prevents high memory usuage.
+-- Doesn't use scrollview due to special needs.
 
-
+local hierarchyElementCount = 0
+local debuggingCount = 0
+local viewOffset = 0
 
 local windowHierarchy = engine.guiWindow()
 windowHierarchy.size = guiCoord(0, 240, 0.4, -12)
@@ -994,276 +971,289 @@ windowHierarchy.fontFile = normalFontName
 windowHierarchy.textColour = themeColourWindowText
 windowHierarchy.guiStyle = enums.guiStyle.windowNoCloseButton
 
-local scrollViewHierarchy = engine.guiScrollView("scrollView")
-scrollViewHierarchy.size = guiCoord(1,-5,1,-33)
+local scrollBarHierarchy = engine.guiFrame("scrollBarFrame")
+scrollBarHierarchy.size = guiCoord(1,-5,1,-45)
+scrollBarHierarchy.parent = windowHierarchy
+scrollBarHierarchy.position = guiCoord(1,-20,0,0)
+scrollBarHierarchy.alpha = 0.2
+
+local scrollBarPositionFrame = engine.guiFrame("scrollBarPositionFrame")
+scrollBarPositionFrame.size = guiCoord(1, 0, 0.1, 0)
+scrollBarPositionFrame.parent = scrollBarHierarchy
+scrollBarPositionFrame.position = guiCoord(0, 0, 0, 0)
+
+local scrollBarMarkersFolder = engine.folder("scrollBarMarkers")
+scrollBarMarkersFolder.parent = scrollBarHierarchy
+
+local scrollViewHierarchy = engine.guiFrame("scrollView")
+scrollViewHierarchy.size = guiCoord(1,-25,1,-45)
 scrollViewHierarchy.parent = windowHierarchy
-scrollViewHierarchy.position = guiCoord(0,0,0,23)
-scrollViewHierarchy.guiStyle = enums.guiStyle.noBackground
-scrollViewHierarchy.canvasSize = guiCoord(1,0,6,0)
+scrollViewHierarchy.position = guiCoord(0,0,0,0)
+scrollViewHierarchy.alpha = 0
 
-local lastPress = 0
-local buttonTemplate; 
-local function updateBtnText(btn)
-	local children = 0
-	if not isInstance(hierachy[btn.parent][1]) then
-		for _,v in pairs(hierachy[btn.parent][1]) do
-			if isInstance(v) then
-				children = children + 1
-			end
+local buttonLog = {}
+
+local function renderHierarchy( arrE, parentCount )
+	local start = os.clock()
+	if not arrE then
+		--scrollViewHierarchy:destroyAllChildren()
+		hierarchyElementCount = 0
+		debuggingCount = 0
+		for obj, btn in pairs(buttonLog) do
+			buttonLog[obj][2] = false
 		end
-	elseif hierachy[btn.parent][1].children then
-		children = #hierachy[btn.parent][1].children
 	end
 
-	if (children > 0) then
-		if hierachy[btn.parent][2] then
-			btn:setText("#707070[-]#".. themeColourButtonText:getHex() .." " .. hierachy[btn.parent][1].name)
-		else
-			btn:setText("#707070[+]#".. themeColourButtonText:getHex() .." " .. hierachy[btn.parent][1].name)
-		end
-	else
-		btn:setText("   #".. themeColourButtonText:getHex() .." " .. (hierachy[btn.parent][1].name))
-	end
-end
+	local viewHeight = scrollViewHierarchy.absoluteSize.y
+	local excess = 222 -- adds some room above and below the viewport, so we don't have to keep loading everything.
 
-local function fixSizes(v, i)
-	--v.size = guiCoord(1, -20, 0, (#v.children + i) * 22)
-	local y = 0
-	for i,oo in pairs(v.children) do
-		local pos = oo.position
-		pos.offsetY = y
-		oo.position = pos
-		y = y + oo.size.offsetY + 1
-	end
-	v.size = guiCoord(1, -20, 0, y)
-	if v.parent.className == "guiFrame" and v.parent ~= scrollViewHierarchy then
-		fixSizes(v.parent)
-	elseif v.parent == scrollViewHierarchy then
-		local y = 21
-		for _,oo in pairs(scrollViewHierarchy.children) do
-			y = y + oo.size.offsetY + 1
-		end
-		local oldSize = scrollViewHierarchy.canvasSize.offsetY
-		local offset = oldSize - y
-		scrollViewHierarchy.canvasSize = guiCoord(1, 0, 0, y)
-
-		--scrollViewHierarchy:setView(vector2(0,oldSize))
-		
-	end
-end
-
-local function expandBtn(btn, item)
-	if not hierachy[btn.parent][2] then
-	--expand nwo
-	local myPosition = tonumber(btn.parent.name)
 	
-				local i = 0
-				if isInstance(item) then 
-					if item.children then
-						for _,v in pairs(item.children) do
-							i=i+1
-					
-							local newBtn = buttonTemplate(v.name or "unnamed")
-							newBtn.parent = btn.parent
-							newBtn.position = guiCoord(0,20,0,i*22)
-							
-							newBtn.name = tostring(i)
 
-							hierachy[newBtn] = {v, false}
-							fixSizes(btn.parent)
-							updateBtnText(newBtn.btn)
-						end
-						hierachy[btn.parent][2] = not hierachy[btn.parent][2]
-					end
-				else
-					for _,v in pairs(item) do
-						if (type(v) == "table" and v.name ~= nil) or isInstance(v) then
-							i=i+1
-	
-								
-			
-							local newBtn = buttonTemplate(v.name)
-							newBtn.parent = btn.parent
-							newBtn.position = guiCoord(0,20,0,i*22)
-							
-							newBtn.name = tostring(i)
-						
-							hierachy[newBtn] = {v, false}
-								fixSizes(btn.parent)
-							updateBtnText(newBtn.btn)
-						end
-					end
+	if not parentCount then parentCount = 0 end
+	local hierArray = arrE or hierarchy
 
-					hierachy[btn.parent][2] = not hierachy[btn.parent][2]
-				end
+	for obj, arr in pairs(hierArray) do
+		hierarchyElementCount=hierarchyElementCount+1
+		local currentY = hierarchyElementCount * 21
 
+		local expanded = arr[1]
+		local childFocused = arr[2]
 
-				--move everything down by the new size.
-				--[[for _,v in pairs(btn.parent.parent.children) do
-					if v.className == "guiFrame" and tonumber(v.name) > myPosition then
-						v.position = v.position + guiCoord(0,0,0,i*22)
-					end
-				end]]
-				updateBtnText(btn)
-	end
-end
-
-function hierachyBtnFromObj( obj )
-	for btnParent, v in pairs(hierachy) do
-		if v[1] == obj then
-			return btnParent
-		end
-	end
-
-	return nil
-end
-
-function focusOnObjectInHierarchy( obj )
-	local currentObj = obj
-	local btn = hierachyBtnFromObj(currentObj)
-
-	while not btn do
-		currentObj = currentObj.parent
-		if not currentObj then currentObj = engine end
-		btn = hierachyBtnFromObj(currentObj)
-	end
-
-	if currentObj ~= obj then
-		expandBtn(btn.btn, currentObj)
-		focusOnObjectInHierarchy(obj)
-	else
-		btn.btn.backgroundColour = themeColourButtonHighlighted
-	end
-end
-
-local function recursive(obj, func, skipFirst)
-	if obj.children then
-		for _,v in pairs(obj.children) do
-			recursive(v, func)
-		end
-	end
-	if not skipFirst then
-		func(obj)
-	end
-end
-
-local function hierachyBtnPressed()
-	local btn = self.object
-
-	local item = hierachy[btn.parent][1] 
-
-	if engine.input:isKeyDown(enums.key.leftShift) then
-		--Add this item to selection
-		local doSelect = true
-		for i,v in pairs(selectedItems) do
-			if v == mouseHit then
-				table.remove(selectedItems, i)
+		if (currentY > (viewOffset - excess) and currentY < (viewOffset + viewHeight + excess)) then 
+			local btn
+			debuggingCount = debuggingCount + 1
+			if ( buttonLog[obj] ) then
+				-- reuse old btn
+				--print("reuse button")
+				btn = buttonLog[obj][1]
+				buttonLog[obj][2] = true
+				btn.position = guiCoord(0,parentCount*11,0,((hierarchyElementCount-1)*21) - viewOffset)
+				btn.size = guiCoord(1,  -14 - (parentCount*11), 0, 21)
+				btn.name = tostring((hierarchyElementCount-1)*21)
+			else
+				btn = engine.guiButton()
+				btn.text = obj.name and obj.name or "unnamed"
+				btn.align = enums.align.middleLeft
+				btn.position = guiCoord(0,parentCount*11,0,((hierarchyElementCount-1)*21) - viewOffset)
+				btn.size = guiCoord(1,  -14 - (parentCount*11), 0, 21)
 				btn.backgroundColour = themeColourButton
-				doSelect = false
-			end
-		end
-		if doSelect then
-			btn.backgroundColour = themeColourButtonHighlighted
-			table.insert(selectedItems, mouseHit)
-			generateProperties(mouseHit)
-		end
-	else
-		if os.clock() - lastPress < 0.4 then
-			-- double press
-			if hierachy[btn.parent][2] then
-				-- already expanded
-				--btn.backgroundColour = colour(0.1,0,0)
-				local i = 0
-				local myPosition = tonumber(btn.parent.name)
-				--[[for _,v in pairs(btn.parent.children) do
-					if v.className == "guiFrame" then
-						i=i+1
-						hierachy[v] = nil
-						v:destroy()
-					end
-				end]]
+				btn.textColour = themeColourWindowText
+				btn.fontSize = 9
+				btn.wrap = false
+				btn.fontFile = normalFontName
+				btn.name = tostring((hierarchyElementCount-1)*21) -- stores the button's "real" position
+				buttonLog[obj] = {btn, true}
 
-				recursive(btn.parent, function(obj)
-					if obj.className == "guiFrame" then
-						i=i+1
-						hierachy[obj] = nil
-						obj:destroy()
+				local lastPress = 0
+				btn:mouseLeftPressed(function ()
+					if (os.clock() - lastPress) < 0.4 then
+						-- double press
+						hierArray[obj][1] = not hierArray[obj][1]
+						if hierArray[obj][1] then
+							if obj.children then
+								for _,v in pairs(obj.children) do
+									hierArray[obj][2][v] = {false, {}}
+								end
+							elseif not isInstance(obj) then
+								for _,v in pairs(obj) do
+									if isInstance(v) then
+										hierArray[obj][2][v] = {false, {}}
+									end
+								end
+							end
+						end
+						renderHierarchy()
+					elseif isInstance(obj) then
+						generateProperties(obj)
 					end
-				end, true)
-			
-				print(#btn.children .. "children removed")
-				fixSizes(btn.parent)
-				
-				--[[for _,v in pairs(btn.parent.parent.children) do
-					if v.className == "guiFrame" and tonumber(v.name) > myPosition then
-						v.position = v.position - guiCoord(0,0,0,i*22)
-					end
-				end]]
+					lastPress = os.clock()
+				end)
 
-				hierachy[btn.parent][2] = not hierachy[btn.parent][2]
-			else
-				expandBtn(btn, item)
+				btn.parent = scrollViewHierarchy
 			end
-			lastPress = 0
-			
-		elseif isInstance(item) then
-		
-			-- deselect everything and move on
-			for b,v in pairs(hierachy) do
-				if b.btn.backgroundColour ~= themeColourButton then
-					 b.btn.backgroundColour = themeColourButton
-				end
+
+			if expanded then
+				btn:setText("#707070[-]#".. themeColourButtonText:getHex() .." " .. (obj.name  or "unnamed"))
+			elseif (isInstance(obj) and obj.children and #obj.children > 0) or (not isInstance(obj)) then
+				btn:setText("#707070[+]#".. themeColourButtonText:getHex() .." " .. (obj.name  or "unnamed"))
+			else 
+				btn:setText("#232323[ ]#".. themeColourButtonText:getHex() .." " .. (obj.name  or "unnamed"))
+			end		
+		end
+
+		if expanded then	
+			renderHierarchy(hierArray[obj][2], parentCount+ 1)
+		end
+
+	end
+
+	local sizeTheory = hierarchyElementCount*21
+	if not arrE then
+		scrollBarPositionFrame.size = guiCoord(1, 0, viewHeight / sizeTheory, 0)
+		for obj, btn in pairs(buttonLog) do
+			if not buttonLog[obj][2] then
+				btn[1]:destroy()
+				buttonLog[obj] = nil	
 			end
-			btn.backgroundColour = themeColourButtonHighlighted
-			selectedItems = { item }	
-			generateProperties( item )
-			if item.position and type(item.position) == "vector3" then
-				outlineSelectedBlock.opacity = 1
-				outlineSelectedBlock.position = selectedItems[1].position
-				outlineSelectedBlock.size = selectedItems[1].size or vector3(0.1, 0.1, 0.1)
-			else
-				outlineSelectedBlock.opacity = 0
-			end
-		
 		end
 	end
-	updateBtnText(btn)
-	lastPress = os.clock()
 end
 
-buttonTemplate = function (text)
-	local frame = engine.guiFrame()
-	frame.position = guiCoord(0,20,0,0)
-	frame.size = guiCoord(1, -20, 0, 21)
-	--frame.backgroundColour = colour(0.2,0,0)
-	frame.alpha = 0
-	frame.parent = engine.workshop.interface
-	frame.name = "0"
+hierarchy[engine] = {false, {}}
 
-	local btn = engine.guiButton()
-	btn.text = text
-	btn.align = enums.align.middleLeft
-	btn.position = guiCoord(0,2,0,0)
-	btn.size = guiCoord(1, -4, 0, 21)
-	btn.backgroundColour = themeColourButton
-	btn.textColour = themeColourWindowText
-	btn.fontSize = 9
-	btn.wrap = false
-	btn.fontFile = normalFontName
-	btn.parent = frame
-	btn.name = "btn"
+local isDragging = false
 
-	btn:mouseLeftPressed(hierachyBtnPressed)
+scrollBarHierarchy:mouseLeftPressed(function ()
+	if isDragging then return end
+	local mousePosition = engine.input.mousePosition.y
+	local myPosition = scrollBarHierarchy.absolutePosition.y
+	local relativePosition = mousePosition - myPosition
 
-	return frame
+	local sizeTheory = hierarchyElementCount*21
+	local sizeReal = scrollViewHierarchy.absoluteSize.y
+	local overflowSize = sizeTheory - sizeReal
+
+	local scaledPosition = relativePosition/sizeReal
+
+	viewOffset = math.max(0, math.min(scaledPosition * sizeTheory, overflowSize))
+
+	scrollBarPositionFrame.position = guiCoord(0, 0, viewOffset / sizeTheory, 0)
+
+	local upperPadding = 0 
+	local lowerPadding = 0 
+
+			--update button positions
+			for _,v in pairs(scrollViewHierarchy.children) do
+				local pos = v.position
+				pos.offsetY = tonumber(v.name) - viewOffset
+				v.position = pos
+				if pos.offsetY < 0 then
+					upperPadding = upperPadding + 1
+				elseif pos.offsetY > sizeReal then
+					lowerPadding = lowerPadding + 1
+				end
+			end
+
+			if upperPadding < 5 or lowerPadding < 5 then
+				renderHierarchy()
+			end
+
+end)
+
+local scrollLog = 0
+local function handleScrollBarWheel(inpObj)
+	scrollLog = scrollLog + inpObj.movement.y
+
+	if math.abs(scrollLog) > 2 then
+		local dist = scrollLog * 2
+		scrollLog = 0
+
+		local upperPadding = 10 
+		local lowerPadding = 10 
+
+
+		if dist ~= 0 then
+			local sizeTheory = hierarchyElementCount*21
+			local sizeReal = scrollViewHierarchy.absoluteSize.y
+			local overflowSize = sizeTheory - sizeReal
+			upperPadding = 0 
+			lowerPadding = 0 
+
+			--convert dist to a scale relative to the scrollbar
+			dist = (dist / sizeReal) * sizeTheory 
+
+			viewOffset = math.max(0, math.min(viewOffset - dist, overflowSize))
+			scrollBarPositionFrame.position = guiCoord(0, 0, viewOffset / sizeTheory, 0)
+
+			--update button positions
+			for _,v in pairs(scrollViewHierarchy.children) do
+				local pos = v.position
+				pos.offsetY = tonumber(v.name) - viewOffset
+				v.position = pos
+				if pos.offsetY < 0 then
+					upperPadding = upperPadding + 1
+				elseif pos.offsetY > sizeReal then
+					lowerPadding = lowerPadding + 1
+				end
+			end
+			mousePosition = currentPos
+		
+			lastMove = os.clock()
+		end
+		
+
+		if (upperPadding < 5 or lowerPadding < 5) then
+			renderHierarchy()
+		end
+	end
 end
 
-local root = buttonTemplate("engine")
-root.parent = scrollViewHierarchy
-root.position = guiCoord(0,0,0,0)
-hierachy[root] = {engine, false}
-updateBtnText(root.btn)
+scrollBarPositionFrame:mouseScrolled(handleScrollBarWheel)
+scrollBarHierarchy:mouseScrolled(handleScrollBarWheel)
 
+scrollBarPositionFrame:mouseLeftPressed(function ()
+	isDragging = true
+	local mousePosition = engine.input.mousePosition
+	--these count how many elements are loaded out of view above and below the view
+	-- so we know when to load more!
+	local lastMove = os.clock()
+	local upperPadding = 10 
+	local lowerPadding = 10 
+
+	while isDragging do
+		local currentPos = engine.input.mousePosition
+		local dist = mousePosition.y - currentPos.y
+
+		if (upperPadding < 5 or lowerPadding < 5) and os.clock() - lastMove > 0.05 then
+			upperPadding = 10
+			lowerPadding = 10
+				renderHierarchy()
+		end
+
+		if dist ~= 0 then
+			local sizeTheory = hierarchyElementCount*21
+			local sizeReal = scrollViewHierarchy.absoluteSize.y
+			local overflowSize = sizeTheory - sizeReal
+			upperPadding = 0 
+			lowerPadding = 0 
+
+			--convert dist to a scale relative to the scrollbar
+			dist = (dist / sizeReal) * sizeTheory 
+
+			viewOffset = math.max(0, math.min(viewOffset - dist, overflowSize))
+			scrollBarPositionFrame.position = guiCoord(0, 0, viewOffset / sizeTheory, 0)
+
+			--update button positions
+			for _,v in pairs(scrollViewHierarchy.children) do
+				local pos = v.position
+				pos.offsetY = tonumber(v.name) - viewOffset
+				v.position = pos
+				if pos.offsetY < 0 then
+					upperPadding = upperPadding + 1
+				elseif pos.offsetY > sizeReal then
+					lowerPadding = lowerPadding + 1
+				end
+			end
+			mousePosition = currentPos
+
+			
+			lastMove = os.clock()
+		end
+		wait()
+	end
+
+	if (upperPadding < 5 or lowerPadding < 5) then
+		renderHierarchy()
+	end
+end)
+
+scrollBarPositionFrame:mouseLeftReleased(function ()
+	isDragging = false
+end)
+
+--engine.workshop.interface.windowHierarchy.scrollView:setViewOffset(0,-10)
+
+--engine.workshop.interface.windowHierarchy.scrollView.canvasSize = guiCoord(1,0,0,1000)
 -- assets
 
 local windowAssets = engine.guiWindow()
@@ -1283,4 +1273,7 @@ local newLight = engine.light("light1")
 newLight.offsetPosition = vector3(3,4,0)
 newLight.parent = workspace
 newLight.parent = newBlock
+
+wait(0.5)
+renderHierarchy()
 
