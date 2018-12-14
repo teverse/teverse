@@ -112,8 +112,11 @@ local boldFontName = "OpenSans-Bold"
 local themeColourWindow = colour(8/255, 8/255, 9/255)
 local themeColourWindowText = colour(1, 1, 1)
 
+local themeColourToolBar = colour(8/255, 8/255, 9/255)
+local themeColourToolBarText = colour(1, 1, 1)
+
 local themeColourButton = colour(15/255, 15/255, 16/255)
-local themeColourButtonHighlighted = colour(17/255, 17/255, 17/255)
+local themeColourButtonHighlighted = colour(21/255, 21/255, 22/255)
 local themeColourButtonText = colour(1, 1, 1)
  
 -- Menu Bar Creation
@@ -137,6 +140,7 @@ local menuFileSaveAs = menuFile:createItem("Save Scene As")
 local menuEdit = menuBarTop:createItem("Edit")
 local menuEditUndo = menuEdit:createItem("Undo")
 local menuEditRedo = menuEdit:createItem("Redo")
+local menuEditNote = menuEdit:createItem("! this doesnt work")
 
 -- Insert Menu
 
@@ -180,6 +184,46 @@ menuInsertBlock:mouseLeftPressed(function ()
 
 
 end)
+
+-- Tool Bar Creation
+
+local toolBarMain = engine.guiFrame()
+toolBarMain.size = guiCoord(1, -240, 0, 30)
+toolBarMain.position = guiCoord(0, 0, 0, 24)
+toolBarMain.parent = engine.workshop.interface
+toolBarMain.backgroundColour = themeColourToolBar
+
+local toolBarDragBtn = engine.guiImage()
+toolBarDragBtn.size = guiCoord(0, 24, 0, 24)
+toolBarDragBtn.position = guiCoord(0, 10, 0, 3)
+toolBarDragBtn.parent = toolBarMain
+toolBarDragBtn.guiStyle = enums.guiStyle.noBackground
+toolBarDragBtn.imageColour = colour(1,1,1)
+toolBarDragBtn.texture = "local:hand.png";
+
+local toolBarMoveBtn = engine.guiImage()
+toolBarMoveBtn.size = guiCoord(0, 24, 0, 24)
+toolBarMoveBtn.position = guiCoord(0, 44, 0, 3)
+toolBarMoveBtn.parent = toolBarMain
+toolBarMoveBtn.guiStyle = enums.guiStyle.noBackground
+toolBarMoveBtn.imageColour = colour(1,1,1)
+toolBarMoveBtn.texture = "local:move.png";
+
+local toolBarRotateBtn = engine.guiImage()
+toolBarRotateBtn.size = guiCoord(0, 24, 0, 24)
+toolBarRotateBtn.position = guiCoord(0, 78, 0, 3)
+toolBarRotateBtn.parent = toolBarMain
+toolBarRotateBtn.guiStyle = enums.guiStyle.noBackground
+toolBarRotateBtn.imageColour = colour(1,1,1)
+toolBarRotateBtn.texture = "local:rotate.png";
+
+local toolBarScaleBtn = engine.guiImage()
+toolBarScaleBtn.size = guiCoord(0, 24, 0, 24)
+toolBarScaleBtn.position = guiCoord(0, 112, 0, 3)
+toolBarScaleBtn.parent = toolBarMain
+toolBarScaleBtn.guiStyle = enums.guiStyle.noBackground
+toolBarScaleBtn.imageColour = colour(1,1,1)
+toolBarScaleBtn.texture = "local:scale.png";
 
 local windowProperties = engine.guiWindow()
 windowProperties.size = guiCoord(0, 240, 0.6, -10)
@@ -255,6 +299,7 @@ txtProperty.alpha = 0.9
 
 local event = nil -- stores the instance changed event so we can disconnect it
 local showing = nil
+local propertyThread = nil
 
 --- ! POORLY OPTIMISED
 --- TODO: REDO THIS METHOD
@@ -263,357 +308,385 @@ local function generateProperties( instance )
 
 	if instance == showing then return end
 	showing = instance
-	local start = os.clock()
-	if event then
-		event:disconnect()
-		event = nil
+
+	if propertyThread then
+		propertyThread:kill()
 	end
-
-
 
 	for _,v in pairs(scrollViewProperties.children) do
-		if v.name ~= "txtProperty" then
-	
-			v:destroy() -- error
-			--v.visible = false
+			if v.name ~= "txtProperty" then
+		
+				v:destroy() -- error
+				--v.visible = false
+			end
+			end
+	propertyThread = spawnThread(function()
+
+		local start = os.clock()
+		if event then
+			event:disconnect()
+			event = nil
 		end
-	end
-	if not instance then 
-		scrollViewProperties.canvasSize = guiCoord(1,0,1,0)
-	return end
 
-	local destC = os.clock()
-	-- TODO: Add a way to properly verify an event exists.
 
-	if instance and instance.events and instance.events["changed"] then
-		event = instance:changed(function(key,value,oldValue)
-			for _,v in pairs(scrollViewProperties.children) do
-				if v.name == key then
-					local propertyType = type(value)
-					if propertyType == "vector2" then
 
-						v.x.text = tostring(value.x)
-						v.y.text = tostring(value.y)
+		
+		
+		if not instance then 
+			scrollViewProperties.canvasSize = guiCoord(1,0,1,0)
+		return end
 
-					elseif propertyType == "colour" then
+		local destC = os.clock()
+		-- TODO: Add a way to properly verify an event exists.
 
-						v.r.text = tostring(value.r)
-						v.g.text = tostring(value.g)
-						v.b.text = tostring(value.b)
+		if instance and instance.events and instance.events["changed"] then
+			event = instance:changed(function(key,value,oldValue)
+				for _,v in pairs(scrollViewProperties.children) do
+					if v.name == key then
+						local propertyType = type(value)
+						if propertyType == "vector2" then
 
-					elseif propertyType == "vector3" then
+							v.x.text = tostring(value.x)
+							v.y.text = tostring(value.y)
 
-						v.x.text = tostring(value.x)
-						v.y.text = tostring(value.y)
-						v.z.text = tostring(value.z)
+						elseif propertyType == "colour" then
 
-					elseif propertyType == "guiCoord" then
+							v.r.text = tostring(value.r)
+							v.g.text = tostring(value.g)
+							v.b.text = tostring(value.b)
 
-						v.scaleX.text = tostring(value.scaleX)
-						v.scaleY.text = tostring(value.scaleY)
-						v.offsetX.text = tostring(value.offsetX)
-						v.offsetY.text = tostring(value.offsetY)
+						elseif propertyType == "vector3" then
 
-					elseif propertyType == "boolean" then
+							v.x.text = tostring(value.x)
+							v.y.text = tostring(value.y)
+							v.z.text = tostring(value.z)
 
-						v.bool.selected = value
+						elseif propertyType == "guiCoord" then
 
-					elseif isInstance(value) then
-						
-					elseif propertyType == "number" then
-						v.number.text = tostring(value)
-					else
-						v.input.text = tostring(value)
+							v.scaleX.text = tostring(value.scaleX)
+							v.scaleY.text = tostring(value.scaleY)
+							v.offsetX.text = tostring(value.offsetX)
+							v.offsetY.text = tostring(value.offsetY)
+
+						elseif propertyType == "boolean" then
+
+							v.bool.selected = value
+
+						elseif isInstance(value) then
+							
+						elseif propertyType == "number" then
+							v.number.text = tostring(value)
+						else
+							v.input.text = tostring(value)
+						end
 					end
 				end
+			end)
+		 end
+
+		 local eventsC = os.clock()
+		local members = engine.workshop:getMembersOfInstance( instance )
+
+		local y = 0
+
+		table.sort( members, function( a,b ) return a.property < b.property end ) -- alphabetical sort
+		local sortedC = os.clock()
+
+	 	for i, prop in pairs (members) do
+
+	 		if i % 8 == 0 then
+	 			wait()
+	 		end
+
+			local value = instance[prop.property]
+			local propertyType = type(value)
+			local readOnly = not prop.writable
+
+			if propertyType == "function" or propertyType == "table" then
+				-- Lua doesn't come with a "continue"
+				-- Teverse uses LuaJIT,
+				-- Here's a fancy functionality:
+				-- Jumps to the ::continue:: label
+				goto continue 
 			end
-		end)
-	 end
 
-	 local eventsC = os.clock()
-	local members = engine.workshop:getMembersOfInstance( instance )
+			local lblProp = generateLabel(prop.property, scrollViewProperties)
+			lblProp.position = guiCoord(0,3,0,y)
+			lblProp.size = guiCoord(0.47, -6, 0, 15)
+			lblProp.name = "lbl"..prop.property 
 
-	local y = 0
-
-	table.sort( members, function( a,b ) return a.property < b.property end ) -- alphabetical sort
-	local sortedC = os.clock()
-
- 	for i, prop in pairs (members) do
-
-		local value = instance[prop.property]
-		local propertyType = type(value)
-		local readOnly = not prop.writable
-
-		if propertyType == "function" or propertyType == "table" then
-			-- Lua doesn't come with a "continue"
-			-- Teverse uses LuaJIT,
-			-- Here's a fancy functionality:
-			-- Jumps to the ::continue:: label
-			goto continue 
-		end
-
-		local lblProp = generateLabel(prop.property, scrollViewProperties)
-		lblProp.position = guiCoord(0,3,0,y)
-		lblProp.size = guiCoord(0.47, -6, 0, 15)
-		lblProp.name = "lbl"..prop.property 
-
-		if readOnly then
-			lblProp.alpha = 0.5
-		end
+			if readOnly then
+				lblProp.alpha = 0.5
+			end
+			
+			local propContainer = engine.guiFrame() 
+			propContainer.parent = scrollViewProperties
+			propContainer.name = prop.property
+			propContainer.size = guiCoord(0.54, -9, 0, 21) -- Compensates for the natural padding inside a guiWindow.
+			propContainer.position = guiCoord(0.45,0,0,y)
+			propContainer.alpha = 0
 		
-		local propContainer = engine.guiFrame() 
-		propContainer.parent = scrollViewProperties
-		propContainer.name = prop.property
-		propContainer.size = guiCoord(0.54, -9, 0, 21) -- Compensates for the natural padding inside a guiWindow.
-		propContainer.position = guiCoord(0.45,0,0,y)
-		propContainer.alpha = 0
-	
 
-		if propertyType == "vector2" then
+			if propertyType == "vector2" then
 
-			local txtProp = generateInputBox(value.x, propContainer)
-			txtProp.name = "x"
-			txtProp.position = guiCoord(0,1,0,0)
-			txtProp.size = guiCoord(0.5, -1, 1, 0)
-			setReadOnly(txtProp, readOnly)
+				local txtProp = generateInputBox(value.x, propContainer)
+				txtProp.name = "x"
+				txtProp.position = guiCoord(0,1,0,0)
+				txtProp.size = guiCoord(0.5, -1, 1, 0)
+				setReadOnly(txtProp, readOnly)
 
-			local txtProp = generateInputBox(value.y, propContainer)
-			txtProp.name = "y"
-			txtProp.position = guiCoord(0.5,2,0,0)
-			txtProp.size = guiCoord(0.5, -1, 1, 0)
-			setReadOnly(txtProp, readOnly)
+				local txtProp = generateInputBox(value.y, propContainer)
+				txtProp.name = "y"
+				txtProp.position = guiCoord(0.5,2,0,0)
+				txtProp.size = guiCoord(0.5, -1, 1, 0)
+				setReadOnly(txtProp, readOnly)
 
-		elseif propertyType == "colour" then
+			elseif propertyType == "colour" then
 
-			local colourPreview = engine.guiFrame() 
-			colourPreview.name = "preview"
-			colourPreview.parent = propContainer
-			colourPreview.size = guiCoord(0.25, -10, 1, -12)
-			colourPreview.position = guiCoord(0.75, 7, 0, 6)
-			colourPreview.backgroundColour = value
+				local colourPreview = engine.guiFrame() 
+				colourPreview.name = "preview"
+				colourPreview.parent = propContainer
+				colourPreview.size = guiCoord(0.25, -10, 1, -12)
+				colourPreview.position = guiCoord(0.75, 7, 0, 6)
+				colourPreview.backgroundColour = value
 
-			local txtR = generateInputBox(value.r, propContainer)
-			txtR.name = "r"
-			txtR.position = guiCoord(0,1,0,0)
-			txtR.size = guiCoord(0.25, -1, 1, 0)
-			setReadOnly(txtR, readOnly)
+				local txtR = generateInputBox(value.r, propContainer)
+				txtR.name = "r"
+				txtR.position = guiCoord(0,1,0,0)
+				txtR.size = guiCoord(0.25, -1, 1, 0)
+				setReadOnly(txtR, readOnly)
 
-			txtR:textInput(function(value) -- Only fires when a user types in the box.
-					local col = instance[prop.property]
-					col.r = tonumber(value)
-					instance[prop.property] = col
-					colourPreview.backgroundColour = col
-			end)
+				txtR:textInput(function(value) -- Only fires when a user types in the box.
+						local col = instance[prop.property]
+						col.r = tonumber(value)
+						instance[prop.property] = col
+						colourPreview.backgroundColour = col
+						if tonumber(value) then savePoint() end
+				end)
 
-			local txtG = generateInputBox(value.g, propContainer)
-			txtG.name = "g"
-			txtG.position = guiCoord(0.25,1,0,0)
-			txtG.size = guiCoord(0.25, -1, 1, 0)
-			setReadOnly(txtG, readOnly)
+				local txtG = generateInputBox(value.g, propContainer)
+				txtG.name = "g"
+				txtG.position = guiCoord(0.25,1,0,0)
+				txtG.size = guiCoord(0.25, -1, 1, 0)
+				setReadOnly(txtG, readOnly)
 
-			txtG:textInput(function(value) -- Only fires when a user types in the box.
-					local col = instance[prop.property]
-					col.g = tonumber(value)
-					instance[prop.property] = col
-					colourPreview.backgroundColour = col				
-			end)
+				txtG:textInput(function(value) -- Only fires when a user types in the box.
+						local col = instance[prop.property]
+						col.g = tonumber(value)
+						instance[prop.property] = col
+						colourPreview.backgroundColour = col	
+						if tonumber(value) then savePoint() end			
+				end)
 
-			local txtB = generateInputBox(value.b, propContainer)
-			txtB.name = "b"
-			txtB.position = guiCoord(0.5,1,0,0)
-			txtB.size = guiCoord(0.25, -1, 1, 0)
-			setReadOnly(txtB, readOnly)
+				local txtB = generateInputBox(value.b, propContainer)
+				txtB.name = "b"
+				txtB.position = guiCoord(0.5,1,0,0)
+				txtB.size = guiCoord(0.25, -1, 1, 0)
+				setReadOnly(txtB, readOnly)
 
-			txtB:textInput(function(value) -- Only fires when a user types in the box.
-					local col = instance[prop.property]
-					col.b = tonumber(value)
-					instance[prop.property] = col
-					colourPreview.backgroundColour = col
-			end)
+				txtB:textInput(function(value) -- Only fires when a user types in the box.
+						local col = instance[prop.property]
+						col.b = tonumber(value)
+						instance[prop.property] = col
+						colourPreview.backgroundColour = col
+						if tonumber(value) then savePoint() end
+				end)
 
-		elseif propertyType == "vector3" then
+			elseif propertyType == "vector3" then
 
-			local txtX = generateInputBox(value.x, propContainer)
-			txtX.position = guiCoord(0,0,0,0)
-			txtX.name = "x"
-			txtX.size = guiCoord(1/3, -1, 1, 0)
-			setReadOnly(txtX, readOnly)
+				local txtX = generateInputBox(value.x, propContainer)
+				txtX.position = guiCoord(0,0,0,0)
+				txtX.name = "x"
+				txtX.size = guiCoord(1/3, -1, 1, 0)
+				setReadOnly(txtX, readOnly)
 
-			txtX:textInput(function(value) -- Only fires when a user types in the box.
-					local vec = instance[prop.property]
-					vec.x = tonumber(value)
-					instance[prop.property] = vec
-			end)
+				txtX:textInput(function(value) -- Only fires when a user types in the box.
+						local vec = instance[prop.property]
+						vec.x = tonumber(value)
+						instance[prop.property] = vec
+						if tonumber(value) then savePoint() end
+				end)
 
 
-			local txtY = generateInputBox(value.y, propContainer)
-			txtY.name = "y"
-			txtY.position = guiCoord(1/3,1,0,0)
-			txtY.size = guiCoord(1/3, -1, 1, 0)
-			setReadOnly(txtY, readOnly)
+				local txtY = generateInputBox(value.y, propContainer)
+				txtY.name = "y"
+				txtY.position = guiCoord(1/3,1,0,0)
+				txtY.size = guiCoord(1/3, -1, 1, 0)
+				setReadOnly(txtY, readOnly)
 
-			txtY:textInput(function(value) -- Only fires when a user types in the box.
-					local vec = instance[prop.property]
-					vec.y = tonumber(value)
-					instance[prop.property] = vec
-			end)
+				txtY:textInput(function(value) -- Only fires when a user types in the box.
+						local vec = instance[prop.property]
+						vec.y = tonumber(value)
+						instance[prop.property] = vec
+						if tonumber(value) then savePoint() end
+				end)
 
-			local txtZ = generateInputBox(value.z, propContainer)
-			txtZ.name = "z"
-			txtZ.position = guiCoord(2/3,2,0,0)
-			txtZ.size = guiCoord(1/3, -1, 1, 0)
-			setReadOnly(txtZ, readOnly)
+				local txtZ = generateInputBox(value.z, propContainer)
+				txtZ.name = "z"
+				txtZ.position = guiCoord(2/3,2,0,0)
+				txtZ.size = guiCoord(1/3, -1, 1, 0)
+				setReadOnly(txtZ, readOnly)
 
-			txtZ:textInput(function(value) -- Only fires when a user types in the box.
-					local vec = instance[prop.property]
-					vec.z = tonumber(value)
-					instance[prop.property] = vec
-			end)
+				txtZ:textInput(function(value) -- Only fires when a user types in the box.
+						local vec = instance[prop.property]
+						vec.z = tonumber(value)
+						instance[prop.property] = vec
+						if tonumber(value) then savePoint() end
+				end)
 
-		elseif propertyType == "quaternion" then
+			elseif propertyType == "quaternion" then
 
-			--quaternions are not suitable to be edited by hand
-			-- we'll allow people to edit it as an euler
+				--quaternions are not suitable to be edited by hand
+				-- we'll allow people to edit it as an euler
 
-			local asEuler = value:getEuler()
-			local txtX, txtY, txtZ
+				local asEuler = value:getEuler()
+				local txtX, txtY, txtZ
 
-			local function quatHandler()
-				if not (tonumber(txtX.text) and tonumber(txtY.text) and tonumber(txtZ.text)) then return end
-				local vec = vector3(tonumber(txtX.text),tonumber(txtY.text),tonumber(txtZ.text))
-				local newRot = quaternion():setEuler(vec)
-				instance[prop.property] = newRot
+				local function quatHandler()
+					if not (tonumber(txtX.text) and tonumber(txtY.text) and tonumber(txtZ.text)) then return end
+					local vec = vector3(tonumber(txtX.text),tonumber(txtY.text),tonumber(txtZ.text))
+					local newRot = quaternion():setEuler(vec)
+					instance[prop.property] = newRot
+						if newRot then savePoint() end
+				end
+
+				txtX = generateInputBox(asEuler.x, propContainer)
+				txtX.position = guiCoord(0,0,0,0)
+				txtX.name = "x"
+				txtX.size = guiCoord(1/3, -1, 1, 0)
+				setReadOnly(txtX, readOnly)
+
+				txtX:textInput(quatHandler)
+
+
+				txtY = generateInputBox(asEuler.y, propContainer)
+				txtY.name = "y"
+				txtY.position = guiCoord(1/3,1,0,0)
+				txtY.size = guiCoord(1/3, -1, 1, 0)
+				setReadOnly(txtY, readOnly)
+
+				txtY:textInput(quatHandler)
+
+				txtZ = generateInputBox(asEuler.z, propContainer)
+				txtZ.name = "z"
+				txtZ.position = guiCoord(2/3,2,0,0)
+				txtZ.size = guiCoord(1/3, -1, 1, 0)
+				setReadOnly(txtZ, readOnly)
+
+				txtZ:textInput(quatHandler)
+
+
+			elseif propertyType == "guiCoord" then
+
+				local scaleX = generateInputBox(value.scaleX, propContainer)
+				scaleX.name = "scaleX"
+				scaleX.position = guiCoord(0,1,0,0)
+				scaleX.size = guiCoord(0.25, -1, 1, 0)
+				setReadOnly(scaleX, readOnly)
+
+				scaleX:textInput(function(value) -- Only fires when a user types in the box.
+						local coord = instance[prop.property]
+						coord.scaleX = tonumber(value)
+						instance[prop.property] = coord
+						if tonumber(value) then savePoint() end
+				end)
+
+				local offsetX = generateInputBox(value.offsetX, propContainer)
+				offsetX.name = "offsetX"
+				offsetX.position = guiCoord(0.25,1,0,0)
+				offsetX.size = guiCoord(0.25, -1, 1, 0)
+				setReadOnly(offsetX, readOnly)
+
+				offsetX:textInput(function(value) -- Only fires when a user types in the box.
+						local coord = instance[prop.property]
+						coord.offsetX = tonumber(value)
+						instance[prop.property] = coord
+						if tonumber(value) then savePoint() end
+				end)
+
+				local scaleY = generateInputBox(value.scaleY, propContainer)
+				scaleY.name = "scaleY"
+				scaleY.position = guiCoord(0.5,2,0,0)
+				scaleY.size = guiCoord(0.25, -1, 1, 0)
+				setReadOnly(scaleY, readOnly)
+
+				scaleY:textInput(function(value) -- Only fires when a user types in the box.
+						local coord = instance[prop.property]
+						coord.scaleY = tonumber(value)
+						instance[prop.property] = coord
+						if tonumber(value) then savePoint() end
+				end)
+
+				local offsetY = generateInputBox(value.offsetY, propContainer)
+				offsetY.name = "offsetY"
+				offsetY.position = guiCoord(0.75,2,0,0)
+				offsetY.size = guiCoord(0.25, -1, 1, 0)
+				setReadOnly(offsetY, readOnly)
+
+				offsetY:textInput(function(value) -- Only fires when a user types in the box.
+						local coord = instance[prop.property]
+						coord.offsetY = tonumber(value)
+						instance[prop.property] = coord
+						if tonumber(value) then savePoint() end
+				end)
+
+			elseif propertyType == "boolean" then
+
+				local boolProp = engine.guiButton()
+				boolProp.name = "bool"
+				boolProp.parent = propContainer
+				boolProp.position = guiCoord(0,0,0,2)
+				boolProp.size = guiCoord(1, 0, 1, 0)
+				boolProp.text = ""
+				boolProp.guiStyle = enums.guiStyle.checkBox
+				boolProp.selected = value
+
+				boolProp:mouseLeftPressed(function()
+					boolProp.selected = not boolProp.selected
+					instance[prop.property] = boolProp.selected
+					savePoint()
+				end)
+
+			elseif isInstance(value) then
+				--TODO: Allow user to select instance using explorer...
+				local placeholder = generateLabel(" . " .. propertyType .. " . ", propContainer)
+				placeholder.position = guiCoord(0,0,0,0)
+				placeholder.size = guiCoord(1, 0, 1, 0)
+				placeholder.align = enums.align.middle
+				placeholder.alpha = 0.6
+			elseif propertyType == "number" then
+
+				local txtProp = generateInputBox(value, propContainer)
+				txtProp.name = "number"
+				txtProp.position = guiCoord(0,1,0,0)
+				txtProp.size = guiCoord(1, 0, 1, 0)
+				setReadOnly(txtProp, readOnly)
+
+				txtProp:textInput(function(value) -- Only fires when a user types in the box.
+						instance[prop.property] = tonumber(value)
+						if tonumber(value) then savePoint() end
+				end)
+
+			else
+				local txtProp = generateInputBox(value, propContainer)
+				txtProp.name = "input"
+				txtProp.position = guiCoord(0,1,0,0)
+				txtProp.size = guiCoord(1, 0, 1, 0)
+				setReadOnly(txtProp, readOnly)
+
+				txtProp:textInput(function(value) -- Only fires when a user types in the box.
+						instance[prop.property] = value
+						savePoint()
+				end)
 			end
 
-			txtX = generateInputBox(asEuler.x, propContainer)
-			txtX.position = guiCoord(0,0,0,0)
-			txtX.name = "x"
-			txtX.size = guiCoord(1/3, -1, 1, 0)
-			setReadOnly(txtX, readOnly)
+			y = y + 22
 
-			txtX:textInput(quatHandler)
-
-
-			txtY = generateInputBox(asEuler.y, propContainer)
-			txtY.name = "y"
-			txtY.position = guiCoord(1/3,1,0,0)
-			txtY.size = guiCoord(1/3, -1, 1, 0)
-			setReadOnly(txtY, readOnly)
-
-			txtY:textInput(quatHandler)
-
-			txtZ = generateInputBox(asEuler.z, propContainer)
-			txtZ.name = "z"
-			txtZ.position = guiCoord(2/3,2,0,0)
-			txtZ.size = guiCoord(1/3, -1, 1, 0)
-			setReadOnly(txtZ, readOnly)
-
-			txtZ:textInput(quatHandler)
-
-
-		elseif propertyType == "guiCoord" then
-
-			local scaleX = generateInputBox(value.scaleX, propContainer)
-			scaleX.name = "scaleX"
-			scaleX.position = guiCoord(0,1,0,0)
-			scaleX.size = guiCoord(0.25, -1, 1, 0)
-			setReadOnly(scaleX, readOnly)
-
-			scaleX:textInput(function(value) -- Only fires when a user types in the box.
-					local coord = instance[prop.property]
-					coord.scaleX = tonumber(value)
-					instance[prop.property] = coord
-			end)
-
-			local offsetX = generateInputBox(value.offsetX, propContainer)
-			offsetX.name = "offsetX"
-			offsetX.position = guiCoord(0.25,1,0,0)
-			offsetX.size = guiCoord(0.25, -1, 1, 0)
-			setReadOnly(offsetX, readOnly)
-
-			offsetX:textInput(function(value) -- Only fires when a user types in the box.
-					local coord = instance[prop.property]
-					coord.offsetX = tonumber(value)
-					instance[prop.property] = coord
-			end)
-
-			local scaleY = generateInputBox(value.scaleY, propContainer)
-			scaleY.name = "scaleY"
-			scaleY.position = guiCoord(0.5,2,0,0)
-			scaleY.size = guiCoord(0.25, -1, 1, 0)
-			setReadOnly(scaleY, readOnly)
-
-			scaleY:textInput(function(value) -- Only fires when a user types in the box.
-					local coord = instance[prop.property]
-					coord.scaleY = tonumber(value)
-					instance[prop.property] = coord
-			end)
-
-			local offsetY = generateInputBox(value.offsetY, propContainer)
-			offsetY.name = "offsetY"
-			offsetY.position = guiCoord(0.75,2,0,0)
-			offsetY.size = guiCoord(0.25, -1, 1, 0)
-			setReadOnly(offsetY, readOnly)
-
-			offsetY:textInput(function(value) -- Only fires when a user types in the box.
-					local coord = instance[prop.property]
-					coord.offsetY = tonumber(value)
-					instance[prop.property] = coord
-			end)
-
-		elseif propertyType == "boolean" then
-
-			local boolProp = engine.guiButton()
-			boolProp.name = "bool"
-			boolProp.parent = propContainer
-			boolProp.position = guiCoord(0,0,0,2)
-			boolProp.size = guiCoord(1, 0, 1, 0)
-			boolProp.text = ""
-			boolProp.guiStyle = enums.guiStyle.checkBox
-			boolProp.selected = value
-
-			boolProp:mouseLeftPressed(function()
-				boolProp.selected = not boolProp.selected
-				instance[prop.property] = boolProp.selected
-			end)
-
-		elseif isInstance(value) then
-			--TODO: Allow user to select instance using explorer...
-			local placeholder = generateLabel(" . " .. propertyType .. " . ", propContainer)
-			placeholder.position = guiCoord(0,0,0,0)
-			placeholder.size = guiCoord(1, 0, 1, 0)
-			placeholder.align = enums.align.middle
-			placeholder.alpha = 0.6
-		elseif propertyType == "number" then
-
-			local txtProp = generateInputBox(value, propContainer)
-			txtProp.name = "number"
-			txtProp.position = guiCoord(0,1,0,0)
-			txtProp.size = guiCoord(1, 0, 1, 0)
-			setReadOnly(txtProp, readOnly)
-
-			txtProp:textInput(function(value) -- Only fires when a user types in the box.
-					instance[prop.property] = tonumber(value)
-			end)
-
-		else
-			local txtProp = generateInputBox(value, propContainer)
-			txtProp.name = "input"
-			txtProp.position = guiCoord(0,1,0,0)
-			txtProp.size = guiCoord(1, 0, 1, 0)
-			setReadOnly(txtProp, readOnly)
-
-			txtProp:textInput(function(value) -- Only fires when a user types in the box.
-					instance[prop.property] = value
-			end)
+			::continue::
 		end
 
-		y = y + 22
-
-		::continue::
-	end
-
-	scrollViewProperties.canvasSize = guiCoord(1,0,0,y+80)
+		scrollViewProperties.canvasSize = guiCoord(1,0,0,y+80)
+	end)
 
 end
 generateProperties(txtProperty)
@@ -631,8 +704,8 @@ local moveStep = 0.5 -- how fast the camera moves
 local camera = workspace.camera
 
 -- Setup the initial position of the camera
-camera.position = vector3(0, -5, 10)
-
+camera.position = vector3(11, 5, 10)
+camera:lookAt(vector3(0,0,0))
 -- Camera key input values
 local cameraKeyEventLooping = false
 local cameraKeyArray = {
@@ -749,6 +822,7 @@ local function validateItems()
 		end
 	end
 end
+
 local focusOnObjectInHierarchy;
 local hierarchy = {  }
 
@@ -763,6 +837,54 @@ engine.graphics:frameDrawn(function()
 	end
 end)
 
+local renderHierarchy;
+
+local function updateBounding(  )
+	if #selectedItems > 1 then
+		outlineSelectedBlock.opacity = 1
+
+		local i = 1
+		while selectedItems[i].className ~= "block" and i <= #selectedItems do
+			i = i + 1
+		end
+
+		if i ~= #selectedItems then
+		
+			-- used to calculate bounding box area...
+			local upper = selectedItems[i].position + (selectedItems[i].size/2) or vector3(0.1, 0.1, 0.1)
+			local lower = selectedItems[i].position - (selectedItems[i].size/2) or vector3(0.1, 0.1, 0.1)
+
+			for i, v in pairs(selectedItems) do
+				if type(v.size) == "vector2" and type(v.position) == "vector3" then
+					local topLeft = v.position + (v.size/2)or vector3(0.1, 0.1, 0.1)
+					local btmRight = v.position - (v.size/2)or vector3(0.1, 0.1, 0.1)
+				
+					upper.x = math.max(topLeft.x, upper.x)
+					upper.y = math.max(topLeft.y, upper.y)
+					upper.z = math.max(topLeft.z, upper.z)
+
+					lower.x = math.min(btmRight.x, lower.x)
+					lower.y = math.min(btmRight.y, lower.y)
+					lower.z = math.min(btmRight.z, lower.z)
+				end
+			end
+
+			outlineSelectedBlock.position = (upper+lower)/2
+			outlineSelectedBlock.size = upper-lower
+		else
+			outlineSelectedBlock.opacity = 0
+		end
+	elseif #selectedItems == 1 and selectedItems[1].className == "block" then
+		outlineSelectedBlock.opacity = 1
+		outlineSelectedBlock.position = selectedItems[1].position
+		outlineSelectedBlock.size = selectedItems[1].size or vector3(0.1, 0.1, 0.1)
+	elseif #selectedItems == 0 then
+		outlineSelectedBlock.opacity = 0
+	end
+
+	txtProperty.text = #selectedItems .. " item" .. (#selectedItems == 1 and "" or "s") .. " selected"
+end
+
 engine.input:mouseLeftPressed(function( input )
 
 
@@ -776,6 +898,7 @@ engine.input:mouseLeftPressed(function( input )
 		selectedItems = {}
 		outlineSelectedBlock.opacity = 0
 		txtProperty.text = "0 items selected"
+		renderHierarchy()
 		generateProperties( nil )
 		--[[for btn,v in pairs(hierachy) do
 			if btn.btn.backgroundColour ~= themeColourButton then
@@ -811,37 +934,9 @@ engine.input:mouseLeftPressed(function( input )
 		generateProperties(mouseHit)
 	end
 
-	if #selectedItems > 1 then
-		outlineSelectedBlock.opacity = 1
-		
-		-- used to calculate bounding box area...
-		local upper = selectedItems[1].position + (selectedItems[1].size/2) or vector3(0.1, 0.1, 0.1)
-		local lower = selectedItems[1].position - (selectedItems[1].size/2) or vector3(0.1, 0.1, 0.1)
-
-		for i, v in pairs(selectedItems) do
-			local topLeft = v.position + (v.size/2)or vector3(0.1, 0.1, 0.1)
-			local btmRight = v.position - (v.size/2)or vector3(0.1, 0.1, 0.1)
-		
-			upper.x = math.max(topLeft.x, upper.x)
-			upper.y = math.max(topLeft.y, upper.y)
-			upper.z = math.max(topLeft.z, upper.z)
-
-			lower.x = math.min(btmRight.x, lower.x)
-			lower.y = math.min(btmRight.y, lower.y)
-			lower.z = math.min(btmRight.z, lower.z)
-		end
-
-		outlineSelectedBlock.position = (upper+lower)/2
-		outlineSelectedBlock.size = upper-lower
-	elseif #selectedItems == 1 then
-		outlineSelectedBlock.opacity = 1
-		outlineSelectedBlock.position = selectedItems[1].position
-		outlineSelectedBlock.size = selectedItems[1].size or vector3(0.1, 0.1, 0.1)
-	elseif #selectedItems == 0 then
-		outlineSelectedBlock.opacity = 0
-	end
-
-	txtProperty.text = #selectedItems .. " item" .. (#selectedItems == 1 and "" or "s") .. " selected"
+	updateBounding()
+	print("render")
+	renderHierarchy()
 end)
 
 
@@ -959,6 +1054,10 @@ local hierarchyElementCount = 0
 local debuggingCount = 0
 local viewOffset = 0
 
+local hierarchyExpandColour = colour():setRGB(132, 30, 30)
+local hierarchyCondenseColour = colour():setRGB(132, 30, 30)
+local hierarchyNoChildrenColour = colour():setRGB(41, 41, 41)
+
 local windowHierarchy = engine.guiWindow()
 windowHierarchy.size = guiCoord(0, 240, 0.4, -12)
 windowHierarchy.position = guiCoord(1, -240, 0, 22)
@@ -975,12 +1074,13 @@ local scrollBarHierarchy = engine.guiFrame("scrollBarFrame")
 scrollBarHierarchy.size = guiCoord(1,-5,1,-45)
 scrollBarHierarchy.parent = windowHierarchy
 scrollBarHierarchy.position = guiCoord(1,-20,0,0)
-scrollBarHierarchy.alpha = 0.2
+scrollBarHierarchy.alpha = 0.05
 
 local scrollBarPositionFrame = engine.guiFrame("scrollBarPositionFrame")
 scrollBarPositionFrame.size = guiCoord(1, 0, 0.1, 0)
 scrollBarPositionFrame.parent = scrollBarHierarchy
 scrollBarPositionFrame.position = guiCoord(0, 0, 0, 0)
+scrollBarPositionFrame.alpha = 0.1
 
 local scrollBarMarkersFolder = engine.folder("scrollBarMarkers")
 scrollBarMarkersFolder.parent = scrollBarHierarchy
@@ -993,7 +1093,7 @@ scrollViewHierarchy.alpha = 0
 
 local buttonLog = {}
 
-local function renderHierarchy( arrE, parentCount )
+renderHierarchy = function( arrE, parentCount )
 	local start = os.clock()
 	if not arrE then
 		--scrollViewHierarchy:destroyAllChildren()
@@ -1028,14 +1128,14 @@ local function renderHierarchy( arrE, parentCount )
 				btn = buttonLog[obj][1]
 				buttonLog[obj][2] = true
 				btn.position = guiCoord(0,parentCount*11,0,((hierarchyElementCount-1)*21) - viewOffset)
-				btn.size = guiCoord(1,  -14 - (parentCount*11), 0, 21)
+				btn.size = guiCoord(1,  - (parentCount*11), 0, 21)
 				btn.name = tostring((hierarchyElementCount-1)*21)
 			else
 				btn = engine.guiButton()
 				btn.text = obj.name and obj.name or "unnamed"
 				btn.align = enums.align.middleLeft
 				btn.position = guiCoord(0,parentCount*11,0,((hierarchyElementCount-1)*21) - viewOffset)
-				btn.size = guiCoord(1,  -14 - (parentCount*11), 0, 21)
+				btn.size = guiCoord(1,  - (parentCount*11), 0, 21)
 				btn.backgroundColour = themeColourButton
 				btn.textColour = themeColourWindowText
 				btn.fontSize = 9
@@ -1047,24 +1147,45 @@ local function renderHierarchy( arrE, parentCount )
 				local lastPress = 0
 				btn:mouseLeftPressed(function ()
 					if (os.clock() - lastPress) < 0.4 then
-						-- double press
-						hierArray[obj][1] = not hierArray[obj][1]
-						if hierArray[obj][1] then
-							if obj.children then
-								for _,v in pairs(obj.children) do
-									hierArray[obj][2][v] = {false, {}}
-								end
-							elseif not isInstance(obj) then
-								for _,v in pairs(obj) do
-									if isInstance(v) then
+						if (isInstance(obj) and obj.children and #obj.children > 0) or (not isInstance(obj)) then
+							-- double press
+							hierArray[obj][1] = not hierArray[obj][1]
+							if hierArray[obj][1] then
+								if obj.children then
+									for _,v in pairs(obj.children) do
 										hierArray[obj][2][v] = {false, {}}
+									end
+								elseif not isInstance(obj) then
+									for _,v in pairs(obj) do
+										if isInstance(v) then
+											hierArray[obj][2][v] = {false, {}}
+										end
 									end
 								end
 							end
+							renderHierarchy()
 						end
-						renderHierarchy()
 					elseif isInstance(obj) then
+						if engine.input:isKeyDown(enums.key.leftShift) then
+							local found = false
+							for i,v in pairs(selectedItems) do
+								if v == obj then 
+									found = true
+									table.remove(selectedItems, i)
+								end
+							end
+							if not found then
+								table.insert(selectedItems, obj)
+							end
+						else
+							selectedItems = { obj }
+						end
 						generateProperties(obj)
+						renderHierarchy()
+
+						updateBounding()
+	
+
 					end
 					lastPress = os.clock()
 				end)
@@ -1073,12 +1194,21 @@ local function renderHierarchy( arrE, parentCount )
 			end
 
 			if expanded then
-				btn:setText("#707070[-]#".. themeColourButtonText:getHex() .." " .. (obj.name  or "unnamed"))
+				btn:setText("#" .. hierarchyCondenseColour:getHex() .. "[-]#" .. themeColourButtonText:getHex() .." " .. (obj.name  or "unnamed"))
 			elseif (isInstance(obj) and obj.children and #obj.children > 0) or (not isInstance(obj)) then
-				btn:setText("#707070[+]#".. themeColourButtonText:getHex() .." " .. (obj.name  or "unnamed"))
+				btn:setText("#" .. hierarchyExpandColour:getHex() .. "[+]#".. themeColourButtonText:getHex() .." " .. (obj.name  or "unnamed"))
 			else 
-				btn:setText("#232323[ ]#".. themeColourButtonText:getHex() .." " .. (obj.name  or "unnamed"))
+				btn:setText("#" .. hierarchyNoChildrenColour:getHex() .. "[ ]#".. themeColourButtonText:getHex() .." " .. (obj.name  or "unnamed"))
 			end		
+
+			btn.backgroundColour = themeColourButton
+
+
+			for _,v in pairs(selectedItems) do 
+				if v == obj then
+					btn.backgroundColour = themeColourButtonHighlighted
+				end
+			end
 		end
 
 		if expanded then	
