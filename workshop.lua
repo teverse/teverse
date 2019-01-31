@@ -1,4 +1,4 @@
- -- Copyright (c) 2019 teverse.com
+ -- Copyright (c) 2018 teverse.com
  -- workshop.lua
 
  -- This script has access to 'engine.workshop' APIs.
@@ -1024,7 +1024,7 @@ end)
 
 engine.debug:output(function(msg, type)
 
-	if #outputLines > 4 then
+	if #outputLines > 5 then
 		table.remove(outputLines, 1)
 	end
 	table.insert(outputLines, {os.clock(), msg, type})
@@ -1054,9 +1054,9 @@ local hierarchyElementCount = 0
 local debuggingCount = 0
 local viewOffset = 0
 
-local hierarchyExpandColour = colour():setRGB(132, 30, 30)
-local hierarchyCondenseColour = colour():setRGB(132, 30, 30)
-local hierarchyNoChildrenColour = colour():setRGB(41, 41, 41)
+local hierarchyExpandColour = colour:fromRGB(132, 30, 30)
+local hierarchyCondenseColour = colour:fromRGB(132, 30, 30)
+local hierarchyNoChildrenColour = colour:fromRGB(41, 41, 41)
 
 local windowHierarchy = engine.guiWindow()
 windowHierarchy.size = guiCoord(0, 240, 0.4, -12)
@@ -1415,11 +1415,9 @@ windowAssets.backgroundColour = themeColourWindow
 windowAssets.fontFile = normalFontName
 windowAssets.textColour = themeColourWindowText
 
-local newLight = engine.light("light1")
-newLight.offsetPosition = vector3(3,4,0)
-newLight.parent = workspace
-newLight.parent = newBlock
+
 
 wait(0.5)
 renderHierarchy()
 
+print("done")
