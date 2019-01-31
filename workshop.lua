@@ -1024,7 +1024,7 @@ end)
 
 engine.debug:output(function(msg, type)
 
-	if #outputLines > 250 then
+	if #outputLines > 4 then
 		table.remove(outputLines, 1)
 	end
 	table.insert(outputLines, {os.clock(), msg, type})
