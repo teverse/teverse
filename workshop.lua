@@ -1,4 +1,4 @@
- -- Copyright (c) 2018 teverse.com
+ -- Copyright (c) 2019 teverse.com
  -- workshop.lua
 
  -- This script has access to 'engine.workshop' APIs.
@@ -1120,7 +1120,7 @@ renderHierarchy = function( arrE, parentCount )
 		local childFocused = arr[2]
 
 		if (currentY > (viewOffset - excess) and currentY < (viewOffset + viewHeight + excess)) then 
-			local btn
+			local btn, btnbtn
 			debuggingCount = debuggingCount + 1
 			if ( buttonLog[obj] ) then
 				-- reuse old btn
@@ -1130,22 +1130,38 @@ renderHierarchy = function( arrE, parentCount )
 				btn.position = guiCoord(0,parentCount*11,0,((hierarchyElementCount-1)*21) - viewOffset)
 				btn.size = guiCoord(1,  - (parentCount*11), 0, 21)
 				btn.name = tostring((hierarchyElementCount-1)*21)
+				btnbtn = btn.btn
 			else
-				btn = engine.guiButton()
-				btn.text = obj.name and obj.name or "unnamed"
-				btn.align = enums.align.middleLeft
+				btn = engine.guiFrame()
 				btn.position = guiCoord(0,parentCount*11,0,((hierarchyElementCount-1)*21) - viewOffset)
 				btn.size = guiCoord(1,  - (parentCount*11), 0, 21)
 				btn.backgroundColour = themeColourButton
-				btn.textColour = themeColourWindowText
-				btn.fontSize = 9
-				btn.wrap = false
-				btn.fontFile = normalFontName
 				btn.name = tostring((hierarchyElementCount-1)*21) -- stores the button's "real" position
 				buttonLog[obj] = {btn, true}
 
+				btnbtn = engine.guiButton()
+				btnbtn.text = obj.name and obj.name or "unnamed"
+				btnbtn.align = enums.align.middleLeft
+				btnbtn.position = guiCoord(0,27,0,0)
+				btnbtn.size = guiCoord(1, -27, 1, 0)
+				btnbtn.guiStyle = enums.guiStyle.noBackground
+				btnbtn.textColour = themeColourWindowText
+				btnbtn.parent=btn
+				btnbtn.fontSize = 9
+				btnbtn.wrap = false
+				btnbtn.fontFile = normalFontName
+				btnbtn.name = "btn"
+
+				local btnImg = engine.guiImage()
+				btnImg.size = guiCoord(0, 20, 0, 17)
+				btnImg.position = guiCoord(0, 5, 0, 2)
+				btnImg.parent = btn
+				btnImg.guiStyle = enums.guiStyle.noBackground
+				btnImg.imageColour = colour(1,1,1)
+				btnImg.texture = "local:block.png";
+
 				local lastPress = 0
-				btn:mouseLeftPressed(function ()
+				btnbtn:mouseLeftPressed(function ()
 					if (os.clock() - lastPress) < 0.4 then
 						if (isInstance(obj) and obj.children and #obj.children > 0) or (not isInstance(obj)) then
 							-- double press
@@ -1194,11 +1210,11 @@ renderHierarchy = function( arrE, parentCount )
 			end
 
 			if expanded then
-				btn:setText("#" .. hierarchyCondenseColour:getHex() .. "[-]#" .. themeColourButtonText:getHex() .." " .. (obj.name  or "unnamed"))
+				btnbtn:setText("#" .. hierarchyCondenseColour:getHex() .. "[-]#" .. themeColourButtonText:getHex() .." " .. (obj.name  or "unnamed"))
 			elseif (isInstance(obj) and obj.children and #obj.children > 0) or (not isInstance(obj)) then
-				btn:setText("#" .. hierarchyExpandColour:getHex() .. "[+]#".. themeColourButtonText:getHex() .." " .. (obj.name  or "unnamed"))
+				btnbtn:setText("#" .. hierarchyExpandColour:getHex() .. "[+]#".. themeColourButtonText:getHex() .." " .. (obj.name  or "unnamed"))
 			else 
-				btn:setText("#" .. hierarchyNoChildrenColour:getHex() .. "[ ]#".. themeColourButtonText:getHex() .." " .. (obj.name  or "unnamed"))
+				btnbtn:setText("#" .. hierarchyNoChildrenColour:getHex() .. "[ ]#".. themeColourButtonText:getHex() .." " .. (obj.name  or "unnamed"))
 			end		
 
 			btn.backgroundColour = themeColourButton
