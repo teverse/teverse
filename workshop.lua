@@ -109,14 +109,14 @@ end
 local normalFontName = "OpenSans-Regular"
 local boldFontName = "OpenSans-Bold"
 
-local themeColourWindow = colour(8/255, 8/255, 9/255)
+local themeColourWindow = colour:fromRGB(61, 66, 71)
 local themeColourWindowText = colour(1, 1, 1)
 
-local themeColourToolBar = colour(8/255, 8/255, 9/255)
+local themeColourToolBar = colour:fromRGB(61, 66, 71)
 local themeColourToolBarText = colour(1, 1, 1)
 
-local themeColourButton = colour(15/255, 15/255, 16/255)
-local themeColourButtonHighlighted = colour(21/255, 21/255, 22/255)
+local themeColourButton = colour:fromRGB(78, 82, 86)
+local themeColourButtonHighlighted = colour:fromRGB(96, 105, 114)
 local themeColourButtonText = colour(1, 1, 1)
  
 -- Menu Bar Creation
@@ -1020,8 +1020,6 @@ codeInputBox:keyPressed(function(inputObj)
 		codeInputBox.text = lastCmd
 	end
 end)
-	lbl:setText("Output machine br0ke.")
---[[
 
 engine.debug:output(function(msg, type)
 
@@ -1045,7 +1043,7 @@ engine.debug:output(function(msg, type)
 	lbl.size = guiCoord(1, -10, 0, textSize.y)
 	scrollViewOutput.canvasSize = guiCoord(1, 0, 0, textSize.y)
 end)
-]]
+
 
 -- Hierarchy
 -- This hierarchy only loads a certain number of elements into the gui
