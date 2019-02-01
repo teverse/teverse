@@ -1020,7 +1020,8 @@ codeInputBox:keyPressed(function(inputObj)
 		codeInputBox.text = lastCmd
 	end
 end)
-
+	lbl:setText("Output machine br0ke.")
+--[[
 
 engine.debug:output(function(msg, type)
 
@@ -1044,6 +1045,7 @@ engine.debug:output(function(msg, type)
 	lbl.size = guiCoord(1, -10, 0, textSize.y)
 	scrollViewOutput.canvasSize = guiCoord(1, 0, 0, textSize.y)
 end)
+]]
 
 -- Hierarchy
 -- This hierarchy only loads a certain number of elements into the gui
