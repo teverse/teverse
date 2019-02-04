@@ -1071,7 +1071,7 @@ windowHierarchy.textColour = themeColourWindowText
 windowHierarchy.guiStyle = enums.guiStyle.windowNoCloseButton
 
 local scrollBarHierarchy = engine.guiFrame("scrollBarFrame")
-scrollBarHierarchy.size = guiCoord(1,-5,1,-21)
+scrollBarHierarchy.size = guiCoord(1,-5,1,-1)
 scrollBarHierarchy.parent = windowHierarchy
 scrollBarHierarchy.position = guiCoord(1,-20,0,0)
 scrollBarHierarchy.alpha = 0.05
@@ -1086,7 +1086,7 @@ local scrollBarMarkersFolder = engine.folder("scrollBarMarkers")
 scrollBarMarkersFolder.parent = scrollBarHierarchy
 
 local scrollViewHierarchy = engine.guiFrame("scrollView")
-scrollViewHierarchy.size = guiCoord(1,-25,1,-21)
+scrollViewHierarchy.size = guiCoord(1,-25,1,-1)
 scrollViewHierarchy.parent = windowHierarchy
 scrollViewHierarchy.position = guiCoord(0,0,0,0)
 scrollViewHierarchy.alpha = 0
