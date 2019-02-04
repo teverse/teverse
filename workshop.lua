@@ -1415,6 +1415,11 @@ windowAssets.backgroundColour = themeColourWindow
 windowAssets.fontFile = normalFontName
 windowAssets.textColour = themeColourWindowText
 
+local newLight = engine.light("light1")	
+newLight.offsetPosition = vector3(3,4,0)	
+newLight.parent = workspace	
+newLight.type = enums.lightType.directional
+newLight.offsetRotation = quaternion():setEuler(-.2,0.2,0)
 
 
 wait(0.5)
