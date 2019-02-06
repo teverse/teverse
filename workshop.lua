@@ -173,6 +173,7 @@ menuInsertBlock:mouseLeftPressed(function ()
 	local newBlock = engine.block("block")
 	newBlock.colour = colour(1,0,0)
 	newBlock.size = vector3(1,1,1)
+
 	newBlock.parent = workspace
 
 	local camera = workspace.camera
@@ -783,6 +784,8 @@ newBlock.colour = colour(1,0,0)
 newBlock.size = vector3(1,1,1)
 newBlock.position = vector3(0,0,0)
 newBlock.parent = workspace
+newBlock.opacity = 0.1
+
 
 local newBlock = engine.block("block2")
 newBlock.colour = colour(0,1,0)
@@ -840,6 +843,7 @@ end)
 local renderHierarchy;
 
 local function updateBounding(  )
+	print("Update bounding", #selectedItems)
 	if #selectedItems > 1 then
 		outlineSelectedBlock.opacity = 1
 
@@ -879,6 +883,7 @@ local function updateBounding(  )
 		outlineSelectedBlock.position = selectedItems[1].position
 		outlineSelectedBlock.size = selectedItems[1].size or vector3(0.1, 0.1, 0.1)
 	elseif #selectedItems == 0 then
+		print("op 0")
 		outlineSelectedBlock.opacity = 0
 	end
 
@@ -897,7 +902,7 @@ engine.input:mouseLeftPressed(function( input )
 		-- User clicked empty space, deselect everything??
 		selectedItems = {}
 		outlineSelectedBlock.opacity = 0
-		txtProperty.text = "0 items selected"
+		txtProperty.text = "Nothing selected"
 		renderHierarchy()
 		generateProperties( nil )
 		--[[for btn,v in pairs(hierachy) do
@@ -935,7 +940,7 @@ engine.input:mouseLeftPressed(function( input )
 	end
 
 	updateBounding()
-	print("render")
+
 	renderHierarchy()
 end)
 
@@ -1092,6 +1097,11 @@ scrollViewHierarchy.position = guiCoord(0,0,0,0)
 scrollViewHierarchy.alpha = 0
 
 local buttonLog = {}
+local classNameIcons = {
+	["light"] = "light.png",
+	["block"] = "block.png",
+	["camera"] = "TeverseCamera.png"
+}
 
 renderHierarchy = function( arrE, parentCount )
 	local start = os.clock()
@@ -1152,13 +1162,21 @@ renderHierarchy = function( arrE, parentCount )
 				btnbtn.fontFile = normalFontName
 				btnbtn.name = "btn"
 
-				local btnImg = engine.guiImage()
-				btnImg.size = guiCoord(0, 20, 0, 17)
-				btnImg.position = guiCoord(0, 5, 0, 2)
-				btnImg.parent = btn
-				btnImg.guiStyle = enums.guiStyle.noBackground
-				btnImg.imageColour = colour(1,1,1)
-				btnImg.texture = "local:block.png";
+				if (classNameIcons[obj.className]) then
+					local btnImg = engine.guiImage()
+					btnImg.size = guiCoord(0, 20, 0, 17)
+					btnImg.position = guiCoord(0, 5, 0, 2)
+					btnImg.parent = btn
+					btnImg.guiStyle = enums.guiStyle.noBackground
+					btnImg.imageColour = colour(1,1,1)
+					btnImg.texture = "local:" .. classNameIcons[obj.className];
+
+					if obj.className == "light" or obj.className == "camera" then
+						btnImg.size = guiCoord(0, 17, 0, 17)
+					end
+				else
+					btnbtn.position = guiCoord(0,7,0,0)
+				end
 
 				local lastPress = 0
 				btnbtn:mouseLeftPressed(function ()
@@ -1420,7 +1438,7 @@ newLight.offsetPosition = vector3(3,4,0)
 newLight.parent = workspace	
 newLight.type = enums.lightType.directional
 newLight.offsetRotation = quaternion():setEuler(-.2,0.2,0)
-
+newLight.type = enums.lightType.point
 
 wait(0.5)
 renderHierarchy()
