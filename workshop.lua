@@ -1251,7 +1251,7 @@ renderHierarchy = function( arrE, parentCount )
 
 	end
 
-	local sizeTheory = hierarchyElementCount*21
+	local sizeTheory = (hierarchyElementCount+2)*21
 	if not arrE then
 		scrollBarPositionFrame.size = guiCoord(1, 0, viewHeight / sizeTheory, 0)
 		for obj, btn in pairs(buttonLog) do
@@ -1273,7 +1273,7 @@ scrollBarHierarchy:mouseLeftPressed(function ()
 	local myPosition = scrollBarHierarchy.absolutePosition.y
 	local relativePosition = mousePosition - myPosition
 
-	local sizeTheory = hierarchyElementCount*21
+	local sizeTheory = (hierarchyElementCount+2)*21
 	local sizeReal = scrollViewHierarchy.absoluteSize.y
 	local overflowSize = sizeTheory - sizeReal
 
@@ -1317,7 +1317,7 @@ local function handleScrollBarWheel(inpObj)
 
 
 		if dist ~= 0 then
-			local sizeTheory = hierarchyElementCount*21
+			local sizeTheory = (hierarchyElementCount+2)*21
 			local sizeReal = scrollViewHierarchy.absoluteSize.y
 			local overflowSize = sizeTheory - sizeReal
 			upperPadding = 0 
@@ -1375,7 +1375,7 @@ scrollBarPositionFrame:mouseLeftPressed(function ()
 		end
 
 		if dist ~= 0 then
-			local sizeTheory = hierarchyElementCount*21
+			local sizeTheory = (hierarchyElementCount+2)*21
 			local sizeReal = scrollViewHierarchy.absoluteSize.y
 			local overflowSize = sizeTheory - sizeReal
 			upperPadding = 0 
