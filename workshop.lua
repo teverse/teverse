@@ -826,7 +826,7 @@ local function validateItems()
 	end
 end
 
-local focusOnObjectInHierarchy;
+local focusOnObjectInHierarchy, setHierarchyPartOpened, highlightInstanceInHierarchy;
 local hierarchy = {  }
 
 engine.graphics:frameDrawn(function()	
@@ -843,7 +843,6 @@ end)
 local renderHierarchy;
 
 local function updateBounding(  )
-	print("Update bounding", #selectedItems)
 	if #selectedItems > 1 then
 		outlineSelectedBlock.opacity = 1
 
@@ -936,6 +935,7 @@ engine.input:mouseLeftPressed(function( input )
 	if doSelect then
 	--	focusOnObjectInHierarchy(mouseHit)
 		table.insert(selectedItems, mouseHit)
+		highlightInstanceInHierarchy(mouseHit)
 		generateProperties(mouseHit)
 	end
 
@@ -1103,6 +1103,25 @@ local classNameIcons = {
 	["camera"] = "TeverseCamera.png"
 }
 
+setHierarchyPartOpened = function(obj, isSelected)
+	hierarchy[obj][1] = isSelected
+
+	if hierarchy[obj][1] then
+		if obj.children then
+			for _,v in pairs(obj.children) do
+				hierarchy[obj][2][v] = {false, {}}
+			end
+		elseif not isInstance(obj) then
+			for _,v in pairs(obj) do
+				if isInstance(v) then
+					hierarchy[obj][2][v] = {false, {}}
+				end
+			end
+		end
+	end
+
+end
+
 renderHierarchy = function( arrE, parentCount )
 	local start = os.clock()
 	if not arrE then
@@ -1120,8 +1139,8 @@ renderHierarchy = function( arrE, parentCount )
 	
 
 	if not parentCount then parentCount = 0 end
-	local hierArray = arrE or hierarchy
-
+	local hierArray = arrE and arrE or hierarchy
+--arr is bool
 	for obj, arr in pairs(hierArray) do
 		hierarchyElementCount=hierarchyElementCount+1
 		local currentY = hierarchyElementCount * 21
@@ -1140,6 +1159,7 @@ renderHierarchy = function( arrE, parentCount )
 				btn.position = guiCoord(0,parentCount*11,0,((hierarchyElementCount-1)*21) - viewOffset)
 				btn.size = guiCoord(1,  - (parentCount*11), 0, 21)
 				btn.name = tostring((hierarchyElementCount-1)*21)
+				arr[3] = (hierarchyElementCount-1)*21 -- save the btn's position to table.
 				btnbtn = btn.btn
 			else
 				btn = engine.guiFrame()
@@ -1147,6 +1167,7 @@ renderHierarchy = function( arrE, parentCount )
 				btn.size = guiCoord(1,  - (parentCount*11), 0, 21)
 				btn.backgroundColour = themeColourButton
 				btn.name = tostring((hierarchyElementCount-1)*21) -- stores the button's "real" position
+				arr[3] = (hierarchyElementCount-1)*21 -- save the btn's position to table.
 				buttonLog[obj] = {btn, true}
 
 				btnbtn = engine.guiButton()
@@ -1243,6 +1264,10 @@ renderHierarchy = function( arrE, parentCount )
 					btn.backgroundColour = themeColourButtonHighlighted
 				end
 			end
+		else
+			--btn not visible.
+
+			arr[3] = (hierarchyElementCount-1)*21 -- save the btn's theoretical position
 		end
 
 		if expanded then	
@@ -1264,6 +1289,92 @@ renderHierarchy = function( arrE, parentCount )
 end
 
 hierarchy[engine] = {false, {}}
+
+
+highlightInstanceInHierarchy = function(obj)
+	local otherNodes = {}
+	local currentNode = obj
+	local stop = false
+	local first = false
+
+	repeat
+		if currentNode == engine then stop = true end
+
+		local newNode = {first, otherNodes}
+		if currentNode and currentNode.children and first then
+			for _,v in pairs(currentNode.children) do
+				if not newNode[2][v] then
+					newNode[2][v] = {false, {}}
+				end
+			end
+		elseif currentNode == engine then
+			for _,v in pairs(currentNode) do
+				if isInstance(v) and not newNode[2][v] then
+					newNode[2][v] = {false, {}}
+				end
+			end
+		end
+
+		first = true
+
+		otherNodes = {}
+		otherNodes[currentNode] = newNode
+
+		if not currentNode.parent then
+			currentNode = engine
+		else
+			currentNode = currentNode.parent 
+		end
+	until stop
+
+	hierarchy = otherNodes
+	renderHierarchy()
+
+	local currentThing = hierarchy[engine]
+	repeat
+		for node, thing in pairs(currentThing[2]) do
+			if thing[1] or node == obj then
+				-- this thing is expanded
+				currentThing = thing
+				currentNode = node
+			end
+		end
+	until currentNode == obj 
+
+
+	local relativePosition = currentThing[3]
+
+	local sizeTheory = (hierarchyElementCount+2)*21
+	local sizeReal = scrollViewHierarchy.absoluteSize.y
+	local overflowSize = sizeTheory - sizeReal
+
+	local scaledPosition = relativePosition/sizeTheory
+
+	viewOffset = math.max(0, math.min(relativePosition, overflowSize))
+
+	scrollBarPositionFrame.position = guiCoord(0, 0, viewOffset / sizeTheory, 0)
+
+	local upperPadding = 0 
+	local lowerPadding = 0 
+
+			--update button positions
+			for _,v in pairs(scrollViewHierarchy.children) do
+				local pos = v.position
+				pos.offsetY = tonumber(v.name) - viewOffset
+				v.position = pos
+				if pos.offsetY < 0 then
+					upperPadding = upperPadding + 1
+				elseif pos.offsetY > sizeReal then
+					lowerPadding = lowerPadding + 1
+				end
+			end
+
+			if upperPadding < 5 or lowerPadding < 5 then
+				renderHierarchy()
+			end
+	-----------------
+end
+
 
 local isDragging = false
 
@@ -1443,4 +1554,3 @@ newLight.type = enums.lightType.point
 wait(0.5)
 renderHierarchy()
 
-print("done")
