@@ -1342,11 +1342,11 @@ highlightInstanceInHierarchy = function(obj)
 	until currentNode == obj 
 
 
-	local relativePosition = currentThing[3]
-
 	local sizeTheory = (hierarchyElementCount+2)*21
 	local sizeReal = scrollViewHierarchy.absoluteSize.y
 	local overflowSize = sizeTheory - sizeReal
+
+	local relativePosition = currentThing[3] - (sizeReal/2)
 
 	local scaledPosition = relativePosition/sizeTheory
 
