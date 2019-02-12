@@ -115,6 +115,10 @@ local themeColourWindowText = colour(1, 1, 1)
 local themeColourToolBar = colour:fromRGB(61, 66, 71)
 local themeColourToolBarText = colour(1, 1, 1)
 
+local themeColourToolSelected = colour(1, 1, 1)
+local themeColourToolHovered = colour(0.9, 0.9, 0.9)
+local themeColourToolDeselected = colour(0.6, 0.6, 0.6)
+
 local themeColourButton = colour:fromRGB(78, 82, 86)
 local themeColourButtonHighlighted = colour:fromRGB(96, 105, 114)
 local themeColourButtonText = colour(1, 1, 1)
@@ -190,7 +194,7 @@ end)
 
 local toolBarMain = engine.guiFrame()
 toolBarMain.size = guiCoord(1, -240, 0, 30)
-toolBarMain.position = guiCoord(0, 0, 0, 24)
+toolBarMain.position = guiCoord(0, 0, 0, 22)
 toolBarMain.parent = engine.workshop.interface
 toolBarMain.backgroundColour = themeColourToolBar
 
@@ -199,7 +203,7 @@ toolBarDragBtn.size = guiCoord(0, 24, 0, 24)
 toolBarDragBtn.position = guiCoord(0, 10, 0, 3)
 toolBarDragBtn.parent = toolBarMain
 toolBarDragBtn.guiStyle = enums.guiStyle.noBackground
-toolBarDragBtn.imageColour = colour(1,1,1)
+toolBarDragBtn.imageColour = themeColourToolSelected
 toolBarDragBtn.texture = "local:hand.png";
 
 local toolBarMoveBtn = engine.guiImage()
@@ -207,7 +211,7 @@ toolBarMoveBtn.size = guiCoord(0, 24, 0, 24)
 toolBarMoveBtn.position = guiCoord(0, 44, 0, 3)
 toolBarMoveBtn.parent = toolBarMain
 toolBarMoveBtn.guiStyle = enums.guiStyle.noBackground
-toolBarMoveBtn.imageColour = colour(1,1,1)
+toolBarMoveBtn.imageColour = themeColourToolDeselected
 toolBarMoveBtn.texture = "local:move.png";
 
 local toolBarRotateBtn = engine.guiImage()
@@ -215,7 +219,7 @@ toolBarRotateBtn.size = guiCoord(0, 24, 0, 24)
 toolBarRotateBtn.position = guiCoord(0, 78, 0, 3)
 toolBarRotateBtn.parent = toolBarMain
 toolBarRotateBtn.guiStyle = enums.guiStyle.noBackground
-toolBarRotateBtn.imageColour = colour(1,1,1)
+toolBarRotateBtn.imageColour = themeColourToolDeselected
 toolBarRotateBtn.texture = "local:rotate.png";
 
 local toolBarScaleBtn = engine.guiImage()
@@ -223,7 +227,7 @@ toolBarScaleBtn.size = guiCoord(0, 24, 0, 24)
 toolBarScaleBtn.position = guiCoord(0, 112, 0, 3)
 toolBarScaleBtn.parent = toolBarMain
 toolBarScaleBtn.guiStyle = enums.guiStyle.noBackground
-toolBarScaleBtn.imageColour = colour(1,1,1)
+toolBarScaleBtn.imageColour = themeColourToolDeselected
 toolBarScaleBtn.texture = "local:scale.png";
 
 local windowProperties = engine.guiWindow()
@@ -1016,7 +1020,7 @@ codeInputBox:keyPressed(function(inputObj)
 		local success, result = engine.workshop:loadString(input)
 		lastCmd = input
 
-		print(" > " .. input:sub(0,50))
+		print(" > " .. input:sub(0,100))
 		codeInputBox.text = ""
 		if not success then
 			error(result, 2)
@@ -1028,7 +1032,7 @@ end)
 
 engine.debug:output(function(msg, type)
 
-	if #outputLines > 5 then
+	if #outputLines > 50 then
 		table.remove(outputLines, 1)
 	end
 	table.insert(outputLines, {os.clock(), msg, type})
@@ -1043,8 +1047,8 @@ engine.debug:output(function(msg, type)
 
 	-- This function is deprecated.
 	lbl:setText(text)
-
-	local textSize = lbl:getTextSize()
+	lbl:yieldForTextSize()
+	local textSize = lbl.textSize
 	lbl.size = guiCoord(1, -10, 0, textSize.y)
 	scrollViewOutput.canvasSize = guiCoord(1, 0, 0, textSize.y)
 end)
@@ -1342,11 +1346,11 @@ highlightInstanceInHierarchy = function(obj)
 	until currentNode == obj 
 
 
+	local relativePosition = currentThing[3]
+
 	local sizeTheory = (hierarchyElementCount+2)*21
 	local sizeReal = scrollViewHierarchy.absoluteSize.y
 	local overflowSize = sizeTheory - sizeReal
-
-	local relativePosition = currentThing[3] - (sizeReal/2)
 
 	local scaledPosition = relativePosition/sizeTheory
 
