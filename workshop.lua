@@ -198,37 +198,63 @@ toolBarMain.position = guiCoord(0, 0, 0, 22)
 toolBarMain.parent = engine.workshop.interface
 toolBarMain.backgroundColour = themeColourToolBar
 
-local toolBarDragBtn = engine.guiImage()
-toolBarDragBtn.size = guiCoord(0, 24, 0, 24)
-toolBarDragBtn.position = guiCoord(0, 10, 0, 3)
-toolBarDragBtn.parent = toolBarMain
-toolBarDragBtn.guiStyle = enums.guiStyle.noBackground
-toolBarDragBtn.imageColour = themeColourToolSelected
-toolBarDragBtn.texture = "local:hand.png";
+local activeTool = 0
+local tools = {}
+local function addTool(image, activate, deactivate)
+	local toolID = #tools + 1;
 
-local toolBarMoveBtn = engine.guiImage()
-toolBarMoveBtn.size = guiCoord(0, 24, 0, 24)
-toolBarMoveBtn.position = guiCoord(0, 44, 0, 3)
-toolBarMoveBtn.parent = toolBarMain
-toolBarMoveBtn.guiStyle = enums.guiStyle.noBackground
-toolBarMoveBtn.imageColour = themeColourToolDeselected
-toolBarMoveBtn.texture = "local:move.png";
+	local toolButton = engine.guiImage()
+	toolButton.size = guiCoord(0, 24, 0, 24)
+	toolButton.position = guiCoord(0, 10 + (30 * #tools), 0, 3)
+	toolButton.parent = toolBarMain
+	toolButton.guiStyle = enums.guiStyle.noBackground
+	toolButton.imageColour = themeColourToolDeselected
+	toolButton.texture = image;
+	toolButton:mouseLeftReleased(function()
+		if tools[activeTool] then
+			tools[activeTool].gui.imageColour = themeColourToolDeselected
+			if deactivate then
+				deactivate(activeTool)
+			end
+		end
 
-local toolBarRotateBtn = engine.guiImage()
-toolBarRotateBtn.size = guiCoord(0, 24, 0, 24)
-toolBarRotateBtn.position = guiCoord(0, 78, 0, 3)
-toolBarRotateBtn.parent = toolBarMain
-toolBarRotateBtn.guiStyle = enums.guiStyle.noBackground
-toolBarRotateBtn.imageColour = themeColourToolDeselected
-toolBarRotateBtn.texture = "local:rotate.png";
+		if activeTool == toolID then
+			activeTool = 0
+		else
+			activeTool = toolID
+			tools[toolID].gui.imageColour = themeColourToolSelected
+			if activate then
+				activate(toolID)
+			end
+		end
+	end)
 
-local toolBarScaleBtn = engine.guiImage()
-toolBarScaleBtn.size = guiCoord(0, 24, 0, 24)
-toolBarScaleBtn.position = guiCoord(0, 112, 0, 3)
-toolBarScaleBtn.parent = toolBarMain
-toolBarScaleBtn.guiStyle = enums.guiStyle.noBackground
-toolBarScaleBtn.imageColour = themeColourToolDeselected
-toolBarScaleBtn.texture = "local:scale.png";
+	table.insert(tools, {["gui"]=toolButton, ["data"]={}})
+end
+
+local toolBarDragBtn = addTool("local:hand.png", function(id)
+	--activated
+	print("Activated Hand")
+
+	-- Store event handler so we can disconnect it later.
+	tools[id].data.mouseMovedEvent = engine.input:mouseMoved(function ( inp )
+		print("mouse moved.")
+	end)
+
+end,
+function (id)
+	--deactivated
+	print("Deactivated Hand")
+	tools[id].data.mouseMovedEvent:disconnect()
+end)
+
+local toolBarMoveBtn = addTool("local:move.png")
+
+local toolBarRotateBtn = addTool("local:rotate.png")
+
+
+local toolBarScaleBtn = addTool("local:scale.png")
+
 
 local windowProperties = engine.guiWindow()
 windowProperties.size = guiCoord(0, 240, 0.6, -10)
