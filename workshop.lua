@@ -232,29 +232,6 @@ local function addTool(image, activate, deactivate)
 	table.insert(tools, {["gui"]=toolButton, ["data"]={}})
 end
 
-local toolBarDragBtn = addTool("local:hand.png", function(id)
-	--activated
-	print("Activated Hand")
-
-	-- Store event handler so we can disconnect it later.
-	tools[id].data.mouseMovedEvent = engine.input:mouseMoved(function ( inp )
-		print("mouse moved.")
-	end)
-
-end,
-function (id)
-	--deactivated
-	print("Deactivated Hand")
-	tools[id].data.mouseMovedEvent:disconnect()
-end)
-
-local toolBarMoveBtn = addTool("local:move.png")
-
-local toolBarRotateBtn = addTool("local:rotate.png")
-
-
-local toolBarScaleBtn = addTool("local:scale.png")
-
 
 local windowProperties = engine.guiWindow()
 windowProperties.size = guiCoord(0, 240, 0.6, -10)
@@ -859,11 +836,18 @@ end
 local focusOnObjectInHierarchy, setHierarchyPartOpened, highlightInstanceInHierarchy;
 local hierarchy = {  }
 
-engine.graphics:frameDrawn(function()	
+local txtDebug = generateLabel("...", engine.workshop.interface)
+txtDebug.name = "txtDebug"
+txtDebug.position = guiCoord(0,0,1,-16)
+
+engine.graphics:frameDrawn(function(events, frameNumber)	
+
+	txtDebug.text = "Lua Frame: " .. frameNumber .. " | Handling " .. events .. " events."
+
 	local mouseHit = engine.physics:rayTestScreen( engine.input.mousePosition ) -- accepts vector2 or number,number
 	if mouseHit then 
-		outlineHoverBlock.size = mouseHit.size
-		outlineHoverBlock.position = mouseHit.position
+		outlineHoverBlock.size = mouseHit.object.size
+		outlineHoverBlock.position = mouseHit.object.position
 		outlineHoverBlock.opacity = 1
 	else
 		outlineHoverBlock.opacity = 0
@@ -922,7 +906,7 @@ end
 engine.input:mouseLeftPressed(function( input )
 
 
-	if input.systemHandled then return end
+	if input.systemHandled or activeTool ~= 0 then return end
 	validateItems()
 
 	local mouseHit = engine.physics:rayTestScreen( engine.input.mousePosition )
@@ -954,7 +938,7 @@ engine.input:mouseLeftPressed(function( input )
 		end	]]
 	else
 		for i,v in pairs(selectedItems) do
-			if v == mouseHit then
+			if v == mouseHit.object then
 				-- deselect
 				table.remove(selectedItems, i)
 				doSelect = false
@@ -964,9 +948,9 @@ engine.input:mouseLeftPressed(function( input )
 
 	if doSelect then
 	--	focusOnObjectInHierarchy(mouseHit)
-		table.insert(selectedItems, mouseHit)
-		highlightInstanceInHierarchy(mouseHit)
-		generateProperties(mouseHit)
+		table.insert(selectedItems, mouseHit.object)
+		highlightInstanceInHierarchy(mouseHit.object)
+		generateProperties(mouseHit.object)
 	end
 
 	updateBounding()
@@ -1213,7 +1197,7 @@ renderHierarchy = function( arrE, parentCount )
 				btnbtn.fontFile = normalFontName
 				btnbtn.name = "btn"
 
-				if (classNameIcons[obj.className]) then
+				if (classNameIcons[obj.className]) and false then
 					local btnImg = engine.guiImage()
 					btnImg.size = guiCoord(0, 20, 0, 17)
 					btnImg.position = guiCoord(0, 5, 0, 2)
@@ -1231,7 +1215,9 @@ renderHierarchy = function( arrE, parentCount )
 
 				local lastPress = 0
 				btnbtn:mouseLeftPressed(function ()
-					if (os.clock() - lastPress) < 0.4 then
+					if (os.clock() - lastPress) < 0.6 then
+						print("double")
+						lastPress=0
 						if (isInstance(obj) and obj.children and #obj.children > 0) or (not isInstance(obj)) then
 							-- double press
 							hierArray[obj][1] = not hierArray[obj][1]
@@ -1251,6 +1237,7 @@ renderHierarchy = function( arrE, parentCount )
 							renderHierarchy()
 						end
 					elseif isInstance(obj) then
+						local start = os.clock()
 						if engine.input:isKeyDown(enums.key.leftShift) then
 							local found = false
 							for i,v in pairs(selectedItems) do
@@ -1265,14 +1252,16 @@ renderHierarchy = function( arrE, parentCount )
 						else
 							selectedItems = { obj }
 						end
-						generateProperties(obj)
-						renderHierarchy()
-
+					--	generateProperties(obj)
+					--	renderHierarchy()
+					print("press")
+						wait(1)
 						updateBounding()
-	
-
+						print(os.clock()-start)
+						lastPress = os.clock()
+					else
+						lastPress = os.clock()
 					end
-					lastPress = os.clock()
 				end)
 
 				btn.parent = scrollViewHierarchy
@@ -1574,6 +1563,48 @@ windowAssets.backgroundColour = themeColourWindow
 windowAssets.fontFile = normalFontName
 windowAssets.textColour = themeColourWindowText
 
+
+local toolBarDragBtn = addTool("local:hand.png", function(id)
+	--activated
+	print("Activated Hand")
+	local isDown = false
+
+	-- Store event handler so we can disconnect it later.
+	tools[id].data.mouseDownEvent = engine.input:mouseLeftPressed(function ( inp )
+		if inp.systemHandled then return end
+		isDown = true
+		if (#selectedItems > 0) then
+			print("Begin drag of " .. #selectedItems .. " items.")
+			while isDown do
+
+				wait()
+			end
+			print("End drag.")
+		end
+	end)
+
+	tools[id].data.mouseUpEvent = engine.input:mouseLeftReleased(function ( inp )
+		if inp.systemHandled then return end
+		isDown = false
+	end)
+
+end,
+function (id)
+	--deactivated
+	print("Deactivated Hand")
+	tools[id].data.mouseDownEvent:disconnect()
+	tools[id].data.mouseUpEvent:disconnect()
+
+	tools[id].data.mouseDownEvent = nil
+	tools[id].data.mouseUpEvent = nil
+end)
+
+local toolBarMoveBtn = addTool("local:move.png")
+
+local toolBarRotateBtn = addTool("local:rotate.png")
+
+local toolBarScaleBtn = addTool("local:scale.png")
+
 local newLight = engine.light("light1")	
 newLight.offsetPosition = vector3(3,4,0)	
 newLight.parent = workspace	
@@ -1584,3 +1615,8 @@ newLight.type = enums.lightType.point
 wait(0.5)
 renderHierarchy()
 
+local hits = engine.physics:rayTestAllHits(vector3(0,10,0), vector3(0,-10,0))
+
+for _,hit in pairs(hits) do
+	print(hit.object.name .. " was hit by the ray at ", hit.hitPosition, " with a normal of ", hit.hitNormal, hit.hitDistance)
+end
