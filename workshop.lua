@@ -748,12 +748,10 @@ engine.input:mouseMoved(function( input )
 end)
 
 engine.input:keyPressed(function( inputObj )
-
 	if inputObj.systemHandled then return end
 
 	if cameraKeyArray[inputObj.key] and not cameraKeyEventLooping then
 		cameraKeyEventLooping = true
-		
 		repeat
 			local cameraPos = camera.position
 
@@ -840,9 +838,20 @@ local txtDebug = generateLabel("...", engine.workshop.interface)
 txtDebug.name = "txtDebug"
 txtDebug.position = guiCoord(0,0,1,-16)
 
-engine.graphics:frameDrawn(function(events, frameNumber)	
+local profile = 0
+local lastframes = 0
+local fps = 0
 
-	txtDebug.text = "Lua Frame: " .. frameNumber .. " | Handling " .. events .. " events."
+engine.graphics:frameDrawn(function(events, frameNumber)	
+	local current = os.clock()
+	local timeSpent = current-profile
+	if timeSpent >= 1 then
+		fps = (frameNumber - lastframes)
+		profile = current
+		lastframes = frameNumber
+	end
+
+	txtDebug.text = "Lua Frame: " .. frameNumber .. " | Handling " .. events .. " events. Lua FPS: " .. fps
 
 	local mouseHit = engine.physics:rayTestScreen( engine.input.mousePosition ) -- accepts vector2 or number,number
 	if mouseHit then 
@@ -1252,12 +1261,11 @@ renderHierarchy = function( arrE, parentCount )
 						else
 							selectedItems = { obj }
 						end
-					--	generateProperties(obj)
-					--	renderHierarchy()
-					print("press")
-						wait(1)
+						generateProperties(obj)
+						renderHierarchy()
+					
 						updateBounding()
-						print(os.clock()-start)
+		
 						lastPress = os.clock()
 					else
 						lastPress = os.clock()
@@ -1610,13 +1618,12 @@ newLight.offsetPosition = vector3(3,4,0)
 newLight.parent = workspace	
 newLight.type = enums.lightType.directional
 newLight.offsetRotation = quaternion():setEuler(-.2,0.2,0)
-newLight.type = enums.lightType.point
 
 wait(0.5)
 renderHierarchy()
-
+--[[
 local hits = engine.physics:rayTestAllHits(vector3(0,10,0), vector3(0,-10,0))
 
 for _,hit in pairs(hits) do
 	print(hit.object.name .. " was hit by the ray at ", hit.hitPosition, " with a normal of ", hit.hitNormal, hit.hitDistance)
-end
+end]]
