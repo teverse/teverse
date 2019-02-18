@@ -199,6 +199,8 @@ toolBarMain.parent = engine.workshop.interface
 toolBarMain.backgroundColour = themeColourToolBar
 
 local activeTool = 0
+local disableDefaultClickActions = false
+
 local tools = {}
 local function addTool(image, activate, deactivate)
 	local toolID = #tools + 1;
@@ -789,7 +791,6 @@ newBlock.colour = colour(1,0,0)
 newBlock.size = vector3(1,1,1)
 newBlock.position = vector3(0,0,0)
 newBlock.parent = workspace
-newBlock.opacity = 0.1
 
 
 local newBlock = engine.block("block2")
@@ -797,13 +798,6 @@ newBlock.colour = colour(0,1,0)
 newBlock.size = vector3(1,1,1)
 newBlock.position = vector3(0,1,0)
 newBlock.parent = workspace
-
-local newBlock = engine.block("phy")
-newBlock.colour = colour(0,0,1)
-newBlock.size = vector3(1,0.5,1)
-newBlock.position = vector3(0.5,11,0)
-newBlock.parent = workspace
-
 
 -- This block is used to show an outline around things we're hovering.
 local outlineHoverBlock = engine.block("workshopHoverOutlineWireframe")
@@ -854,6 +848,7 @@ engine.graphics:frameDrawn(function(events, frameNumber)
 	txtDebug.text = "Lua Frame: " .. frameNumber .. " | Handling " .. events .. " events. Lua FPS: " .. fps
 
 	local mouseHit = engine.physics:rayTestScreen( engine.input.mousePosition ) -- accepts vector2 or number,number
+
 	if mouseHit then 
 		outlineHoverBlock.size = mouseHit.object.size
 		outlineHoverBlock.position = mouseHit.object.position
@@ -912,10 +907,12 @@ local function updateBounding(  )
 	txtProperty.text = #selectedItems .. " item" .. (#selectedItems == 1 and "" or "s") .. " selected"
 end
 
-engine.input:mouseLeftPressed(function( input )
+engine.input:mouseLeftReleased(function( input )
 
 
-	if input.systemHandled or activeTool ~= 0 then return end
+	if input.systemHandled or disableDefaultClickActions then return end
+
+
 	validateItems()
 
 	local mouseHit = engine.physics:rayTestScreen( engine.input.mousePosition )
@@ -1066,10 +1063,11 @@ engine.debug:output(function(msg, type)
 
 	-- This function is deprecated.
 	lbl:setText(text)
-	lbl:yieldForTextSize()
-	local textSize = lbl.textSize
-	lbl.size = guiCoord(1, -10, 0, textSize.y)
-	scrollViewOutput.canvasSize = guiCoord(1, 0, 0, textSize.y)
+
+		local textSize = lbl.textSize
+		lbl.size = guiCoord(1, -10, 1, textSize.y)
+		scrollViewOutput.canvasSize = guiCoord(1, 0, 1, textSize.y)
+	
 end)
 
 
@@ -1225,6 +1223,7 @@ renderHierarchy = function( arrE, parentCount )
 
 				local lastPress = 0
 				btnbtn:mouseLeftPressed(function ()
+					print("pressed")
 					if (os.clock() - lastPress) < 0.6 then
 						print("double")
 						lastPress=0
@@ -1572,6 +1571,12 @@ windowAssets.backgroundColour = themeColourWindow
 windowAssets.fontFile = normalFontName
 windowAssets.textColour = themeColourWindowText
 
+local clickMarker = engine.block("clickMarker")
+clickMarker.static = true
+clickMarker.physics = false
+clickMarker.colour = colour(0, 0, 0)
+clickMarker.size = vector3(0.1,0.1,0.1)
+
 
 local toolBarDragBtn = addTool("local:hand.png", function(id)
 	--activated
@@ -1581,8 +1586,21 @@ local toolBarDragBtn = addTool("local:hand.png", function(id)
 	-- Store event handler so we can disconnect it later.
 	tools[id].data.mouseDownEvent = engine.input:mouseLeftPressed(function ( inp )
 		if inp.systemHandled then return end
+		
 		isDown = true
+		
 		if (#selectedItems > 0) then
+
+			local hit = engine.physics:rayTestScreenAllHits(engine.input.mousePosition, selectedItems)
+			if #hit < 1 then return print("Cannot cast starter ray!") end
+
+			wait(.2)
+			if not isDown then return end -- they held the button down, so let's start drag
+			disableDefaultClickActions = true
+
+			hit = hit[1]
+			print("Starter Position:", hit.hitPosition)
+			clickMarker.position = hit.hitPosition
 			print("Begin drag of " .. #selectedItems .. " items.")
 			while isDown do
 
@@ -1590,11 +1608,16 @@ local toolBarDragBtn = addTool("local:hand.png", function(id)
 			end
 			print("End drag.")
 		end
+
 	end)
 
 	tools[id].data.mouseUpEvent = engine.input:mouseLeftReleased(function ( inp )
 		if inp.systemHandled then return end
 		isDown = false
+		wait(0.2)
+		if not isDown and activeTool == id then
+			disableDefaultClickActions = false
+		end
 	end)
 
 end,
