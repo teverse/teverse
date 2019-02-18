@@ -4,4 +4,4 @@ This repo contains the scripts responsible for creating the Workshop interface. 
 
 # Copyright
 
-Copyright (c) 2018 teverse.com
+Copyright (c) 2019 teverse.com

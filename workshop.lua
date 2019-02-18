@@ -1146,6 +1146,7 @@ setHierarchyPartOpened = function(obj, isSelected)
 end
 
 renderHierarchy = function( arrE, parentCount )
+
 	local start = os.clock()
 	if not arrE then
 		--scrollViewHierarchy:destroyAllChildren()
@@ -1619,6 +1620,18 @@ newLight.parent = workspace
 newLight.type = enums.lightType.directional
 newLight.offsetRotation = quaternion():setEuler(-.2,0.2,0)
 
+local txtDebug2 = generateLabel("...", engine.workshop.interface)
+txtDebug2.name = "txtDebug2"
+txtDebug2.position = guiCoord(0,0,1,-32)
+spawnThread(function()
+	local i = 0
+	while wait() do
+		i = i + 1
+		txtDebug2.text = tostring(i)
+		wait() 
+	end
+end)
+
 wait(0.5)
 renderHierarchy()
 --[[
@@ -1627,3 +1640,4 @@ local hits = engine.physics:rayTestAllHits(vector3(0,10,0), vector3(0,-10,0))
 for _,hit in pairs(hits) do
 	print(hit.object.name .. " was hit by the ray at ", hit.hitPosition, " with a normal of ", hit.hitNormal, hit.hitDistance)
 end]]
+
