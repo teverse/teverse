@@ -422,29 +422,32 @@ local toolBarDragBtn = addTool("local:hand.png", function(id)
 			hit = hit and hit[1] or nil
 			local startPosition = hit and hit.hitPosition or vector3(0,0,0)
 			local lastPosition = startPosition
+			local startRotation = selectedItems[1].rotation
 			local offsets = {}
-			local lowestPoint = selectedItems[1].position.y
+			--local lowestPoint = selectedItems[1].position.y
 
 			for _,v in pairs(selectedItems) do
-				lowestPoint = math.min(lowestPoint, v.position.y-(v.size.y/2))
+				--lowestPoint = math.min(lowestPoint, v.position.y-(v.size.y/2))
 				local relative = selectedItems[1].rotation:inverse() * v.rotation;
 				offsets[v] = {v.position-selectedItems[1].position, relative}
 			end
 
-			lowestPoint = selectedItems[1].position.y - lowestPoint
+			--lowestPoint = selectedItems[1].position.y - lowestPoint
 
 			while isDown do
 				local currentHit = engine.physics:rayTestScreenAllHits(engine.input.mousePosition, selectedItems)
 				if #currentHit >= 1 then 
 					currentHit = currentHit[1]
 
-					local currentPosition = currentHit.hitPosition +  vector3(0,lowestPoint,0)
+					local forward = (currentHit.object.rotation * currentHit.hitNormal):normal()-- * quaternion:setEuler(0,math.rad(applyRot),0)
+				
+					local currentPosition = currentHit.hitPosition + (forward/2)
 
 					if lastPosition ~= currentPosition then
 						lastPosition = currentPosition
-						
-						selectedItems[1].position = currentPosition
-						selectedItems[1].rotation = quaternion:setFromToRotation(vector3(0,1,0), currentHit.hitNormal) * quaternion:setEuler(0,math.rad(applyRot),0)
+
+						selectedItems[1].position = currentPosition 
+						selectedItems[1].rotation = startRotation * quaternion:setEuler(0,math.rad(applyRot),0)
 
 						for _,v in pairs(selectedItems) do
 							v.position = (currentPosition) + (selectedItems[1].rotation * offsets[v][2]) * offsets[v][1]
