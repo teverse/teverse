@@ -1,5 +1,6 @@
  -- Copyright (c) 2019 teverse.com
  -- create mode
+ -- Alot of code borrowed from workshop.lua.
 
  -- This script should get access to 'engine.workshop' APIs.
 
@@ -27,7 +28,7 @@ local lightTheme = {
 	toolDeselected = colour:fromRGB(219, 219, 219)
 }
 
-theme = lightTheme
+theme = darkTheme
 
 
 -- Setup Start Enviroment
@@ -46,12 +47,25 @@ basePlate.colour = colour(1, 1, 1)
 basePlate.size = vector3(100, 1, 100)
 basePlate.position = vector3(0, -1, 0)
 basePlate.parent = workspace
+basePlate.workshopLocked = true
 
 local starterBlock = engine.block("block")
 starterBlock.colour = colour(0,1,1)
 starterBlock.size = vector3(1,1,1)
 starterBlock.position = vector3(-22, 2, -22)
 starterBlock.parent = workspace
+
+local starterBlock2 = engine.block("block")
+starterBlock2.colour = colour(1,1,0)
+starterBlock2.size = vector3(0.8,1,1)
+starterBlock2.position = vector3(-23, 2, -22)
+starterBlock2.parent = workspace
+
+local starterBlock3 = engine.block("block")
+starterBlock3.colour = colour(1,0.2,0)
+starterBlock3.size = vector3(1,0.5,1)
+starterBlock3.position = vector3(-22.5, 2.75, -22)
+starterBlock3.parent = workspace
 
 
 -- Camera
@@ -127,11 +141,12 @@ end)
 -- Main GUI
 
 local mainFrame = engine.guiFrame()
-mainFrame.size = guiCoord(0, 250, 0, 36)
+mainFrame.size = guiCoord(0, 132, 0, 36)
 mainFrame.parent = engine.workshop.interface
-mainFrame.position = guiCoord(0, 15, 0, 15)
+mainFrame.position = guiCoord(0, 15, 0, -40)
 mainFrame.backgroundColour = theme.mainBg
 mainFrame.alpha = 0.985
+mainFrame.guiStyle = enums.guiStyle.rounded
 
 local toolBarMain = engine.guiFrame()
 toolBarMain.size = guiCoord(1, -6, 0, 30)
@@ -160,6 +175,10 @@ logFrameTextBox.multiline = true
 logFrameTextBox.align = enums.align.topLeft
 logFrameTextBox.parent = logFrame
 logFrameTextBox.textColour = colour(1, 1, 1)
+
+delay(function()
+	engine.tween:begin(mainFrame, .5, {position = guiCoord(0, 15, 0, 15)}, "inOutBack")
+end, 1)
 
 -- End Main Gui
 
@@ -255,42 +274,201 @@ end
 
 -- Selection System
 
+-- This block is used to show an outline around things we're hovering.
+local outlineHoverBlock = engine.block("workshopHoverOutlineWireframe")
+outlineHoverBlock.wireframe = true
+outlineHoverBlock.static = true
+outlineHoverBlock.physics = false
+outlineHoverBlock.colour = colour(0, 1, 0)
+outlineHoverBlock.size = vector3(0, 0, 0)
+outlineHoverBlock.opacity = 0
+
+engine.graphics:frameDrawn(function(events, frameNumber)	
+	local mouseHit = engine.physics:rayTestScreen( engine.input.mousePosition ) -- accepts vector2 or number,number
+
+	if mouseHit and not disableDefaultClickActions and not mouseHit.object.workshopLocked then 
+		outlineHoverBlock.size = mouseHit.object.size
+		outlineHoverBlock.position = mouseHit.object.position
+		outlineHoverBlock.rotation = mouseHit.object.rotation
+		outlineHoverBlock.opacity = 1
+	else
+		outlineHoverBlock.opacity = 0
+		outlineHoverBlock.size = vector3(0, 0, 0)
+	end
+end)
+
+
+-- This block is used to outline selected items
+local outlineSelectedBlock = engine.block("workshopSelectedOutlineWireframe")
+outlineSelectedBlock.wireframe = true
+outlineSelectedBlock.static = true
+outlineSelectedBlock.physics = false
+outlineSelectedBlock.colour = colour(1, 0, 0)
+outlineSelectedBlock.size = vector3(0, 0, 0)
+outlineSelectedBlock.opacity = 0
+
 local selectedItems = {}
+
+-- Clean out any deleted items.
+local function validateItems()
+	for i,v in pairs(selectedItems) do
+		if not v or v.isDestroyed then 
+			table.remove(selectedItems, i)
+		end
+	end
+end
+
+
+local function updateBounding(  )
+	if #selectedItems > 1 then
+		outlineSelectedBlock.opacity = 1
+		local i =1
+	
+		-- used to calculate bounding box area...
+		local upper = selectedItems[i].position + (selectedItems[i].size/2) or vector3(0.1, 0.1, 0.1)
+		local lower = selectedItems[i].position - (selectedItems[i].size/2) or vector3(0.1, 0.1, 0.1)
+
+		for i, v in pairs(selectedItems) do
+			if type(v.size) == "vector3" and type(v.position) == "vector3" then
+				local topLeft = v.position + (v.size/2)or vector3(0.1, 0.1, 0.1)
+				local btmRight = v.position - (v.size/2)or vector3(0.1, 0.1, 0.1)
+			
+				upper.x = math.max(topLeft.x, upper.x)
+				upper.y = math.max(topLeft.y, upper.y)
+				upper.z = math.max(topLeft.z, upper.z)
+
+				lower.x = math.min(btmRight.x, lower.x)
+				lower.y = math.min(btmRight.y, lower.y)
+				lower.z = math.min(btmRight.z, lower.z)
+			end
+		end
+
+		outlineSelectedBlock.position = (upper+lower)/2
+		outlineSelectedBlock.size = upper-lower
+		
+	elseif #selectedItems == 1 and selectedItems[1].className == "block" then
+		outlineSelectedBlock.opacity = 1
+		outlineSelectedBlock.position = selectedItems[1].position
+		outlineSelectedBlock.size = selectedItems[1].size or vector3(0.1, 0.1, 0.1)
+	elseif #selectedItems == 0 then
+		outlineSelectedBlock.opacity = 0
+		outlineSelectedBlock.size = vector3(0, 0, 0)
+	end
+end
+
+engine.input:mouseLeftReleased(function( input )
+	if input.systemHandled or disableDefaultClickActions then return end
+
+	validateItems()
+
+	local mouseHit = engine.physics:rayTestScreen( engine.input.mousePosition )
+	if not mouseHit or mouseHit.object.workshopLocked then
+		-- User clicked empty space, deselect everything??#
+		selectedItems = {}
+		outlineSelectedBlock.opacity = 0
+		updateBounding()
+		return
+	end
+
+	local doSelect = true
+
+	if not engine.input:isKeyDown(enums.key.leftShift) then
+		-- deselect everything that's already selected and move on
+		selectedItems = {}
+	else
+		for i,v in pairs(selectedItems) do
+			if v == mouseHit.object then
+				table.remove(selectedItems, i)
+				doSelect = false
+			end
+		end
+	end
+
+	if doSelect then
+
+		table.insert(selectedItems, mouseHit.object)
+	end
+
+	updateBounding()
+end)
+
 
 -- End Selection System
 
 -- Tools
 local toolBarDragBtn = addTool("local:hand.png", function(id)
 	--activated
-	print("Activated Hand")
 	local isDown = false
+	local applyRot = 0
 
 	-- Store event handler so we can disconnect it later.
 	tools[id].data.mouseDownEvent = engine.input:mouseLeftPressed(function ( inp )
 		if inp.systemHandled then return end
-		
+	
 		isDown = true
-		
+		applyRot = 0
 		if (#selectedItems > 0) then
 
-			local hit = engine.physics:rayTestScreenAllHits(engine.input.mousePosition, selectedItems)
-			if #hit < 1 then return print("Cannot cast starter ray!") end
+			local hit, didExclude = engine.physics:rayTestScreenAllHits(engine.input.mousePosition, selectedItems)
+			
+			-- Didexclude is false if the user didnt drag starting from one of the selected items.
+			if  didExclude == false then return print("Cannot cast starter ray!") end
 
-			wait(.2)
-			if not isDown then return end -- they held the button down, so let's start drag
-			disableDefaultClickActions = true
+			wait(.35)
+			if not isDown then return end -- they held the button down, so let's start dragging
+			print("Start drag.")
+			disableDefaultClickActions = true -- will disable the main selection system for 0.2 seconds after user ends drag
 
-			hit = hit[1]
-			print("Starter Position:", hit.hitPosition)
-			clickMarker.position = hit.hitPosition
-			print("Begin drag of " .. #selectedItems .. " items.")
+			hit = hit and hit[1] or nil
+			local startPosition = hit and hit.hitPosition or vector3(0,0,0)
+			local lastPosition = startPosition
+			local offsets = {}
+			local lowestPoint = selectedItems[1].position.y
+
+			for _,v in pairs(selectedItems) do
+				lowestPoint = math.min(lowestPoint, v.position.y-(v.size.y/2))
+				local relative = selectedItems[1].rotation:inverse() * v.rotation;
+				offsets[v] = {v.position-selectedItems[1].position, relative}
+			end
+
+			lowestPoint = selectedItems[1].position.y - lowestPoint
+
 			while isDown do
+				local currentHit = engine.physics:rayTestScreenAllHits(engine.input.mousePosition, selectedItems)
+				if #currentHit >= 1 then 
+					currentHit = currentHit[1]
 
+					local currentPosition = currentHit.hitPosition +  vector3(0,lowestPoint,0)
+
+					if lastPosition ~= currentPosition then
+						lastPosition = currentPosition
+						
+						selectedItems[1].position = currentPosition
+						selectedItems[1].rotation = quaternion:setFromToRotation(vector3(0,1,0), currentHit.hitNormal) * quaternion:setEuler(0,math.rad(applyRot),0)
+
+						for _,v in pairs(selectedItems) do
+							v.position = (currentPosition) + (selectedItems[1].rotation * offsets[v][2]) * offsets[v][1]
+							v.rotation = selectedItems[1].rotation * offsets[v][2]
+						end
+
+						updateBounding()
+					end
+				end
 				wait()
 			end
-			print("End drag.")
 		end
 
+	end)
+
+	tools[id].data.keyDownEvent = engine.input:keyPressed(function ( inp )
+		if inp.systemHandled then return end
+		
+		if isDown then
+			if inp.key == enums.key.r then
+				applyRot = applyRot + 45/2
+				print(applyRot)
+			end
+		end
 	end)
 
 	tools[id].data.mouseUpEvent = engine.input:mouseLeftReleased(function ( inp )
@@ -305,12 +483,14 @@ local toolBarDragBtn = addTool("local:hand.png", function(id)
 end,
 function (id)
 	--deactivated
-	print("Deactivated Hand")
+
 	tools[id].data.mouseDownEvent:disconnect()
 	tools[id].data.mouseUpEvent:disconnect()
+	tools[id].data.keyDownEvent:disconnect()
 
 	tools[id].data.mouseDownEvent = nil
 	tools[id].data.mouseUpEvent = nil
+	tools[id].data.keyDownEvent = nil
 end)
 
 activeTool = toolBarDragBtn.id
@@ -322,4 +502,4 @@ local toolBarMoveBtn = addTool("local:move.png")
 local toolBarRotateBtn = addTool("local:rotate.png")
 
 local toolBarScaleBtn = addTool("local:scale.png")
--- End Tools
+-- End Tool
