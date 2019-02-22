@@ -68,6 +68,130 @@ starterBlock3.position = vector3(-22.5, 2.75, -22)
 starterBlock3.parent = workspace
 
 
+-- Selection System
+
+-- This block is used to show an outline around things we're hovering.
+local outlineHoverBlock = engine.block("workshopHoverOutlineWireframe")
+outlineHoverBlock.wireframe = true
+outlineHoverBlock.static = true
+outlineHoverBlock.physics = false
+outlineHoverBlock.colour = colour(0, 1, 0)
+outlineHoverBlock.size = vector3(0, 0, 0)
+outlineHoverBlock.opacity = 0
+
+engine.graphics:frameDrawn(function(events, frameNumber)	
+	local mouseHit = engine.physics:rayTestScreen( engine.input.mousePosition ) -- accepts vector2 or number,number
+
+	if mouseHit and not disableDefaultClickActions and not mouseHit.object.workshopLocked then 
+		outlineHoverBlock.size = mouseHit.object.size
+		outlineHoverBlock.position = mouseHit.object.position
+		outlineHoverBlock.rotation = mouseHit.object.rotation
+		outlineHoverBlock.opacity = 1
+	else
+		outlineHoverBlock.opacity = 0
+		outlineHoverBlock.size = vector3(0, 0, 0)
+	end
+end)
+
+
+-- This block is used to outline selected items
+local outlineSelectedBlock = engine.block("workshopSelectedOutlineWireframe")
+outlineSelectedBlock.wireframe = true
+outlineSelectedBlock.static = true
+outlineSelectedBlock.physics = false
+outlineSelectedBlock.colour = colour(1, 0, 0)
+outlineSelectedBlock.size = vector3(0, 0, 0)
+outlineSelectedBlock.opacity = 0
+
+local selectedItems = {}
+
+-- Clean out any deleted items.
+local function validateItems()
+	for i,v in pairs(selectedItems) do
+		if not v or v.isDestroyed then 
+			table.remove(selectedItems, i)
+		end
+	end
+end
+
+
+local function updateBounding(  )
+	if #selectedItems > 1 then
+		outlineSelectedBlock.opacity = 1
+		local i =1
+	
+		-- used to calculate bounding box area...
+		local upper = selectedItems[i].position + (selectedItems[i].size/2) or vector3(0.1, 0.1, 0.1)
+		local lower = selectedItems[i].position - (selectedItems[i].size/2) or vector3(0.1, 0.1, 0.1)
+
+		for i, v in pairs(selectedItems) do
+			if type(v.size) == "vector3" and type(v.position) == "vector3" then
+				local topLeft = v.position + (v.size/2)or vector3(0.1, 0.1, 0.1)
+				local btmRight = v.position - (v.size/2)or vector3(0.1, 0.1, 0.1)
+			
+				upper.x = math.max(topLeft.x, upper.x)
+				upper.y = math.max(topLeft.y, upper.y)
+				upper.z = math.max(topLeft.z, upper.z)
+
+				lower.x = math.min(btmRight.x, lower.x)
+				lower.y = math.min(btmRight.y, lower.y)
+				lower.z = math.min(btmRight.z, lower.z)
+			end
+		end
+
+		outlineSelectedBlock.position = (upper+lower)/2
+		outlineSelectedBlock.size = upper-lower
+		
+	elseif #selectedItems == 1 and selectedItems[1].className == "block" then
+		outlineSelectedBlock.opacity = 1
+		outlineSelectedBlock.position = selectedItems[1].position
+		outlineSelectedBlock.size = selectedItems[1].size or vector3(0.1, 0.1, 0.1)
+	elseif #selectedItems == 0 then
+		outlineSelectedBlock.opacity = 0
+		outlineSelectedBlock.size = vector3(0, 0, 0)
+	end
+end
+
+engine.input:mouseLeftReleased(function( input )
+	if input.systemHandled or disableDefaultClickActions then return end
+
+	validateItems()
+
+	local mouseHit = engine.physics:rayTestScreen( engine.input.mousePosition )
+	if not mouseHit or mouseHit.object.workshopLocked then
+		-- User clicked empty space, deselect everything??#
+		selectedItems = {}
+		outlineSelectedBlock.opacity = 0
+		updateBounding()
+		return
+	end
+
+	local doSelect = true
+
+	if not engine.input:isKeyDown(enums.key.leftShift) then
+		-- deselect everything that's already selected and move on
+		selectedItems = {}
+	else
+		for i,v in pairs(selectedItems) do
+			if v == mouseHit.object then
+				table.remove(selectedItems, i)
+				doSelect = false
+			end
+		end
+	end
+
+	if doSelect then
+
+		table.insert(selectedItems, mouseHit.object)
+	end
+
+	updateBounding()
+end)
+
+
+-- End Selection System
+
+
 -- Camera
 
 local zoomStep = 3
@@ -112,6 +236,24 @@ engine.input:mouseMoved(function( input )
 	end
 end)
 
+--Calculate median of vector
+--modified from http://lua-users.org/wiki/SimpleStats
+local function median( t, component )
+  local temp={}
+
+  for k,v in pairs(t) do
+    table.insert(temp, v.position[component])
+  end
+
+  table.sort( temp )
+
+  if math.fmod(#temp,2) == 0 then
+    return ( temp[#temp/2] + temp[(#temp/2)+1] ) / 2
+  else
+    return temp[math.ceil(#temp/2)]
+  end
+end
+
 engine.input:keyPressed(function( inputObj )
 	if inputObj.systemHandled then return end
 
@@ -133,6 +275,14 @@ engine.input:keyPressed(function( inputObj )
 			wait(0.001)
 
 		until not cameraKeyEventLooping
+	end
+
+	if inputObj.key == enums.key.f and #selectedItems>0 then
+		local mdn = vector3(median(selectedItems, "x"), median(selectedItems, "y"),median(selectedItems, "z") )
+		--camera.position = mdn + (camera.rotation * vector3(0,0,1) * 15)
+		--print(mdn)
+		engine.tween:begin(camera, .2, {position = mdn + (camera.rotation * vector3(0,0,1) * 15)}, "outQuad")
+
 	end
 end)
 
@@ -272,128 +422,6 @@ end
 
 -- End tool system
 
--- Selection System
-
--- This block is used to show an outline around things we're hovering.
-local outlineHoverBlock = engine.block("workshopHoverOutlineWireframe")
-outlineHoverBlock.wireframe = true
-outlineHoverBlock.static = true
-outlineHoverBlock.physics = false
-outlineHoverBlock.colour = colour(0, 1, 0)
-outlineHoverBlock.size = vector3(0, 0, 0)
-outlineHoverBlock.opacity = 0
-
-engine.graphics:frameDrawn(function(events, frameNumber)	
-	local mouseHit = engine.physics:rayTestScreen( engine.input.mousePosition ) -- accepts vector2 or number,number
-
-	if mouseHit and not disableDefaultClickActions and not mouseHit.object.workshopLocked then 
-		outlineHoverBlock.size = mouseHit.object.size
-		outlineHoverBlock.position = mouseHit.object.position
-		outlineHoverBlock.rotation = mouseHit.object.rotation
-		outlineHoverBlock.opacity = 1
-	else
-		outlineHoverBlock.opacity = 0
-		outlineHoverBlock.size = vector3(0, 0, 0)
-	end
-end)
-
-
--- This block is used to outline selected items
-local outlineSelectedBlock = engine.block("workshopSelectedOutlineWireframe")
-outlineSelectedBlock.wireframe = true
-outlineSelectedBlock.static = true
-outlineSelectedBlock.physics = false
-outlineSelectedBlock.colour = colour(1, 0, 0)
-outlineSelectedBlock.size = vector3(0, 0, 0)
-outlineSelectedBlock.opacity = 0
-
-local selectedItems = {}
-
--- Clean out any deleted items.
-local function validateItems()
-	for i,v in pairs(selectedItems) do
-		if not v or v.isDestroyed then 
-			table.remove(selectedItems, i)
-		end
-	end
-end
-
-
-local function updateBounding(  )
-	if #selectedItems > 1 then
-		outlineSelectedBlock.opacity = 1
-		local i =1
-	
-		-- used to calculate bounding box area...
-		local upper = selectedItems[i].position + (selectedItems[i].size/2) or vector3(0.1, 0.1, 0.1)
-		local lower = selectedItems[i].position - (selectedItems[i].size/2) or vector3(0.1, 0.1, 0.1)
-
-		for i, v in pairs(selectedItems) do
-			if type(v.size) == "vector3" and type(v.position) == "vector3" then
-				local topLeft = v.position + (v.size/2)or vector3(0.1, 0.1, 0.1)
-				local btmRight = v.position - (v.size/2)or vector3(0.1, 0.1, 0.1)
-			
-				upper.x = math.max(topLeft.x, upper.x)
-				upper.y = math.max(topLeft.y, upper.y)
-				upper.z = math.max(topLeft.z, upper.z)
-
-				lower.x = math.min(btmRight.x, lower.x)
-				lower.y = math.min(btmRight.y, lower.y)
-				lower.z = math.min(btmRight.z, lower.z)
-			end
-		end
-
-		outlineSelectedBlock.position = (upper+lower)/2
-		outlineSelectedBlock.size = upper-lower
-		
-	elseif #selectedItems == 1 and selectedItems[1].className == "block" then
-		outlineSelectedBlock.opacity = 1
-		outlineSelectedBlock.position = selectedItems[1].position
-		outlineSelectedBlock.size = selectedItems[1].size or vector3(0.1, 0.1, 0.1)
-	elseif #selectedItems == 0 then
-		outlineSelectedBlock.opacity = 0
-		outlineSelectedBlock.size = vector3(0, 0, 0)
-	end
-end
-
-engine.input:mouseLeftReleased(function( input )
-	if input.systemHandled or disableDefaultClickActions then return end
-
-	validateItems()
-
-	local mouseHit = engine.physics:rayTestScreen( engine.input.mousePosition )
-	if not mouseHit or mouseHit.object.workshopLocked then
-		-- User clicked empty space, deselect everything??#
-		selectedItems = {}
-		outlineSelectedBlock.opacity = 0
-		updateBounding()
-		return
-	end
-
-	local doSelect = true
-
-	if not engine.input:isKeyDown(enums.key.leftShift) then
-		-- deselect everything that's already selected and move on
-		selectedItems = {}
-	else
-		for i,v in pairs(selectedItems) do
-			if v == mouseHit.object then
-				table.remove(selectedItems, i)
-				doSelect = false
-			end
-		end
-	end
-
-	if doSelect then
-
-		table.insert(selectedItems, mouseHit.object)
-	end
-
-	updateBounding()
-end)
-
-
--- End Selection System
 
 -- Tools
 local toolBarDragBtn = addTool("local:hand.png", function(id)
@@ -447,8 +475,8 @@ local toolBarDragBtn = addTool("local:hand.png", function(id)
 					currentHit = currentHit[1]
 
 					local forward = (currentHit.object.rotation * currentHit.hitNormal):normal()-- * quaternion:setEuler(0,math.rad(applyRot),0)
-				
-					local currentPosition = currentHit.hitPosition + (forward/2)
+	
+					local currentPosition = currentHit.hitPosition + (forward * (selectedItems[1].size/2)) --+ (selectedItems[1].size/2)
 
 					if lastPosition ~= currentPosition or lastRot ~= applyRot then
 						lastRot = applyRot
@@ -456,7 +484,7 @@ local toolBarDragBtn = addTool("local:hand.png", function(id)
 
 						local targetRot = startRotation * quaternion:setEuler(0,math.rad(applyRot),0)
 
-						engine.tween:begin(selectedItems[1], .15, {position = currentPosition,
+						engine.tween:begin(selectedItems[1], .2, {position = currentPosition,
 														  		   rotation = targetRot }, "outQuad")
 
 						--selectedItems[1].position = currentPosition 
@@ -468,7 +496,7 @@ local toolBarDragBtn = addTool("local:hand.png", function(id)
 								--v.position = (currentPosition) + (offsets[v][2]*selectedItems[1].rotation) * offsets[v][1]
 								--v.rotation = offsets[v][2]*selectedItems[1].rotation 
 
-								engine.tween:begin(v, .15, {position = (currentPosition) + (offsets[v][2]*targetRot) * offsets[v][1],
+								engine.tween:begin(v, .2, {position = (currentPosition) + (offsets[v][2]*targetRot) * offsets[v][1],
 														   rotation = offsets[v][2]*targetRot }, "outQuad")
 							end
 						end
