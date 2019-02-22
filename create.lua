@@ -11,6 +11,8 @@ local darkTheme = {
 	mainBg  = colour:fromRGB(66, 66, 76),
 	mainTxt = colour:fromRGB(255, 255, 255),
 
+	secondaryBg  = colour:fromRGB(55, 55, 66),
+
 	toolSelected = colour(1, 1, 1),
 	toolHovered = colour(0.9, 0.9, 0.9),
 	toolDeselected = colour(0.6, 0.6, 0.6)
@@ -305,15 +307,15 @@ toolBarMain.parent = mainFrame
 toolBarMain.alpha = 0
 
 local logFrame = engine.guiFrame()
-logFrame.size = guiCoord(1, 0, 1, 220)
+logFrame.size = guiCoord(1, 0, 0, 220)
 logFrame.parent = engine.workshop.interface
-logFrame.position = guiCoord(0, 0, 1, -220)
+logFrame.position = guiCoord(0, 0, 1, 0)
 logFrame.backgroundColour = theme.mainBg
-logFrame.alpha = 0.985
-logFrame.visible = true
+logFrame.alpha = 0.98
+logFrame.visible = false
 
 local logFrameTextBox = engine.guiTextBox()
-logFrameTextBox.size = guiCoord(1, -4, 1, 0)
+logFrameTextBox.size = guiCoord(1, -4, 1, -26)
 logFrameTextBox.position = guiCoord(0, 2, 0, 0)
 logFrameTextBox.guiStyle = enums.guiStyle.noBackground
 logFrameTextBox.fontSize = 9
@@ -325,6 +327,19 @@ logFrameTextBox.multiline = true
 logFrameTextBox.align = enums.align.topLeft
 logFrameTextBox.parent = logFrame
 logFrameTextBox.textColour = colour(1, 1, 1)
+
+local codeInputBox = engine.guiTextBox()
+codeInputBox.parent = logFrame
+codeInputBox.size = guiCoord(1, 0, 0, 23)
+codeInputBox.position = guiCoord(0, 0, 1, -25)
+codeInputBox.backgroundColour = theme.secondaryBg
+codeInputBox.fontSize = 8
+codeInputBox.fontFile = theme.font
+codeInputBox.text = " t"
+codeInputBox.readOnly = false
+codeInputBox.wrap = true
+codeInputBox.multiline = false
+codeInputBox.align = enums.align.middleLeft
 
 delay(function()
 	engine.tween:begin(mainFrame, .5, {position = guiCoord(0, 15, 0, 15)}, "inOutBack")
@@ -376,6 +391,34 @@ engine.debug:output(function(msg, type)
 	-- This function is deprecated.
 	logFrameTextBox:setText(text)
 
+end)
+
+local lastCmd = ""
+codeInputBox:keyPressed(function(inputObj)
+	if inputObj.key == enums.key['return'] then
+
+		if (codeInputBox.text == "clear" or codeInputBox.text == " clear") then
+			outputLines = {}
+			lbl:setText("")
+			codeInputBox.text = ""
+			return
+		end
+		-- Note: workshop:loadString is not the same as the standard lua loadstring 
+		-- This method will load and run the string immediately
+		-- Returns a boolean indicating success and an error message if success is false.
+		local input = string.gsub(codeInputBox.text, "##", "#")
+
+		local success, result = engine.workshop:loadString(input)
+		lastCmd = input
+
+		print(" > " .. input:sub(0,200))
+		codeInputBox.text = ""
+		if not success then
+			error(result, 2)
+		end
+	elseif inputObj.key == enums.key['up'] then
+		codeInputBox.text = lastCmd
+	end
 end)
 
 -- End output system
