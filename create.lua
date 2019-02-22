@@ -49,20 +49,20 @@ basePlate.position = vector3(0, -1, 0)
 basePlate.parent = workspace
 basePlate.workshopLocked = true
 
-local starterBlock = engine.block("block")
-starterBlock.colour = colour(0,1,1)
+local starterBlock = engine.block("red")
+starterBlock.colour = colour(1,0,0)
 starterBlock.size = vector3(1,1,1)
 starterBlock.position = vector3(-22, 2, -22)
 starterBlock.parent = workspace
 
-local starterBlock2 = engine.block("block")
-starterBlock2.colour = colour(1,1,0)
-starterBlock2.size = vector3(0.8,1,1)
+local starterBlock2 = engine.block("geren")
+starterBlock2.colour = colour(0,1,0)
+starterBlock2.size = vector3(0.8,1,0.2)
 starterBlock2.position = vector3(-23, 2, -22)
 starterBlock2.parent = workspace
 
-local starterBlock3 = engine.block("block")
-starterBlock3.colour = colour(1,0.2,0)
+local starterBlock3 = engine.block("blyue")
+starterBlock3.colour = colour(0,0.2,1)
 starterBlock3.size = vector3(1,0.5,1)
 starterBlock3.position = vector3(-22.5, 2.75, -22)
 starterBlock3.parent = workspace
@@ -157,10 +157,10 @@ toolBarMain.alpha = 0
 local logFrame = engine.guiFrame()
 logFrame.size = guiCoord(1, 0, 1, 220)
 logFrame.parent = engine.workshop.interface
-logFrame.position = guiCoord(0, 0, 1, 0)
+logFrame.position = guiCoord(0, 0, 1, -220)
 logFrame.backgroundColour = theme.mainBg
 logFrame.alpha = 0.985
-logFrame.visible = false
+logFrame.visible = true
 
 local logFrameTextBox = engine.guiTextBox()
 logFrameTextBox.size = guiCoord(1, -4, 1, 0)
@@ -401,6 +401,8 @@ local toolBarDragBtn = addTool("local:hand.png", function(id)
 	local isDown = false
 	local applyRot = 0
 
+	local tweens = {}
+
 	-- Store event handler so we can disconnect it later.
 	tools[id].data.mouseDownEvent = engine.input:mouseLeftPressed(function ( inp )
 		if inp.systemHandled then return end
@@ -426,15 +428,20 @@ local toolBarDragBtn = addTool("local:hand.png", function(id)
 			local offsets = {}
 			--local lowestPoint = selectedItems[1].position.y
 
-			for _,v in pairs(selectedItems) do
-				--lowestPoint = math.min(lowestPoint, v.position.y-(v.size.y/2))
-				local relative = selectedItems[1].rotation:inverse() * v.rotation;
-				offsets[v] = {v.position-selectedItems[1].position, relative}
+			for i,v in pairs(selectedItems) do
+				if i > 1 then 
+					--lowestPoint = math.min(lowestPoint, v.position.y-(v.size.y/2))
+					local relative = startRotation:inverse() * v.rotation;	
+					local positionOffset = (relative*selectedItems[1].rotation):inverse() * (v.position - selectedItems[1].position) 
+					offsets[v] = {positionOffset, relative}
+				end
 			end
 
-			--lowestPoint = selectedItems[1].position.y - lowestPoint
+
+			local lastRot = applyRot
 
 			while isDown do
+
 				local currentHit = engine.physics:rayTestScreenAllHits(engine.input.mousePosition, selectedItems)
 				if #currentHit >= 1 then 
 					currentHit = currentHit[1]
@@ -443,15 +450,27 @@ local toolBarDragBtn = addTool("local:hand.png", function(id)
 				
 					local currentPosition = currentHit.hitPosition + (forward/2)
 
-					if lastPosition ~= currentPosition then
+					if lastPosition ~= currentPosition or lastRot ~= applyRot then
+						lastRot = applyRot
 						lastPosition = currentPosition
 
-						selectedItems[1].position = currentPosition 
-						selectedItems[1].rotation = startRotation * quaternion:setEuler(0,math.rad(applyRot),0)
+						local targetRot = startRotation * quaternion:setEuler(0,math.rad(applyRot),0)
 
-						for _,v in pairs(selectedItems) do
-							v.position = (currentPosition) + (selectedItems[1].rotation * offsets[v][2]) * offsets[v][1]
-							v.rotation = selectedItems[1].rotation * offsets[v][2]
+						engine.tween:begin(selectedItems[1], .15, {position = currentPosition,
+														  		   rotation = targetRot }, "outQuad")
+
+						--selectedItems[1].position = currentPosition 
+						--selectedItems[1].rotation = startRotation * quaternion:setEuler(0,math.rad(applyRot),0)
+						--print(selectedItems[1].name)
+
+						for i,v in pairs(selectedItems) do
+							if i > 1 then 
+								--v.position = (currentPosition) + (offsets[v][2]*selectedItems[1].rotation) * offsets[v][1]
+								--v.rotation = offsets[v][2]*selectedItems[1].rotation 
+
+								engine.tween:begin(v, .15, {position = (currentPosition) + (offsets[v][2]*targetRot) * offsets[v][1],
+														   rotation = offsets[v][2]*targetRot }, "outQuad")
+							end
 						end
 
 						updateBounding()
@@ -469,7 +488,8 @@ local toolBarDragBtn = addTool("local:hand.png", function(id)
 		if isDown then
 			if inp.key == enums.key.r then
 				applyRot = applyRot + 45/2
-				print(applyRot)
+
+
 			end
 		end
 	end)
@@ -486,6 +506,7 @@ local toolBarDragBtn = addTool("local:hand.png", function(id)
 end,
 function (id)
 	--deactivated
+
 
 	tools[id].data.mouseDownEvent:disconnect()
 	tools[id].data.mouseUpEvent:disconnect()
