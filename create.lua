@@ -72,40 +72,86 @@ starterBlock3.parent = workspace
 
 -- Selection System
 
--- This block is used to show an outline around things we're hovering.
-local outlineHoverBlock = engine.block("workshopHoverOutlineWireframe")
-outlineHoverBlock.wireframe = true
-outlineHoverBlock.static = true
-outlineHoverBlock.physics = false
-outlineHoverBlock.colour = colour(0, 1, 0)
-outlineHoverBlock.size = vector3(0, 0, 0)
-outlineHoverBlock.opacity = 0
+local boundingBox = engine.block("_CreateMode_boundingBox")
+boundingBox.wireframe = true
+boundingBox.static = true
+boundingBox.physics = false
+boundingBox.colour = colour(1, 0.8, 0.8)
+boundingBox.opacity = 0
+boundingBox.size = vector3(0,0,0)
 
+local selectedItems = {}
+
+
+--Calculate median of vector
+--modified from http://lua-users.org/wiki/SimpleStats
+local function median( t, component )
+  local temp={}
+
+  for k,v in pairs(t) do
+    table.insert(temp, v.position[component])
+  end
+
+  table.sort( temp )
+
+  if math.fmod(#temp,2) == 0 then
+    return ( temp[#temp/2] + temp[(#temp/2)+1] ) / 2
+  else
+    return temp[math.ceil(#temp/2)]
+  end
+end
+
+local function calculateVertices(block)
+	local vertices = {}
+	for x = -1,1,2 do
+		for y = -1,1,2 do
+			for z = -1,1,2 do
+				table.insert(vertices, block.position + block.rotation* (vector3(x,y,z) *block.size/2))
+			end
+		end
+	end
+	return vertices
+end
+
+local function calculateBoundingBox()
+
+	if #selectedItems < 1 then
+		boundingBox.size = vector3(0,0,0)
+	return end
+
+	local min, max;
+
+	for _,v in pairs(selectedItems) do
+		if not min then min = v.position; max=v.position end
+		local vertices = calculateVertices(v)
+		for i,v in pairs(vertices) do
+			min = min:min(v)
+			max = max:max(v)
+		end
+	end
+
+	boundingBox.size = max-min
+	boundingBox.position = max - (max-min)/2
+end
+
+local lastHover = nil
 engine.graphics:frameDrawn(function(events, frameNumber)	
 	local mouseHit = engine.physics:rayTestScreen( engine.input.mousePosition ) -- accepts vector2 or number,number
 
-	if mouseHit and not disableDefaultClickActions and not mouseHit.object.workshopLocked then 
-		outlineHoverBlock.size = mouseHit.object.size
-		outlineHoverBlock.position = mouseHit.object.position
-		outlineHoverBlock.rotation = mouseHit.object.rotation
-		outlineHoverBlock.opacity = 1
-	else
-		outlineHoverBlock.opacity = 0
-		outlineHoverBlock.size = vector3(0, 0, 0)
+	if mouseHit and not disableDefaultClickActions and not mouseHit.object.workshopLocked and mouseHit.object.emissiveColour == colour(0.0, 0.0, 0.0) then 
+			
+		if lastHover and lastHover ~= mouseHit.object and lastHover.emissiveColour == colour(0.05, 0.05, 0.05) then
+			lastHover.emissiveColour = colour(0.0, 0.0, 0.0)
+		end
+
+		mouseHit.object.emissiveColour = colour(0.05, 0.05, 0.05)
+		lastHover = mouseHit.object
+	elseif (not mouseHit or mouseHit.object.workshopLocked) and lastHover and lastHover.emissiveColour == colour(0.05, 0.05, 0.05) then
+		lastHover.emissiveColour = colour(0.0, 0.0, 0.0)
+		lastHover = nil
 	end
 end)
 
-
--- This block is used to outline selected items
-local outlineSelectedBlock = engine.block("workshopSelectedOutlineWireframe")
-outlineSelectedBlock.wireframe = true
-outlineSelectedBlock.static = true
-outlineSelectedBlock.physics = false
-outlineSelectedBlock.colour = colour(1, 0, 0)
-outlineSelectedBlock.size = vector3(0, 0, 0)
-outlineSelectedBlock.opacity = 0
-
-local selectedItems = {}
 
 -- Clean out any deleted items.
 local function validateItems()
@@ -117,43 +163,6 @@ local function validateItems()
 end
 
 
-local function updateBounding(  )
-	if #selectedItems > 1 then
-		outlineSelectedBlock.opacity = 1
-		local i =1
-	
-		-- used to calculate bounding box area...
-		local upper = selectedItems[i].position + (selectedItems[i].size/2) or vector3(0.1, 0.1, 0.1)
-		local lower = selectedItems[i].position - (selectedItems[i].size/2) or vector3(0.1, 0.1, 0.1)
-
-		for i, v in pairs(selectedItems) do
-			if type(v.size) == "vector3" and type(v.position) == "vector3" then
-				local topLeft = v.position + (v.size/2)or vector3(0.1, 0.1, 0.1)
-				local btmRight = v.position - (v.size/2)or vector3(0.1, 0.1, 0.1)
-			
-				upper.x = math.max(topLeft.x, upper.x)
-				upper.y = math.max(topLeft.y, upper.y)
-				upper.z = math.max(topLeft.z, upper.z)
-
-				lower.x = math.min(btmRight.x, lower.x)
-				lower.y = math.min(btmRight.y, lower.y)
-				lower.z = math.min(btmRight.z, lower.z)
-			end
-		end
-
-		outlineSelectedBlock.position = (upper+lower)/2
-		outlineSelectedBlock.size = upper-lower
-		
-	elseif #selectedItems == 1 and selectedItems[1].className == "block" then
-		outlineSelectedBlock.opacity = 1
-		outlineSelectedBlock.position = selectedItems[1].position
-		outlineSelectedBlock.size = selectedItems[1].size or vector3(0.1, 0.1, 0.1)
-	elseif #selectedItems == 0 then
-		outlineSelectedBlock.opacity = 0
-		outlineSelectedBlock.size = vector3(0, 0, 0)
-	end
-end
-
 engine.input:mouseLeftReleased(function( input )
 	if input.systemHandled or disableDefaultClickActions then return end
 
@@ -162,9 +171,11 @@ engine.input:mouseLeftReleased(function( input )
 	local mouseHit = engine.physics:rayTestScreen( engine.input.mousePosition )
 	if not mouseHit or mouseHit.object.workshopLocked then
 		-- User clicked empty space, deselect everything??#
+		for _,v in pairs(selectedItems) do
+			v.emissiveColour = colour(0.0, 0.0, 0.0)
+		end
 		selectedItems = {}
-		outlineSelectedBlock.opacity = 0
-		updateBounding()
+		calculateBoundingBox()
 		return
 	end
 
@@ -172,11 +183,16 @@ engine.input:mouseLeftReleased(function( input )
 
 	if not engine.input:isKeyDown(enums.key.leftShift) then
 		-- deselect everything that's already selected and move on
+		for _,v in pairs(selectedItems) do
+			v.emissiveColour = colour(0.0, 0.0, 0.0)
+		end
 		selectedItems = {}
+		calculateBoundingBox()
 	else
 		for i,v in pairs(selectedItems) do
 			if v == mouseHit.object then
 				table.remove(selectedItems, i)
+				v.emissiveColour = colour(0.0, 0.0, 0.0)
 				doSelect = false
 			end
 		end
@@ -184,10 +200,13 @@ engine.input:mouseLeftReleased(function( input )
 
 	if doSelect then
 
+		mouseHit.object.emissiveColour = colour(0.025, 0.025, 0.15)
+
 		table.insert(selectedItems, mouseHit.object)
+		calculateBoundingBox()
+
 	end
 
-	updateBounding()
 end)
 
 
@@ -237,24 +256,6 @@ engine.input:mouseMoved(function( input )
 		--updatePosition()
 	end
 end)
-
---Calculate median of vector
---modified from http://lua-users.org/wiki/SimpleStats
-local function median( t, component )
-  local temp={}
-
-  for k,v in pairs(t) do
-    table.insert(temp, v.position[component])
-  end
-
-  table.sort( temp )
-
-  if math.fmod(#temp,2) == 0 then
-    return ( temp[#temp/2] + temp[(#temp/2)+1] ) / 2
-  else
-    return temp[math.ceil(#temp/2)]
-  end
-end
 
 engine.input:keyPressed(function( inputObj )
 	if inputObj.systemHandled then return end
@@ -341,12 +342,67 @@ codeInputBox.wrap = true
 codeInputBox.multiline = false
 codeInputBox.align = enums.align.middleLeft
 
+--Create mode
+local createModeFrame = engine.guiFrame()
+createModeFrame.size = guiCoord(0, 85, 0, 36)
+createModeFrame.parent = engine.workshop.interface
+createModeFrame.position = guiCoord(0, 157, 0, -40)
+createModeFrame.backgroundColour = theme.mainBg
+createModeFrame.alpha = 0.985
+createModeFrame.guiStyle = enums.guiStyle.rounded
+
+local createModeText = engine.guiTextBox()
+createModeText.size = guiCoord(1, -10, 1, -6)
+createModeText.position = guiCoord(0, 10, 0, 3)
+createModeText.guiStyle = enums.guiStyle.noBackground
+createModeText.fontSize = 10
+createModeText.fontFile = theme.font
+createModeText.text = "Mode:"
+createModeText.readOnly = true
+createModeText.align = enums.align.middleLeft
+createModeText.parent = createModeFrame
+createModeText.textColour = colour(1, 1, 1)
+createModeText.alpha = 0.8
+
+local createModeImage = engine.guiImage()
+createModeImage.size = guiCoord(0, 20, 0, 17)
+createModeImage.position = guiCoord(1, -30, 0.5, -8.5)
+createModeImage.parent = createModeFrame
+createModeImage.guiStyle = enums.guiStyle.noBackground
+createModeImage.imageColour = colour(1,1,1)
+createModeImage.texture = "local:block.png"
+
+
+
 delay(function()
 	engine.tween:begin(mainFrame, .5, {position = guiCoord(0, 15, 0, 15)}, "inOutBack")
+	wait(0.1)
+	engine.tween:begin(createModeFrame, .5, {position = guiCoord(0, 157, 0, 15)}, "inOutBack")
 end, 1)
-
 -- End Main Gui
 
+-- Create mode system
+
+local loadingMode = false
+local function modeClickHandler()
+	print("clcik")
+	--placeholder
+	if loadingMode then return end
+	loadingMode = true
+
+	engine.tween:begin(createModeImage, .4, {position = guiCoord(1, -30, 1, 0)}, "inOutBack", function()
+		createModeImage.position = guiCoord(1,-30,0,-20)
+		engine.tween:begin(createModeImage, .4, {position = guiCoord(1, -30, 0.5, -8.5)}, "inOutBack", function()
+			loadingMode = false
+		end)
+	end)
+end
+
+createModeImage:mouseLeftPressed(modeClickHandler)
+createModeFrame:mouseLeftPressed(modeClickHandler)
+createModeText:mouseLeftPressed(modeClickHandler)
+
+-- Create mode system end
 
 -- Output System
 
@@ -399,7 +455,7 @@ codeInputBox:keyPressed(function(inputObj)
 
 		if (codeInputBox.text == "clear" or codeInputBox.text == " clear") then
 			outputLines = {}
-			lbl:setText("")
+			logFrameTextBox:setText("")
 			codeInputBox.text = ""
 			return
 		end
@@ -487,7 +543,7 @@ local toolBarDragBtn = addTool("local:hand.png", function(id)
 			-- Didexclude is false if the user didnt drag starting from one of the selected items.
 			if  didExclude == false then return print("Cannot cast starter ray!") end
 
-			wait(.35)
+			wait(.25)
 			if not isDown then return end -- they held the button down, so let's start dragging
 			print("Start drag.")
 			disableDefaultClickActions = true -- will disable the main selection system for 0.2 seconds after user ends drag
@@ -512,7 +568,6 @@ local toolBarDragBtn = addTool("local:hand.png", function(id)
 			local lastRot = applyRot
 
 			while isDown do
-
 				local currentHit = engine.physics:rayTestScreenAllHits(engine.input.mousePosition, selectedItems)
 				if #currentHit >= 1 then 
 					currentHit = currentHit[1]
@@ -544,9 +599,9 @@ local toolBarDragBtn = addTool("local:hand.png", function(id)
 							end
 						end
 
-						updateBounding()
 					end
 				end
+				calculateBoundingBox()
 				wait()
 			end
 		end
@@ -569,6 +624,7 @@ local toolBarDragBtn = addTool("local:hand.png", function(id)
 		if inp.systemHandled then return end
 		isDown = false
 		wait(0.2)
+		calculateBoundingBox()
 		if not isDown and activeTool == id then
 			disableDefaultClickActions = false
 		end
