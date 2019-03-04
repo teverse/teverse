@@ -57,7 +57,6 @@ starterBlock.colour = colour(1,0,0)
 starterBlock.size = vector3(1,1,1)
 starterBlock.position = vector3(-22, 2, -22)
 starterBlock.parent = workspace
-starterBlock.opacity = 0.5
 
 local starterBlock2 = engine.block("green")
 starterBlock2.colour = colour(0,1,0)
@@ -119,7 +118,10 @@ local function calculateBoundingBox()
 
 	if #selectedItems < 1 then
 		boundingBox.size = vector3(0,0,0)
+		boundingBox.opacity = 0
 	return end
+
+	boundingBox.opacity = 0.5
 
 	local min, max;
 
