@@ -12,6 +12,7 @@ local darkTheme = {
 	mainTxt = colour:fromRGB(255, 255, 255),
 
 	secondaryBg  = colour:fromRGB(55, 55, 66),
+	secondaryText  = colour:fromRGB(255, 255, 255),
 
 	toolSelected = colour(1, 1, 1),
 	toolHovered = colour(0.9, 0.9, 0.9),
@@ -56,14 +57,15 @@ starterBlock.colour = colour(1,0,0)
 starterBlock.size = vector3(1,1,1)
 starterBlock.position = vector3(-22, 2, -22)
 starterBlock.parent = workspace
+starterBlock.opacity = 0.5
 
-local starterBlock2 = engine.block("geren")
+local starterBlock2 = engine.block("green")
 starterBlock2.colour = colour(0,1,0)
 starterBlock2.size = vector3(0.8,1,0.2)
 starterBlock2.position = vector3(-23, 2, -22)
 starterBlock2.parent = workspace
 
-local starterBlock3 = engine.block("blyue")
+local starterBlock3 = engine.block("blue")
 starterBlock3.colour = colour(0,0.2,1)
 starterBlock3.size = vector3(1,0.5,1)
 starterBlock3.position = vector3(-22.5, 2.75, -22)
@@ -170,6 +172,7 @@ engine.input:mouseLeftReleased(function( input )
 
 	local mouseHit = engine.physics:rayTestScreen( engine.input.mousePosition )
 	if not mouseHit or mouseHit.object.workshopLocked then
+		if mouseHit and mouseHit.object.name == "_CreateMode_" then return end -- dont deselect
 		-- User clicked empty space, deselect everything??#
 		for _,v in pairs(selectedItems) do
 			v.emissiveColour = colour(0.0, 0.0, 0.0)
@@ -327,7 +330,7 @@ logFrameTextBox.wrap = true
 logFrameTextBox.multiline = true
 logFrameTextBox.align = enums.align.topLeft
 logFrameTextBox.parent = logFrame
-logFrameTextBox.textColour = colour(1, 1, 1)
+logFrameTextBox.textColour = theme.mainTxt
 
 local codeInputBox = engine.guiTextBox()
 codeInputBox.parent = logFrame
@@ -336,7 +339,7 @@ codeInputBox.position = guiCoord(0, 0, 1, -25)
 codeInputBox.backgroundColour = theme.secondaryBg
 codeInputBox.fontSize = 8
 codeInputBox.fontFile = theme.font
-codeInputBox.text = " t"
+codeInputBox.text = " "
 codeInputBox.readOnly = false
 codeInputBox.wrap = true
 codeInputBox.multiline = false
@@ -361,7 +364,7 @@ createModeText.text = "Mode:"
 createModeText.readOnly = true
 createModeText.align = enums.align.middleLeft
 createModeText.parent = createModeFrame
-createModeText.textColour = colour(1, 1, 1)
+createModeText.textColour = theme.mainTxt
 createModeText.alpha = 0.8
 
 local createModeImage = engine.guiImage()
@@ -369,10 +372,8 @@ createModeImage.size = guiCoord(0, 20, 0, 17)
 createModeImage.position = guiCoord(1, -30, 0.5, -8.5)
 createModeImage.parent = createModeFrame
 createModeImage.guiStyle = enums.guiStyle.noBackground
-createModeImage.imageColour = colour(1,1,1)
+createModeImage.imageColour = theme.mainTxt
 createModeImage.texture = "local:block.png"
-
-
 
 delay(function()
 	engine.tween:begin(mainFrame, .5, {position = guiCoord(0, 15, 0, 15)}, "inOutBack")
@@ -385,14 +386,13 @@ end, 1)
 
 local loadingMode = false
 local function modeClickHandler()
-	print("clcik")
 	--placeholder
 	if loadingMode then return end
 	loadingMode = true
 
-	engine.tween:begin(createModeImage, .4, {position = guiCoord(1, -30, 1, 0)}, "inOutBack", function()
+	engine.tween:begin(createModeImage, .25, {position = guiCoord(1, -30, 1, 0)}, "inOutBack", function()
 		createModeImage.position = guiCoord(1,-30,0,-20)
-		engine.tween:begin(createModeImage, .4, {position = guiCoord(1, -30, 0.5, -8.5)}, "inOutBack", function()
+		engine.tween:begin(createModeImage, .25, {position = guiCoord(1, -30, 0.5, -8.5)}, "inOutBack", function()
 			loadingMode = false
 		end)
 	end)
@@ -410,7 +410,7 @@ local inAction = false
 engine.input:keyPressed(function( inputObj )
 	if inputObj.systemHandled or inAction then return end
 
-	if inputObj.key == enums.key.escape then
+	if inputObj.key == enums.key.number0 then
 		inAction = true
 		if logFrame.visible then
 			engine.tween:begin(logFrame, 0.5, {position = guiCoord(0, 0, 1, 0)}, "outQuad", function()
@@ -423,6 +423,12 @@ engine.input:keyPressed(function( inputObj )
 				inAction = false
 			end)
 		end
+	elseif inputObj.key == enums.key.escape then
+		for _,v in pairs(selectedItems) do
+			v.emissiveColour = colour(0.0, 0.0, 0.0)
+		end
+		selectedItems = {}
+		calculateBoundingBox()
 	end
 end)
 
@@ -484,7 +490,7 @@ end)
 local activeTool = 0
 local tools = {}
 
-local function addTool(image, activate, deactivate)
+local function addTool(image, activate, deactivate, defaultData)
 	local toolID = #tools + 1;
 
 	local toolButton = engine.guiImage()
@@ -495,7 +501,7 @@ local function addTool(image, activate, deactivate)
 	toolButton.imageColour = theme.toolDeselected
 	toolButton.texture = image;
 
-	toolButton:mouseLeftReleased(function()
+	local t =toolButton:mouseLeftReleased(function()
 		-- deactivate current active tool
 		if tools[activeTool] then
 			tools[activeTool].gui.imageColour = theme.toolDeselected
@@ -515,7 +521,8 @@ local function addTool(image, activate, deactivate)
 		end
 	end)
 
-	table.insert(tools, {["id"]=toolID, ["gui"]=toolButton, ["data"]={}, ["activate"] = activate, ["deactivate"] = deactivate})
+
+	table.insert(tools, {["id"]=toolID, ["gui"]=toolButton, ["data"]=defaultData and defaultData or {}, ["activate"] = activate, ["deactivate"] = deactivate})
 	return tools[toolID]
 end
 
@@ -523,12 +530,140 @@ end
 
 
 -- Tools
+
+local moveGrid = "0" -- cache between tools.
+
+-- Drag Tool
 local toolBarDragBtn = addTool("local:hand.png", function(id)
 	--activated
+
+	--Accessory Frame
+	local accessoryFrame = engine.guiFrame()
+	accessoryFrame.size = guiCoord(0, 85, 0, 36)
+	accessoryFrame.parent = engine.workshop.interface
+	accessoryFrame.position = guiCoord(0, 252, 0, -40)
+	accessoryFrame.backgroundColour = theme.mainBg
+	accessoryFrame.alpha = 0.985
+	accessoryFrame.guiStyle = enums.guiStyle.rounded
+
+	tools[id].data.accessoryFrame = accessoryFrame
+
+	local accessoryText = engine.guiTextBox()
+	accessoryText.size = guiCoord(0, 40, 1, -6)
+	accessoryText.position = guiCoord(0, 10, 0, 3)
+	accessoryText.guiStyle = enums.guiStyle.noBackground
+	accessoryText.fontSize = 10
+	accessoryText.fontFile = theme.font
+	accessoryText.text = "Grid:"
+	accessoryText.readOnly = true
+	accessoryText.align = enums.align.middleLeft
+	accessoryText.parent = accessoryFrame
+	accessoryText.textColour = theme.mainTxt
+	accessoryText.alpha = 0.8
+
+	local inputGrid = engine.guiTextBox()
+	inputGrid.name = "inputGrid"
+	inputGrid.size = guiCoord(0, 38, 1, -8)
+	inputGrid.position = guiCoord(0, 42, 0, 4)
+	inputGrid.backgroundColour = theme.secondaryBg
+	inputGrid.guiStyle = enums.guiStyle.rounded
+	inputGrid.fontSize = 10
+	inputGrid.fontFile = theme.font
+	inputGrid.text = moveGrid
+	inputGrid.readOnly = false
+	inputGrid.align = enums.align.middle
+	inputGrid.parent = accessoryFrame
+	inputGrid.textColour = theme.secondaryText
+	inputGrid.alpha = 0.8
+
+	local hovers = {}
+	local expanded = false
+
+	local function updateSize(didFocus)
+		if didFocus and expanded then return end 
+
+		local focused = false
+		for o,v in pairs(hovers) do
+			if v then focused = true end
+		end
+
+		if focused and not expanded then
+			engine.tween:begin(accessoryFrame, .25, {size = guiCoord(0, 220, 0, 36)}, "inOutQuad")
+			expanded = true
+		elseif not focused and expanded then
+			engine.tween:begin(accessoryFrame, .25, {size = guiCoord(0, 85, 0, 36)}, "inOutQuad")
+			expanded = false
+		end
+	end
+
+	local function focusedHandler()
+		hovers[self.object] = true
+		updateSize(true)
+	end
+
+	local function unfocusedHandler()
+		hovers[self.object] = false
+		updateSize()
+	end
+
+	accessoryFrame:mouseFocused(focusedHandler)
+	accessoryText:mouseFocused(focusedHandler)
+	inputGrid:mouseFocused(focusedHandler)
+	
+	accessoryFrame:mouseUnfocused(unfocusedHandler)
+	accessoryText:mouseUnfocused(unfocusedHandler)
+	inputGrid:mouseUnfocused(unfocusedHandler)
+
+
+	local x = 90
+	for i,v in ipairs(tools[id].data.axis) do 
+		local lbl = engine.guiTextBox()
+		lbl.size = guiCoord(0, 13, 1, -6)
+		lbl.position = guiCoord(0, x, 0, 3)
+		lbl.guiStyle = enums.guiStyle.noBackground
+		lbl.fontSize = 10
+		lbl.fontFile = theme.font
+		lbl.text = string.upper(v[1])
+		lbl.readOnly = true
+		lbl.align = enums.align.middleLeft
+		lbl.parent = accessoryFrame
+		lbl.textColour = theme.mainTxt
+		lbl.alpha = 0.8
+
+		local boolProp = engine.guiButton()
+		boolProp.name = "bool"
+		boolProp.parent = accessoryFrame
+		boolProp.position = guiCoord(0,x+12,0.5,-8)
+		boolProp.size = guiCoord(0, 20, 0, 20)
+		boolProp.text = ""
+		boolProp.guiStyle = enums.guiStyle.checkBox
+		boolProp.selected = v[2]
+
+		boolProp:mouseLeftReleased(function()
+			tools[id].data.axis[i][2] = not tools[id].data.axis[i][2]
+			boolProp.selected = tools[id].data.axis[i][2]
+		end)
+
+
+		lbl:mouseFocused(focusedHandler)
+		boolProp:mouseFocused(focusedHandler)
+		lbl:mouseUnfocused(unfocusedHandler)
+		boolProp:mouseUnfocused(unfocusedHandler)
+		x = x + 42
+	end
+
 	local isDown = false
 	local applyRot = 0
 
-	local tweens = {}
+	local roundToMultiple = function(number, multiple)
+		if multiple == 0 then 
+			return number 
+		end
+
+		return ((number % multiple) > multiple/2) and number + multiple - number%multiple or number - number%multiple
+	end
+
+	engine.tween:begin(accessoryFrame, .5, {position = guiCoord(0, 252, 0, 15)}, "inOutBack")
 
 	-- Store event handler so we can disconnect it later.
 	tools[id].data.mouseDownEvent = engine.input:mouseLeftPressed(function ( inp )
@@ -541,11 +676,15 @@ local toolBarDragBtn = addTool("local:hand.png", function(id)
 			local hit, didExclude = engine.physics:rayTestScreenAllHits(engine.input.mousePosition, selectedItems)
 			
 			-- Didexclude is false if the user didnt drag starting from one of the selected items.
-			if  didExclude == false then return print("Cannot cast starter ray!") end
+			if didExclude == false then return end
 
 			wait(.25)
 			if not isDown then return end -- they held the button down, so let's start dragging
-			print("Start drag.")
+
+			local gridStep = tonumber(inputGrid.text)
+			if not gridStep then gridStep = 0 else gridStep = math.abs(gridStep) end
+			inputGrid.text = tostring(gridStep)
+
 			disableDefaultClickActions = true -- will disable the main selection system for 0.2 seconds after user ends drag
 
 			hit = hit and hit[1] or nil
@@ -575,6 +714,14 @@ local toolBarDragBtn = addTool("local:hand.png", function(id)
 					local forward = (currentHit.object.rotation * currentHit.hitNormal):normal()-- * quaternion:setEuler(0,math.rad(applyRot),0)
 	
 					local currentPosition = currentHit.hitPosition + (forward * (selectedItems[1].size/2)) --+ (selectedItems[1].size/2)
+
+					if gridStep > 0 then
+						for i, v in pairs(tools[id].data.axis) do
+							if v[2] then
+								currentPosition[v[1]] = roundToMultiple(currentPosition[v[1]], gridStep)
+							end
+						end
+					end
 
 					if lastPosition ~= currentPosition or lastRot ~= applyRot then
 						lastRot = applyRot
@@ -614,9 +761,11 @@ local toolBarDragBtn = addTool("local:hand.png", function(id)
 		if isDown then
 			if inp.key == enums.key.r then
 				applyRot = applyRot + 45/2
-
-
 			end
+		end
+
+		if inp.key == enums.key.t then
+			inputGrid.text = "0"
 		end
 	end)
 
@@ -633,7 +782,14 @@ local toolBarDragBtn = addTool("local:hand.png", function(id)
 end,
 function (id)
 	--deactivated
+	local f = tools[id].data.accessoryFrame
+	moveGrid = tostring(tonumber(f.inputGrid.text))
 
+	engine.tween:begin(f, .3, {position = guiCoord(0, 252, 0, -40)}, "inOutBack", function()
+		f:destroy()
+	end)
+
+	tools[id].data.accessoryFrame = nil
 
 	tools[id].data.mouseDownEvent:disconnect()
 	tools[id].data.mouseUpEvent:disconnect()
@@ -642,13 +798,252 @@ function (id)
 	tools[id].data.mouseDownEvent = nil
 	tools[id].data.mouseUpEvent = nil
 	tools[id].data.keyDownEvent = nil
-end)
+end, {axis={{"x", true},{"y", false},{"z", true}}})
 
-activeTool = toolBarDragBtn.id
-toolBarDragBtn.gui.imageColour = theme.toolSelected
-toolBarDragBtn.activate(activeTool)
 
-local toolBarMoveBtn = addTool("local:move.png")
+-- End Drag Tool
+
+delay(function()
+	activeTool = toolBarDragBtn.id
+	toolBarDragBtn.gui.imageColour = theme.toolSelected
+	toolBarDragBtn.activate(activeTool)
+end, 1.3)
+
+
+
+local toolBarMoveBtn = addTool("local:move.png", function(id)
+	--activated
+
+	--Accessory Frame
+	local accessoryFrame = engine.guiFrame()
+	accessoryFrame.size = guiCoord(0, 85, 0, 36)
+	accessoryFrame.parent = engine.workshop.interface
+	accessoryFrame.position = guiCoord(0, 252, 0, -40)
+	accessoryFrame.backgroundColour = theme.mainBg
+	accessoryFrame.alpha = 0.985
+	accessoryFrame.guiStyle = enums.guiStyle.rounded
+
+	tools[id].data.accessoryFrame = accessoryFrame
+
+	local accessoryText = engine.guiTextBox()
+	accessoryText.size = guiCoord(0, 40, 1, -6)
+	accessoryText.position = guiCoord(0, 10, 0, 3)
+	accessoryText.guiStyle = enums.guiStyle.noBackground
+	accessoryText.fontSize = 10
+	accessoryText.fontFile = theme.font
+	accessoryText.text = "Grid:"
+	accessoryText.readOnly = true
+	accessoryText.align = enums.align.middleLeft
+	accessoryText.parent = accessoryFrame
+	accessoryText.textColour = theme.mainTxt
+	accessoryText.alpha = 0.8
+
+	local inputGrid = engine.guiTextBox()
+	inputGrid.size = guiCoord(0, 38, 1, -8)
+	inputGrid.position = guiCoord(0, 42, 0, 4)
+	inputGrid.backgroundColour = theme.secondaryBg
+	inputGrid.guiStyle = enums.guiStyle.rounded
+	inputGrid.fontSize = 10
+	inputGrid.fontFile = theme.font
+	inputGrid.text = moveGrid
+	inputGrid.readOnly = false
+	inputGrid.align = enums.align.middle
+	inputGrid.parent = accessoryFrame
+	inputGrid.textColour = theme.secondaryText
+	inputGrid.alpha = 0.8
+
+	local hovers = {}
+	local expanded = false
+
+	local function updateSize(didFocus)
+		if didFocus and expanded then return end 
+
+		local focused = false
+		for o,v in pairs(hovers) do
+			if v then focused = true end
+		end
+
+		if focused and not expanded then
+			engine.tween:begin(accessoryFrame, .25, {size = guiCoord(0, 220, 0, 36)}, "inOutQuad")
+			expanded = true
+		elseif not focused and expanded then
+			engine.tween:begin(accessoryFrame, .25, {size = guiCoord(0, 85, 0, 36)}, "inOutQuad")
+			expanded = false
+		end
+	end
+
+	local function focusedHandler()
+		hovers[self.object] = true
+		updateSize(true)
+	end
+
+	local function unfocusedHandler()
+		hovers[self.object] = false
+		updateSize()
+	end
+
+	accessoryFrame:mouseFocused(focusedHandler)
+	accessoryText:mouseFocused(focusedHandler)
+	inputGrid:mouseFocused(focusedHandler)
+	
+	accessoryFrame:mouseUnfocused(unfocusedHandler)
+	accessoryText:mouseUnfocused(unfocusedHandler)
+	inputGrid:mouseUnfocused(unfocusedHandler)
+
+
+	local x = 90
+	for i,v in ipairs(tools[id].data.axis) do 
+		local lbl = engine.guiTextBox()
+		lbl.size = guiCoord(0, 13, 1, -6)
+		lbl.position = guiCoord(0, x, 0, 3)
+		lbl.guiStyle = enums.guiStyle.noBackground
+		lbl.fontSize = 10
+		lbl.fontFile = theme.font
+		lbl.text = string.upper(v[1])
+		lbl.readOnly = true
+		lbl.align = enums.align.middleLeft
+		lbl.parent = accessoryFrame
+		lbl.textColour = theme.mainTxt
+		lbl.alpha = 0.8
+
+		local boolProp = engine.guiButton()
+		boolProp.name = "bool"
+		boolProp.parent = accessoryFrame
+		boolProp.position = guiCoord(0,x+12,0.5,-8)
+		boolProp.size = guiCoord(0, 20, 0, 20)
+		boolProp.text = ""
+		boolProp.guiStyle = enums.guiStyle.checkBox
+		boolProp.selected = v[2]
+
+		boolProp:mouseLeftReleased(function()
+			tools[id].data.axis[i][2] = not tools[id].data.axis[i][2]
+			boolProp.selected = tools[id].data.axis[i][2]
+		end)
+
+
+		lbl:mouseFocused(focusedHandler)
+		boolProp:mouseFocused(focusedHandler)
+		lbl:mouseUnfocused(unfocusedHandler)
+		boolProp:mouseUnfocused(unfocusedHandler)
+		x = x + 42
+	end
+
+	local isDown = false
+
+	engine.tween:begin(accessoryFrame, .5, {position = guiCoord(0, 252, 0, 15)}, "inOutBack")
+
+	-- Store event handler so we can disconnect it later.
+
+	local gridGuideline = engine.block("_CreateMode_")
+	tools[id].data.gridGuideline = gridGuideline
+	gridGuideline.size = vector3(0,0,0)
+	gridGuideline.colour = colour(1, 1, 1)
+	gridGuideline.parent = workspace
+	gridGuideline.workshopLocked = true
+
+	tools[id].data.handles = {}
+	local components = {"x", "y", "z"}
+	local c = 1
+	local o = 0
+	for i = 1,6 do
+		local component = components[c]
+
+		local handle = engine.block("_CreateMode_")
+		handle.size = vector3(0.1, 0.1, 0.25)
+		handle.colour = colour(c==1 and 1 or 0, c==2 and 1 or 0, c==3 and 1 or 0)
+		handle.emissiveColour = colour(c==1 and .5 or 0, c==2 and .5 or 0, c==3 and .5 or 0)
+		--handle.static = true
+		handle.workshopLocked = true
+
+		handle:mouseLeftPressed(function()
+	
+			local size = vector3(10, 0.1, 10)
+			gridGuideline.size = size
+			gridGuideline.rotation = handle.rotation
+			gridGuideline.position = handle.position
+			if component == "x" then
+				print("comp x")
+				gridGuideline.rotation =  gridGuideline.rotation * quaternion():setEuler(math.rad(-45),math.rad(-45),0)
+			end
+
+			repeat 
+				--Face camera on one Axis
+				if component == "x" then
+					local xVector1 = vector3(0, gridGuideline.position.y,gridGuideline.position.z)
+					local xVector2 = vector3(0, workspace.camera.position.y, workspace.camera.position.z)
+
+					local lookAt = gridGuideline.rotation:setLookRotation( xVector1 - xVector2 )
+					gridGuideline.rotation =  lookAt * quaternion():setEuler(math.rad(45),0,0)
+				else
+					local pos1 = gridGuideline.position
+					pos1[component] = 0
+
+					local pos2 = workspace.camera.position
+					pos2[component] = 0
+
+					local lookAt = gridGuideline.rotation:setLookRotation( pos1 - pos2 )
+					gridGuideline.rotation =  lookAt * quaternion():setEuler(math.rad(45),0,0)
+				end
+
+				wait()
+			until not engine.input:isMouseButtonDown(enums.mouseButton.left)
+
+			gridGuideline.size = vector3(0,0,0)
+		end)
+
+
+		local face = vector3(0,0,0)
+		face[component] = o == 0 and o-1 or o
+		
+		table.insert(tools[id].data.handles, {handle, face})
+		if i % 2 == 0 then
+			c=c+1
+			o = 0
+		else
+			o = o + 1
+		end
+	end
+
+	local function updateHandles()
+		if boundingBox.size == vector3(0,0,0) then
+			for _,v in pairs(tools[id].data.handles) do
+				v[1].size = vector3(0,0,0)
+			end
+		else
+			for _,v in pairs(tools[id].data.handles) do
+				v[1].position = boundingBox.position + boundingBox.rotation* (v[2] * boundingBox.size/2 * vector3(3,3,3)) 
+				v[1]:lookAt(boundingBox.position)
+				v[1].size = vector3(0.1, 0.1, 0.25)
+			end
+		end
+	end
+
+	tools[id].data.boundingEvent = boundingBox:changed(updateHandles)
+	updateHandles()
+end,
+function (id)
+	--deactivated
+	local f = tools[id].data.accessoryFrame
+
+	engine.tween:begin(f, .3, {position = guiCoord(0, 252, 0, -40)}, "inOutBack", function()
+		f:destroy()
+	end)
+
+	tools[id].data.boundingEvent:disconnect()
+	tools[id].data.boundingEvent = nil
+
+	tools[id].data.accessoryFrame = nil
+
+	for _,v in pairs(tools[id].data.handles) do
+		v[1]:destroy()
+	end
+	tools[id].data.gridGuideline:destroy()
+	tools[id].data.gridGuideline = nil
+	tools[id].data.handles = nil
+
+end, {world=false, axis={{"x", true},{"y", true},{"z", true}}})
+
+
 
 local toolBarRotateBtn = addTool("local:rotate.png")
 
