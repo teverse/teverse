@@ -75,6 +75,7 @@ starterBlock3.parent = workspace
 
 local boundingBox = engine.block("_CreateMode_boundingBox")
 boundingBox.wireframe = true
+boundingBox.castsShadows = false
 boundingBox.static = true
 boundingBox.physics = false
 boundingBox.colour = colour(1, 0.8, 0.8)
@@ -114,7 +115,10 @@ local function calculateVertices(block)
 	return vertices
 end
 
+local isCalculating = false
 local function calculateBoundingBox()
+	if isCalculating then return end
+	wait()
 
 	if #selectedItems < 1 then
 		boundingBox.size = vector3(0,0,0)
@@ -134,8 +138,20 @@ local function calculateBoundingBox()
 		end
 	end
 
-	boundingBox.size = max-min
-	boundingBox.position = max - (max-min)/2
+	--boundingBox.size = max-min
+	--boundingBox.position = max - (max-min)/2
+
+	engine.tween:begin(boundingBox, .025, {size = max-min, position = max - (max-min)/2}, "inQuad")
+
+	isCalculating = false
+end
+
+local boundingBoxListeners = {}
+local function addBoundingListener(block)
+	table.insert(boundingBoxListeners, block:changed(calculateBoundingBox))
+end
+local function removeBoundingListener(block)
+	table.insert(boundingBoxListeners, block:changed(calculateBoundingBox))
 end
 
 local lastHover = nil
@@ -180,6 +196,12 @@ engine.input:mouseLeftReleased(function( input )
 			v.emissiveColour = colour(0.0, 0.0, 0.0)
 		end
 		selectedItems = {}
+
+		for _,v in pairs(boundingBoxListeners) do
+			v:disconnect()
+		end
+		boundingBoxListeners = {}
+
 		calculateBoundingBox()
 		return
 	end
@@ -192,11 +214,18 @@ engine.input:mouseLeftReleased(function( input )
 			v.emissiveColour = colour(0.0, 0.0, 0.0)
 		end
 		selectedItems = {}
+
+		for _,v in pairs(boundingBoxListeners) do
+			v:disconnect()
+		end
+		boundingBoxListeners = {}
+
 		calculateBoundingBox()
 	else
 		for i,v in pairs(selectedItems) do
 			if v == mouseHit.object then
 				table.remove(selectedItems, i)
+				removeBoundingListener(v)
 				v.emissiveColour = colour(0.0, 0.0, 0.0)
 				doSelect = false
 			end
@@ -208,6 +237,7 @@ engine.input:mouseLeftReleased(function( input )
 		mouseHit.object.emissiveColour = colour(0.025, 0.025, 0.15)
 
 		table.insert(selectedItems, mouseHit.object)
+		addBoundingListener(mouseHit.object)
 		calculateBoundingBox()
 
 	end
@@ -430,6 +460,12 @@ engine.input:keyPressed(function( inputObj )
 			v.emissiveColour = colour(0.0, 0.0, 0.0)
 		end
 		selectedItems = {}
+
+		for _,v in pairs(boundingBoxListeners) do
+			v:disconnect()
+		end
+		boundingBoxListeners = {}
+
 		calculateBoundingBox()
 	end
 end)
@@ -750,7 +786,7 @@ local toolBarDragBtn = addTool("local:hand.png", function(id)
 
 					end
 				end
-				calculateBoundingBox()
+				--calculateBoundingBox()
 				wait()
 			end
 		end
@@ -812,6 +848,12 @@ delay(function()
 end, 1.3)
 
 
+	local debugMarkwer = engine.block("_CreateMode_")
+	debugMarkwer.size = vector3(0.05,0.05,0.05)
+	debugMarkwer.colour = colour(0,0,0)
+	debugMarkwer.parent = workspace
+	debugMarkwer.physics = false
+	debugMarkwer.workshopLocked = true
 
 local toolBarMoveBtn = addTool("local:move.png", function(id)
 	--activated
@@ -934,6 +976,8 @@ local toolBarMoveBtn = addTool("local:move.png", function(id)
 
 	engine.tween:begin(accessoryFrame, .5, {position = guiCoord(0, 252, 0, 15)}, "inOutBack")
 
+
+	local updateHandles;
 	-- Store event handler so we can disconnect it later.
 
 	local gridGuideline = engine.block("_CreateMode_")
@@ -941,7 +985,9 @@ local toolBarMoveBtn = addTool("local:move.png", function(id)
 	gridGuideline.size = vector3(0,0,0)
 	gridGuideline.colour = colour(1, 1, 1)
 	gridGuideline.parent = workspace
+	gridGuideline.opacity = 0
 	gridGuideline.workshopLocked = true
+	gridGuideline.castsShadows = false
 
 	tools[id].data.handles = {}
 	local components = {"x", "y", "z"}
@@ -949,27 +995,42 @@ local toolBarMoveBtn = addTool("local:move.png", function(id)
 	local o = 0
 	for i = 1,6 do
 		local component = components[c]
+		local face = vector3(0,0,0)
+		face[component] = o == 0 and o-1 or o
 
 		local handle = engine.block("_CreateMode_")
-		handle.size = vector3(0.1, 0.1, 0.25)
+		handle.castsShadows = false
+		handle.opacity = 0
+		handle.size = vector3(0.1,0.1,0.1)
 		handle.colour = colour(c==1 and 1 or 0, c==2 and 1 or 0, c==3 and 1 or 0)
 		handle.emissiveColour = colour(c==1 and .5 or 0, c==2 and .5 or 0, c==3 and .5 or 0)
-		--handle.static = true
+
 		handle.workshopLocked = true
 
 		handle:mouseLeftPressed(function()
 	
-			local size = vector3(10, 0.1, 10)
-			gridGuideline.size = size
+			gridGuideline.size = vector3(100, 0.1, 100)
 			gridGuideline.rotation = handle.rotation
 			gridGuideline.position = handle.position
 			if component == "x" then
-				print("comp x")
 				gridGuideline.rotation =  gridGuideline.rotation * quaternion():setEuler(math.rad(-45),math.rad(-45),0)
 			end
 
+			local mouseHit = engine.physics:rayTestScreen( engine.input.mousePosition )
+			if not mouseHit or not mouseHit.object == gridGuideline then
+				return print("Error, couldn't cast ray to guideline.")
+			end
+
+			local mouseoffsets = {}
+			for _,v in pairs(selectedItems) do
+				mouseoffsets[v] = (mouseHit.hitPosition - v.position)
+			end
+
+			local lastHit = mouseHit.hitPosition
+
 			repeat 
 				--Face camera on one Axis
+				gridGuideline.position = handle.position
 				if component == "x" then
 					local xVector1 = vector3(0, gridGuideline.position.y,gridGuideline.position.z)
 					local xVector2 = vector3(0, workspace.camera.position.y, workspace.camera.position.z)
@@ -987,15 +1048,26 @@ local toolBarMoveBtn = addTool("local:move.png", function(id)
 					gridGuideline.rotation =  lookAt * quaternion():setEuler(math.rad(45),0,0)
 				end
 
+				local mouseHit = engine.physics:rayTestScreen( engine.input.mousePosition )
+				if mouseHit and mouseHit.object == gridGuideline and lastHit ~= mouseHit.hitPosition then
+					local target = mouseHit.hitPosition
+					lastHit = target
+
+					for _,v in pairs(selectedItems) do
+						if mouseoffsets[v] then
+							local newPos = target - mouseoffsets[v]
+							local pos = v.position
+							pos[component] = newPos[component]
+							v.position = pos
+						end
+					end
+				end
+
 				wait()
 			until not engine.input:isMouseButtonDown(enums.mouseButton.left)
 
 			gridGuideline.size = vector3(0,0,0)
 		end)
-
-
-		local face = vector3(0,0,0)
-		face[component] = o == 0 and o-1 or o
 		
 		table.insert(tools[id].data.handles, {handle, face})
 		if i % 2 == 0 then
@@ -1006,16 +1078,18 @@ local toolBarMoveBtn = addTool("local:move.png", function(id)
 		end
 	end
 
-	local function updateHandles()
+	updateHandles = function()
 		if boundingBox.size == vector3(0,0,0) then
 			for _,v in pairs(tools[id].data.handles) do
 				v[1].size = vector3(0,0,0)
+				v[1].opacity = 0
 			end
 		else
 			for _,v in pairs(tools[id].data.handles) do
 				v[1].position = boundingBox.position + boundingBox.rotation* (v[2] * boundingBox.size/2 * vector3(3,3,3)) 
 				v[1]:lookAt(boundingBox.position)
 				v[1].size = vector3(0.1, 0.1, 0.25)
+				v[1].opacity = 1
 			end
 		end
 	end
