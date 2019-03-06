@@ -1363,7 +1363,7 @@ function (id)
 	end)
 
 	local s = tools[id].data.stepFrame
-	moveGrid = tostring(tonumber(s.inputGrid.text))
+	rotateCache = tostring(tonumber(s.inputGrid.text))
 	engine.tween:begin(s, .3, {position = guiCoord(0, 252, 0, -40)}, "inOutBack", function()
 		s:destroy()
 	end)
