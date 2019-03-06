@@ -857,7 +857,7 @@ end, 1.3)
 
 local toolBarMoveBtn = addTool("local:move.png", function(id)
 	--activated
-
+	
 	--Accessory Frame
 	local accessoryFrame = engine.guiFrame()
 	accessoryFrame.size = guiCoord(0, 85, 0, 36)
