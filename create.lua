@@ -118,11 +118,13 @@ end
 local isCalculating = false
 local function calculateBoundingBox()
 	if isCalculating then return end
-	wait()
+	isCalculating=true
+	
 
 	if #selectedItems < 1 then
 		boundingBox.size = vector3(0,0,0)
 		boundingBox.opacity = 0
+		isCalculating = false
 	return end
 
 	boundingBox.opacity = 0.5
@@ -138,10 +140,10 @@ local function calculateBoundingBox()
 		end
 	end
 
-	--boundingBox.size = max-min
-	--boundingBox.position = max - (max-min)/2
+	boundingBox.size = max-min
+	boundingBox.position = max - (max-min)/2
 
-	engine.tween:begin(boundingBox, .025, {size = max-min, position = max - (max-min)/2}, "inQuad")
+	--engine.tween:begin(boundingBox, .025, {size = max-min, position = max - (max-min)/2}, "inQuad")
 
 	isCalculating = false
 end
@@ -564,12 +566,60 @@ local function addTool(image, activate, deactivate, defaultData)
 	return tools[toolID]
 end
 
+engine.input:keyPressed(function( inputObj )
+	if inputObj.systemHandled then return end
+
+	local runTool = nil
+	if inputObj.key == enums.key.number1 then
+		runTool = 1
+	elseif inputObj.key == enums.key.number2 then
+		runTool = 2
+	elseif inputObj.key == enums.key.number3 then
+		runTool = 3
+	elseif inputObj.key == enums.key.number4 then
+		runTool = 4
+	end
+
+	if runTool then
+		if tools[activeTool] then
+			tools[activeTool].gui.imageColour = theme.toolDeselected
+			if tools[activeTool].deactivate then
+				tools[activeTool].deactivate(activeTool)
+			end
+		end
+
+		if activeTool == runTool then
+			activeTool = 0
+		else
+			activeTool = runTool
+			tools[runTool].gui.imageColour = theme.toolSelected
+			if tools[activeTool].activate then
+				tools[activeTool].activate(runTool)
+			end
+		end
+	end
+end)
+
 -- End tool system
 
 
 -- Tools
 
 local moveGrid = "0" -- cache between tools.
+local rotateCache = "10"
+
+	local roundToMultiple = function(number, multiple)
+		if multiple == 0 then 
+			return number 
+		end
+
+		return ((number % multiple) > multiple/2) and number + multiple - number%multiple or number - number%multiple
+	end
+
+	function round(num, numDecimalPlaces)
+	  local mult = 10^(numDecimalPlaces or 0)
+	  return math.floor(num * mult + 0.5) / mult
+	end
 
 -- Drag Tool
 local toolBarDragBtn = addTool("local:hand.png", function(id)
@@ -693,14 +743,6 @@ local toolBarDragBtn = addTool("local:hand.png", function(id)
 	local isDown = false
 	local applyRot = 0
 
-	local roundToMultiple = function(number, multiple)
-		if multiple == 0 then 
-			return number 
-		end
-
-		return ((number % multiple) > multiple/2) and number + multiple - number%multiple or number - number%multiple
-	end
-
 	engine.tween:begin(accessoryFrame, .5, {position = guiCoord(0, 252, 0, 15)}, "inOutBack")
 
 	-- Store event handler so we can disconnect it later.
@@ -744,7 +786,7 @@ local toolBarDragBtn = addTool("local:hand.png", function(id)
 
 			local lastRot = applyRot
 
-			while isDown do
+			while isDown and activeTool == id do
 				local currentHit = engine.physics:rayTestScreenAllHits(engine.input.mousePosition, selectedItems)
 				if #currentHit >= 1 then 
 					currentHit = currentHit[1]
@@ -848,12 +890,7 @@ delay(function()
 end, 1.3)
 
 
-	local debugMarkwer = engine.block("_CreateMode_")
-	debugMarkwer.size = vector3(0.05,0.05,0.05)
-	debugMarkwer.colour = colour(0,0,0)
-	debugMarkwer.parent = workspace
-	debugMarkwer.physics = false
-	debugMarkwer.workshopLocked = true
+
 
 local toolBarMoveBtn = addTool("local:move.png", function(id)
 	--activated
@@ -882,7 +919,7 @@ local toolBarMoveBtn = addTool("local:move.png", function(id)
 	accessoryText.textColour = theme.mainTxt
 	accessoryText.alpha = 0.8
 
-	local inputGrid = engine.guiTextBox()
+	local inputGrid = engine.guiTextBox("inputGrid")
 	inputGrid.size = guiCoord(0, 38, 1, -8)
 	inputGrid.position = guiCoord(0, 42, 0, 4)
 	inputGrid.backgroundColour = theme.secondaryBg
@@ -994,6 +1031,7 @@ local toolBarMoveBtn = addTool("local:move.png", function(id)
 	local c = 1
 	local o = 0
 	for i = 1,6 do
+		local componentIndex = c
 		local component = components[c]
 		local face = vector3(0,0,0)
 		face[component] = o == 0 and o-1 or o
@@ -1009,7 +1047,7 @@ local toolBarMoveBtn = addTool("local:move.png", function(id)
 
 		handle:mouseLeftPressed(function()
 	
-			gridGuideline.size = vector3(100, 0.1, 100)
+			gridGuideline.size = vector3(300, 0.1, 300)
 			gridGuideline.rotation = handle.rotation
 			gridGuideline.position = handle.position
 			if component == "x" then
@@ -1028,6 +1066,9 @@ local toolBarMoveBtn = addTool("local:move.png", function(id)
 
 			local lastHit = mouseHit.hitPosition
 
+			local gridStep = tonumber(inputGrid.text)
+			if not gridStep then gridStep = 0 else gridStep = math.abs(gridStep) end
+			inputGrid.text = tostring(gridStep)
 			repeat 
 				--Face camera on one Axis
 				gridGuideline.position = handle.position
@@ -1048,7 +1089,17 @@ local toolBarMoveBtn = addTool("local:move.png", function(id)
 					gridGuideline.rotation =  lookAt * quaternion():setEuler(math.rad(45),0,0)
 				end
 
-				local mouseHit = engine.physics:rayTestScreen( engine.input.mousePosition )
+				local mouseHits = engine.physics:rayTestScreenAllHits( engine.input.mousePosition )
+				local mouseHit = nil
+				-- We only want the gridGuideline
+				for _,hit in pairs(mouseHits) do
+					if hit.object == gridGuideline then
+						mouseHit = hit
+						goto skip_loop
+					end
+				end
+				::skip_loop::
+
 				if mouseHit and mouseHit.object == gridGuideline and lastHit ~= mouseHit.hitPosition then
 					local target = mouseHit.hitPosition
 					lastHit = target
@@ -1057,8 +1108,13 @@ local toolBarMoveBtn = addTool("local:move.png", function(id)
 						if mouseoffsets[v] then
 							local newPos = target - mouseoffsets[v]
 							local pos = v.position
-							pos[component] = newPos[component]
-							v.position = pos
+							if gridStep > 0 and tools[id].data.axis[componentIndex] then
+								pos[component] = roundToMultiple(newPos[component], gridStep)
+							else
+								pos[component] = newPos[component]
+							end
+							--v.position = pos
+							engine.tween:begin(v, .05, {position = pos}, "inOutQuad")
 						end
 					end
 				end
@@ -1094,16 +1150,26 @@ local toolBarMoveBtn = addTool("local:move.png", function(id)
 		end
 	end
 
+	tools[id].data.keyDownEvent = engine.input:keyPressed(function ( inp )
+		if inp.key == enums.key.t then
+			inputGrid.text = "0"
+		end
+	end)
+
 	tools[id].data.boundingEvent = boundingBox:changed(updateHandles)
 	updateHandles()
 end,
 function (id)
 	--deactivated
 	local f = tools[id].data.accessoryFrame
+	moveGrid = tostring(tonumber(f.inputGrid.text))
 
 	engine.tween:begin(f, .3, {position = guiCoord(0, 252, 0, -40)}, "inOutBack", function()
 		f:destroy()
 	end)
+
+	tools[id].data.keyDownEvent:disconnect()
+	tools[id].data.keyDownEvent = nil
 
 	tools[id].data.boundingEvent:disconnect()
 	tools[id].data.boundingEvent = nil
@@ -1120,8 +1186,199 @@ function (id)
 end, {world=false, axis={{"x", true},{"y", true},{"z", true}}})
 
 
+--local toolBarRotateBtn = addTool("local:rotate.png")
 
-local toolBarRotateBtn = addTool("local:rotate.png")
+local toolBarRotateBtn = addTool("local:rotate.png", function(id)
+	--activated
+
+	local stepFrame = engine.guiFrame()
+	stepFrame.size = guiCoord(0, 85, 0, 36)
+	stepFrame.parent = engine.workshop.interface
+	stepFrame.position = guiCoord(0, 252, 0, -40)
+	stepFrame.backgroundColour = theme.mainBg
+	stepFrame.alpha = 0.985
+	stepFrame.guiStyle = enums.guiStyle.rounded
+
+	tools[id].data.stepFrame = stepFrame
+	engine.tween:begin(stepFrame, .5, {position = guiCoord(0, 252, 0, 15)}, "inOutBack")
+
+	local stepText = engine.guiTextBox()
+	stepText.size = guiCoord(0, 40, 1, -6)
+	stepText.position = guiCoord(0, 10, 0, 3)
+	stepText.guiStyle = enums.guiStyle.noBackground
+	stepText.fontSize = 10
+	stepText.fontFile = theme.font
+	stepText.text = "Step:"
+	stepText.readOnly = true
+	stepText.align = enums.align.middleLeft
+	stepText.parent = stepFrame
+	stepText.textColour = theme.mainTxt
+	stepText.alpha = 0.8
+
+	local inputGrid = engine.guiTextBox("inputGrid")
+	inputGrid.size = guiCoord(0, 38, 1, -8)
+	inputGrid.position = guiCoord(0, 42, 0, 4)
+	inputGrid.backgroundColour = theme.secondaryBg
+	inputGrid.guiStyle = enums.guiStyle.rounded
+	inputGrid.fontSize = 10
+	inputGrid.fontFile = theme.font
+	inputGrid.text = rotateCache
+	inputGrid.readOnly = false
+	inputGrid.align = enums.align.middle
+	inputGrid.parent = stepFrame
+	inputGrid.textColour = theme.secondaryText
+	inputGrid.alpha = 0.8
+	
+	--Accessory Frame
+	local accessoryFrame = engine.guiFrame()
+	accessoryFrame.size = guiCoord(0, 227, 0, 24)
+	accessoryFrame.parent = engine.workshop.interface
+	accessoryFrame.position = guiCoord(0, -230, 0, 61)
+	accessoryFrame.backgroundColour = theme.mainBg
+	accessoryFrame.alpha = 0.985
+	accessoryFrame.guiStyle = enums.guiStyle.rounded
+
+	tools[id].data.accessoryFrame = accessoryFrame
+
+	local axis = {"x", "y", "z"}
+	local xTotal = 27
+
+	local mainText = engine.guiTextBox()
+		mainText.size = guiCoord(1, -6, 0, 21)
+		mainText.position = guiCoord(0, 3, 0, 2)
+		mainText.guiStyle = enums.guiStyle.noBackground
+		mainText.fontSize = 10
+		mainText.fontFile = theme.font
+		mainText.text = "Nothing Selected"
+		mainText.readOnly = true
+		mainText.align = enums.align.middle
+		mainText.parent = accessoryFrame
+		mainText.textColour = theme.mainTxt
+		mainText.alpha = 0.8
+
+	for _,v in pairs(axis) do
+		local accessoryText = engine.guiTextBox()
+		accessoryText.size = guiCoord(0, 24, 0, 21)
+		accessoryText.position = guiCoord(0, 10, 0, xTotal)
+		accessoryText.guiStyle = enums.guiStyle.noBackground
+		accessoryText.fontSize = 10
+		accessoryText.fontFile = theme.fontBold
+		accessoryText.text = string.upper(v) .. ":"
+		accessoryText.readOnly = true
+		accessoryText.align = enums.align.middleLeft
+		accessoryText.parent = accessoryFrame
+		accessoryText.textColour = theme.mainTxt
+		accessoryText.alpha = 0.8
+
+		local currentValText = engine.guiTextBox()
+		currentValText.size = guiCoord(0, 50, 0, 21)
+		currentValText.position = guiCoord(0, 24, 0, xTotal)
+		currentValText.guiStyle = enums.guiStyle.rounded
+		currentValText.backgroundColour = theme.secondaryBg
+		currentValText.fontSize = 9
+		currentValText.fontFile = theme.font
+		currentValText.text = "0"
+		currentValText.readOnly = false
+		currentValText.align = enums.align.middle
+		currentValText.parent = accessoryFrame
+		currentValText.textColour = theme.secondaryText
+		currentValText.alpha = 0.8
+
+		local infoText = engine.guiTextBox()
+		infoText.size = guiCoord(1, -85, 0, 21)
+		infoText.position = guiCoord(0, 80, 0, xTotal)
+		infoText.guiStyle = enums.guiStyle.rounded
+		infoText.backgroundColour = theme.secondaryText
+		infoText.fontSize = 9
+		infoText.fontFile = theme.font
+		infoText.text = "Click and Drag here"
+		infoText.readOnly = true
+		infoText.align = enums.align.middle
+		infoText.parent = accessoryFrame
+		infoText.textColour = theme.secondaryBg
+		infoText.alpha = 0.8
+
+		local isDown = false
+
+		infoText:mouseLeftPressed(function()
+			isDown = true
+			local last = engine.input.mousePosition.x
+			local rotation = quaternion():getEuler()
+
+			while isDown do
+				local current = engine.input.mousePosition.x
+				local offset = current - last
+				last = current
+
+				rotation[v] = rotation[v] + math.rad(offset)
+
+				currentValText.text = tostring(round(rotation[v],2))
+
+				for i,item in pairs(selectedItems) do
+					item.rotation = quaternion:setEuler(rotation)
+				end
+
+				wait()
+			end
+		end)
+
+		infoText:mouseLeftReleased(function()
+			isDown = false
+		end)
+
+		xTotal = xTotal + 25
+	end
+
+	--accessoryFrame.size = guiCoord(0, 227, 0, xTotal + 3)
+
+
+	engine.tween:begin(accessoryFrame, .5, {position = guiCoord(0, 15, 0, 61)}, "inOutBack")
+
+
+	tools[id].data.keyDownEvent = engine.input:keyPressed(function ( inp )
+		if inp.key == enums.key.t then
+			inputGrid.text = "0"
+		end
+	end)
+
+	local function checkSelectedItems()
+		if #selectedItems == 0 then
+			mainText.text = "Please select an item."
+			engine.tween:begin(accessoryFrame, .3, {size = guiCoord(0, 227, 0, 24)}, "inOutQuad")
+		else
+			mainText.text = #selectedItems .. " items selected."
+			engine.tween:begin(accessoryFrame, .3, {size = guiCoord(0, 227, 0, xTotal+3)}, "inOutQuad")
+		end
+	end
+
+	tools[id].data.boundingEvent = boundingBox:changed(checkSelectedItems)
+	checkSelectedItems()
+end,
+function (id)
+	--deactivated
+	local f = tools[id].data.accessoryFrame
+
+	engine.tween:begin(f, .3, {position = guiCoord(0, -227, 0, 61)}, "inOutBack", function()
+		f:destroy()
+	end)
+
+	local s = tools[id].data.stepFrame
+	moveGrid = tostring(tonumber(s.inputGrid.text))
+	engine.tween:begin(s, .3, {position = guiCoord(0, 252, 0, -40)}, "inOutBack", function()
+		s:destroy()
+	end)
+
+	tools[id].data.boundingEvent:disconnect()
+	tools[id].data.boundingEvent = nil
+
+	tools[id].data.keyDownEvent:disconnect()
+	tools[id].data.keyDownEvent = nil
+
+	tools[id].data.accessoryFrame = nil
+	tools[id].data.stepFrame = nil
+
+
+end, {world=false})
 
 local toolBarScaleBtn = addTool("local:scale.png")
 -- End Tool
