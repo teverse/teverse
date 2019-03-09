@@ -82,6 +82,7 @@ boundingBox.colour = colour(1, 0.8, 0.8)
 boundingBox.opacity = 0
 boundingBox.size = vector3(0,0,0)
 
+
 local selectedItems = {}
 
 
@@ -115,6 +116,21 @@ local function calculateVertices(block)
 	return vertices
 end
 
+local function calculateBounding(items)
+	local min, max;
+
+			for _,v in pairs(items) do
+				if not min then min = v.position; max=v.position end
+				local vertices = calculateVertices(v)
+				for i,v in pairs(vertices) do
+					min = min:min(v)
+					max = max:max(v)
+				end
+			end
+
+	return (max-min), (max - (max-min)/2)
+end
+
 local isCalculating = false
 local function calculateBoundingBox()
 	if isCalculating then return end
@@ -129,19 +145,9 @@ local function calculateBoundingBox()
 
 	boundingBox.opacity = 0.5
 
-	local min, max;
-
-	for _,v in pairs(selectedItems) do
-		if not min then min = v.position; max=v.position end
-		local vertices = calculateVertices(v)
-		for i,v in pairs(vertices) do
-			min = min:min(v)
-			max = max:max(v)
-		end
-	end
-
-	boundingBox.size = max-min
-	boundingBox.position = max - (max-min)/2
+	local size, pos = calculateBounding(selectedItems)
+	boundingBox.size = size
+	boundingBox.position = pos
 
 	--engine.tween:begin(boundingBox, .025, {size = max-min, position = max - (max-min)/2}, "inQuad")
 
@@ -330,9 +336,11 @@ end)
 
 -- Main GUI
 
+local mainGuiFrame = engine.workshop.interface
+
 local mainFrame = engine.guiFrame()
 mainFrame.size = guiCoord(0, 132, 0, 36)
-mainFrame.parent = engine.workshop.interface
+mainFrame.parent = mainGuiFrame
 mainFrame.position = guiCoord(0, 15, 0, -40)
 mainFrame.backgroundColour = theme.mainBg
 mainFrame.alpha = 0.985
@@ -346,7 +354,7 @@ toolBarMain.alpha = 0
 
 local logFrame = engine.guiFrame()
 logFrame.size = guiCoord(1, 0, 0, 220)
-logFrame.parent = engine.workshop.interface
+logFrame.parent = mainGuiFrame
 logFrame.position = guiCoord(0, 0, 1, 0)
 logFrame.backgroundColour = theme.mainBg
 logFrame.alpha = 0.98
@@ -382,7 +390,7 @@ codeInputBox.align = enums.align.middleLeft
 --Create mode
 local createModeFrame = engine.guiFrame()
 createModeFrame.size = guiCoord(0, 85, 0, 36)
-createModeFrame.parent = engine.workshop.interface
+createModeFrame.parent = mainGuiFrame
 createModeFrame.position = guiCoord(0, 157, 0, -40)
 createModeFrame.backgroundColour = theme.mainBg
 createModeFrame.alpha = 0.985
@@ -413,7 +421,7 @@ delay(function()
 	engine.tween:begin(mainFrame, .5, {position = guiCoord(0, 15, 0, 15)}, "inOutBack")
 	wait(0.1)
 	engine.tween:begin(createModeFrame, .5, {position = guiCoord(0, 157, 0, 15)}, "inOutBack")
-end, 1)
+end, .01)
 -- End Main Gui
 
 -- Create mode system
@@ -606,7 +614,7 @@ end)
 -- Tools
 
 local moveGrid = "0" -- cache between tools.
-local rotateCache = "10"
+local rotateCache = "45"
 
 	local roundToMultiple = function(number, multiple)
 		if multiple == 0 then 
@@ -628,7 +636,7 @@ local toolBarDragBtn = addTool("local:hand.png", function(id)
 	--Accessory Frame
 	local accessoryFrame = engine.guiFrame()
 	accessoryFrame.size = guiCoord(0, 85, 0, 36)
-	accessoryFrame.parent = engine.workshop.interface
+	accessoryFrame.parent = mainGuiFrame
 	accessoryFrame.position = guiCoord(0, 252, 0, -40)
 	accessoryFrame.backgroundColour = theme.mainBg
 	accessoryFrame.alpha = 0.985
@@ -864,6 +872,7 @@ function (id)
 	--deactivated
 	local f = tools[id].data.accessoryFrame
 	moveGrid = tostring(tonumber(f.inputGrid.text))
+	if moveGrid == "nil" then moveGrid = "10" end
 
 	engine.tween:begin(f, .3, {position = guiCoord(0, 252, 0, -40)}, "inOutBack", function()
 		f:destroy()
@@ -887,7 +896,7 @@ delay(function()
 	activeTool = toolBarDragBtn.id
 	toolBarDragBtn.gui.imageColour = theme.toolSelected
 	toolBarDragBtn.activate(activeTool)
-end, 1.3)
+end, .2)
 
 
 
@@ -898,7 +907,7 @@ local toolBarMoveBtn = addTool("local:move.png", function(id)
 	--Accessory Frame
 	local accessoryFrame = engine.guiFrame()
 	accessoryFrame.size = guiCoord(0, 85, 0, 36)
-	accessoryFrame.parent = engine.workshop.interface
+	accessoryFrame.parent = mainGuiFrame
 	accessoryFrame.position = guiCoord(0, 252, 0, -40)
 	accessoryFrame.backgroundColour = theme.mainBg
 	accessoryFrame.alpha = 0.985
@@ -1046,7 +1055,7 @@ local toolBarMoveBtn = addTool("local:move.png", function(id)
 		handle.workshopLocked = true
 
 		handle:mouseLeftPressed(function()
-	
+			disableDefaultClickActions = true
 			gridGuideline.size = vector3(300, 0.1, 300)
 			gridGuideline.rotation = handle.rotation
 			gridGuideline.position = handle.position
@@ -1070,59 +1079,62 @@ local toolBarMoveBtn = addTool("local:move.png", function(id)
 			if not gridStep then gridStep = 0 else gridStep = math.abs(gridStep) end
 			inputGrid.text = tostring(gridStep)
 			repeat 
-				--Face camera on one Axis
-				gridGuideline.position = handle.position
-				if component == "x" then
-					local xVector1 = vector3(0, gridGuideline.position.y,gridGuideline.position.z)
-					local xVector2 = vector3(0, workspace.camera.position.y, workspace.camera.position.z)
+				if activeTool == id then
+					--Face camera on one Axis
+					gridGuideline.position = handle.position
+					if component == "x" then
+						local xVector1 = vector3(0, gridGuideline.position.y,gridGuideline.position.z)
+						local xVector2 = vector3(0, workspace.camera.position.y, workspace.camera.position.z)
 
-					local lookAt = gridGuideline.rotation:setLookRotation( xVector1 - xVector2 )
-					gridGuideline.rotation =  lookAt * quaternion():setEuler(math.rad(45),0,0)
-				else
-					local pos1 = gridGuideline.position
-					pos1[component] = 0
+						local lookAt = gridGuideline.rotation:setLookRotation( xVector1 - xVector2 )
+						gridGuideline.rotation =  lookAt * quaternion():setEuler(math.rad(45),0,0)
+					else
+						local pos1 = gridGuideline.position
+						pos1[component] = 0
 
-					local pos2 = workspace.camera.position
-					pos2[component] = 0
+						local pos2 = workspace.camera.position
+						pos2[component] = 0
 
-					local lookAt = gridGuideline.rotation:setLookRotation( pos1 - pos2 )
-					gridGuideline.rotation =  lookAt * quaternion():setEuler(math.rad(45),0,0)
-				end
-
-				local mouseHits = engine.physics:rayTestScreenAllHits( engine.input.mousePosition )
-				local mouseHit = nil
-				-- We only want the gridGuideline
-				for _,hit in pairs(mouseHits) do
-					if hit.object == gridGuideline then
-						mouseHit = hit
-						goto skip_loop
+						local lookAt = gridGuideline.rotation:setLookRotation( pos1 - pos2 )
+						gridGuideline.rotation =  lookAt * quaternion():setEuler(math.rad(45),0,0)
 					end
-				end
-				::skip_loop::
 
-				if mouseHit and mouseHit.object == gridGuideline and lastHit ~= mouseHit.hitPosition then
-					local target = mouseHit.hitPosition
-					lastHit = target
+					local mouseHits = engine.physics:rayTestScreenAllHits( engine.input.mousePosition )
+					local mouseHit = nil
+					-- We only want the gridGuideline
+					for _,hit in pairs(mouseHits) do
+						if hit.object == gridGuideline then
+							mouseHit = hit
+							goto skip_loop
+						end
+					end
+					::skip_loop::
 
-					for _,v in pairs(selectedItems) do
-						if mouseoffsets[v] then
-							local newPos = target - mouseoffsets[v]
-							local pos = v.position
-							if gridStep > 0 and tools[id].data.axis[componentIndex] then
-								pos[component] = roundToMultiple(newPos[component], gridStep)
-							else
-								pos[component] = newPos[component]
+					if mouseHit and mouseHit.object == gridGuideline and lastHit ~= mouseHit.hitPosition then
+						local target = mouseHit.hitPosition
+						lastHit = target
+
+						for _,v in pairs(selectedItems) do
+							if mouseoffsets[v] then
+								local newPos = target - mouseoffsets[v]
+								local pos = v.position
+								if gridStep > 0 and tools[id].data.axis[componentIndex] then
+									pos[component] = roundToMultiple(newPos[component], gridStep)
+								else
+									pos[component] = newPos[component]
+								end
+								--v.position = pos
+								engine.tween:begin(v, .05, {position = pos}, "inOutQuad")
 							end
-							--v.position = pos
-							engine.tween:begin(v, .05, {position = pos}, "inOutQuad")
 						end
 					end
 				end
-
 				wait()
-			until not engine.input:isMouseButtonDown(enums.mouseButton.left)
-
-			gridGuideline.size = vector3(0,0,0)
+			until not engine.input:isMouseButtonDown(enums.mouseButton.left) or not activeTool == id
+			delay(function() disableDefaultClickActions = false end, 1)
+			if activeTool == id then
+				gridGuideline.size = vector3(0,0,0)
+			end
 		end)
 		
 		table.insert(tools[id].data.handles, {handle, face})
@@ -1142,7 +1154,7 @@ local toolBarMoveBtn = addTool("local:move.png", function(id)
 			end
 		else
 			for _,v in pairs(tools[id].data.handles) do
-				v[1].position = boundingBox.position + boundingBox.rotation* (v[2] * boundingBox.size/2 * vector3(3,3,3)) 
+				v[1].position = boundingBox.position + boundingBox.rotation* ((v[2] * boundingBox.size/2) + (v[2]*1.5)) 
 				v[1]:lookAt(boundingBox.position)
 				v[1].size = vector3(0.1, 0.1, 0.25)
 				v[1].opacity = 1
@@ -1164,6 +1176,7 @@ function (id)
 	local f = tools[id].data.accessoryFrame
 	moveGrid = tostring(tonumber(f.inputGrid.text))
 
+	if moveGrid == "nil" then moveGrid = "10" end
 	engine.tween:begin(f, .3, {position = guiCoord(0, 252, 0, -40)}, "inOutBack", function()
 		f:destroy()
 	end)
@@ -1193,7 +1206,7 @@ local toolBarRotateBtn = addTool("local:rotate.png", function(id)
 
 	local stepFrame = engine.guiFrame()
 	stepFrame.size = guiCoord(0, 85, 0, 36)
-	stepFrame.parent = engine.workshop.interface
+	stepFrame.parent = mainGuiFrame
 	stepFrame.position = guiCoord(0, 252, 0, -40)
 	stepFrame.backgroundColour = theme.mainBg
 	stepFrame.alpha = 0.985
@@ -1232,7 +1245,7 @@ local toolBarRotateBtn = addTool("local:rotate.png", function(id)
 	--Accessory Frame
 	local accessoryFrame = engine.guiFrame()
 	accessoryFrame.size = guiCoord(0, 227, 0, 24)
-	accessoryFrame.parent = engine.workshop.interface
+	accessoryFrame.parent = mainGuiFrame
 	accessoryFrame.position = guiCoord(0, -230, 0, 61)
 	accessoryFrame.backgroundColour = theme.mainBg
 	accessoryFrame.alpha = 0.985
@@ -1242,6 +1255,7 @@ local toolBarRotateBtn = addTool("local:rotate.png", function(id)
 
 	local axis = {"x", "y", "z"}
 	local xTotal = 27
+
 
 	local mainText = engine.guiTextBox()
 		mainText.size = guiCoord(1, -6, 0, 21)
@@ -1302,8 +1316,27 @@ local toolBarRotateBtn = addTool("local:rotate.png", function(id)
 
 		infoText:mouseLeftPressed(function()
 			isDown = true
+
+				local totalSize, totalposition = calculateBounding(selectedItems)
+	
+
+				local startRotation = quaternion:setEuler(0,0,0)
+
+				local offsets = {}
+
+				for _,v in pairs(selectedItems) do
+					local relative = startRotation:inverse() * v.rotation;	
+					local positionOffset = (relative*startRotation):inverse() * (v.position - totalposition) 
+					offsets[v] = {positionOffset, relative}
+				end
+
 			local last = engine.input.mousePosition.x
 			local rotation = quaternion():getEuler()
+
+			local gridStep = tonumber(inputGrid.text)
+			if not gridStep then gridStep = 0 else gridStep = math.abs(gridStep) end
+			inputGrid.text = tostring(gridStep)
+			gridStep = gridStep /2
 
 			while isDown do
 				local current = engine.input.mousePosition.x
@@ -1312,11 +1345,43 @@ local toolBarRotateBtn = addTool("local:rotate.png", function(id)
 
 				rotation[v] = rotation[v] + math.rad(offset)
 
-				currentValText.text = tostring(round(rotation[v],2))
+			
 
-				for i,item in pairs(selectedItems) do
-					item.rotation = quaternion:setEuler(rotation)
-				end
+				currentValText.text = tostring(round(math.deg(rotation[v]),2))
+
+
+				local newEuler = rotation:clone()
+
+				if gridStep > 0 then
+						local de = math.deg(newEuler[v])
+
+									newEuler[v] = math.rad(roundToMultiple(de, gridStep))
+				
+								end
+
+				local targetRot = quaternion:setEuler(newEuler)
+
+					
+
+						--selectedItems[1].position = currentPosition 
+						--selectedItems[1].rotation = startRotation * quaternion:setEuler(0,math.rad(applyRot),0)
+						--print(selectedItems[1].name)
+
+						for i,v in pairs(selectedItems) do
+							
+								--v.position = (currentPosition) + (offsets[v][2]*selectedItems[1].rotation) * offsets[v][1]
+								--v.rotation = offsets[v][2]*selectedItems[1].rotation 
+
+								engine.tween:begin(v, .2, {position = (totalposition) + (offsets[v][2]*targetRot) * offsets[v][1],
+														   rotation = offsets[v][2]*targetRot }, "outQuad")
+							
+						end
+
+
+
+				--for i,item in pairs(selectedItems) do
+				--	item.rotation = quaternion:setEuler(rotation)
+				--end
 
 				wait()
 			end
@@ -1364,6 +1429,8 @@ function (id)
 
 	local s = tools[id].data.stepFrame
 	rotateCache = tostring(tonumber(s.inputGrid.text))
+
+	if rotateCache == "nil" then rotateCache = "45" end
 	engine.tween:begin(s, .3, {position = guiCoord(0, 252, 0, -40)}, "inOutBack", function()
 		s:destroy()
 	end)
@@ -1378,7 +1445,329 @@ function (id)
 	tools[id].data.stepFrame = nil
 
 
+
 end, {world=false})
 
-local toolBarScaleBtn = addTool("local:scale.png")
+local toolBarScaleBtn = addTool("local:scale.png", function(id)
+	--activated
+	
+	--Accessory Frame
+	local accessoryFrame = engine.guiFrame()
+	accessoryFrame.size = guiCoord(0, 85, 0, 36)
+	accessoryFrame.parent = mainGuiFrame
+	accessoryFrame.position = guiCoord(0, 252, 0, -40)
+	accessoryFrame.backgroundColour = theme.mainBg
+	accessoryFrame.alpha = 0.985
+	accessoryFrame.guiStyle = enums.guiStyle.rounded
+
+	tools[id].data.accessoryFrame = accessoryFrame
+
+	local accessoryText = engine.guiTextBox()
+	accessoryText.size = guiCoord(0, 40, 1, -6)
+	accessoryText.position = guiCoord(0, 10, 0, 3)
+	accessoryText.guiStyle = enums.guiStyle.noBackground
+	accessoryText.fontSize = 10
+	accessoryText.fontFile = theme.font
+	accessoryText.text = "Grid:"
+	accessoryText.readOnly = true
+	accessoryText.align = enums.align.middleLeft
+	accessoryText.parent = accessoryFrame
+	accessoryText.textColour = theme.mainTxt
+	accessoryText.alpha = 0.8
+
+	local inputGrid = engine.guiTextBox("inputGrid")
+	inputGrid.size = guiCoord(0, 38, 1, -8)
+	inputGrid.position = guiCoord(0, 42, 0, 4)
+	inputGrid.backgroundColour = theme.secondaryBg
+	inputGrid.guiStyle = enums.guiStyle.rounded
+	inputGrid.fontSize = 10
+	inputGrid.fontFile = theme.font
+	inputGrid.text = moveGrid
+	inputGrid.readOnly = false
+	inputGrid.align = enums.align.middle
+	inputGrid.parent = accessoryFrame
+	inputGrid.textColour = theme.secondaryText
+	inputGrid.alpha = 0.8
+
+	local hovers = {}
+	local expanded = false
+
+	local function updateSize(didFocus)
+		if didFocus and expanded then return end 
+
+		local focused = false
+		for o,v in pairs(hovers) do
+			if v then focused = true end
+		end
+
+		if focused and not expanded then
+			engine.tween:begin(accessoryFrame, .25, {size = guiCoord(0, 220, 0, 36)}, "inOutQuad")
+			expanded = true
+		elseif not focused and expanded then
+			engine.tween:begin(accessoryFrame, .25, {size = guiCoord(0, 85, 0, 36)}, "inOutQuad")
+			expanded = false
+		end
+	end
+
+	local function focusedHandler()
+		hovers[self.object] = true
+		updateSize(true)
+	end
+
+	local function unfocusedHandler()
+		hovers[self.object] = false
+		updateSize()
+	end
+
+	accessoryFrame:mouseFocused(focusedHandler)
+	accessoryText:mouseFocused(focusedHandler)
+	inputGrid:mouseFocused(focusedHandler)
+	
+	accessoryFrame:mouseUnfocused(unfocusedHandler)
+	accessoryText:mouseUnfocused(unfocusedHandler)
+	inputGrid:mouseUnfocused(unfocusedHandler)
+
+
+	local x = 90
+	for i,v in ipairs(tools[id].data.axis) do 
+		local lbl = engine.guiTextBox()
+		lbl.size = guiCoord(0, 13, 1, -6)
+		lbl.position = guiCoord(0, x, 0, 3)
+		lbl.guiStyle = enums.guiStyle.noBackground
+		lbl.fontSize = 10
+		lbl.fontFile = theme.font
+		lbl.text = string.upper(v[1])
+		lbl.readOnly = true
+		lbl.align = enums.align.middleLeft
+		lbl.parent = accessoryFrame
+		lbl.textColour = theme.mainTxt
+		lbl.alpha = 0.8
+
+		local boolProp = engine.guiButton()
+		boolProp.name = "bool"
+		boolProp.parent = accessoryFrame
+		boolProp.position = guiCoord(0,x+12,0.5,-8)
+		boolProp.size = guiCoord(0, 20, 0, 20)
+		boolProp.text = ""
+		boolProp.guiStyle = enums.guiStyle.checkBox
+		boolProp.selected = v[2]
+
+		boolProp:mouseLeftReleased(function()
+			tools[id].data.axis[i][2] = not tools[id].data.axis[i][2]
+			boolProp.selected = tools[id].data.axis[i][2]
+		end)
+
+
+		lbl:mouseFocused(focusedHandler)
+		boolProp:mouseFocused(focusedHandler)
+		lbl:mouseUnfocused(unfocusedHandler)
+		boolProp:mouseUnfocused(unfocusedHandler)
+		x = x + 42
+	end
+
+	local isDown = false
+
+	engine.tween:begin(accessoryFrame, .5, {position = guiCoord(0, 252, 0, 15)}, "inOutBack")
+
+
+	local updateHandles;
+	-- Store event handler so we can disconnect it later.
+
+	local gridGuideline = engine.block("_CreateMode_")
+	tools[id].data.gridGuideline = gridGuideline
+	gridGuideline.size = vector3(0,0,0)
+	gridGuideline.colour = colour(1, 1, 1)
+	gridGuideline.parent = workspace
+	gridGuideline.opacity = 0
+	gridGuideline.workshopLocked = true
+	gridGuideline.castsShadows = false
+
+	tools[id].data.handles = {}
+	local components = {"x", "y", "z"}
+	local c = 1
+	local o = 0
+	for i = 1,6 do
+		local componentIndex = c
+		local component = components[c]
+		local face = vector3(0,0,0)
+		face[component] = o == 0 and o-1 or o
+
+		local handle = engine.block("_CreateMode_")
+		handle.castsShadows = false
+		handle.opacity = 0
+		handle.size = vector3(0.1,0.1,0.1)
+		handle.colour = colour(c==1 and 1 or 0, c==2 and 1 or 0, c==3 and 1 or 0)
+		handle.emissiveColour = colour(c==1 and .5 or 0, c==2 and .5 or 0, c==3 and .5 or 0)
+
+		handle.workshopLocked = true
+
+		handle:mouseLeftPressed(function()
+			disableDefaultClickActions = true
+			gridGuideline.size = vector3(300, 0.1, 300)
+			gridGuideline.rotation = handle.rotation
+			gridGuideline.position = handle.position
+			if component == "x" then
+				gridGuideline.rotation =  gridGuideline.rotation * quaternion():setEuler(math.rad(-45),math.rad(-45),0)
+			end
+
+			local mouseHit = engine.physics:rayTestScreen( engine.input.mousePosition )
+			if not mouseHit or not mouseHit.object == gridGuideline then
+				return print("Error, couldn't cast ray to guideline.")
+			end
+
+			local startSizes = {}
+			local totalSize, totalposition = calculateBounding(selectedItems)
+
+			print("start", totalposition)
+
+			for _,v in pairs(selectedItems) do
+				startSizes[v] = {v.size, (v.position - totalposition)/totalSize,  v.size/totalSize}
+			end
+
+			local lastHit = mouseHit.hitPosition
+			local firstHit = lastHit[component]
+
+			local gridStep = tonumber(inputGrid.text)
+			if not gridStep then gridStep = 0 else gridStep = math.abs(gridStep) end
+			inputGrid.text = tostring(gridStep)
+			repeat 
+				if activeTool == id then
+					--Face camera on one Axis
+					gridGuideline.position = handle.position
+					if component == "x" then
+						local xVector1 = vector3(0, gridGuideline.position.y,gridGuideline.position.z)
+						local xVector2 = vector3(0, workspace.camera.position.y, workspace.camera.position.z)
+
+						local lookAt = gridGuideline.rotation:setLookRotation( xVector1 - xVector2 )
+						gridGuideline.rotation =  lookAt * quaternion():setEuler(math.rad(45),0,0)
+					else
+						local pos1 = gridGuideline.position
+						pos1[component] = 0
+
+						local pos2 = workspace.camera.position
+						pos2[component] = 0
+
+						local lookAt = gridGuideline.rotation:setLookRotation( pos1 - pos2 )
+						gridGuideline.rotation =  lookAt * quaternion():setEuler(math.rad(45),0,0)
+					end
+
+					local mouseHits = engine.physics:rayTestScreenAllHits( engine.input.mousePosition )
+					local mouseHit = nil
+					-- We only want the gridGuideline
+					for _,hit in pairs(mouseHits) do
+						if hit.object == gridGuideline then
+							mouseHit = hit
+							goto skip_loop
+						end
+					end
+					::skip_loop::
+
+					if mouseHit and mouseHit.object == gridGuideline and lastHit ~= mouseHit.hitPosition then
+						local target = mouseHit.hitPosition
+						lastHit = target
+
+							local offsetVec = vector3(0,0,0)
+							offsetVec[component] = target[component] - firstHit
+
+							offsetVec  = offsetVec * face
+
+							
+
+							local newSize = totalSize + (offsetVec)
+
+							local size = totalSize:clone()
+							if gridStep > 0 and tools[id].data.axis[componentIndex] then
+								size[component] = roundToMultiple(newSize[component], gridStep)
+							else
+								size[component] = newSize[component]
+							end
+
+							local newPos = totalposition:clone()
+						    newPos = newPos + (offsetVec /2) *face
+
+					
+						for _,v in pairs(selectedItems) do
+							if startSizes[v] then
+								local sizeRatio = startSizes[v][3]
+								local offsetPos = startSizes[v][2] 
+								local positionCalc = (offsetPos * newSize)
+						
+							    --offsetPos = offsetPos (size-totalSize)
+								--v.position = pos
+								engine.tween:begin(v, .05, {size = size*startSizes[v][3], position = newPos + positionCalc}, "inOutQuad")
+							end
+						end
+					end
+				end
+				wait()
+			until not engine.input:isMouseButtonDown(enums.mouseButton.left) or not activeTool == id
+	
+			delay(function() disableDefaultClickActions = false end, 1)
+			if activeTool == id then
+				gridGuideline.size = vector3(0,0,0)
+			end
+		end)
+		
+		table.insert(tools[id].data.handles, {handle, face})
+		if i % 2 == 0 then
+			c=c+1
+			o = 0
+		else
+			o = o + 1
+		end
+	end
+
+	updateHandles = function()
+		if boundingBox.size == vector3(0,0,0) then
+			for _,v in pairs(tools[id].data.handles) do
+				v[1].size = vector3(0,0,0)
+				v[1].opacity = 0
+			end
+		else
+			for _,v in pairs(tools[id].data.handles) do
+				v[1].position = boundingBox.position + boundingBox.rotation* ((v[2] * boundingBox.size/2) + (v[2]*1.5)) 
+				v[1].size = vector3(0.25, 0.25, 0.25)
+				v[1].opacity = 1
+			end
+		end
+	end
+
+	tools[id].data.keyDownEvent = engine.input:keyPressed(function ( inp )
+		if inp.key == enums.key.t then
+			inputGrid.text = "0"
+		end
+	end)
+
+	tools[id].data.boundingEvent = boundingBox:changed(updateHandles)
+	updateHandles()
+end,
+function (id)
+	--deactivated
+	local f = tools[id].data.accessoryFrame
+	moveGrid = tostring(tonumber(f.inputGrid.text))
+
+	if moveGrid == "nil" then moveGrid = "10" end
+	engine.tween:begin(f, .3, {position = guiCoord(0, 252, 0, -40)}, "inOutBack", function()
+		f:destroy()
+	end)
+
+	tools[id].data.keyDownEvent:disconnect()
+	tools[id].data.keyDownEvent = nil
+
+	tools[id].data.boundingEvent:disconnect()
+	tools[id].data.boundingEvent = nil
+
+	tools[id].data.accessoryFrame = nil
+
+	for _,v in pairs(tools[id].data.handles) do
+		v[1]:destroy()
+	end
+	tools[id].data.gridGuideline:destroy()
+	tools[id].data.gridGuideline = nil
+	tools[id].data.handles = nil
+
+end, {world=false, axis={{"x", true},{"y", true},{"z", true}}})
+
 -- End Tool
+
+
