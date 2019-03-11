@@ -536,7 +536,7 @@ saveBtn:mouseUnfocused(function()
 	engine.tween:begin(publishBtn, 0.1, {position = guiCoord(0, 120, 0, 68)}, "inOutQuad")
 end)
 
-saveBtn:mouseLeftPressed(engine.workshop:saveGame)
+saveBtn:mouseLeftPressed(function()engine.workshop:saveGame()end)
 
 openBtn:mouseFocused(function()
 	openBtn.text = "          Open"
@@ -544,7 +544,7 @@ openBtn:mouseFocused(function()
 	engine.tween:begin(publishBtn, 0.1, {position = guiCoord(0, 170, 0, 68)}, "inOutQuad")
 end)
 
-openBtn:mouseLeftPressed(engine.workshop:openFileDialogue)
+openBtn:mouseLeftPressed(function()engine.workshop:openFileDialogue()end)
 
 openBtn:mouseUnfocused(function()
 	openBtn.text = ""
