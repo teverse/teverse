@@ -14,6 +14,9 @@ local darkTheme = {
 	secondaryBg  = colour:fromRGB(55, 55, 66),
 	secondaryText  = colour:fromRGB(255, 255, 255),
 
+	primaryBg  = colour:fromRGB(188, 205, 224),
+	primaryText  = colour:fromRGB(10, 10, 10),
+
 	toolSelected = colour(1, 1, 1),
 	toolHovered = colour(0.9, 0.9, 0.9),
 	toolDeselected = colour(0.6, 0.6, 0.6)
@@ -336,6 +339,18 @@ end)
 
 -- Main GUI
 
+function generateIcon(icon, size, parent)
+	local img = engine.guiImage()
+	img.size = guiCoord(0, size, 0, size)
+	img.position = guiCoord(.5, -size/2, 0.5, -size/2)
+	img.parent = parent
+	img.guiStyle = enums.guiStyle.noBackground
+	img.imageColour = theme.mainTxt
+	img.texture = "fa:" .. icon
+	img.handleEvents = false
+	return img
+end
+
 local mainGuiFrame = engine.workshop.interface
 
 local mainFrame = engine.guiFrame()
@@ -422,6 +437,153 @@ delay(function()
 	wait(0.1)
 	engine.tween:begin(createModeFrame, .5, {position = guiCoord(0, 157, 0, 15)}, "inOutBack")
 end, .01)
+
+
+local settingsFrame = engine.guiFrame()
+settingsFrame.size = guiCoord(0, 36, 0, 36)
+settingsFrame.parent = mainGuiFrame
+settingsFrame.position = guiCoord(1, -51, 0, 15)
+settingsFrame.backgroundColour = theme.mainBg
+settingsFrame.alpha = 0.7
+settingsFrame.guiStyle = enums.guiStyle.rounded
+
+local settingsButton = generateIcon("s-bars", 20, settingsFrame)
+
+local settingsBar = engine.guiFrame()
+settingsBar.size = guiCoord(0, 288, 1, 0)
+settingsBar.parent = mainGuiFrame
+settingsBar.position = guiCoord(1, 0, 0, 0)
+settingsBar.backgroundColour = theme.mainBg
+settingsBar.alpha = 0.99
+
+local logoImage = engine.guiImage()
+logoImage.size = guiCoord(0, 180, 0, 37)
+logoImage.position = guiCoord(0,20,0,15)
+logoImage.parent = settingsBar
+logoImage.guiStyle = enums.guiStyle.noBackground
+logoImage.imageColour = colour(1,1,1)
+logoImage.alpha = 0.75
+logoImage.texture = "local:logo250.png";
+
+local saveBtn = engine.guiTextBox()
+saveBtn.parent = settingsBar
+saveBtn.backgroundColour = theme.primaryBg
+saveBtn.textColour = theme.primaryText
+saveBtn.alpha = 1
+saveBtn.size = guiCoord(0, 40, 0, 32)
+saveBtn.position = guiCoord(0, 20, 0, 68)
+saveBtn.fontFile = theme.fontBold
+saveBtn.fontSize = 13
+saveBtn.align = enums.align.middleLeft
+saveBtn.guiStyle = enums.guiStyle.rounded
+saveBtn.wrap = false
+saveBtn.text = ""
+
+local saveBtnIcon = generateIcon("s-save", 20, saveBtn)
+saveBtnIcon.position = guiCoord(0, 10, 0.5, -10)
+saveBtnIcon.imageColour = theme.primaryText
+saveBtnIcon.alpha = 0.85
+
+local openBtn = engine.guiTextBox()
+openBtn.parent = settingsBar
+openBtn.backgroundColour = theme.primaryBg
+openBtn.textColour = theme.primaryText
+openBtn.alpha = 1
+openBtn.size = guiCoord(0, 40, 0, 32)
+openBtn.position = guiCoord(0, 70, 0, 68)
+openBtn.fontFile = theme.fontBold
+openBtn.fontSize = 13
+openBtn.align = enums.align.middleLeft
+openBtn.guiStyle = enums.guiStyle.rounded
+openBtn.wrap = false
+openBtn.text = ""
+
+local openBtnIcon = generateIcon("s-folder-open", 20, openBtn)
+openBtnIcon.position = guiCoord(0, 10, 0.5, -10)
+openBtnIcon.imageColour = theme.primaryText
+openBtnIcon.alpha = 0.85
+
+local publishBtn = engine.guiTextBox()
+publishBtn.parent = settingsBar
+publishBtn.backgroundColour = theme.primaryBg
+publishBtn.textColour = theme.primaryText
+publishBtn.alpha = 1
+publishBtn.size = guiCoord(0, 40, 0, 32)
+publishBtn.position = guiCoord(0, 120, 0, 68)
+publishBtn.fontFile = theme.fontBold
+publishBtn.fontSize = 13
+publishBtn.align = enums.align.middleLeft
+publishBtn.guiStyle = enums.guiStyle.rounded
+publishBtn.wrap = false
+publishBtn.text = ""
+
+local publishBtnIcon = generateIcon("s-cloud-upload-alt", 20, publishBtn)
+publishBtnIcon.position = guiCoord(0, 10, 0.5, -10)
+publishBtnIcon.imageColour = theme.primaryText
+publishBtnIcon.alpha = 0.85
+
+saveBtn:mouseFocused(function()
+	saveBtn.text = "          Save"
+	engine.tween:begin(saveBtn, 0.1, {size = guiCoord(0, 90, 0, 32)}, "inOutQuad")
+	engine.tween:begin(openBtn, 0.1, {position = guiCoord(0, 120, 0, 68)}, "inOutQuad")
+	engine.tween:begin(publishBtn, 0.1, {position = guiCoord(0, 170, 0, 68)}, "inOutQuad")
+end)
+
+saveBtn:mouseUnfocused(function()
+	saveBtn.text = ""
+	engine.tween:begin(saveBtn, 0.1, {size = guiCoord(0, 40, 0, 32)}, "inOutQuad")
+	engine.tween:begin(openBtn, 0.1, {position = guiCoord(0, 70, 0, 68)}, "inOutQuad")
+	engine.tween:begin(publishBtn, 0.1, {position = guiCoord(0, 120, 0, 68)}, "inOutQuad")
+end)
+
+openBtn:mouseFocused(function()
+	openBtn.text = "          Open"
+	engine.tween:begin(openBtn, 0.1, {size = guiCoord(0, 90, 0, 32)}, "inOutQuad")
+	engine.tween:begin(publishBtn, 0.1, {position = guiCoord(0, 170, 0, 68)}, "inOutQuad")
+end)
+
+openBtn:mouseUnfocused(function()
+	openBtn.text = ""
+	engine.tween:begin(openBtn, 0.1, {size = guiCoord(0, 40, 0, 32)}, "inOutQuad")
+	engine.tween:begin(publishBtn, 0.1, {position = guiCoord(0, 120, 0, 68)}, "inOutQuad")
+end)
+
+publishBtn:mouseFocused(function()
+	publishBtn.text = "         Publish"
+	engine.tween:begin(publishBtn, 0.1, {size = guiCoord(0, 110, 0, 32)}, "inOutQuad")
+end)
+
+publishBtn:mouseUnfocused(function()
+	publishBtn.text = ""
+	engine.tween:begin(publishBtn, 0.1, {size = guiCoord(0, 40, 0, 32)}, "inOutQuad")
+end)
+
+
+
+settingsFrame:mouseFocused(function()
+	engine.tween:begin(settingsFrame, 0.1, {alpha=0.985}, "inOutQuad")
+end)
+
+settingsFrame:mouseUnfocused(function()
+	engine.tween:begin(settingsFrame, 0.1, {alpha=0.7}, "inOutQuad")
+end)
+
+local isExpandedSettings = false
+local function toggleSettings()
+	isExpandedSettings = not isExpandedSettings
+	if isExpandedSettings then
+		engine.tween:begin(settingsBar, 0.25, {position=guiCoord(1, -288, 0, 0)}, "inOutQuad")
+		settingsButton.texture = "fa:s-minus"
+	else
+		engine.tween:begin(settingsBar, 0.25, {position=guiCoord(1, 0, 0, 0)}, "inOutQuad")
+		settingsButton.texture = "fa:s-bars"
+	end
+end
+
+settingsFrame:mouseLeftReleased(function()
+	toggleSettings()
+end)
+
 -- End Main Gui
 
 -- Create mode system
@@ -465,7 +627,7 @@ engine.input:keyPressed(function( inputObj )
 				inAction = false
 			end)
 		end
-	elseif inputObj.key == enums.key.escape then
+	elseif inputObj.key == enums.key.space then
 		for _,v in pairs(selectedItems) do
 			v.emissiveColour = colour(0.0, 0.0, 0.0)
 		end
@@ -477,6 +639,8 @@ engine.input:keyPressed(function( inputObj )
 		boundingBoxListeners = {}
 
 		calculateBoundingBox()
+	elseif inputObj.key == enums.key.escape then
+		toggleSettings()
 	end
 end)
 
@@ -613,7 +777,7 @@ end)
 
 -- Tools
 
-local moveGrid = "0" -- cache between tools.
+local moveGrid = "1" -- cache between tools.
 local rotateCache = "45"
 
 	local roundToMultiple = function(number, multiple)
@@ -1606,6 +1770,7 @@ local toolBarScaleBtn = addTool("local:scale.png", function(id)
 			gridGuideline.size = vector3(300, 0.1, 300)
 			gridGuideline.rotation = handle.rotation
 			gridGuideline.position = handle.position
+			gridGuideline.opacity = 0.2
 			if component == "x" then
 				gridGuideline.rotation =  gridGuideline.rotation * quaternion():setEuler(math.rad(-45),math.rad(-45),0)
 			end
@@ -1617,8 +1782,6 @@ local toolBarScaleBtn = addTool("local:scale.png", function(id)
 
 			local startSizes = {}
 			local totalSize, totalposition = calculateBounding(selectedItems)
-
-			print("start", totalposition)
 
 			for _,v in pairs(selectedItems) do
 				startSizes[v] = {v.size, (v.position - totalposition)/totalSize,  v.size/totalSize}
@@ -1672,7 +1835,7 @@ local toolBarScaleBtn = addTool("local:scale.png", function(id)
 							offsetVec  = offsetVec * face
 
 							
-
+print(offsetVec)
 							local newSize = totalSize + (offsetVec)
 
 							local size = totalSize:clone()
