@@ -1770,7 +1770,6 @@ local toolBarScaleBtn = addTool("local:scale.png", function(id)
 			gridGuideline.size = vector3(300, 0.1, 300)
 			gridGuideline.rotation = handle.rotation
 			gridGuideline.position = handle.position
-			gridGuideline.opacity = 0.2
 			if component == "x" then
 				gridGuideline.rotation =  gridGuideline.rotation * quaternion():setEuler(math.rad(-45),math.rad(-45),0)
 			end
