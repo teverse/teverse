@@ -485,13 +485,32 @@ saveBtnIcon.position = guiCoord(0, 10, 0.5, -10)
 saveBtnIcon.imageColour = theme.primaryText
 saveBtnIcon.alpha = 0.85
 
+local saveAsBtn = engine.guiTextBox()
+saveAsBtn.parent = settingsBar
+saveAsBtn.backgroundColour = theme.primaryBg
+saveAsBtn.textColour = theme.primaryText
+saveAsBtn.alpha = 1
+saveAsBtn.size = guiCoord(0, 40, 0, 32)
+saveAsBtn.position = guiCoord(0, 70, 0, 68)
+saveAsBtn.fontFile = theme.fontBold
+saveAsBtn.fontSize = 26
+saveAsBtn.align = enums.align.middleLeft
+saveAsBtn.guiStyle = enums.guiStyle.rounded
+saveAsBtn.wrap = false
+saveAsBtn.text = ""
+
+local saveAsBtnIcon = generateIcon("r-save", 20, saveAsBtn)
+saveAsBtnIcon.position = guiCoord(0, 10, 0.5, -10)
+saveAsBtnIcon.imageColour = theme.primaryText
+saveAsBtnIcon.alpha = 0.85
+
 local openBtn = engine.guiTextBox()
 openBtn.parent = settingsBar
 openBtn.backgroundColour = theme.primaryBg
 openBtn.textColour = theme.primaryText
 openBtn.alpha = 1
 openBtn.size = guiCoord(0, 40, 0, 32)
-openBtn.position = guiCoord(0, 70, 0, 68)
+openBtn.position = guiCoord(0, 120, 0, 68)
 openBtn.fontFile = theme.fontBold
 openBtn.fontSize = 26
 openBtn.align = enums.align.middleLeft
@@ -504,65 +523,47 @@ openBtnIcon.position = guiCoord(0, 10, 0.5, -10)
 openBtnIcon.imageColour = theme.primaryText
 openBtnIcon.alpha = 0.85
 
-local publishBtn = engine.guiTextBox()
-publishBtn.parent = settingsBar
-publishBtn.backgroundColour = theme.primaryBg
-publishBtn.textColour = theme.primaryText
-publishBtn.alpha = 1
-publishBtn.size = guiCoord(0, 40, 0, 32)
-publishBtn.position = guiCoord(0, 120, 0, 68)
-publishBtn.fontFile = theme.fontBold
-publishBtn.fontSize = 26
-publishBtn.align = enums.align.middleLeft
-publishBtn.guiStyle = enums.guiStyle.rounded
-publishBtn.wrap = false
-publishBtn.text = ""
-
-local publishBtnIcon = generateIcon("s-cloud-upload-alt", 20, publishBtn)
-publishBtnIcon.position = guiCoord(0, 10, 0.5, -10)
-publishBtnIcon.imageColour = theme.primaryText
-publishBtnIcon.alpha = 0.85
-
 saveBtn:mouseFocused(function()
 	saveBtn.text = "          Save"
 	engine.tween:begin(saveBtn, 0.1, {size = guiCoord(0, 90, 0, 32)}, "inOutQuad")
-	engine.tween:begin(openBtn, 0.1, {position = guiCoord(0, 120, 0, 68)}, "inOutQuad")
-	engine.tween:begin(publishBtn, 0.1, {position = guiCoord(0, 170, 0, 68)}, "inOutQuad")
+	engine.tween:begin(saveAsBtn, 0.1, {position = guiCoord(0, 120, 0, 68)}, "inOutQuad")
+	engine.tween:begin(openBtn, 0.1, {position = guiCoord(0, 170, 0, 68)}, "inOutQuad")
 end)
 
 saveBtn:mouseUnfocused(function()
 	saveBtn.text = ""
 	engine.tween:begin(saveBtn, 0.1, {size = guiCoord(0, 40, 0, 32)}, "inOutQuad")
-	engine.tween:begin(openBtn, 0.1, {position = guiCoord(0, 70, 0, 68)}, "inOutQuad")
-	engine.tween:begin(publishBtn, 0.1, {position = guiCoord(0, 120, 0, 68)}, "inOutQuad")
+	engine.tween:begin(saveAsBtn, 0.1, {position = guiCoord(0, 70, 0, 68)}, "inOutQuad")
+	engine.tween:begin(openBtn, 0.1, {position = guiCoord(0, 120, 0, 68)}, "inOutQuad")
 end)
 
 saveBtn:mouseLeftPressed(function()engine.workshop:saveGame()end)
 
-openBtn:mouseFocused(function()
-	openBtn.text = "          Open"
-	engine.tween:begin(openBtn, 0.1, {size = guiCoord(0, 90, 0, 32)}, "inOutQuad")
-	engine.tween:begin(publishBtn, 0.1, {position = guiCoord(0, 170, 0, 68)}, "inOutQuad")
+saveAsBtn:mouseFocused(function()
+	saveAsBtn.text = "          Save as"
+	engine.tween:begin(saveAsBtn, 0.1, {size = guiCoord(0, 110, 0, 32)}, "inOutQuad")
+	engine.tween:begin(openBtn, 0.1, {position = guiCoord(0, 190, 0, 68)}, "inOutQuad")
 end)
 
-openBtn:mouseLeftPressed(function()engine.workshop:openFileDialogue()end)
+saveAsBtn:mouseLeftPressed(function()engine.workshop:saveGameAsDialogue()end)
+
+saveAsBtn:mouseUnfocused(function()
+	saveAsBtn.text = ""
+	engine.tween:begin(saveAsBtn, 0.1, {size = guiCoord(0, 40, 0, 32)}, "inOutQuad")
+	engine.tween:begin(openBtn, 0.1, {position = guiCoord(0, 120, 0, 68)}, "inOutQuad")
+end)
+
+openBtn:mouseFocused(function()
+	openBtn.text = "         Open"
+	engine.tween:begin(openBtn, 0.1, {size = guiCoord(0, 90, 0, 32)}, "inOutQuad")
+end)
 
 openBtn:mouseUnfocused(function()
 	openBtn.text = ""
 	engine.tween:begin(openBtn, 0.1, {size = guiCoord(0, 40, 0, 32)}, "inOutQuad")
-	engine.tween:begin(publishBtn, 0.1, {position = guiCoord(0, 120, 0, 68)}, "inOutQuad")
 end)
 
-publishBtn:mouseFocused(function()
-	publishBtn.text = "         Publish"
-	engine.tween:begin(publishBtn, 0.1, {size = guiCoord(0, 110, 0, 32)}, "inOutQuad")
-end)
-
-publishBtn:mouseUnfocused(function()
-	publishBtn.text = ""
-	engine.tween:begin(publishBtn, 0.1, {size = guiCoord(0, 40, 0, 32)}, "inOutQuad")
-end)
-
+openBtn:mouseLeftPressed(function()engine.workshop:openFileDialogue()end)
 
 
 settingsFrame:mouseFocused(function()
