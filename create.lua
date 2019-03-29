@@ -467,6 +467,7 @@ logoImage.alpha = 0.75
 logoImage.texture = "local:logo250.png";
 
 local saveBtn = engine.guiTextBox()
+saveBtn.hoverCursor = "fa:s-hand-pointer"
 saveBtn.parent = settingsBar
 saveBtn.backgroundColour = theme.primaryBg
 saveBtn.textColour = theme.primaryText
@@ -486,6 +487,7 @@ saveBtnIcon.imageColour = theme.primaryText
 saveBtnIcon.alpha = 0.85
 
 local saveAsBtn = engine.guiTextBox()
+saveAsBtn.hoverCursor = "fa:s-hand-pointer"
 saveAsBtn.parent = settingsBar
 saveAsBtn.backgroundColour = theme.primaryBg
 saveAsBtn.textColour = theme.primaryText
@@ -505,6 +507,7 @@ saveAsBtnIcon.imageColour = theme.primaryText
 saveAsBtnIcon.alpha = 0.85
 
 local openBtn = engine.guiTextBox()
+openBtn.hoverCursor = "fa:s-hand-pointer"
 openBtn.parent = settingsBar
 openBtn.backgroundColour = theme.primaryBg
 openBtn.textColour = theme.primaryText
@@ -565,6 +568,32 @@ end)
 
 openBtn:mouseLeftPressed(function()engine.workshop:openFileDialogue()end)
 
+engine.construct("guiFrame", settingsBar, {
+	size=guiCoord(0, 125, 0, 32),
+	position=guiCoord(0, 20, 0, 110),
+	backgroundColour = theme.primaryBg,
+	guiStyle = enums.guiStyle.rounded
+}, function(holder)
+	engine.construct("guiTextBox", holder, {
+		size=guiCoord(1,-28,1,0),
+		position=guiCoord(0,28,0,0),
+		guiStyle = enums.guiStyle.noBackground,
+		textColour=theme.primaryText,
+		align=enums.align.middleLeft,
+		fontSize=26,
+		text="Publish",
+		fontFile= theme.fontBold
+	})
+
+	engine.construct("guiImage", holder, {
+		size=guiCoord(0,20,0,20),
+		position=guiCoord(0,5,0,5),
+		imageColour=theme.primaryText,
+		guiStyle = enums.guiStyle.noBackground,
+		texture="fa:s-cloud"
+	})
+end)
+
 
 settingsFrame:mouseFocused(function()
 	engine.tween:begin(settingsFrame, 0.1, {alpha=0.985}, "inOutQuad")
@@ -585,6 +614,8 @@ local function toggleSettings()
 		settingsButton.texture = "fa:s-bars"
 	end
 end
+
+settingsFrame.hoverCursor = "fa:s-hand-pointer"
 
 settingsFrame:mouseLeftReleased(function()
 	toggleSettings()
