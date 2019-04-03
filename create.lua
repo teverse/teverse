@@ -6,7 +6,7 @@
 
 local darkTheme = {
 	font = "OpenSans-Regular",
-	fontBold = "OpenSans-Bold",
+	fontBold = "OpenSans-SemiBold",
 
 	mainBg  = colour:fromRGB(66, 66, 76),
 	mainTxt = colour:fromRGB(255, 255, 255),
@@ -14,8 +14,8 @@ local darkTheme = {
 	secondaryBg  = colour:fromRGB(55, 55, 66),
 	secondaryText  = colour:fromRGB(255, 255, 255),
 
-	primaryBg  = colour:fromRGB(188, 205, 224),
-	primaryText  = colour:fromRGB(10, 10, 10),
+	primaryBg  = colour:fromRGB(78, 83, 91),
+	primaryText  = colour:fromRGB(255,255,255),
 
 	toolSelected = colour(1, 1, 1),
 	toolHovered = colour(0.9, 0.9, 0.9),
@@ -466,6 +466,31 @@ logoImage.imageColour = colour(1,1,1)
 logoImage.alpha = 0.75
 logoImage.texture = "local:logo250.png";
 
+engine.construct("guiTextBox", settingsBar, {
+											size=guiCoord(1,-30,0,22),
+											position=guiCoord(0,20,0,68),
+											guiStyle = enums.guiStyle.noBackground,
+											align=enums.align.middleLeft,
+											text="File",
+											fontFile= theme.fontBold,
+											fontSize=22,
+											alpha=0.95,
+											textColour=theme.secondaryText
+										})
+
+
+engine.construct("guiTextBox", settingsBar, {
+											size=guiCoord(1,-30,0,18),
+											position=guiCoord(0,20,0,90),
+											guiStyle = enums.guiStyle.noBackground,
+											align=enums.align.middleLeft,
+											text="Use these buttons to manage local files.",
+											fontFile= theme.font,
+											fontSize=18,
+											alpha=0.85,
+											textColour=theme.secondaryText
+										})
+
 local saveBtn = engine.guiTextBox()
 saveBtn.hoverCursor = "fa:s-hand-pointer"
 saveBtn.parent = settingsBar
@@ -473,7 +498,7 @@ saveBtn.backgroundColour = theme.primaryBg
 saveBtn.textColour = theme.primaryText
 saveBtn.alpha = 1
 saveBtn.size = guiCoord(0, 40, 0, 32)
-saveBtn.position = guiCoord(0, 20, 0, 68)
+saveBtn.position = guiCoord(0, 20, 0, 113)
 saveBtn.fontFile = theme.fontBold
 saveBtn.fontSize = 26
 saveBtn.align = enums.align.middleLeft
@@ -493,7 +518,7 @@ saveAsBtn.backgroundColour = theme.primaryBg
 saveAsBtn.textColour = theme.primaryText
 saveAsBtn.alpha = 1
 saveAsBtn.size = guiCoord(0, 40, 0, 32)
-saveAsBtn.position = guiCoord(0, 70, 0, 68)
+saveAsBtn.position = guiCoord(0, 70, 0, 113)
 saveAsBtn.fontFile = theme.fontBold
 saveAsBtn.fontSize = 26
 saveAsBtn.align = enums.align.middleLeft
@@ -513,7 +538,7 @@ openBtn.backgroundColour = theme.primaryBg
 openBtn.textColour = theme.primaryText
 openBtn.alpha = 1
 openBtn.size = guiCoord(0, 40, 0, 32)
-openBtn.position = guiCoord(0, 120, 0, 68)
+openBtn.position = guiCoord(0, 120, 0, 113)
 openBtn.fontFile = theme.fontBold
 openBtn.fontSize = 26
 openBtn.align = enums.align.middleLeft
@@ -529,15 +554,15 @@ openBtnIcon.alpha = 0.85
 saveBtn:mouseFocused(function()
 	saveBtn.text = "          Save"
 	engine.tween:begin(saveBtn, 0.1, {size = guiCoord(0, 90, 0, 32)}, "inOutQuad")
-	engine.tween:begin(saveAsBtn, 0.1, {position = guiCoord(0, 120, 0, 68)}, "inOutQuad")
-	engine.tween:begin(openBtn, 0.1, {position = guiCoord(0, 170, 0, 68)}, "inOutQuad")
+	engine.tween:begin(saveAsBtn, 0.1, {position = guiCoord(0, 120, 0, 113)}, "inOutQuad")
+	engine.tween:begin(openBtn, 0.1, {position = guiCoord(0, 170, 0, 113)}, "inOutQuad")
 end)
 
 saveBtn:mouseUnfocused(function()
 	saveBtn.text = ""
 	engine.tween:begin(saveBtn, 0.1, {size = guiCoord(0, 40, 0, 32)}, "inOutQuad")
-	engine.tween:begin(saveAsBtn, 0.1, {position = guiCoord(0, 70, 0, 68)}, "inOutQuad")
-	engine.tween:begin(openBtn, 0.1, {position = guiCoord(0, 120, 0, 68)}, "inOutQuad")
+	engine.tween:begin(saveAsBtn, 0.1, {position = guiCoord(0, 70, 0, 113)}, "inOutQuad")
+	engine.tween:begin(openBtn, 0.1, {position = guiCoord(0, 120, 0, 113)}, "inOutQuad")
 end)
 
 saveBtn:mouseLeftPressed(function()engine.workshop:saveGame()end)
@@ -545,7 +570,7 @@ saveBtn:mouseLeftPressed(function()engine.workshop:saveGame()end)
 saveAsBtn:mouseFocused(function()
 	saveAsBtn.text = "          Save as"
 	engine.tween:begin(saveAsBtn, 0.1, {size = guiCoord(0, 110, 0, 32)}, "inOutQuad")
-	engine.tween:begin(openBtn, 0.1, {position = guiCoord(0, 190, 0, 68)}, "inOutQuad")
+	engine.tween:begin(openBtn, 0.1, {position = guiCoord(0, 190, 0, 113)}, "inOutQuad")
 end)
 
 saveAsBtn:mouseLeftPressed(function()engine.workshop:saveGameAsDialogue()end)
@@ -553,7 +578,7 @@ saveAsBtn:mouseLeftPressed(function()engine.workshop:saveGameAsDialogue()end)
 saveAsBtn:mouseUnfocused(function()
 	saveAsBtn.text = ""
 	engine.tween:begin(saveAsBtn, 0.1, {size = guiCoord(0, 40, 0, 32)}, "inOutQuad")
-	engine.tween:begin(openBtn, 0.1, {position = guiCoord(0, 120, 0, 68)}, "inOutQuad")
+	engine.tween:begin(openBtn, 0.1, {position = guiCoord(0, 120, 0, 113)}, "inOutQuad")
 end)
 
 openBtn:mouseFocused(function()
@@ -568,32 +593,92 @@ end)
 
 openBtn:mouseLeftPressed(function()engine.workshop:openFileDialogue()end)
 
+engine.construct("guiTextBox", settingsBar, {
+											size=guiCoord(1,-30,0,22),
+											position=guiCoord(0,20,0,150),
+											guiStyle = enums.guiStyle.noBackground,
+											align=enums.align.middleLeft,
+											text="TevCloud Settings",
+											fontFile= theme.fontBold,
+											fontSize=22,
+											alpha=0.95,
+											textColour=theme.secondaryText
+										})
+
+
+engine.construct("guiTextBox", settingsBar, {
+											size=guiCoord(1,-30,0,18),
+											position=guiCoord(0,20,0,172),
+											guiStyle = enums.guiStyle.noBackground,
+											align=enums.align.middleLeft,
+											name="publishNote",
+											text="This game is not published to the TevCloud.",
+											fontFile= theme.font,
+											fontSize=18,
+											alpha=0.85,
+											textColour=theme.secondaryText
+										})
+
+
+
+
 engine.construct("guiFrame", settingsBar, {
-	size=guiCoord(0, 125, 0, 32),
-	position=guiCoord(0, 20, 0, 110),
+	size=guiCoord(0, 98, 0, 28),
+	name = "btn",
+	position=guiCoord(0, 20, 0, 195),
 	backgroundColour = theme.primaryBg,
+	hoverCursor = "fa:s-hand-pointer",
 	guiStyle = enums.guiStyle.rounded
 }, function(holder)
+
 	engine.construct("guiTextBox", holder, {
 		size=guiCoord(1,-28,1,0),
-		position=guiCoord(0,28,0,0),
+		position=guiCoord(0,34,0,0),
 		guiStyle = enums.guiStyle.noBackground,
 		textColour=theme.primaryText,
 		align=enums.align.middleLeft,
-		fontSize=26,
+		fontSize=22,
+		name="label",
 		text="Publish",
-		fontFile= theme.fontBold
+		handleEvents=false,
+		fontFile= theme.font
 	})
 
 	engine.construct("guiImage", holder, {
-		size=guiCoord(0,20,0,20),
-		position=guiCoord(0,5,0,5),
+		size=guiCoord(0,16,0,16),
+		position=guiCoord(0,10,0,6),
 		imageColour=theme.primaryText,
+		alpha = 0.85,
 		guiStyle = enums.guiStyle.noBackground,
-		texture="fa:s-cloud"
+		handleEvents=false,
+		texture="fa:s-cloud-upload-alt"
 	})
+
+	holder:mouseFocused(function ()
+		engine.tween:begin(holder, 0.25, {backgroundColour=theme.secondaryBg}, "inOutQuad")
+	end)
+
+	holder:mouseUnfocused(function ()
+		engine.tween:begin(holder, 0.25, {backgroundColour=theme.primaryBg}, "inOutQuad")
+	end)
+
+	holder:mouseLeftReleased(function ()
+		engine.workshop:publishDialogue()
+	end)
 end)
 
+local function checkIfPublishable()
+	settingsBar.btn.visible = (engine.workshop.gameFilePath ~= "")
+	settingsBar.publishNote.text = (engine.workshop.gameFilePath == "" and "You need to save this game before publishing." or "This file isn't linked to the TevCloud.")
+	settingsBar.btn.label.text = (engine.workshop.gameCloudId == "" and "Publish" or "Update")
+
+	if engine.workshop.gameCloudId ~= "" then
+		settingsBar.publishNote.text = "This is a TevCloud project."
+	end
+end
+
+checkIfPublishable()
+engine.workshop:changed(checkIfPublishable)
 
 settingsFrame:mouseFocused(function()
 	engine.tween:begin(settingsFrame, 0.1, {alpha=0.985}, "inOutQuad")
