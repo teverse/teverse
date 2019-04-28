@@ -5,8 +5,8 @@ local themeController = require("tevcore:create/controllers/theme.lua")
 
 uiController.createFrame = function(parent, properties, style)
     local gui = engine.construct("guiFrame", parent, properties)
-	themeController.addGUI(gui, style and style or "primary")
-	return gui
+    themeController.addGUI(gui, style and style or "primary")
+    return gui
 end
 
 uiController.createMainInterface = function()
