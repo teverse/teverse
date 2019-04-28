@@ -2,7 +2,12 @@
 
 local themeController = {}
 
-themeController.currentTheme = {}
+themeController.currentTheme = {
+example = {
+backgroundColour = colour(),
+textColour = colour()
+}
+}
 themeController.guis = {} --make this a weak metatable (keys)
 
 themeController.setTheme = function(theme)
