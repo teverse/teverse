@@ -2,7 +2,11 @@
 
 local themeController = {}
 
-themeController.guis = {}
+themeController.guis = {} --make this a weak metatable (keys)
+
+themeController.setTheme = function(theme)
+    
+end)
 
 themeController.add = function(gui, style)
     if themeController.guis[gui] then return end
