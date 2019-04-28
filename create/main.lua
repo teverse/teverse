@@ -6,3 +6,4 @@ local controllers = {
 	tool    = require("tevcore:create/controllers/tool.lua")
 }
 
+controllers.ui.createMainInterface()
