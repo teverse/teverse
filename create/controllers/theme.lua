@@ -34,9 +34,6 @@ end
 
 themeController.applyTheme = function(gui)
 	local styleName = themeController.guis[gui]
-	if not themeController.currentTheme[style] then
-		styleName = "default"
-	end
 	
 	local style = themeController.currentTheme[styleName]
 	if not style then 
