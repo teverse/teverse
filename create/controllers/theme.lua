@@ -2,6 +2,8 @@
 
 local themeController = {}
 
+print ("DEBUG: Loading theme.lua")
+
 -- values from default are used in all styles unless overridden.
 themeController.currentTheme = {
     default = {
