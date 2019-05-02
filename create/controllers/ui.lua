@@ -1,7 +1,7 @@
 -- Copyright 2019 teverse.com
 
 local uiController = {}
-local themeController = require("tevcore:create/controllers/theme.lua")
+local themeController = require("tevgit:create/controllers/theme.lua")
 
 uiController.createFrame = function(parent, properties, style)
     local gui = engine.construct("guiFrame", parent, properties)
