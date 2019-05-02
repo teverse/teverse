@@ -1,3 +1,4 @@
+print('debug test 1')
 local controllers = {
 	theme   = require("tevgit:create/controllers/theme.lua"),
 	ui      = require("tevgit:create/controllers/ui.lua"),
