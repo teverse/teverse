@@ -28,7 +28,7 @@ themeController.set = function(theme)
     for gui, style in pairs(themeController.guis) do
     	themeController.applyTheme(gui)
    	end
-end)
+end
 
 themeController.applyTheme = function(gui)
 	local styleName = themeController.guis[gui]
