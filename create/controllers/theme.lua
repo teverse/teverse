@@ -17,9 +17,10 @@ themeController.currentTheme = {
 	},
 	primary = {
 	    backgroundColour = colour:fromRGB(78, 83, 91),
-	    textColour  = colour:fromRGB(255,255,255),
+	    textColour  = colour:fromRGB(255,255,255)
     }
 }
+
 themeController.guis = {} --make this a weak metatable (keys)
 
 themeController.set = function(theme)
@@ -36,7 +37,9 @@ themeController.applyTheme = function(gui)
 	end
 	
 	local style = themeController.currentTheme[styleName]
-	if not style then style = {} end
+	if not style then 
+		style = {} 
+	end
 	
 	for property, value in pairs(style) do
 		if gui[property] and gui[property] ~= value then
