@@ -6,3 +6,4 @@ local controllers = {
 	tool    = require("tevgit:create/controllers/tool.lua")
 }
 
+controllers.ui.createMainInterface()
