@@ -4,9 +4,14 @@ local uiController = {}
 local themeController = require("tevgit:create/controllers/theme.lua")
 local toolsController = require("tevgit:create/controllers/tool.lua")
 
-uiController.createFrame = function(parent, properties, style)
-    local gui = engine.construct("guiFrame", parent, properties)
+uiController.create = function(className, parent, properties, style)
+    local gui = engine.construct(className, parent, properties)
     themeController.add(gui, style and style or "default")
+    return gui
+end
+
+uiController.createFrame = function(parent, properties, style)
+    local gui = uiController.create("guiFrame", parent, properties, style)
     return gui
 end
 
