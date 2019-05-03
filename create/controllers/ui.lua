@@ -23,6 +23,7 @@ uiController.createMainInterface = function()
     }, "main")
     print("created main ui")
     toolsController.container = sideBar
+    toolsController.ui = uiController
 end
 
 return uiController
