@@ -21,7 +21,7 @@ uiController.createMainInterface = function()
         size = guiCoord(0,40,1,0),
         position = guiCoord(0,0,0,0)
     }, "main")
-    print("created main ui")
+    
     toolsController.container = sideBar
     toolsController.ui = uiController
 end
