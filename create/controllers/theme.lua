@@ -10,8 +10,8 @@ themeController.currentTheme = {
         fontFile = "OpenSans-Regular"
     },
     main = {
-	    backgroundColour  = colour:fromRGB(66, 66, 76),
-	    textColour = colour:fromRGB(255, 255, 255)
+		backgroundColour  = colour:fromRGB(66, 66, 76),
+		textColour = colour:fromRGB(255, 255, 255)
 	},
 	secondary = {
 	    backgroundColour  = colour:fromRGB(55, 55, 66),
@@ -20,7 +20,12 @@ themeController.currentTheme = {
 	primary = {
 	    backgroundColour = colour:fromRGB(78, 83, 91),
 	    textColour  = colour:fromRGB(255,255,255)
-    }
+    },
+	tools = {
+		selected = colour(1, 1, 1),
+		hovered = colour(0.9, 0.9, 0.9),
+		deselected = colour(0.6, 0.6, 0.6)
+	}
 }
 
 themeController.guis = {} --make this a weak metatable (keys)
