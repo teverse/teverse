@@ -1,6 +1,7 @@
 -- Copyright 2019 teverse.com
 
 local toolsController = {}
+local themeController = require("tevgit:create/controllers/theme.lua")
 
 -- container is set in ui.lua when main interface is created
 toolsController.container = nil
@@ -22,13 +23,31 @@ toolsController.add = function(toolName, toolIcon, toolDesc, toolActivated, tool
                                                  texture = toolIcon
                                              },
                                              "main")
+    button:mouseLeftReleased(function()
+        if toolsController.tools[toolsController.currentTool] then
+			toolsController.tools[toolsController.currentTool].gui.imageColour = themeController.currentTheme.tools.deselected
+			if toolsController.tools[toolsController.currentTool].deactivate then
+				toolsController.tools[toolsController.currentTool].deactivate(toolsController.currentTool)
+			end
+		end
+
+		if toolsController.currentTool == toolId then
+			toolsController.currentTool = 0
+		else
+			toolsController.currentTool = toolId
+			tools[toolId].gui.imageColour = themeController.currentTheme.tools.selected
+			if tools[toolsController.currentTool].activate then
+				tools[toolsController.currentTool].activate(toolId)
+			end
+		end
+    end)
 
     toolsController.tools:insert({id = toolId, 
                                   gui = button, 
                                   data = data and data or {},
                                   activate = toolActivated, 
                                   deactivate=toolDeactivated})
-
+    return toolsController.tools[toolId]
 end
 
 return toolsController
