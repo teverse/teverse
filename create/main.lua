@@ -10,4 +10,7 @@ return function(workshop)
 	controllers.ui.createMainInterface(workshop)
 
 	local selectTool = require("tevgit:create/tools/select.lua")
+	local moveTool = require("tevgit:create/tools/move.lua")
+	local scaleTool = require("tevgit:create/tools/scale.lua")
+	local rotateTool = require("tevgit:create/tools/rotate.lua")
 end
