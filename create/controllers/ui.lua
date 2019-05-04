@@ -15,14 +15,15 @@ uiController.createFrame = function(parent, properties, style)
     return gui
 end
 
-uiController.createMainInterface = function()
-    local sideBar = uiController.createFrame(engine.workshop.interface, {
+uiController.createMainInterface = function(workshop)
+    local sideBar = uiController.createFrame(workshop.interface, {
         name = "toolbars",
         size = guiCoord(0,40,1,0),
         position = guiCoord(0,0,0,0)
     }, "main")
     
     toolsController.container = sideBar
+    toolsController.workshop = workshop
     toolsController.ui = uiController
 end
 

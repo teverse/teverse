@@ -6,9 +6,14 @@ local themeController = require("tevgit:create/controllers/theme.lua")
 -- container is set in ui.lua when main interface is created
 toolsController.container = nil
 toolsController.ui = nil
+toolsController.workshop = nil
 
 toolsController.currentTool = 0
 toolsController.tools = {}
+
+toolsController.setup = function()
+
+end
 
 -- "data" is a table that can be read and written to by activation and deactivation functions
 -- these functions should access it via toolsController.tools[id].data
@@ -17,10 +22,11 @@ toolsController.add = function(toolName, toolIcon, toolDesc, toolActivated, tool
     local button = toolsController.ui.create("guiImage", 
                                              toolsController.container, 
                                              {   
-                                                 size = guiCoord(0, 40, 0, 40),
-                                                 position = guiCoord(0, 0, 0, 5 + (30 * #toolsController.tools)),
+                                                 size = guiCoord(0, 30, 0, 30),
+                                                 position = guiCoord(0, 5, 0, 5 + (30 * #toolsController.tools)),
                                                  guiStyle = enums.guiStyle.noBackground,
-                                                 texture = toolIcon
+                                                 texture = toolIcon,
+                                                 imageColour = themeController.currentTheme.tools.deselected
                                              },
                                              "main")
     button:mouseLeftReleased(function()

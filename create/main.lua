@@ -1,13 +1,13 @@
-print('debug test 1')
-local controllers = {
-	theme   = require("tevgit:create/controllers/theme.lua"),
-	ui      = require("tevgit:create/controllers/ui.lua"),
-	camera  = require("tevgit:create/controllers/camera.lua"),
-	console = require("tevgit:create/controllers/console.lua"),
-	tool    = require("tevgit:create/controllers/tool.lua")
-}
+return function(workshop)
+	local controllers = {
+		theme   = require("tevgit:create/controllers/theme.lua"),
+		ui      = require("tevgit:create/controllers/ui.lua"),
+		camera  = require("tevgit:create/controllers/camera.lua"),
+		console = require("tevgit:create/controllers/console.lua"),
+		tool    = require("tevgit:create/controllers/tool.lua")
+	}
 
-print(" creating")
-controllers.ui.createMainInterface()
+	controllers.ui.createMainInterface(workshop)
 
-local selectTool = require("tevgit:create/tools/select.lua")
+	local selectTool = require("tevgit:create/tools/select.lua")
+end
