@@ -48,7 +48,7 @@ toolsController.add = function(toolName, toolIcon, toolDesc, toolActivated, tool
 		end
     end)
 
-    toolsController.tools:insert({id = toolId, 
+    table.insert(toolsController.tools, {id = toolId, 
                                   gui = button, 
                                   data = data and data or {},
                                   activate = toolActivated, 
