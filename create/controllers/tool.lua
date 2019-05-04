@@ -23,7 +23,7 @@ toolsController.add = function(toolName, toolIcon, toolDesc, toolActivated, tool
                                              toolsController.container, 
                                              {   
                                                  size = guiCoord(0, 30, 0, 30),
-                                                 position = guiCoord(0, 5, 0, 5 + (30 * #toolsController.tools)),
+                                                 position = guiCoord(0, 5, 0, 5 + (40 * #toolsController.tools)),
                                                  guiStyle = enums.guiStyle.noBackground,
                                                  texture = toolIcon,
                                                  imageColour = themeController.currentTheme.tools.deselected
