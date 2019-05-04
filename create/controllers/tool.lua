@@ -41,6 +41,7 @@ toolsController.add = function(toolName, toolIcon, toolDesc, toolActivated, tool
 			toolsController.currentTool = 0
 		else
 			toolsController.currentTool = toolId
+			print("debug: activating tool")
 			tools[toolId].gui.imageColour = themeController.currentTheme.tools.selected
 			if tools[toolsController.currentTool].activate then
 				tools[toolsController.currentTool].activate(toolId)
