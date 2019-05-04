@@ -47,7 +47,7 @@ toolsController.add = function(toolName, toolIcon, toolDesc, toolActivated, tool
 			end
 		end
     end)
-
+print("debug: inser tool")
     table.insert(toolsController.tools, {id = toolId, 
                                   gui = button, 
                                   data = data and data or {},
