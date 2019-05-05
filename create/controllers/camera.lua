@@ -1,4 +1,5 @@
 local cameraController = {}
+local selectionController = require("tevgit:create/controllers/select.lua")
 
 cameraController.zoomStep = 3
 cameraController.rotateStep = -0.0045
@@ -67,8 +68,8 @@ engine.input:keyPressed(function( inputObj )
 
 	-- SELECTION SYSTEM REQUIRED
 	--[[
-	if inputObj.key == enums.key.f and #selectedItems>0 then
-		local mdn = vector3(median(selectedItems, "x"), median(selectedItems, "y"),median(selectedItems, "z") )
+	if inputObj.key == enums.key.f and #selectionController.selection>0 then
+		local mdn = vector3(median(selectionController.selection, "x"), median(selectionController.selection, "y"),median(selectionController.selection, "z") )
 		--camera.position = mdn + (camera.rotation * vector3(0,0,1) * 15)
 		--print(mdn)
 		engine.tween:begin(cameraController.camera, .2, {position = mdn + (cameraController.camera.rotation * vector3(0,0,1) * 15)}, "outQuad")
