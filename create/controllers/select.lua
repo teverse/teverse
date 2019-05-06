@@ -23,7 +23,7 @@ engine.input:mouseLeftPressed(function(inp)
 	    if not mouseHit or mouseHit.object.workshopLocked then
     		if mouseHit and mouseHit.object.name == "_CreateMode_" then return end -- dont deselect
     		-- User clicked empty space, deselect everything??#
-    		for _,v in pairs(selectedItems) do
+    		for _,v in pairs(selectionController.selection) do
     			v.emissiveColour = colour(0.0, 0.0, 0.0)
     		end
     		selectionController.selection = {}
