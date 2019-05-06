@@ -13,7 +13,7 @@ local toolActivated = function(id)
     
     local mouseDown = 0
         
-    tools[id].data.mouseDownEvent = engine.input:mouseLeftPressed(function ( inp )
+    toolsController.tools[id].data.mouseDownEvent = engine.input:mouseLeftPressed(function ( inp )
         if not inp.systemHandled and #selectionController.selection > 0 then
             local hit, didExclude = engine.physics:rayTestScreenAllHits(engine.input.mousePosition,
                                                                         selectionController.selection)
@@ -53,17 +53,17 @@ local toolActivated = function(id)
         end
     end)
     
-    tools[id].data.mouseUpEvent = engine.input:mouseLeftPressed(function ( inp )
+    toolsController.tools[id].data.mouseUpEvent = engine.input:mouseLeftPressed(function ( inp )
         mouseDown = 0
     end)
 end
 
 local toolDeactivated = function(id)
     --clean up
-    tools[id].data.mouseDownEvent:disconnect()
-    tools[id].data.mouseDownEvent = nil
-    tools[id].data.mouseUpEvent:disconnect()
-    tools[id].data.mouseUpEvent = nil
+    toolsController.tools[id].data.mouseDownEvent:disconnect()
+    toolsController.tools[id].data.mouseDownEvent = nil
+    toolsController.tools[id].data.mouseUpEvent:disconnect()
+    toolsController.tools[id].data.mouseUpEvent = nil
 end
 
 return toolController.add(toolName, toolIcon, toolDesc, toolActivated, toolDeactivated)

@@ -24,6 +24,11 @@ local toolActivated = function(id)
         castsShadows = false        
     })
     
+    toolsController.tools[id].data.mouseDownEvent = engine.input:mouseLeftPressed(function ( inp )
+        local newBlock = toolsController.tools[id].data.placeholderBlock:clone()
+        newBlock.parent = engine.workspace
+    end)
+    
     while active and wait() do
         local mouseHit = engine.physics:rayTestScreen( engine.input.mousePosition )
         if mouseHit then
@@ -35,6 +40,9 @@ end
 
 local toolDeactivated = function(id)
     selectionController.selectable = true
+    
+    toolsController.tools[id].data.mouseDownEvent:disconnect()
+    toolsController.tools[id].data.mouseDownEvent = nil
     
     toolsController.tools[id].data.placeholderBlock:destroy()
     toolsController.tools[id].data.placeholderBlock = nil
