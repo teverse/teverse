@@ -30,9 +30,9 @@ local toolActivated = function(id)
     end)
     
     while active and wait() do
-        local mouseHit = engine.physics:rayTestScreen( engine.input.mousePosition )
+        local mouseHit = engine.physics:rayTestScreen( engine.input.mousePosition, toolController.tools[id].data.placeholderBlock )
         if mouseHit then
-            placeholderBlock.position = mouseHit.hitPosition
+            toolController.tools[id].data.placeholderBlock.position = mouseHit.hitPosition
         end
     end
     
