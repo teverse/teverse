@@ -1,5 +1,5 @@
+--add.lua
 -- Copyright 2019 Teverse
--- Select tool
 
 local toolName = "Add"
 local toolIcon = "fa:s-plus-square"
@@ -30,9 +30,9 @@ local toolActivated = function(id)
     end)
     
     while active and wait() do
-        local mouseHit = engine.physics:rayTestScreen( engine.input.mousePosition, toolController.tools[id].data.placeholderBlock )
-        if mouseHit then
-            toolController.tools[id].data.placeholderBlock.position = mouseHit.hitPosition
+        local mouseHit = engine.physics:rayTestScreenAllHits( engine.input.mousePosition, toolController.tools[id].data.placeholderBlock )
+        if #mouseHit>0 then
+            toolController.tools[id].data.placeholderBlock.position = mouseHit[1].hitPosition
         end
     end
     
