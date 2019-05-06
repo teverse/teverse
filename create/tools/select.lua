@@ -9,10 +9,20 @@ local toolController = require("tevgit:create/controllers/tool.lua")
 local toolActivated = function(id)
     --create interface
     --access tool data at toolsController.tools[id].data
+    
+    tools[id].data.mouseDownEvent = engine.input:mouseLeftPressed(function ( inp )
+    
+    end)
+    
+    tools[id].data.mouseUpEvent = engine.input:mouseLeftPressed(function ( inp )
+    
+    end)
 end
 
 local toolDeactivated = function(id)
-  
+    --clean up
+    tools[id].data.mouseDownEvent:disconnect()
+    tools[id].data.mouseDownEvent = nil
 end
 
 return toolController.add(toolName, toolIcon, toolDesc, toolActivated, toolDeactivated)
