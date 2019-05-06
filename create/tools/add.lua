@@ -18,7 +18,7 @@ local toolActivated = function(id)
     
     toolController.tools[id].data.placeholderBlock = engine.construct("block", nil, {
         name = "_CreateMode_add_tool_placeholder",
-        size = vector3(2, 2, 2),
+        size = vector3(1, 1, 1),
         static = true,
         physics = false,
         castsShadows = false        
@@ -27,11 +27,12 @@ local toolActivated = function(id)
     toolController.tools[id].data.mouseDownEvent = engine.input:mouseLeftPressed(function ( inp )
         local newBlock = toolController.tools[id].data.placeholderBlock:clone()
         newBlock.parent = engine.workspace
+        newBlock.physics = true
     end)
     
     while active and wait() do
         local mouseHit = engine.physics:rayTestScreenAllHits( engine.input.mousePosition, toolController.tools[id].data.placeholderBlock )
-        if #mouseHit>0 then
+        if #mouseHit > 0 then
             toolController.tools[id].data.placeholderBlock.position = mouseHit[1].hitPosition
         end
     end

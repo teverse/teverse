@@ -5,17 +5,22 @@ return function(workshop)
 		ui        = require("tevgit:create/controllers/ui.lua"),
 		camera    = require("tevgit:create/controllers/camera.lua"),
 		console   = require("tevgit:create/controllers/console.lua"),
-		tool      = require("tevgit:create/controllers/tool.lua")
+		tool      = require("tevgit:create/controllers/tool.lua"),
+		env       = require("tevgit:create/controllers/environment.lua")
 	}
 
 	controllers.ui.createMainInterface(workshop)
-	print("test")
 
 	local tools = {
-		add = require("tevgit:create/tools/add.lua"),
-		selectTool = require("tevgit:create/tools/select.lua"),
+		add    = require("tevgit:create/tools/add.lua"),
+		select = require("tevgit:create/tools/select.lua"),
 		move   = require("tevgit:create/tools/move.lua"),
 		scale  = require("tevgit:create/tools/scale.lua"),
 		rotate = require("tevgit:create/tools/rotate.lua")
 	}
+	wait(2)
+	-- create default environment
+	controllers.env.setDefault()
+	controllers.env.createStarterMap()
+	controllers.ui.setLoading(false)
 end
