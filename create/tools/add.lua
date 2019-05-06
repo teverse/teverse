@@ -16,7 +16,7 @@ local toolActivated = function(id)
     
     active = true
     
-    toolsController.tools[id].data.placeholderBlock = engine.construct("block", nil, {
+    toolController.tools[id].data.placeholderBlock = engine.construct("block", nil, {
         name = "_CreateMode_add_tool_placeholder",
         size = vector3(2, 2, 2),
         static = true,
@@ -24,8 +24,8 @@ local toolActivated = function(id)
         castsShadows = false        
     })
     
-    toolsController.tools[id].data.mouseDownEvent = engine.input:mouseLeftPressed(function ( inp )
-        local newBlock = toolsController.tools[id].data.placeholderBlock:clone()
+    toolController.tools[id].data.mouseDownEvent = engine.input:mouseLeftPressed(function ( inp )
+        local newBlock = toolController.tools[id].data.placeholderBlock:clone()
         newBlock.parent = engine.workspace
     end)
     
@@ -41,11 +41,11 @@ end
 local toolDeactivated = function(id)
     selectionController.selectable = true
     
-    toolsController.tools[id].data.mouseDownEvent:disconnect()
-    toolsController.tools[id].data.mouseDownEvent = nil
+    toolController.tools[id].data.mouseDownEvent:disconnect()
+    toolController.tools[id].data.mouseDownEvent = nil
     
-    toolsController.tools[id].data.placeholderBlock:destroy()
-    toolsController.tools[id].data.placeholderBlock = nil
+    toolController.tools[id].data.placeholderBlock:destroy()
+    toolController.tools[id].data.placeholderBlock = nil
     
     active = false
 end
