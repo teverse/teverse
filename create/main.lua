@@ -9,6 +9,7 @@ return function(workshop)
 	}
 
 	controllers.ui.createMainInterface(workshop)
+	print("test")
 
 	local tools = {
 		add = require("tevgit:create/tools/add.lua"),
