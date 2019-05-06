@@ -2,7 +2,7 @@
 -- Select tool
 
 local toolName = "Add"
-local toolIcon = "fa:s-plus"
+local toolIcon = "fa:s-plus-square"
 local toolDesc = "Use this to insert shapes."
 local toolController = require("tevgit:create/controllers/tool.lua")
 local selectionController = require("tevgit:create/controllers/select.lua")
