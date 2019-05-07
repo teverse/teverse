@@ -2,10 +2,13 @@
   (C) 2019 TheFluffyCat / Mooshua (Github / Teverse)
   
   Quicksilver.lua
-  
+  "Polish it quicker"
+
   Small little function that cleans up create calls. 
   Input the instance with a table like property = value.
   It will edit the properties to match the table.
+
+
 ]]
  
 function silver(int,tab)
