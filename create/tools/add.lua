@@ -26,6 +26,8 @@ local toolActivated = function(id)
     
     toolController.tools[id].data.mouseDownEvent = engine.input:mouseLeftPressed(function ( inp )
         local newBlock = toolController.tools[id].data.placeholderBlock:clone()
+        newBlock.name = "newBlock"
+        newBlock.workshopLocked = false
         newBlock.parent = engine.workspace
         newBlock.physics = true
     end)
@@ -33,7 +35,7 @@ local toolActivated = function(id)
     while active and wait() do
         local mouseHit = engine.physics:rayTestScreenAllHits( engine.input.mousePosition, toolController.tools[id].data.placeholderBlock )
         if #mouseHit > 0 then
-            toolController.tools[id].data.placeholderBlock.position = mouseHit[1].hitPosition
+            toolController.tools[id].data.placeholderBlock.position = mouseHit[1].hitPosition + vector3(0, 0.5, 0)
         end
     end
     

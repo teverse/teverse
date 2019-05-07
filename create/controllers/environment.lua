@@ -15,7 +15,7 @@ environmentController.createStarterMap = function()
 
 	engine.construct("block", workspace, {
 		name           = "basePlate",
-		colour         = colour(1, 1, 1),
+		colour         = colour(0.6, 0.6, 0.6),
 		size           = vector3(100, 1, 100),
 		position       = vector3(0, -1, 0),
 		workshopLocked = true
@@ -44,7 +44,7 @@ environmentController.createStarterMap = function()
 end
 
 environmentController.setDefault = function()
-	engine.graphics.clearColour = colour:fromRGB(155, 0, 242)
+	engine.graphics.clearColour = colour:fromRGB(155, 155, 155)
 	engine.graphics.ambientColour = colour:fromRGB(166, 166, 166)
 end
 
