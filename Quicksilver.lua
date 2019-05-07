@@ -1,12 +1,12 @@
 --[[
-  (C) 2019 TheFluffyCat / Mooshua (Github / Teverse)
+  (C) 2019 Teverse, llc. All Rights Reserved.
   
   Quicksilver.lua
-  "Polish it quicker"
+  Author: Mooshua
 
   Small little function that cleans up create calls. 
-  Input the instance with a table like property = value.
-  It will edit the properties to match the table.
+  Input the instance with a table like {property = value}.
+  It will edit the properties to match the table, and return
 
 
 ]]
