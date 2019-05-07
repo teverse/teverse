@@ -15,21 +15,41 @@ local toolActivated = function(id)
     selectionController.selectable = false
     
     active = true
+    local mouseDown = 0
     
     toolController.tools[id].data.placeholderBlock = engine.construct("block", nil, {
         name = "_CreateMode_add_tool_placeholder",
         size = vector3(1, 1, 1),
         static = true,
+        opacity = 0.5,
         physics = false,
         castsShadows = false        
     })
-    
-    toolController.tools[id].data.mouseDownEvent = engine.input:mouseLeftPressed(function ( inp )
+
+    local function placeBlock()
         local newBlock = toolController.tools[id].data.placeholderBlock:clone()
         newBlock.name = "newBlock"
         newBlock.workshopLocked = false
         newBlock.parent = engine.workspace
+        newBlock.opacity = 1
         newBlock.physics = true
+        newBlock.castsShadows = true
+    end
+    
+    toolController.tools[id].data.mouseDownEvent = engine.input:mouseLeftPressed(function ( inp )
+        placeBlock()
+        local curTime = os.clock()
+        mouseDown = curTime
+        wait(0.2) 
+        if mouseDown == curTime then
+            while wait(.05) and mouseDown == curTime and toolController.currentTool == id do
+                placeBlock()
+            end
+        end
+    end)
+
+    toolController.tools[id].data.mouseUpEvent = engine.input:mouseLeftReleased(function ( inp )
+        mouseDown = 0
     end)
     
     while active and wait() do
@@ -46,6 +66,8 @@ local toolDeactivated = function(id)
     
     toolController.tools[id].data.mouseDownEvent:disconnect()
     toolController.tools[id].data.mouseDownEvent = nil
+    toolController.tools[id].data.mouseUpEvent:disconnect()
+    toolController.tools[id].data.mouseUpEvent = nil
     
     toolController.tools[id].data.placeholderBlock:destroy()
     toolController.tools[id].data.placeholderBlock = nil

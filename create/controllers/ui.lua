@@ -40,7 +40,7 @@ uiController.createMainInterface = function(workshop)
         align = enums.align.middle,
         fontSize = 21,
         guiStyle = enums.guiStyle.noBackground,
-        text = "Loading"
+        text = "Loading, maybe dont touch anything rn."
     }, "main")
 
     uiController.create("guiImage", uiController.loadingFrame, {
