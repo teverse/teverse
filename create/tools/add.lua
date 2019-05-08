@@ -114,8 +114,8 @@ return toolController:register({
     icon = TOOL_ICON,
     description = TOOL_DESCRIPTION,
 
-    activated = toolActivated,
-    deactivated = toolDeactivated
+    activated = onToolActivated,
+    deactivated = onToolDeactviated
 
 })
 
