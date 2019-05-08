@@ -1,7 +1,7 @@
 
 
 ## Naming
-Teverse uses **camelCase** built-in for everything, courtesy of our founder Jay, Thus we will also adopt this style and use camelCase in _every_ scenario besides constants
+Teverse uses **camelCase** built-in for everything, courtesy of our founder Jay. Thus we will also adopt this style and use camelCase in _every_ scenario besides constants
 #### Bad
 ```lua
 local foobar
@@ -52,7 +52,7 @@ local function foo(bar, baz)
 
     baz = baz or ""
 
-    return foo .. bar .. baz 
+    return "foo" .. bar .. baz 
 
 end
 ```
