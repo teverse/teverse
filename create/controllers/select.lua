@@ -1,3 +1,6 @@
+-- Copyright (c) 2019 teverse.com
+-- select.lua
+
 local selectionController = {}
 
 selectionController.selectable = true

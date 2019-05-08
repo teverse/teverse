@@ -1,5 +1,5 @@
+-- Copyright (c) 2019 teverse.com
 -- environment.lua
--- Copyright 2019 Teverse
 
 local environmentController = {}
 

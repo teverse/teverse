@@ -1,3 +1,6 @@
+-- Copyright (c) 2019 teverse.com
+-- create.lua
+
 print("Using new require method to load create mode from github.")
 
 --This script has access to workshop apis, 

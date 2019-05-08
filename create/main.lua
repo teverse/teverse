@@ -1,3 +1,6 @@
+-- Copyright (c) 2019 teverse.com
+-- main.lua
+
 return function(workshop)
 	local controllers = {
 		selection = require("tevgit:create/controllers/select.lua"),
