@@ -1,18 +1,30 @@
--- Copyright (c) 2019 teverse.com
--- scale.lua
+--[[
+    Copyright 2019 Teverse
+    @File scale.lua
+    @Author(s) Jay
+--]]
 
-local toolName = "Scale"
-local toolIcon = "local:scale.png"
-local toolDesc = "Use this to scale primitives."
+TOOL_NAME = "Scale"
+TOOL_ICON = "local:scale.png"
+TOOL_DESCRIPTION = "Use this to resize primitives."
+
 local toolController = require("tevgit:create/controllers/tool.lua")
 
-local toolActivated = function(id)
-    --create interface
-    --access tool data at toolsController.tools[id].data
+local function onToolActivated(toolId)
+    
 end
 
-local toolDeactivated = function(id)
+local function onToolDeactviated(toolId)
   
 end
 
-return toolController.add(toolName, toolIcon, toolDesc, toolActivated, toolDeactivated)
+return toolController:register({
+    
+    name = TOOL_NAME,
+    icon = TOOL_ICON,
+    description = TOOL_DESCRIPTION,
+
+    activated = onToolActivated,
+    deactivated = onToolDeactviated
+
+})
