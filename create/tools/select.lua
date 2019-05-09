@@ -5,7 +5,7 @@
 --]]
 
 TOOL_NAME = "Select"
-TOOL_ICON = "local:hand.png"
+TOOL_ICON = "fa:s-hand-paper"
 TOOL_DESCRIPTION = "Use this select and move primitives."
 
 local toolController = require("tevgit:create/controllers/tool.lua")

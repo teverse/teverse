@@ -7,7 +7,7 @@
 
 TOOL_BUTTON_SIZE = guiCoord(0, 30, 0, 30)
 TOOL_BUTTON_DEFAULT_POSITION = guiCoord(0, 5, 0, 5)
-TOOL_BUTTON_OFFSET = guiCoord(0, 0, 0, 40)
+TOOL_BUTTON_OFFSET = 40
 
 local toolsController = {
 
@@ -96,7 +96,7 @@ function toolsController:register(tool)
         self.container,
         {
             size = TOOL_BUTTON_SIZE,
-            position = TOOL_DEFAULT_POSITION + (TOOL_BUTTON_OFFSET * #self.tools),
+            position = TOOL_DEFAULT_POSITION + guiCoord(0, 0, 0, TOOL_BUTTON_OFFSET * #self.tools),
             guiStyle = enums.guiStyle.noBackground,
             imageColour = themeController.currentTheme.tools.deselected,
             texture = tool.icon
