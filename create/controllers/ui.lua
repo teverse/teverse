@@ -64,6 +64,12 @@ uiController.createMainInterface = function(workshop)
         size = guiCoord(0,40,1,0),
         position = guiCoord(0,0,0,0)
     }, "main")
+    
+    uiController.topBar = uiController.createFrame(workshop.interface, {
+        name = "topbar",
+        size = guiCoord(1, -40, 0, 60)
+        position = guiCoord(0,40,0,0)
+    }, "main")
 
     toolsController.container = sideBar
     toolsController.workshop = workshop
