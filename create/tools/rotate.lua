@@ -2,7 +2,7 @@
 -- rotate.lua
 
 local toolName = "Rotate"
-local toolIcon = "local:rotate.png"
+local toolIcon = "fa:sync"
 local toolDesc = "Use this to rotate primitives."
 local toolController = require("tevgit:create/controllers/tool.lua")
 

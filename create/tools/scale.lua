@@ -2,7 +2,7 @@
 -- scale.lua
 
 local toolName = "Scale"
-local toolIcon = "local:scale.png"
+local toolIcon = "fa:vector-square"
 local toolDesc = "Use this to scale primitives."
 local toolController = require("tevgit:create/controllers/tool.lua")
 

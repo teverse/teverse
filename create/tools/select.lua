@@ -2,7 +2,7 @@
 -- select.lua
 
 local toolName = "Select"
-local toolIcon = "local:hand.png"
+local toolIcon = "fa:mouse-pointer"
 local toolDesc = "Use this to select and move primitives."
 local toolController = require("tevgit:create/controllers/tool.lua")
 local selectionController = require("tevgit:create/controllers/select.lua")
