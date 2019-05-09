@@ -1,77 +1,119 @@
--- Copyright (c) 2019 teverse.com
+--[[
+    Copyright 2019 Teverse
+    @File add.lua
+    @Author(s) Jay, Ly
+    @Updated 5/8/19
+--]]
 
-local toolName = "Add"
-local toolIcon = "fa:s-plus-square"
-local toolDesc = "Use this to insert shapes."
+TOOL_NAME = "Add"
+TOOL_ICON = "fa:s-plus-square"
+TOOL_DESCRIPTION = "Use this to insert shapes."
+
 local toolController = require("tevgit:create/controllers/tool.lua")
 local selectionController = require("tevgit:create/controllers/select.lua")
 
-local active = false
+local toolIsActive
 
-local toolActivated = function(id)
-    --create interface
-    --access tool data at toolsController.tools[id].data
-    selectionController.selectable = false
+local function onToolActivated(toolId)
     
-    active = true
+    --[[
+        @Description
+            Initializes the process (making placeholders & events) for placing blocks
+
+        @Params
+            Integer, toolId
+                The unique {toolId} given after registering the tool
+    ]]
+
+    selectionController.selectable = false
+    toolIsActive = true
+
+    local tool = toolsController.tools[toolId]
     local mouseDown = 0
     
-    toolController.tools[id].data.placeholderBlock = engine.construct("block", nil, {
-        name = "_CreateMode_add_tool_placeholder",
-        size = vector3(1, 1, 1),
-        static = true,
-        opacity = 0.5,
-        physics = false,
-        castsShadows = false        
-    })
+    tool.data.placeholderBlock = engine.construct(
+        "block", 
+        nil, 
+        {
+            name = "createModeAddToolPlaceholderObject",
+            size = vector3(1, 1, 1),
+            static = true,
+            opacity = 0.5,
+            physics = false,
+            castsShadows = false        
+        }
+    )
 
     local function placeBlock()
-        local newBlock = toolController.tools[id].data.placeholderBlock:clone()
+        local newBlock = tool.data.placeholderBlock:clone()
         newBlock.name = "newBlock"
         newBlock.workshopLocked = false
-        newBlock.parent = engine.workspace
         newBlock.opacity = 1
         newBlock.physics = true
         newBlock.castsShadows = true
+        newBlock.parent = engine.workspace
     end
     
-    toolController.tools[id].data.mouseDownEvent = engine.input:mouseLeftPressed(function ( inp )
+    tool.data.mouseDownEvent = engine.input:mouseLeftPressed(function()
         placeBlock()
         local curTime = os.clock()
         mouseDown = curTime
         wait(0.2) 
-        if mouseDown == curTime then
-            while wait(.05) and mouseDown == curTime and toolController.currentTool == id do
+        if (mouseDown == curTime) then
+            while (wait(.05)) and (mouseDown == curTime and toolController.currentToolId == toolId) do
                 placeBlock()
             end
         end
     end)
 
-    toolController.tools[id].data.mouseUpEvent = engine.input:mouseLeftReleased(function ( inp )
+    tool.data.mouseUpEvent = engine.input:mouseLeftReleased(function()
         mouseDown = 0
     end)
     
-    while active and wait() do
-        local mouseHit = engine.physics:rayTestScreenAllHits( engine.input.mousePosition, toolController.tools[id].data.placeholderBlock )
+    while (toolIsActive and wait()) do
+        local mouseHit = engine.physics:rayTestScreenAllHits(engine.input.mousePosition, tool.data.placeholderBlock)
         if #mouseHit > 0 then
-            toolController.tools[id].data.placeholderBlock.position = mouseHit[1].hitPosition + vector3(0, 0.5, 0)
+            tool.data.placeholderBlock.position = mouseHit[1].hitPosition + vector3(0, 0.5, 0)
         end
     end
     
 end
 
-local toolDeactivated = function(id)
+local function onToolDeactviated(toolId)
+    
+    --[[
+        @Description
+            Clears up any loose ends during deactivation
+        
+        @Params
+            Integer, toolId
+                The unique {toolId} given after registering the tool
+    ]]
+
     selectionController.selectable = true
+    local tool = toolsController.tools[toolId]
     
-    toolController.tools[id].data.mouseDownEvent:disconnect()
-    toolController.tools[id].data.mouseDownEvent = nil
-    toolController.tools[id].data.mouseUpEvent:disconnect()
-    toolController.tools[id].data.mouseUpEvent = nil
+    tool.data.mouseDownEvent:disconnect()
+    tool.data.mouseDownEvent = nil
+    tool.data.mouseUpEvent:disconnect()
+    tool.data.mouseUpEvent = nil
     
-    toolController.tools[id].data.placeholderBlock:destroy()
-    toolController.tools[id].data.placeholderBlock = nil
+    tool.data.placeholderBlock:destroy()
+    tool.data.placeholderBlock = nil
     
-    active = false
+    toolIsActive = false
+
 end
 
-return toolController.add(toolName, toolIcon, toolDesc, toolActivated, toolDeactivated)
+return toolController:register({
+    
+    name = TOOL_NAME,
+    icon = TOOL_ICON,
+    description = TOOL_DESCRIPTION,
+
+    activated = onToolActivated,
+    deactivated = onToolDeactviated
+
+})
+
+

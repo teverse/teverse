@@ -1,62 +1,129 @@
--- Copyright (c) 2019 teverse.com
--- tool.lua
+--[[
+    Copyright 2019 Teverse
+    @File tool.lua
+    @Author(s) Jay, Ly
+    @Updated 5/8/19
+--]]
 
-local toolsController = {}
+TOOL_BUTTON_SIZE = guiCoord(0, 30, 0, 30)
+TOOL_BUTTON_DEFAULT_POSITION = guiCoord(0, 5, 0, 5)
+TOOL_BUTTON_OFFSET = guiCoord(0, 0, 0, 40)
+
+local toolsController = {
+
+    currentToolId = 0,
+    tools = {},
+
+    ui = nil,
+    workshop = nil,
+    container = nil
+
+}
+
 local themeController = require("tevgit:create/controllers/theme.lua")
 
--- container is set in ui.lua when main interface is created
-toolsController.container = nil
-toolsController.ui = nil
-toolsController.workshop = nil
 
-toolsController.currentTool = 0
-toolsController.tools = {}
+local function onToolButtonMouseLeftReleased(toolId) 
+   
+    --[[
+        @Description 
+            Manages toggling tools when a button is clicked
 
-toolsController.setup = function()
+        @Params
+            Integer, toolId
+                The unique # of the tool 
+    ]]
+
+    if (toolsController.currentToolId > 0) then
+
+        -- @Note Deactive current tool in use 
+        local currentTool = toolsController.tools[toolsController.currentToolId]
+        print("Debug: Deactivating tool " .. currentTool.name)
+        currentTool.button.imageColour = themeController.currentTheme.tools.deselected
+        currentTool.deactivated(currentTool.id)   
+
+    end
+
+    if toolsController.currentToolId == toolId then
+        
+        -- @Note Deselects tool {toolId}
+        print("Debug: Deselecting tools")
+        toolsController.currentToolId = 0
+
+    else
+
+        -- @Note Selects tool {toolId}
+        toolsController.currentToolId = toolId
+        local currentTool = toolsController.tools[toolsController.currentToolId]
+        print("Debug: Activating tool " .. currentTool.name)
+        currentTool.button.imageColour = themeController.currentTheme.tools.selected
+        currentTool.activated(currentTool.id)
+
+    end
 
 end
 
--- "data" is a table that can be read and written to by activation and deactivation functions
--- these functions should access it via toolsController.tools[id].data
-toolsController.add = function(toolName, toolIcon, toolDesc, toolActivated, toolDeactivated, data)
-    local toolId = #toolsController.tools + 1
-    local button = toolsController.ui.create("guiImage", 
-                                             toolsController.container, 
-                                             {   
-                                                 size = guiCoord(0, 30, 0, 30),
-                                                 position = guiCoord(0, 5, 0, 5 + (40 * #toolsController.tools)),
-                                                 guiStyle = enums.guiStyle.noBackground,
-                                                 texture = toolIcon,
-                                                 imageColour = themeController.currentTheme.tools.deselected
-                                             },
-                                             "main")
-    button:mouseLeftReleased(function()
-        if toolsController.tools[toolsController.currentTool] then
-			toolsController.tools[toolsController.currentTool].gui.imageColour = themeController.currentTheme.tools.deselected
-			if toolsController.tools[toolsController.currentTool].deactivate then
-				toolsController.tools[toolsController.currentTool].deactivate(toolsController.currentTool)
-			end
-		end
+function toolsController:register(tool) 
 
-		if toolsController.currentTool == toolId then
-			toolsController.currentTool = 0
-		else
-			toolsController.currentTool = toolId
-			print("debug: activating tool")
-			toolsController.tools[toolId].gui.imageColour = themeController.currentTheme.tools.selected
-			if toolsController.tools[toolsController.currentTool].activate then
-				toolsController.tools[toolsController.currentTool].activate(toolId)
-			end
-		end
+    --[[
+        @Description 
+            Registers a tool into the controller
+
+        @Params
+            Dictionary, tool
+                The given information about a {tool} including its functions
+                @Model {
+                    
+                    name = String,
+                    icon = String,
+                    description = String,
+                    data = [Dictionary],
+
+                    activated = Function,
+                    deactivated = Functon,
+
+                }
+                
+        @Returns
+            Integer, toolId
+                The resultant unique # of the tools that was registered
+    ]]
+
+    local toolId = #self.tools + 1
+    
+    local toolButton = self.ui.create(
+        "guiImage",
+        self.container,
+        {
+            size = TOOL_BUTTON_SIZE,
+            position = TOOL_DEFAULT_POSITION + (TOOL_BUTTON_OFFSET * #self.tools),
+            guiStyle = enums.guiStyle.noBackground,
+            imageColour = themeController.currentTheme.tools.deselected,
+            texture = tool.icon
+        },
+        "main"
+    )
+
+    toolButton:mouseLeftReleased(function()
+        onToolButtonMouseLeftReleased(toolId)
     end)
 
-    table.insert(toolsController.tools, {id = toolId, 
-                                  gui = button, 
-                                  data = data and data or {},
-                                  activate = toolActivated, 
-                                  deactivate=toolDeactivated})
+    self.tools[toolId] = {
+        
+        id = toolId, 
+        name = tool.name, 
+       
+        button = button, 
+        data = tool.data and tool.data or {},
+
+        activated = tool.activated, 
+        deactivated = tool.deactivated
+
+    }
     
-    return toolsController.tools[toolId]
+    return toolId
+
 end
 
 return toolsController
+
