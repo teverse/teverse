@@ -1,19 +1,20 @@
--- Copyright (c) 2019 teverse.com
--- select.lua
+--[[
+    Copyright 2019 Teverse
+    @File select.lua
+    @Author(s) Jay
+--]]
 
-local toolName = "Select"
-local toolIcon = "local:hand.png"
-local toolDesc = "Use this to select and move primitives."
+TOOL_NAME = "Select"
+TOOL_ICON = "local:hand.png"
+TOOL_DESCRIPTION = "Use this select and move primitives."
+
 local toolController = require("tevgit:create/controllers/tool.lua")
 local selectionController = require("tevgit:create/controllers/select.lua")
 
-local toolActivated = function(id)
-    --create interface
-    --access tool data at toolsController.tools[id].data
-    
+local function onToolActivated(toolId)
     local mouseDown = 0
         
-    toolsController.tools[id].data.mouseDownEvent = engine.input:mouseLeftPressed(function ( inp )
+    toolsController.tools[toolId].data.mouseDownEvent = engine.input:mouseLeftPressed(function ( inp )
         if not inp.systemHandled and #selectionController.selection > 0 then
             local hit, didExclude = engine.physics:rayTestScreenAllHits(engine.input.mousePosition,
                                                                         selectionController.selection)
@@ -53,17 +54,26 @@ local toolActivated = function(id)
         end
     end)
     
-    toolsController.tools[id].data.mouseUpEvent = engine.input:mouseLeftPressed(function ( inp )
+    toolsController.tools[toolId].data.mouseUpEvent = engine.input:mouseLeftPressed(function ( inp )
         mouseDown = 0
     end)
 end
 
-local toolDeactivated = function(id)
+local function onToolDeactviated(toolId)
     --clean up
-    toolsController.tools[id].data.mouseDownEvent:disconnect()
-    toolsController.tools[id].data.mouseDownEvent = nil
-    toolsController.tools[id].data.mouseUpEvent:disconnect()
-    toolsController.tools[id].data.mouseUpEvent = nil
+    toolsController.tools[toolId].data.mouseDownEvent:disconnect()
+    toolsController.tools[toolId].data.mouseDownEvent = nil
+    toolsController.tools[toolId].data.mouseUpEvent:disconnect()
+    toolsController.tools[toolId].data.mouseUpEvent = nil
 end
 
-return toolController.add(toolName, toolIcon, toolDesc, toolActivated, toolDeactivated)
+return toolController:register({
+    
+    name = TOOL_NAME,
+    icon = TOOL_ICON,
+    description = TOOL_DESCRIPTION,
+
+    activated = onToolActivated,
+    deactivated = onToolDeactviated
+
+})
