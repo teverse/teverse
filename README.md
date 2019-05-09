@@ -1,6 +1,7 @@
 # teverse
 
-This repo contains the scripts responsible for creating the Workshop interface. Anyone may contribute.
+This repo contains open source components produced for Teverse. 
+[View Style Guide](/TEVERSE-STYLE.md)
 
 # Copyright
 
