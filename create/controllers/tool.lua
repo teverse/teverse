@@ -96,7 +96,7 @@ function toolsController:register(tool)
         self.container,
         {
             size = TOOL_BUTTON_SIZE,
-            position = TOOL_DEFAULT_POSITION + guiCoord(0, 0, 0, TOOL_BUTTON_OFFSET * #self.tools),
+            position = TOOL_BUTTON_DEFAULT_POSITION + guiCoord(0, 0, 0, TOOL_BUTTON_OFFSET * #self.tools),
             guiStyle = enums.guiStyle.noBackground,
             imageColour = themeController.currentTheme.tools.deselected,
             texture = tool.icon
