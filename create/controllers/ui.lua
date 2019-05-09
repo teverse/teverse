@@ -16,11 +16,18 @@ uiController.createFrame = function(parent, properties, style)
     return gui
 end
 
+local function spinCb()
+    if not uiController.loadingFrame.visible then
+        uiController.loadingTween:restart()
+    end
+end
+
 uiController.setLoading = function(loading, message)
     if not uiController.loadingFrame then return end
     if loading then
         uiController.loadingFrame.visible = true
         uiController.loadingFrame.loadingMessage.text = message and message or "Loading"
+        spinCb()
     else
         uiController.loadingFrame.visible = false
     end
@@ -33,6 +40,7 @@ uiController.createMainInterface = function(workshop)
                                 position = guiCoord(0.5,-150,0.5,-50),
                                 guiStyle = enums.guiStyle.rounded
                             }, "main")
+    uiController.loadingTween = engine.tween:create(uiController.loadingFrame, 1, {rotation = 360}, "inOutQuad", spinCb)
 
     uiController.create("guiTextBox", uiController.loadingFrame, {
         name = "loadingMessage",

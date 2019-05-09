@@ -21,7 +21,7 @@ return function(workshop)
 		scale  = require("tevgit:create/tools/scale.lua"),
 		rotate = require("tevgit:create/tools/rotate.lua")
 	}
-	wait(2)
+	wait(4)
 	-- create default environment
 	controllers.env.setDefault()
 	controllers.env.createStarterMap()
