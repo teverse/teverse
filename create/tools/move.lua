@@ -1,18 +1,30 @@
--- Copyright (c) 2019 teverse.com
--- move.lua
+--[[
+    Copyright 2019 Teverse
+    @File move.lua
+    @Author(s) Jay
+--]]
 
-local toolName = "Move"
-local toolIcon = "local:move.png"
-local toolDesc = "Use this to move primitives along an axis."
+TOOL_NAME = "Move"
+TOOL_ICON = "local:move.png"
+TOOL_DESCRIPTION = "Use this to move primitives along an axis."
+
 local toolController = require("tevgit:create/controllers/tool.lua")
 
-local toolActivated = function(id)
-    --create interface
-    --access tool data at toolsController.tools[id].data
+local function onToolActivated(toolId)
+    
 end
 
-local toolDeactivated = function(id)
+local function onToolDeactviated(toolId)
   
 end
 
-return toolController.add(toolName, toolIcon, toolDesc, toolActivated, toolDeactivated)
+return toolController:register({
+    
+    name = TOOL_NAME,
+    icon = TOOL_ICON,
+    description = TOOL_DESCRIPTION,
+
+    activated = onToolActivated,
+    deactivated = onToolDeactviated
+
+})
