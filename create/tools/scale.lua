@@ -5,7 +5,7 @@
 --]]
 
 TOOL_NAME = "Scale"
-TOOL_ICON = "local:scale.png"
+TOOL_ICON = "fa:s-expand-arrows-alt"
 TOOL_DESCRIPTION = "Use this to resize primitives."
 
 local toolController = require("tevgit:create/controllers/tool.lua")

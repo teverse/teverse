@@ -5,7 +5,7 @@
 --]]
 
 TOOL_NAME = "Move"
-TOOL_ICON = "local:move.png"
+TOOL_ICON = "fa:s-arrows-alt"
 TOOL_DESCRIPTION = "Use this to move primitives along an axis."
 
 local toolController = require("tevgit:create/controllers/tool.lua")
