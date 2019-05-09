@@ -9,7 +9,7 @@ TOOL_NAME = "Add"
 TOOL_ICON = "fa:s-plus-square"
 TOOL_DESCRIPTION = "Use this to insert shapes."
 
-local toolController = require("tevgit:create/controllers/tool.lua")
+local toolsController = require("tevgit:create/controllers/tool.lua")
 local selectionController = require("tevgit:create/controllers/select.lua")
 
 local toolIsActive
@@ -60,7 +60,7 @@ local function onToolActivated(toolId)
         mouseDown = curTime
         wait(0.2) 
         if (mouseDown == curTime) then
-            while (wait(.05)) and (mouseDown == curTime and toolController.currentToolId == toolId) do
+            while (wait(.05)) and (mouseDown == curTime and toolsController.currentToolId == toolId) do
                 placeBlock()
             end
         end
@@ -105,7 +105,7 @@ local function onToolDeactviated(toolId)
 
 end
 
-return toolController:register({
+return toolsController:register({
     
     name = TOOL_NAME,
     icon = TOOL_ICON,
