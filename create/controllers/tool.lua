@@ -113,7 +113,7 @@ function toolsController:register(tool)
         id = toolId, 
         name = tool.name, 
        
-        button = button, 
+        button = toolButton, 
         data = tool.data and tool.data or {},
 
         activated = tool.activated, 
