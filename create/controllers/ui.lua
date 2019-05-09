@@ -1,4 +1,5 @@
--- Copyright 2019 teverse.com
+-- Copyright (c) 2019 teverse.com
+-- ui.lua
 
 local uiController = {}
 local themeController = require("tevgit:create/controllers/theme.lua")
