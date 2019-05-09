@@ -1,18 +1,30 @@
--- Copyright (c) 2019 teverse.com
--- rotate.lua
+--[[
+    Copyright 2019 Teverse
+    @File rotate.lua
+    @Author(s) Jay
+--]]
 
-local toolName = "Rotate"
-local toolIcon = "local:rotate.png"
-local toolDesc = "Use this to rotate primitives."
+TOOL_NAME = "Rotate"
+TOOL_ICON = "local:rotate.png"
+TOOL_DESCRIPTION = "Use this to rotate primitives."
+
 local toolController = require("tevgit:create/controllers/tool.lua")
 
-local toolActivated = function(id)
-    --create interface
-    --access tool data at toolsController.tools[id].data
+local function onToolActivated(toolId)
+    
 end
 
-local toolDeactivated = function(id)
+local function onToolDeactviated(toolId)
   
 end
 
-return toolController.add(toolName, toolIcon, toolDesc, toolActivated, toolDeactivated)
+return toolController:register({
+    
+    name = TOOL_NAME,
+    icon = TOOL_ICON,
+    description = TOOL_DESCRIPTION,
+
+    activated = onToolActivated,
+    deactivated = onToolDeactviated
+
+})
