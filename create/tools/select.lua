@@ -1,5 +1,5 @@
--- Copyright 2019 Teverse
--- Select tool
+-- Copyright (c) 2019 teverse.com
+-- select.lua
 
 local toolName = "Select"
 local toolIcon = "local:hand.png"

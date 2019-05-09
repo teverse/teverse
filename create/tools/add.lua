@@ -1,5 +1,4 @@
---add.lua
--- Copyright 2019 Teverse
+-- Copyright (c) 2019 teverse.com
 
 local toolName = "Add"
 local toolIcon = "fa:s-plus-square"

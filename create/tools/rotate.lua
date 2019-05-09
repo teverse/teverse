@@ -1,5 +1,5 @@
--- Copyright 2019 Teverse
--- Select tool
+-- Copyright (c) 2019 teverse.com
+-- rotate.lua
 
 local toolName = "Rotate"
 local toolIcon = "local:rotate.png"

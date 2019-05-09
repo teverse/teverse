@@ -1,5 +1,5 @@
--- Copyright 2019 Teverse
--- Select tool
+-- Copyright (c) 2019 teverse.com
+-- move.lua
 
 local toolName = "Move"
 local toolIcon = "local:move.png"

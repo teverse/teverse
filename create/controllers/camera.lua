@@ -1,3 +1,6 @@
+-- Copyright (c) 2019 teverse.com
+-- camera.lua
+
 local cameraController = {}
 local selectionController = require("tevgit:create/controllers/select.lua")
 

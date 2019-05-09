@@ -1,5 +1,5 @@
--- Copyright 2019 Teverse
--- Select tool
+-- Copyright (c) 2019 teverse.com
+-- scale.lua
 
 local toolName = "Scale"
 local toolIcon = "local:scale.png"

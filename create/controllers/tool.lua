@@ -1,4 +1,5 @@
--- Copyright 2019 teverse.com
+-- Copyright (c) 2019 teverse.com
+-- tool.lua
 
 local toolsController = {}
 local themeController = require("tevgit:create/controllers/theme.lua")
