@@ -5,6 +5,9 @@
     @Updated 5/8/19
 --]]
 
+-- TODO: Create a UI that allows the user to select what primitive to insert
+--       UI should also allow user to specify default values for the created primitives
+
 TOOL_NAME = "Add"
 TOOL_ICON = "fa:s-plus-square"
 TOOL_DESCRIPTION = "Use this to insert shapes."
