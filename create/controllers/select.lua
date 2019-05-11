@@ -5,6 +5,17 @@ local selectionController = {}
 
 selectionController.selectable = true
 
+selectionController.boundingBox = engine.construct("block", nil, {
+	name = "_CreateMode_boundingBox",
+	wireframe = true,
+	castsShadows = false,
+	static = true,
+	physics = false, 
+	colour = colour(1, 0.8, 0.8),
+	opacity = 0,
+	size = vector3(0, 0, 0)
+})
+
 selectionController.boundingBoxListeners = {}
 selectionController.selection = {}
 
