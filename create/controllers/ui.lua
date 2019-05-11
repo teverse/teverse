@@ -77,6 +77,8 @@ uiController.createMainInterface = function(workshop)
 
     toolsController.registerMenu("topBar", uiController.topBar)
     toolsController.createButton("topBar", "fa:s-times", "test btn")
+    toolsController.createButton("topBar", nil, "button 1/2", 0.5)
+    toolsController.createButton("topBar", nil, "button 2/2", 0.5)
 end
 
 return uiController
