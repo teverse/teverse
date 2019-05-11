@@ -23,7 +23,7 @@ themeController.currentTheme = {
 	primary = {
 	    backgroundColour = colour:fromRGB(78, 83, 91),
 	    textColour  = colour:fromRGB(255,255,255)
-    },
+	},
 	tools = {
 		selected = colour(1, 1, 1),
 		hovered = colour(0.9, 0.9, 0.9),

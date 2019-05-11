@@ -5,14 +5,15 @@ local consoleController = {}
 local themeController = require("tevgit:create/controllers/theme.lua")
 local uiController = require("tevgit:create/controllers/ui.lua")
 
-consoleController.outputLines = {"test1", "test2", "test3", "test4", "test5"}
+consoleController.outputLines = {}
+consoleController.outputObjects = {}
 
 local windowObject = uiController.create("guiFrame", engine.workshop.interface, {
     name = "outputConsole";
-    visible = true;
+    visible = false;
     size = guiCoord(0.5, 0, 0.5, 0);
     position = guiCoord(0.25, 0, 0.25, 0);
-})
+}, "default")
 
 consoleController.consoleObject = windowObject
 
@@ -44,18 +45,21 @@ local scrollView = uiController.create("guiScrollView", windowObject, {
     size = guiCoord(1, 0, 1, -25);
     position = guiCoord(0, 0, 0, 25);
     canvasSize = guiCoord(1, 0, 0, 0);
-})
+}, "default")
 
 consoleController.updateConsole = function()
-    for Count,Output in pairs(consoleController.outputLines) do
-        uiController.create("guiTextBox", scrollView, {
-            text = msg;
+    for count,output in pairs(consoleController.outputLines) do
+        count = count - 1
+        local object = uiController.create("guiTextBox", scrollView, {
+            text = output;
             size = guiCoord(1, -10, 0, 25);
             readOnly = true;
-            position = guiCoord(0, 5, 0, Count*25);
+            position = guiCoord(0, 5, 0, count*25);
             name = "outputText";
-            fontSize = 15;
-        })
+            fontSize = 20;
+        }, "default")
+
+        table.insert(consoleController.outputObjects, object)
     end
 
     scrollView.canvasSize = guiCoord(1, 0, 0, #consoleController.outputLines * 25)
