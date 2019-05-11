@@ -40,7 +40,6 @@ uiController.createMainInterface = function(workshop)
                                 position = guiCoord(0.5,-150,0.5,-50),
                                 guiStyle = enums.guiStyle.rounded
                             }, "main")
-    uiController.loadingTween = engine.tween:create(uiController.loadingFrame, 1, {rotation = 360}, "inOutQuad", spinCb)
 
     uiController.create("guiTextBox", uiController.loadingFrame, {
         name = "loadingMessage",
@@ -52,31 +51,34 @@ uiController.createMainInterface = function(workshop)
         text = "Loading, maybe dont touch anything rn."
     }, "main")
 
-    uiController.create("guiImage", uiController.loadingFrame, {
+    local loadingImage = uiController.create("guiImage", uiController.loadingFrame, {
         name = "loadingImage",
         position = guiCoord(0.5, -15, .333, -15),
         size = guiCoord(0, 30, 0, 30),
         texture = "fa:s-cog"
     }, "main")
+    uiController.loadingTween = engine.tween:create(loadingImage, 1, {rotation = 360}, "inOutQuad", spinCb)
 
     local sideBar = uiController.createFrame(workshop.interface, {
         name = "toolbars",
         size = guiCoord(0,40,1,0),
         position = guiCoord(0,0,0,0)
     }, "main")
+
+    -- TODO: Topbar needs a different theme.
     
     uiController.topBar = uiController.createFrame(workshop.interface, {
         name = "topbar",
-        size = guiCoord(1, -40, 0, 60)
+        size = guiCoord(1, -40, 0, 60),
         position = guiCoord(0,40,0,0)
     }, "main")
-    
-    toolsController.registerMenu("topBar", uiController.topBar)
-    toolsController.createButton("topBar", "fa:s-times", "test btn")
 
     toolsController.container = sideBar
     toolsController.workshop = workshop
     toolsController.ui = uiController
+
+    toolsController.registerMenu("topBar", uiController.topBar)
+    toolsController.createButton("topBar", "fa:s-times", "test btn")
 end
 
 return uiController

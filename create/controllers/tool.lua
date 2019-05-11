@@ -44,10 +44,11 @@ function toolsController.registerButton(name, gui)
     
     table.insert(toolsController.menus[name], {gui=gui})
     
-    gui.parent = toolsController.menus[name].gui
+    local menu = toolsController.menus[name]
+
+    gui.parent = menu.gui
     gui.position = guiCoord(0, menu.currentX, 0, menu.currentY)
     
-    local menu = toolsController.menus[name]
     local guiSize = gui.absoluteSize
     if menu.currentY + guiSize.y > menu.gui.absoluteSize.y then
         menu.currentY = 0
