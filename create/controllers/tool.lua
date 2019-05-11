@@ -30,7 +30,7 @@ function toolsController.registerMenu(name, gui)
         return error("Menu already exists", 2)
     end
     
-    toolsController.menus[name] = {gui = gui, buttons = {}, currentX = 0, currentY = 0}
+    toolsController.menus[name] = {gui = gui, buttons = {}, currentX = 5, currentY = 0}
     
     return true
 end
@@ -63,7 +63,7 @@ function toolsController.createButton(menuName, image, label)
     local menu = toolsController.menus[menuName]
     local gui = toolsController.ui.createFrame(menu.gui, {size=guiCoord(0,50,0,60)}, "main")
     local img = toolsController.ui.create("guiImage", gui, {size=guiCoord(0, 40, 0, 40), position=guiCoord(0,5,0,5), texture=image}, "main")
-    local txt = toolsController.ui.create("guiTextBox", gui, {size=guiCoord(0, 50, 0, 15), position=guiCoord(0,5,0,5), text=label}, "main")
+    local txt = toolsController.ui.create("guiTextBox", gui, {size=guiCoord(0, 50, 0, 15), position=guiCoord(0,0,0,45), text=label, fontSize=15, align=enums.align.middle}, "main")
     toolsController.registerButton(menuName, gui)
 end
 
