@@ -19,16 +19,44 @@ selectionController.boundingBox = engine.construct("block", nil, {
 selectionController.boundingBoxListeners = {}
 selectionController.selection = {}
 
-selectionController.removeBoundingListener = function(v)
-
+selectionController.removeBoundingListener = function(block)
+	for i,v in pairs(selectionController.boundingBoxListeners) do
+		if v[1] == block then
+			selectionController.boundingBoxListeners[i] = nil
+			return nil
+		end
+	end
 end
 
-selectionController.addBoundingListener = function(v)
+selectionController.addBoundingListener = function(block)
+	table.insert(selectionController.boundingBoxListeners, {block, block:changed(selectionController.calculateBoundingBox)})
+end
 
+function calculateVertices(block)
+	local vertices = {}
+	for x = -1,1,2 do
+		for y = -1,1,2 do
+			for z = -1,1,2 do
+				table.insert(vertices, block.position + block.rotation* (vector3(x,y,z) *block.size/2))
+			end
+		end
+	end
+	return vertices
 end
 
 selectionController.calculateBoundingBox = function()
+	local min, max;
 
+			for _,v in pairs(selectionController.selection) do
+				if not min then min = v.position; max=v.position end
+				local vertices = calculateVertices(v)
+				for i,v in pairs(vertices) do
+					min = min:min(v)
+					max = max:max(v)
+				end
+			end
+
+	return (max-min), (max - (max-min)/2)
 end
 
 engine.input:mouseLeftPressed(function(inp)
@@ -43,7 +71,7 @@ engine.input:mouseLeftPressed(function(inp)
     		selectionController.selection = {}
 
     		for _,v in pairs(selectionController.boundingBoxListeners) do
-    			v:disconnect()
+    			v[2]:disconnect()
     		end
     		
     		selectionController.boundingBoxListeners = {}
@@ -62,7 +90,7 @@ engine.input:mouseLeftPressed(function(inp)
     		selectionController.selection = {}
 
     		for _,v in pairs(selectionController.boundingBoxListeners) do
-    			v:disconnect()
+    			v[2]:disconnect()
     		end
     		selectionController.boundingBoxListeners = {}
 
