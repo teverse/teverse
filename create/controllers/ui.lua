@@ -70,6 +70,9 @@ uiController.createMainInterface = function(workshop)
         size = guiCoord(1, -40, 0, 60)
         position = guiCoord(0,40,0,0)
     }, "main")
+    
+    toolsController.registerMenu("topBar", uiController.topBar)
+    toolsController.createButton("topBar", "fa:s-times", "test btn")
 
     toolsController.container = sideBar
     toolsController.workshop = workshop
