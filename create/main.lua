@@ -26,5 +26,9 @@ return function(workshop)
 	controllers.env.setDefault()
 	controllers.env.createStarterMap()
 	
+	controllers.console.updateConsole() -- update all strings into the console
+
+	print("Loaded create mode") -- make an output to test console
+
 	controllers.ui.setLoading(false)
 end
