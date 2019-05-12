@@ -46,7 +46,7 @@ local function onToolActivated(toolId)
 			name = "_CreateMode_", --theres some significance to this, i forgot.
 			castsShadows = false,
 			opacity = 0,
-			size = vector3(0.1, 0.1, 0.1)
+			size = vector3(0.1, 0.1, 0.1),
 			colour = colour(c==1 and 1 or 0, c==2 and 1 or 0, c==3 and 1 or 0),
 			emissiveColour = colour(c==1 and .5 or 0, c==2 and .5 or 0, c==3 and .5 or 0), 
 			workshopLocked = true
