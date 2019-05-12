@@ -83,7 +83,7 @@ selectionController.calculateBoundingBox = function ()
     isCalculating = false
 end
 
-engine.input:mouseLeftPressed(function(inp)
+engine.input:mouseLeftReleased(function(inp)
     if not inp.systemHandled and selectionController.selectable then
         local mouseHit = engine.physics:rayTestScreen( engine.input.mousePosition )
 	    if not mouseHit or mouseHit.object.workshopLocked then
