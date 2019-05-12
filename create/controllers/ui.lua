@@ -7,7 +7,7 @@ local toolsController = require("tevgit:create/controllers/tool.lua")
 
 uiController.create = function(className, parent, properties, style)
     local gui = engine.construct(className, parent, properties)
-    themeController.add(gui, style or "default")
+    themeController.add(gui, style and style or "default")
     return gui
 end
 
