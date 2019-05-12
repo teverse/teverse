@@ -25,7 +25,7 @@ themeController.currentTheme = {
 	    textColour  = colour:fromRGB(255,255,255)
 	},
 	tools = {
-		selected = colour(1, 1, 1),
+		selected = colour:fromRGB(66, 134, 244),
 		hovered = colour(0.9, 0.9, 0.9),
 		deselected = colour(0.6, 0.6, 0.6)
 	}

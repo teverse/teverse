@@ -6,8 +6,8 @@
 --]]
 
 TOOL_BUTTON_SIZE = guiCoord(0, 30, 0, 30)
-TOOL_BUTTON_DEFAULT_POSITION = guiCoord(0, 5, 0, 5)
-TOOL_BUTTON_OFFSET = 40
+TOOL_BUTTON_DEFAULT_POSITION = guiCoord(0, 8, 0, 8)
+TOOL_BUTTON_OFFSET = 45
 
 local toolsController = {
 

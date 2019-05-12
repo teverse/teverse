@@ -7,7 +7,7 @@ local toolsController = require("tevgit:create/controllers/tool.lua")
 
 uiController.create = function(className, parent, properties, style)
     local gui = engine.construct(className, parent, properties)
-    themeController.add(gui, style or "default")
+    themeController.add(gui, style and style or "default")
     return gui
 end
 
@@ -62,7 +62,7 @@ uiController.createMainInterface = function(workshop)
 
     local sideBar = uiController.createFrame(workshop.interface, {
         name = "toolbars",
-        size = guiCoord(0,40,1,0),
+        size = guiCoord(0,46,1,0),
         position = guiCoord(0,10,0,70)
     }, "main")
     
