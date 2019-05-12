@@ -10,7 +10,7 @@ TOOL_NAME = "Select"
 TOOL_ICON = "fa:s-hand-paper"
 TOOL_DESCRIPTION = "Use this select and move primitives."
 
-local toolController = require("tevgit:create/controllers/tool.lua")
+local toolsController = require("tevgit:create/controllers/tool.lua")
 local selectionController = require("tevgit:create/controllers/select.lua")
 
 local function onToolActivated(toolId)
@@ -69,7 +69,7 @@ local function onToolDeactviated(toolId)
     toolsController.tools[toolId].data.mouseUpEvent = nil
 end
 
-return toolController:register({
+return toolsController:register({
     
     name = TOOL_NAME,
     icon = TOOL_ICON,
