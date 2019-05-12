@@ -18,6 +18,7 @@ end
 
 local function spinCb()
     if not uiController.loadingFrame.visible then
+        uiController.loadingTween.tweenObject.rotation = 0
         uiController.loadingTween:restart()
     end
 end
@@ -62,13 +63,13 @@ uiController.createMainInterface = function(workshop)
     local sideBar = uiController.createFrame(workshop.interface, {
         name = "toolbars",
         size = guiCoord(0,40,1,0),
-        position = guiCoord(0,0,0,0)
+        position = guiCoord(0,10,0,70)
     }, "main")
     
     uiController.topBar = uiController.createFrame(workshop.interface, {
         name = "topbar",
-        size = guiCoord(1, -40, 0, 60),
-        position = guiCoord(0,40,0,0)
+        size = guiCoord(1, 0, 0, 60),
+        position = guiCoord(0,0,0,0)
     }, "secondary")
 
     toolsController.container = sideBar
@@ -76,6 +77,7 @@ uiController.createMainInterface = function(workshop)
     toolsController.ui = uiController
 
     toolsController.registerMenu("topBar", uiController.topBar)
+    wait(1)
     toolsController.createButton("topBar", "fa:s-times", "test btn")
     toolsController.createButton("topBar", nil, "button 1/2", 0.5)
     toolsController.createButton("topBar", nil, "button 2/2", 0.5)

@@ -50,11 +50,12 @@ function toolsController.registerButton(name, gui)
     gui.position = guiCoord(0, menu.currentX, 0, menu.currentY)
     
     local guiSize = gui.absoluteSize
-    if menu.currentY + guiSize.y > menu.gui.absoluteSize.y then
+    if menu.currentY + guiSize.y >= menu.gui.absoluteSize.y then
         menu.currentY = 0
-        menu.currentX = menu.currentX + guiSize.x
+        menu.currentX = menu.currentX + guiSize.x + 5
     else
         menu.currentY = menu.currentY + guiSize.y
+        print( menu.currentY )
     end
 end
 
@@ -65,7 +66,8 @@ function toolsController.createButton(menuName, image, label, height)
     local menu = toolsController.menus[menuName]
     local gui = toolsController.ui.createFrame(menu.gui, {size=guiCoord(0,50,height,0)}, "main")
     if image then
-        local img = toolsController.ui.create("guiImage", gui, {size=guiCoord(1, -10, 2/3, -5), position=guiCoord(0,5,0,5), texture=image}, "main")
+        local imgSize = math.min(50, menu.gui.absoluteSize.y) - 5
+        local img = toolsController.ui.create("guiImage", gui, {size=guiCoord(0, (2/3) * imgSize, 0, (2/3) * imgSize), position=guiCoord(0.5, -((1/3) * imgSize),0,5), texture=image}, "main")
     end
     local txt = toolsController.ui.create("guiTextBox", gui, {size=guiCoord(1, 0, image and 1/3 or 1, -5), position=guiCoord(0,0,image and 2/3 or 0,0), text=label, fontSize=15, align=enums.align.middle}, "main")
     toolsController.registerButton(menuName, gui)
@@ -171,7 +173,11 @@ function toolsController:register(tool)
         deactivated = tool.deactivated
 
     }
-    
+
+    local containerSize = self.container.size
+    containerSize.scaleY = 0
+    containerSize.offsetY = TOOL_BUTTON_OFFSET * #self.tools
+    self.container.size = containerSize
     return toolId
 
 end
