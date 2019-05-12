@@ -6,7 +6,7 @@ local themeController = require("tevgit:create/controllers/theme.lua")
 local uiController = require("tevgit:create/controllers/ui.lua")
 
 consoleController.outputLines = {}
-consoleController.outputObjects = {}
+consoleController.outputCount = 0;
 
 local windowObject = uiController.create("guiFrame", engine.workshop.interface, {
     name = "outputConsole";
@@ -47,24 +47,6 @@ local scrollView = uiController.create("guiScrollView", windowObject, {
     canvasSize = guiCoord(1, 0, 0, 0);
 }, "default")
 
-consoleController.updateConsole = function()
-    for count,output in pairs(consoleController.outputLines) do
-        count = count - 1
-        local object = uiController.create("guiTextBox", scrollView, {
-            text = output;
-            size = guiCoord(1, -10, 0, 25);
-            readOnly = true;
-            position = guiCoord(0, 5, 0, count*25);
-            name = "outputText";
-            fontSize = 20;
-        }, "default")
-
-        table.insert(consoleController.outputObjects, object)
-    end
-
-    scrollView.canvasSize = guiCoord(1, 0, 0, #consoleController.outputLines * 25)
-end
-
 closeButton:mouseLeftPressed(function() 
     consoleController.consoleObject.visible = false
 end)
@@ -78,9 +60,19 @@ engine.input:keyPressed(function( inputObj )
 end)
 
 engine.debug:output(function(msg)
-    table.insert(consoleController.outputLines, msg)
+    uiController.create("guiTextBox", scrollView, {
+        text = msg;
+        size = guiCoord(1, -4, 0, 25);
+        readOnly = true;
+        position = guiCoord(0, 2, 0, consoleController.outputCount*25);
+        name = "outputText";
+        fontSize = 20;
+    }, "default")
 
-    consoleController.updateConsole()
+    consoleController.outputCount = consoleController.outputCount + 1
+
+    local yCanvas = consoleController.outputCount * 25
+    scrollView.canvasSize = guiCoord(1, 0, 0, yCanvas)
 end)
 
 return consoleController
