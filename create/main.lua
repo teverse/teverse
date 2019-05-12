@@ -25,6 +25,6 @@ return function(workshop)
 	-- create default environment
 	controllers.env.setDefault()
 	controllers.env.createStarterMap()
-	
+
 	controllers.ui.setLoading(false)
 end
