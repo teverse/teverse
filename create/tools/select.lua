@@ -106,7 +106,7 @@ local function onToolActivated(toolId)
                     --calculateBoundingBox()
                     wait()
                 end
-
+                selectionController.selectable = true
 
             end
         end
