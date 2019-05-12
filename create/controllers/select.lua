@@ -44,19 +44,43 @@ function calculateVertices(block)
 	return vertices
 end
 
-selectionController.calculateBoundingBox = function()
-	local min, max;
+selectionController.calculateBounding = function(items)
 
-			for _,v in pairs(selectionController.selection) do
-				if not min then min = v.position; max=v.position end
-				local vertices = calculateVertices(v)
-				for i,v in pairs(vertices) do
-					min = min:min(v)
-					max = max:max(v)
-				end
-			end
+        local min, max;
 
-	return (max-min), (max - (max-min)/2)
+                for _,v in pairs(items) do
+                    if not min then min = v.position; max=v.position end
+                    local vertices = calculateVertices(v)
+                    for i,v in pairs(vertices) do
+                        min = min:min(v)
+                        max = max:max(v)
+                    end
+                end
+
+        return (max-min), (max - (max-min)/2)
+end
+
+local isCalculating = false
+selectionController.calculateBoundingBox = function ()
+    if isCalculating then return end
+    isCalculating=true
+    
+
+    if #selectionController.selection < 1 then
+        selectionController.boundingBox.size = vector3(0,0,0)
+        selectionController.boundingBox.opacity = 0
+        isCalculating = false
+    return end
+
+    selectionController.boundingBox.opacity = 0.5
+
+    local size, pos = selectionController.calculateBounding(selectionController.selection)
+    selectionController.boundingBox.size = size
+    selectionController.boundingBox.position = pos
+
+    --engine.tween:begin(boundingBox, .025, {size = max-min, position = max - (max-min)/2}, "inQuad")
+
+    isCalculating = false
 end
 
 engine.input:mouseLeftPressed(function(inp)

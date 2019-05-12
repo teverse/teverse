@@ -13,9 +13,19 @@ TOOL_DESCRIPTION = "Use this select and move primitives."
 local toolsController = require("tevgit:create/controllers/tool.lua")
 local selectionController = require("tevgit:create/controllers/select.lua")
 
+-- TODo: move this to a helper module
+local roundToMultiple = function(number, multiple)
+        if multiple == 0 then 
+            return number 
+        end
+
+        return ((number % multiple) > multiple/2) and number + multiple - number%multiple or number - number%multiple
+    end
+
 local function onToolActivated(toolId)
     local mouseDown = 0
-        
+    local applyRot = 0
+
     toolsController.tools[toolId].data.mouseDownEvent = engine.input:mouseLeftPressed(function ( inp )
         if not inp.systemHandled and #selectionController.selection > 0 then
             local hit, didExclude = engine.physics:rayTestScreenAllHits(engine.input.mousePosition,
@@ -51,12 +61,58 @@ local function onToolActivated(toolId)
 
 				local lastRot = applyRot
 				
-				
+				while mouseDown == currentTime and toolsController.currentToolId == toolId do
+                    local currentHit = engine.physics:rayTestScreenAllHits(engine.input.mousePosition, selectionController.selection)
+                    if #currentHit >= 1 then 
+                        currentHit = currentHit[1]
+
+                        local forward = (currentHit.object.rotation * currentHit.hitNormal):normal()-- * quaternion:setEuler(0,math.rad(applyRot),0)
+        
+                        local currentPosition = currentHit.hitPosition + (forward * (selectionController.selection[1].size/2)) --+ (selectedItems[1].size/2)
+
+                        if gridStep > 0 then
+                            for i, v in pairs(toolsController.tools[toolId].data.axis) do
+                                if v[2] then
+                                    currentPosition[v[1]] = roundToMultiple(currentPosition[v[1]], gridStep)
+                                end
+                            end
+                        end
+
+                        if lastPosition ~= currentPosition or lastRot ~= applyRot then
+                            lastRot = applyRot
+                            lastPosition = currentPosition
+
+                            local targetRot = startRotation * quaternion:setEuler(0,math.rad(applyRot),0)
+
+                            engine.tween:begin(selectionController.selection[1], .2, {position = currentPosition,
+                                                                       rotation = targetRot }, "outQuad")
+
+                            --selectedItems[1].position = currentPosition 
+                            --selectedItems[1].rotation = startRotation * quaternion:setEuler(0,math.rad(applyRot),0)
+                            --print(selectedItems[1].name)
+
+                            for i,v in pairs(selectionController.selection) do
+                                if i > 1 then 
+                                    --v.position = (currentPosition) + (offsets[v][2]*selectedItems[1].rotation) * offsets[v][1]
+                                    --v.rotation = offsets[v][2]*selectedItems[1].rotation 
+
+                                    engine.tween:begin(v, .2, {position = (currentPosition) + (offsets[v][2]*targetRot) * offsets[v][1],
+                                                               rotation = offsets[v][2]*targetRot }, "outQuad")
+                                end
+                            end
+
+                        end
+                    end
+                    --calculateBoundingBox()
+                    wait()
+                end
+
+
             end
         end
     end)
     
-    toolsController.tools[toolId].data.mouseUpEvent = engine.input:mouseLeftPressed(function ( inp )
+    toolsController.tools[toolId].data.mouseUpEvent = engine.input:mouseLeftReleased(function ( inp )
         mouseDown = 0
     end)
 end
@@ -76,6 +132,8 @@ return toolsController:register({
     description = TOOL_DESCRIPTION,
 
     activated = onToolActivated,
-    deactivated = onToolDeactviated
+    deactivated = onToolDeactviated,
+
+    data = {axis={{"x", true},{"y", false},{"z", true}}}
 
 })
