@@ -13,7 +13,7 @@ local windowObject = uiController.create("guiFrame", engine.workshop.interface, 
     visible = false;
     size = guiCoord(0.5, 0, 0.5, 0);
     position = guiCoord(0.25, 0, 0.25, 0);
-}, "default")
+})
 
 consoleController.consoleObject = windowObject
 
@@ -45,7 +45,7 @@ local scrollView = uiController.create("guiScrollView", windowObject, {
     size = guiCoord(1, 0, 1, -25);
     position = guiCoord(0, 0, 0, 25);
     canvasSize = guiCoord(1, 0, 0, 0);
-}, "default")
+})
 
 closeButton:mouseLeftPressed(function() 
     consoleController.consoleObject.visible = false
