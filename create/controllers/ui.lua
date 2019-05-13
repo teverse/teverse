@@ -70,17 +70,26 @@ uiController.createMainInterface = function(workshop)
         name = "topbar",
         size = guiCoord(1, 0, 0, 60),
         position = guiCoord(0,0,0,0)
-    }, "secondary")
+    }, "main")
 
     toolsController.container = sideBar
     toolsController.workshop = workshop
     toolsController.ui = uiController
 
     toolsController.registerMenu("topBar", uiController.topBar)
-    wait(1)
-    toolsController.createButton("topBar", "fa:s-times", "test btn")
-    toolsController.createButton("topBar", nil, "button 1/2", 0.5)
-    toolsController.createButton("topBar", nil, "button 2/2", 0.5)
+    local saveBtn = toolsController.createButton("topBar", "fa:s-save", "Save")
+    local saveAsBtn = toolsController.createButton("topBar", "fa:r-save", "Save As")
+    local openBtn = toolsController.createButton("topBar", "fa:s-folder-open", "Open")
+
+    saveBtn:mouseLeftReleased(function()
+        workshop:saveGame()
+    end)
+    saveAsBtn:mouseLeftReleased(function()
+        workshop:saveGameAsDialogue()
+    end)
+    openBtn:mouseLeftReleased(function()
+        workshop:workshop:openFileDialogue()
+    end)
 end
 
 return uiController

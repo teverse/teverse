@@ -64,13 +64,14 @@ end
 function toolsController.createButton(menuName, image, label, height)
     if not height then height = 1 end
     local menu = toolsController.menus[menuName]
-    local gui = toolsController.ui.createFrame(menu.gui, {size=guiCoord(0,50,height,0)}, "main")
+    local gui = toolsController.ui.createFrame(menu.gui, {size=guiCoord(0,50,height,0)}, "secondary")
     if image then
         local imgSize = math.min(50, menu.gui.absoluteSize.y) - 5
-        local img = toolsController.ui.create("guiImage", gui, {size=guiCoord(0, (2/3) * imgSize, 0, (2/3) * imgSize), position=guiCoord(0.5, -((1/3) * imgSize),0,5), texture=image}, "main")
+        local img = toolsController.ui.create("guiImage", gui, {size=guiCoord(0, (2/3) * imgSize, 0, (2/3) * imgSize), position=guiCoord(0.5, -((1/3) * imgSize),0,5), texture=image, handleEvents=false}, "secondary")
     end
-    local txt = toolsController.ui.create("guiTextBox", gui, {size=guiCoord(1, 0, image and 1/3 or 1, -5), position=guiCoord(0,0,image and 2/3 or 0,0), text=label, fontSize=15, align=enums.align.middle}, "main")
+    local txt = toolsController.ui.create("guiTextBox", gui, {size=guiCoord(1, 0, image and 1/3 or 1, -5), position=guiCoord(0,0,image and 2/3 or 0,0), text=label, fontSize=15, align=enums.align.middle, handleEvents=false}, "secondary")
     toolsController.registerButton(menuName, gui)
+    return gui
 end
 
 local themeController = require("tevgit:create/controllers/theme.lua")
