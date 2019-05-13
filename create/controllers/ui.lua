@@ -88,7 +88,7 @@ uiController.createMainInterface = function(workshop)
         workshop:saveGameAsDialogue()
     end)
     openBtn:mouseLeftReleased(function()
-        workshop:workshop:openFileDialogue()
+        workshop:openFileDialogue()
     end)
 end
 
