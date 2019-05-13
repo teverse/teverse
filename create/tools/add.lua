@@ -73,7 +73,7 @@ local function onToolActivated(toolId)
         mouseDown = 0
     end)
     
-    while (toolIsActive and wait()) do
+    while (toolIsActive and wait() and tool.data.placeholderBlock) do
         local mouseHit = engine.physics:rayTestScreenAllHits(engine.input.mousePosition, tool.data.placeholderBlock)
         if #mouseHit > 0 then
             tool.data.placeholderBlock.position = mouseHit[1].hitPosition + vector3(0, 0.5, 0)
@@ -92,7 +92,7 @@ local function onToolDeactviated(toolId)
             Integer, toolId
                 The unique {toolId} given after registering the tool
     ]]
-
+    toolIsActive = false
     selectionController.selectable = true
     local tool = toolsController.tools[toolId]
     
@@ -103,9 +103,6 @@ local function onToolDeactviated(toolId)
     
     tool.data.placeholderBlock:destroy()
     tool.data.placeholderBlock = nil
-    
-    toolIsActive = false
-
 end
 
 return toolsController:register({
