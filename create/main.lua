@@ -21,10 +21,10 @@ return function(workshop)
 		scale  = require("tevgit:create/tools/scale.lua"),
 		rotate = require("tevgit:create/tools/rotate.lua")
 	}
-	wait(2)
+
 	-- create default environment
 	controllers.env.setDefault()
-	controllers.env.createStarterMap()
-
+	controllers.env.createStarterMap() -- Starter map, or the enviroment, may be overriden by teverse if the user is opening an existing .tev file.
+	wait(2)
 	controllers.ui.setLoading(false)
 end
