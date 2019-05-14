@@ -1,7 +1,7 @@
 
 
 ## Naming
-Teverse uses **camelCase** built-in for everything, courtesy of our founder Jay. Thus we will also adopt this style and use camelCase in _every_ scenario besides constants
+Teverse uses **camelCase** built-in for everything. As a result, we'll use camelCase in _every_ scenario except for constants. 
 #### Bad
 ```lua
 local foobar
@@ -18,7 +18,7 @@ local function bazQux(quz)
 --..
 ```
 ### Variables
-These should be able to be read by humans! Unless the function is very short, the name of the variable/argument should be verbose enough to describe its meaning. Also, use locals rather than globals whenever possible.
+These should be able to be read by humans! Unless the function is very short, the name of the variable/argument should be verbose enough to describe its meaning. Please use locals and abstain from globals whenever possible.
 #### Bad
 ```lua
 function x(y, z)
@@ -30,7 +30,8 @@ local function runCourse(courseName, targetObjective)
     -- ...
 ```
 ## Documentation
-To promote readability and understanding of shared code, documentation is necessary for functions that are not self explanatory.
+To promote readability, understanding and maintainability of shared code, documentation is necessary for for all methods.
+
 #### Good
 ``` lua
 local function foo(bar, baz)
@@ -57,7 +58,7 @@ local function foo(bar, baz)
 end
 ```
 ## Lua Idioms
-To test whether a variable is not nil in a conditional, it is terser to just write the variable name rather than explicitly compare against nil. Lua treats nil and false as false (and all other values as true) in a conditional. However, if the variable tested can ever contain false as well, then you will need to be explicit if the two conditions must be differentiated: `line == nil` v.s. `line == false`.
+To test if a variable is not nil in a conditional, it is terser to write the variable name to explicitly compare against nil. Lua treats nil and false as false (and all other values as true) in a conditional. However, if the variable tested can contain false as well, then you'll need to be explicit if the two conditions must be differentiated: `line == nil` v.s. `line == false`.
 #### Bad
 ```lua
 if (foo ~= nil) then 
