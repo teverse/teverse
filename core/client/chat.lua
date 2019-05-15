@@ -67,8 +67,8 @@ engine.networking:bind( "message", function( from, message )
 end)
 
 engine.networking:connected(function (serverId)
-	messagesFrame.visible=true
-	messageFrame.visible =true
+	container.visible=true
+	messageInputFrame.visible =true
 	addMessage("You have connected to a server.")
 end)
 
