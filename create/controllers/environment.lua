@@ -42,6 +42,7 @@ environmentController.createStarterMap = function()
 		position       = vector3(0.5, 1, 0)
 	})	
 
+	--[[
 	-- Create a script source.
 	-- Noting that this API was not supposed to be used by Developers.
 	-- It is most likely only going to be used internally by our engine.
@@ -56,6 +57,7 @@ environmentController.createStarterMap = function()
 	-- Each container is treat as its own script and gets its own sandbox.
 	local scriptRunner = engine.construct("scriptContainer", engine.workspace, {name = "mainRunner"})
 	scriptRunner:attach(scriptSource) -- autoruns if autorun is true (defaults to true)
+	]]
 end
 
 environmentController.setDefault = function()
