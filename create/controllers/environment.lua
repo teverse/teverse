@@ -41,6 +41,21 @@ environmentController.createStarterMap = function()
 		size           = vector3(1, 1, 1),
 		position       = vector3(0.5, 1, 0)
 	})	
+
+	-- Create a script source.
+	-- Noting that this API was not supposed to be used by Developers.
+	-- It is most likely only going to be used internally by our engine.
+
+	-- The idea is that a developer can update this script source and multiple "containers" can use one source.
+	local scriptSource = engine.construct("scriptSource", engine.assets.lua.shared, {
+		name = "main",
+		source = "print('test')"
+	})
+
+	-- Create a script container, this container is responsible for executing code referenced from a script source.
+	-- Each container is treat as its own script and gets its own sandbox.
+	local scriptRunner = engine.construct("scriptContainer", engine.workspace, {name = "mainRunner"})
+	scriptRunner:attach(scriptSource) -- autoruns if autorun is true (defaults to true)
 end
 
 environmentController.setDefault = function()

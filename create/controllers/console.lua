@@ -75,4 +75,27 @@ engine.debug:output(function(msg)
     scrollView.canvasSize = guiCoord(1, 0, 0, yCanvas)
 end)
 
+if engine.debug.error then --error event may not exist, future update.
+    engine.debug:error(function(errorInfo)
+        --if errorInfo.action ~= "disconnection" then
+            local errorWarning = uiController.create("guiTextBox", engine.workshop.interface, {
+                text = "Error Captured (CLICK TO CLOSE)\n - - - - - - \nThread: " .. errorInfo.threadName .. " [" .. errorInfo.thread .. "]\nMessage: ".. errorInfo.message.."\nTraceback:\n"..errorInfo.traceback;
+                align = enums.align.topLeft;
+                size = guiCoord(0, 600, 0, 200);
+                readOnly = true;
+                position = guiCoord(1, 0, 1, -220);
+                name = "errorMessage";
+                fontSize = 14;
+                guiStyle = enums.guiStyle.rounded;
+            }, "secondary")
+
+            engine.tween:begin(errorWarning, .5, {position=guiCoord(1,-610,1,-220)}, "inOutQuad")
+
+            errorWarning:mouseLeftPressed(function ()
+                errorWarning:destroy()
+            end)
+        --end
+    end)
+end
+
 return consoleController
