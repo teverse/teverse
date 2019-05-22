@@ -6,3 +6,4 @@
 --]]
 
 require("tevgit:core/client/chat.lua")
+require("tevgit:core/client/playerList.lua")

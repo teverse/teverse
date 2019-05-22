@@ -59,7 +59,11 @@ messageInputBox:keyPressed(function(inputObj)
 end)
 
 function addMessage(txt)
-	messagesTextBox.text = messagesTextBox.text .. "\n" .. txt
+	local newValue = messagesTextBox.text .. "\n" .. txt
+	if (newValue:len() > 610) then
+		newValue = newValue:sub(newValue:len() - 600)
+	end
+	essagesTextBox.text = newValue
 end
 
 engine.networking:bind( "message", function( from, message )
@@ -75,12 +79,11 @@ end)
 engine.networking.clients:clientConnected(function (client)
 	addMessage(client.name .. " has joined.")
 end)
+
 engine.networking.clients:clientDisconnected(function (client)
 	addMessage(client.name .. " has disconnected.")
 end)
+
 engine.networking:disconnected(function (serverId)
 	addMessage("You have disconnected.")
-end)
-engine.networking:pingUpdate(function (ping)
-	addMessage("You pinged at " .. tostring(ping))
 end)
