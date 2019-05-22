@@ -63,7 +63,7 @@ function addMessage(txt)
 	if (newValue:len() > 610) then
 		newValue = newValue:sub(newValue:len() - 600)
 	end
-	essagesTextBox.text = newValue
+	messagesTextBox.text = newValue
 end
 
 engine.networking:bind( "message", function( from, message )
