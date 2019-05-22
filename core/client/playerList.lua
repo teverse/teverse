@@ -41,5 +41,4 @@ engine.networking.clients:clientDisconnected(function (client)
 	if container:hasChild(client.name) then
 		container[client.name]:destroy()
 	end
-	addMessage(client.name .. " has disconnected.")
 end)
