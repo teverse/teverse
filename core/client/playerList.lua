@@ -10,7 +10,7 @@ local container = engine.construct("guiFrame", engine.interface, {
 	backgroundColour=colour(0.1,0.1,0.1),
 	handleEvents=false,
 	visible = false,
-	alpha = 0.1,
+	alpha = 0.5,
 	zIndex=1001
 })
 
@@ -31,7 +31,8 @@ engine.networking.clients:clientConnected(function (client)
 		name = client.name,
 		size = guiCoord(1, -10, 0, 16),
 		text = client.name,
-		backgroundColour=colour(0.1,0.1,0.1)
+		backgroundColour=colour(0.1,0.1,0.1),
+		zIndex=1002
 	})
 
 	positionPlayers()
