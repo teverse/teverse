@@ -11,14 +11,16 @@ local target = nil
 controller.setTarget = function(t)
 	--temp:
 	target = t
-	controller.camera.position = target.position + vector3(0,10,30)
+	controller.camera.position = target.position + vector3(0,10,-30)
 	controller.camera:lookAt(target.position)
 end
 
 engine.graphics:frameDrawn(function ()
 	if target then
-		controller.camera.position = target.position + vector3(0,10,30)
-		controller.camera:lookAt(target.position)
+		--controller.camera.position = target.position + vector3(0,10,30)
+		local newPos = target.position + vector3(0,10,-30)
+		local newRot = controller.camera.rotation:setLookRotation( newPos - target.position )
+		engine.tween:begin(controller.camera, 0.05, {position = newPos, rotation=newRot}, "inOutQuad") --Tween to prevent jiterring.
 	end
 end)
 
