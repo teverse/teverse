@@ -3,10 +3,9 @@
     @File core/client/playerList.lua
     @Author(s) Jay
 --]]
-print("player list")
 local container = engine.construct("guiFrame", engine.interface, {
-	size=guiCoord(0,350,0,300),
-	position=guiCoord(0, 30, 1, -665),
+	size=guiCoord(0,350,0,200),
+	position=guiCoord(0, 30, 0, 30),
 	backgroundColour=colour(0.1,0.1,0.1),
 	handleEvents=false,
 	visible = false,
