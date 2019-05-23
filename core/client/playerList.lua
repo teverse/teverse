@@ -25,6 +25,7 @@ local function addPlayer(client)
 		name = client.name,
 		size = guiCoord(1, -10, 0, 16),
 		text = client.name,
+		readOnly=true,
 		backgroundColour=colour(0.1,0.1,0.1),
 		zIndex=1002
 	})

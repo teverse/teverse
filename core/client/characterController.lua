@@ -6,15 +6,13 @@
 
 local controller = {}
 
-controller.speed = 100
+controller.character = nil -- server creates this
 
-controller.character = engine.construct("block", workspace, {
-	size = vector3(2,3,1),
-	colour = colour(math.random(),math.random(),math.random()),
-	position = vector3(0,10,0),
-	static = false,
-	velocity = vector3(0,10,0)
-})
+engine.networking:bind( "characterSpawned", function()
+	print(engine.networking.me.id)
+	controller.character = workspace[engine.networking.me.id]
+end)
+
 
 controller.keyBinds = {
 	w = vector3(0,0,1),
