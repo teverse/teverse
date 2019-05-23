@@ -9,7 +9,7 @@ local controller = {}
 controller.character = nil -- server creates this
 
 engine.networking:bind( "characterSpawned", function()
-	print(engine.networking.me.id)
+	repeat wait() until workspace[engine.networking.me.id]
 	controller.character = workspace[engine.networking.me.id]
 	if controller.camera then
 		controller.camera.setTarget(controller.character)
@@ -18,13 +18,25 @@ end)
 
 
 controller.keyBinds = {
-	w = vector3(0,0,1),
-	s = vector3(0,0,-1),
-	a = vector3(1,0,0),
-	d = vector3(-1,0,0)
+	w = 1,
+	s = 2,
+	a = 3,
+	d = 4
 }
 
-controller.update = function()
+engine.input:keyPressed(function (inputObj)
+	if inputObj.key[controller.keyBinds] then
+		engine.networking:toServer("characterSetInputStarted", inputObj.key[controller.keyBinds])
+	end
+end)
+
+engine.input:keyReleased(function (inputObj)
+	if inputObj.key[controller.keyBinds] then
+		engine.networking:toServer("characterSetInputEnded", inputObj.key[controller.keyBinds])
+	end
+end)
+
+--[[controller.update = function()
 	local totalForce = vector3()
 	local moved = false
 
@@ -37,7 +49,7 @@ controller.update = function()
 	if moved then
 		controller.character:applyForce(totalForce * controller.speed)
 	end
-end
+end]]
 
 --engine.graphics:frameDrawn(controller.update)
 
