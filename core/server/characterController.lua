@@ -19,13 +19,11 @@ engine.networking.clients:clientConnected(function (client)
 		velocity = vector3(0,10,0)
 	})
 	engine.networking:toClient(client, "characterSpawned")
+	controller.characters[client] = char
 end)
 
-engine.networking:bind( "message", function( client, message )
-	if type(message) == "string" then
-		print(client.name, "said", message)
-		engine.networking:toAllClients("message", client.name, message)
-	end
+engine.networking:bind( "move", function( client, message )
+
 end)
 
 return controller

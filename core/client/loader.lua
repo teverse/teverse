@@ -10,6 +10,6 @@ engine.networking:connected(function (serverId)
 	require("tevgit:core/client/playerList.lua")
 	local characterController = require("tevgit:core/client/characterController.lua")
 	local cameraController = require("tevgit:core/client/cameraController.lua")
-	cameraController.setTarget(characterController.character)
+	characterController.camera = cameraController
 end)
 
