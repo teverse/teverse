@@ -80,6 +80,22 @@ uiController.createMainInterface = function(workshop)
     local saveBtn = toolsController.createButton("topBar", "fa:s-save", "Save")
     local saveAsBtn = toolsController.createButton("topBar", "fa:r-save", "Save As")
     local openBtn = toolsController.createButton("topBar", "fa:s-folder-open", "Open")
+    local publishBtn = toolsController.createButton("topBar", "fa:s-cloud-upload-alt", "Publish")
+
+    --[[
+    local function checkIfPublishable()
+        settingsBar.btn.visible = (engine.workshop.gameFilePath ~= "")
+        settingsBar.publishNote.text = (engine.workshop.gameFilePath == "" and "You need to save this game before publishing." or "This file isn't linked to the TevCloud.")
+        settingsBar.btn.label.text = (engine.workshop.gameCloudId == "" and "Publish" or "Update")
+
+        if engine.workshop.gameCloudId ~= "" then
+            settingsBar.publishNote.text = "This is a TevCloud project."
+        end
+    end
+
+    checkIfPublishable()
+    engine.workshop:changed(checkIfPublishable)
+    ]]
 
     saveBtn:mouseLeftReleased(function()
         workshop:saveGame()
@@ -89,6 +105,9 @@ uiController.createMainInterface = function(workshop)
     end)
     openBtn:mouseLeftReleased(function()
         workshop:openFileDialogue()
+    end)
+    publishBtn:mouseLeftReleased(function ()
+        workshop:publishDialogue()
     end)
 end
 
