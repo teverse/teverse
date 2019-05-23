@@ -8,14 +8,9 @@ local container = engine.construct("guiFrame", engine.interface, {
 	position=guiCoord(0, 30, 0, 30),
 	backgroundColour=colour(0.1,0.1,0.1),
 	handleEvents=false,
-	visible = false,
 	alpha = 0.5,
 	zIndex=1001
 })
-
-engine.networking:connected(function (serverId)
-	container.visible=true
-end)
 
 local function positionPlayers()
 	local y = 5
@@ -25,7 +20,7 @@ local function positionPlayers()
 	end
 end
 
-engine.networking.clients:clientConnected(function (client)
+local function addPlayer(client)
 	local playerGui = engine.construct("guiTextBox", container, {
 		name = client.name,
 		size = guiCoord(1, -10, 0, 16),
@@ -35,7 +30,12 @@ engine.networking.clients:clientConnected(function (client)
 	})
 
 	positionPlayers()
-end)
+end
+
+for _,client in pairs(engine.networking.clients.children) do
+	addPlayer(client)
+end
+engine.networking.clients:clientConnected(addPlayer)
 
 engine.networking.clients:clientDisconnected(function (client)
 	if container:hasChild(client.name) then

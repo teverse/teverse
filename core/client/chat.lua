@@ -9,7 +9,6 @@ local container = engine.construct("guiFrame", engine.interface, {
 	position=guiCoord(0, 30, 1, -355),
 	backgroundColour=colour(0.1,0.1,0.1),
 	handleEvents=false,
-	visible = false,
 	alpha = 0.1,
 	zIndex=1001
 })
@@ -33,7 +32,6 @@ local messageInputFrame = engine.construct("guiFrame", engine.interface, {
 	position=guiCoord(0, 30, 1, -55),
 	backgroundColour=colour(0.1,0.1,0.1),
 	handleEvents=false,
-	visible=false,
 	alpha = 0.8,
 	zIndex=1001
 })
@@ -68,12 +66,6 @@ end
 
 engine.networking:bind( "message", function( from, message )
 	addMessage(from .. " : " .. message)
-end)
-
-engine.networking:connected(function (serverId)
-	container.visible=true
-	messageInputFrame.visible =true
-	addMessage("You have connected to a server.")
 end)
 
 engine.networking.clients:clientConnected(function (client)

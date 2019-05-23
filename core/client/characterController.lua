@@ -8,8 +8,9 @@ local controller = {}
 
 controller.character = engine.construct("block", workspace, {
 	size = vector3(2,3,1),
-	colour = colour3(math.random(),math.random(),math.random())
+	colour = colour(math.random(),math.random(),math.random()),
 	position = vector3(0,10,0),
+	static = false
 })
 
 return controller
