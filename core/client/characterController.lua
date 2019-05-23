@@ -18,21 +18,21 @@ end)
 
 
 controller.keyBinds = {
-	w = 1,
-	s = 2,
-	a = 3,
-	d = 4
+	enums.key.w = 1,
+	enums.key.s = 2,
+	enums.key.a = 3,
+	enums.key.d = 4
 }
 
 engine.input:keyPressed(function (inputObj)
-	if inputObj.key[controller.keyBinds] then
-		engine.networking:toServer("characterSetInputStarted", inputObj.key[controller.keyBinds])
+	if controller.keyBinds[inputObj.key] then
+		engine.networking:toServer("characterSetInputStarted", controller.keyBinds[inputObj.key])
 	end
 end)
 
 engine.input:keyReleased(function (inputObj)
-	if inputObj.key[controller.keyBinds] then
-		engine.networking:toServer("characterSetInputEnded", inputObj.key[controller.keyBinds])
+	if controller.keyBinds[inputObj.key]  then
+		engine.networking:toServer("characterSetInputEnded", controller.keyBinds[inputObj.key])
 	end
 end)
 
