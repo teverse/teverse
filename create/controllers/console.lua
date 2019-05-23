@@ -6,7 +6,6 @@ local themeController = require("tevgit:create/controllers/theme.lua")
 local uiController = require("tevgit:create/controllers/ui.lua")
 
 consoleController.outputLines = {}
-consoleController.outputCount = 0;
 
 local windowObject = uiController.create("guiFrame", engine.workshop.interface, {
     name = "outputConsole";
@@ -47,6 +46,18 @@ local scrollView = uiController.create("guiScrollView", windowObject, {
     canvasSize = guiCoord(1, 0, 0, 0);
 })
 
+local entryLabel = uiController.create("guiTextBox", scrollView, {
+	size = guiCoord(1, -10, 0, 50);
+	position = guiCoord(0, 0, 0, 0);
+	name = "entryLabel";
+	wrap = true;
+	multiline = true;
+	readOnly = true;
+	align = enums.align.topLeft;
+	fontSize = 20;
+	textColour = colour(1, 1, 1);
+}, "default")
+
 closeButton:mouseLeftPressed(function() 
     consoleController.consoleObject.visible = false
 end)
@@ -59,20 +70,24 @@ engine.input:keyPressed(function( inputObj )
     end
 end)
 
-engine.debug:output(function(msg)
-    uiController.create("guiTextBox", scrollView, {
-        text = msg;
-        size = guiCoord(1, -4, 0, 25);
-        readOnly = true;
-        position = guiCoord(0, 2, 0, consoleController.outputCount*25);
-        name = "outputText";
-        fontSize = 20;
-    }, "default")
+engine.debug:output(function(msg, type)
+	if #consoleController.outputLines > 100 then
+		table.remove(consoleController.outputLines, 1)
+	end
+	table.insert(consoleController.outputLines, {msg, type})
+	
+	local text = ""
 
-    consoleController.outputCount = consoleController.outputCount + 1
+	for _,v in pairs (consoleController.outputLines) do
+		local colour = (v[2] == 1) and "#ff0000" or "#ffffff"
+		text = string.format("%s\n%s", v[1], text)
+	end
 
-    local yCanvas = consoleController.outputCount * 25
-    scrollView.canvasSize = guiCoord(1, 0, 0, yCanvas)
+	entryLabel.text = text
+
+	local textSize = entryLabel.textSize
+	entryLabel.size = guiCoord(1, -10, 1, textSize.y)
+	scrollView.canvasSize = guiCoord(1, 0, 1, textSize.y)
 end)
 
 if engine.debug.error then --error event may not exist, future update.
