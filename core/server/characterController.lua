@@ -10,21 +10,19 @@ controller.characters = {}
 
 update = function(client)
 	if not client or type(client) ~= "client" then return false end
-		local totalForce = vector3()
-		local moved = false
-
-		for i, pressed in pairs(controller.characters[client].keys) do
-			if pressed then
-				moved=true
-				totalForce = totalForce + controller.keyBinds[i]
-			end
+	local totalForce = vector3()
+	local moved = false
+	for i, pressed in pairs(controller.characters[client].keys) do
+		if pressed then
+			moved=true
+			totalForce = totalForce + controller.keyBinds[i]
 		end
-
-		if moved then
-			controller.character:applyForce(totalForce * 50)
-		end
-		return moved
 	end
+	if moved then
+		controller.characters[client].character:applyForce(totalForce * 50)
+	end
+	return moved
+end
 
 engine.networking.clients:clientConnected(function (client)
 	wait(1)

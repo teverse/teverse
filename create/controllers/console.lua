@@ -9,8 +9,6 @@ local uiController = require("tevgit:create/controllers/ui.lua")
 
 consoleController.outputLines = {}
 
-consoleController.commands = {}
-
 function stringSplit(inputStr, sep)
 	if sep == nil then
 		sep = "%s"
