@@ -7,6 +7,19 @@ local uiController = require("tevgit:create/controllers/ui.lua")
 
 consoleController.outputLines = {}
 
+consoleController.commands = require("tevgit:create/console/commands.lua")
+
+function stringSplit(inputStr, sep)
+	if sep == nil then
+		sep = "%s"
+	end
+	local t={}
+	for str in string.gmatch(inputStr, "([^"..sep.."]+)") do
+		table.insert(t, str)
+	end
+	return t
+end
+
 local windowObject = uiController.create("guiFrame", engine.workshop.interface, {
     name = "outputConsole";
     visible = false;
@@ -107,19 +120,30 @@ cmdInputText:keyUnfocused(function()
 end)
 
 engine.input:keyPressed(function(inputObj)
-    if inputObj.systemHandled then return end
-
-    if inputObj.key == enums.key.f12 then
+	if inputObj.key == enums.key.f12 then
+		if inputObj.systemHandled then return end
         consoleController.consoleObject.visible = not consoleController.consoleObject.visible
 	elseif cmdBarActive == true then 
-		if inputObj.key == enums.key.return then
-			table.insert(commandHistory, cmdInputText.text)
-			commandHistoryIndex = #commandHistory + 1
-			
-			print("> "..cmdInputText.text)
-			print("Submitted command!")
-			
-			cmdInputText.text = "Type a command"
+		if inputObj.key == enums.key["return"] then
+			if cmdInputText.text ~= "Type a command" and cmdInputText.text ~= "" then
+				table.insert(commandHistory, cmdInputText.text)
+				commandHistoryIndex = #commandHistory + 1
+				
+				print("> "..cmdInputText.text)
+				local args = stringSplit(cmdInputText.text, " ")
+				local cmd = args[1]
+				table.remove(args, 1)
+				
+				for key, command in pairs(consoleController.commands) do
+					for _, alias in pairs(command.commands) do 
+						if string.lower(cmd) == string.lower(alias) then
+							command.execute(args)
+						end
+					end
+				end
+				
+				cmdInputText.text = ""
+			end
 		elseif inputObj.key == enums.key.up and #commandHistory > 0 then 
 			if commandHistoryIndex - 1 > 0 then 
 				commandHistoryIndex = commandHistoryIndex - 1
@@ -148,7 +172,11 @@ engine.debug:output(function(msg, type)
 
 	for _,v in pairs (consoleController.outputLines) do
 		local colour = (v[2] == 1) and "#ff0000" or "#ffffff"
-		text = string.format("%s\n%s", v[1], text)
+		if text ~= "" then
+			text = string.format("%s\n%s", text, v[1])
+		else
+			text = v[1]
+		end
 	end
 
 	entryLabel.text = text
