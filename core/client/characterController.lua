@@ -18,10 +18,17 @@ end)
 
 
 controller.keyBinds = {
-	[enums.key.w] = 1,
-	[enums.key.s] = 2,
-	[enums.key.a] = 3,
-	[enums.key.d] = 4
+	[enums.key.w]  = 1,
+	[enums.key.up] = 1,
+
+	[enums.key.s]    = 2,
+	[enums.key.down] = 2,
+
+	[enums.key.a]    = 3,
+	[enums.key.left] = 3,
+
+	[enums.key.d]     = 4,
+	[enums.key.right] = 4
 }
 
 engine.input:keyPressed(function (inputObj)
