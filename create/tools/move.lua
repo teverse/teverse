@@ -121,6 +121,7 @@ local function onToolActivated(toolId)
 							if mouseoffsets[v] then
 								local newPos = target - mouseoffsets[v]
 								local pos = v.position
+
 								if gridStep > 0 and toolsController.tools[toolId].data.axis[c] then
 									pos[component] = roundToMultiple(newPos[component], gridStep)
 								else
@@ -143,7 +144,7 @@ local function onToolActivated(toolId)
 		end)
 		
 		table.insert(toolsController.tools[toolId].data.handles, {handle, face})
-		
+
 		if i % 2 == 0 then
 			c=c+1
 			o = 0
