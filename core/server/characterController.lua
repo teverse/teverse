@@ -23,7 +23,6 @@ update = function(client)
 		if moved then
 			controller.character:applyForce(totalForce * 50)
 		end
-
 		return moved
 	end
 
@@ -48,7 +47,6 @@ engine.networking.clients:clientDisconnected(function (client)	wait(1)
 	end
 end)
 
-
 controller.keyBinds = {
 	vector3(0,0,1), --w
 	vector3(0,0,-1), --s
@@ -61,6 +59,7 @@ engine.networking:bind( "characterSetInputStarted", function( client, direction 
 	if controller.characters[client].keys[direction] == nil then return end
 
 	controller.characters[client].keys[direction] = true
+
 	engine.graphics:frameDrawn(function()
 		if not update(client) then
 			self:disconnect() -- no input from user.
