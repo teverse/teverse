@@ -41,7 +41,7 @@ local closeButton = uiController.create("guiTextBox", topbar, {
 }, "primary")
 
 local scrollView = uiController.create("guiScrollView", windowObject, {
-    size = guiCoord(1, 0, 1, -25);
+    size = guiCoord(1, 0, 1, -50);
     position = guiCoord(0, 0, 0, 25);
     canvasSize = guiCoord(1, 0, 0, 0);
 })
@@ -58,15 +58,83 @@ local entryLabel = uiController.create("guiTextBox", scrollView, {
 	textColour = colour(1, 1, 1);
 }, "default")
 
+local cmdInput = uiController.create("guiFrame", windowObject, {
+	size = guiCoord(1, 0, 0, 25);
+	position = guiCoord(0, 0, 1, -25);
+	name = "cmdInput";
+}, "primary")
+
+local cmdDecorText = uiController.create("guiTextBox", cmdInput, {
+	size = guiCoord(0, 20, 1, 0);
+	position = guiCoord(0, 5, 0, 0);
+	readOnly = true;
+	multiline = false;
+	text = ">";
+	align = enums.align.middle;
+	fontSize = 20;
+	textColour = colour(1, 1, 1);
+	name = "cmdDecorText";
+}, "primary")
+
+local cmdInputText = uiController.create("guiTextBox", cmdInput, {
+	size = guiCoord(1, -30, 1, 0);
+	position = guiCoord(0, 25, 0, 0);
+	multiline = false;
+	text = "Type a command";
+	align = enums.align.middleLeft;
+	fontSize = 20;
+	textColour = colour(1, 1, 1);
+	name = "cmdInputText";
+}, "primary")
+
 closeButton:mouseLeftPressed(function() 
     consoleController.consoleObject.visible = false
 end)
 
-engine.input:keyPressed(function( inputObj )
+local cmdBarActive = false 
+
+local commandHistoryIndex = 0
+local commandHistory = {}
+
+cmdInputText:keyFocused(function() 
+    cmdBarActive = true
+    if cmdInputText.text == "Type a command" then cmdInputText.text = "" end
+end)
+
+cmdInputText:keyUnfocused(function()
+	cmdBarActive = false
+    print('cmdbar unfocused with text: ' .. cmdInputText.text)
+end)
+
+engine.input:keyPressed(function(inputObj)
     if inputObj.systemHandled then return end
 
     if inputObj.key == enums.key.f12 then
         consoleController.consoleObject.visible = not consoleController.consoleObject.visible
+	elseif cmdBarActive == true then 
+		if inputObj.key == enums.key.return then
+			table.insert(commandHistory, cmdInputText.text)
+			commandHistoryIndex = #commandHistory + 1
+			
+			print("> "..cmdInputText.text)
+			print("Submitted command!")
+			
+			cmdInputText.text = "Type a command"
+		elseif inputObj.key == enums.key.up and #commandHistory > 0 then 
+			if commandHistoryIndex - 1 > 0 then 
+				commandHistoryIndex = commandHistoryIndex - 1
+				cmdInputText.text = commandHistory[commandHistoryIndex]
+			end
+		elseif inputObj.key == enums.key.down and #commandHistory > 0 then
+			if commandHistoryIndex < #commandHistory + 1 then 
+				commandHistoryIndex = commandHistoryIndex + 1
+				if commandHistoryIndex > #commandHistory then 
+					cmdInputText.text = "" 
+				else
+					cmdInputText.text = commandHistory[commandHistoryIndex]
+				end
+			end
+		end
     end
 end)
 
@@ -87,7 +155,7 @@ engine.debug:output(function(msg, type)
 
 	local textSize = entryLabel.textSize
 	entryLabel.size = guiCoord(1, -10, 1, textSize.y)
-	scrollView.canvasSize = guiCoord(1, 0, 1, textSize.y)
+	scrollView.canvasSize = guiCoord(0, 0, 1, textSize.y)
 end)
 
 if engine.debug.error then --error event may not exist, future update.
