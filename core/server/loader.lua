@@ -6,3 +6,4 @@
 --]]
 
 require("tevgit:core/server/chat.lua")
+require("tevgit:core/server/characterController.lua")

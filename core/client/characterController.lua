@@ -6,24 +6,37 @@
 
 local controller = {}
 
-controller.speed = 100
+controller.character = nil -- server creates this
 
-controller.character = engine.construct("block", workspace, {
-	size = vector3(2,3,1),
-	colour = colour(math.random(),math.random(),math.random()),
-	position = vector3(0,10,0),
-	static = false,
-	velocity = vector3(0,10,0)
-})
+engine.networking:bind( "characterSpawned", function()
+	repeat wait() until workspace[engine.networking.me.id]
+	controller.character = workspace[engine.networking.me.id]
+	if controller.camera then
+		controller.camera.setTarget(controller.character)
+	end
+end)
+
 
 controller.keyBinds = {
-	w = vector3(0,0,1),
-	s = vector3(0,0,-1),
-	a = vector3(1,0,0),
-	d = vector3(-1,0,0)
+	enums.key.w = 1,
+	enums.key.s = 2,
+	enums.key.a = 3,
+	enums.key.d = 4
 }
 
-controller.update = function()
+engine.input:keyPressed(function (inputObj)
+	if controller.keyBinds[inputObj.key] then
+		engine.networking:toServer("characterSetInputStarted", controller.keyBinds[inputObj.key])
+	end
+end)
+
+engine.input:keyReleased(function (inputObj)
+	if controller.keyBinds[inputObj.key]  then
+		engine.networking:toServer("characterSetInputEnded", controller.keyBinds[inputObj.key])
+	end
+end)
+
+--[[controller.update = function()
 	local totalForce = vector3()
 	local moved = false
 
@@ -36,7 +49,7 @@ controller.update = function()
 	if moved then
 		controller.character:applyForce(totalForce * controller.speed)
 	end
-end
+end]]
 
 --engine.graphics:frameDrawn(controller.update)
 
