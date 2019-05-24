@@ -11,6 +11,7 @@ controller.character = nil -- server creates this
 engine.networking:bind( "characterSpawned", function()
 	repeat wait() until workspace[engine.networking.me.id]
 	controller.character = workspace[engine.networking.me.id]
+
 	if controller.camera then
 		controller.camera.setTarget(controller.character)
 	end

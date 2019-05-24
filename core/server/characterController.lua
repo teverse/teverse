@@ -6,6 +6,7 @@
 
 local controller = {}
 
+controller.defaultSpeed = 45
 controller.characters = {}
 
 update = function(client)
@@ -19,7 +20,7 @@ update = function(client)
 		end
 	end
 	if moved then
-		controller.characters[client].character:applyForce(totalForce * 50)
+		controller.characters[client].character:applyForce(totalForce * controller.characters[client].speed)
 	end
 	return moved
 end
@@ -35,7 +36,7 @@ engine.networking.clients:clientConnected(function (client)
 		velocity = vector3(0,10,0)
 	})
 	engine.networking:toClient(client, "characterSpawned")
-	controller.characters[client] = { character = char, keys = {false,false,false,false} }
+	controller.characters[client] = { character = char, keys = {false,false,false,false}, speed = controller.defaultSpeed }
 end)
 
 engine.networking.clients:clientDisconnected(function (client)	wait(1)

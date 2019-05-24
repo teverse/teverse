@@ -20,7 +20,9 @@ engine.graphics:frameDrawn(function ()
 		--controller.camera.position = target.position + vector3(0,10,30)
 		local newPos = target.position + vector3(0,10,-30)
 		local newRot = controller.camera.rotation:setLookRotation( newPos - target.position )
-		engine.tween:begin(controller.camera, 0.05, {position = newPos, rotation=newRot}, "inOutQuad") --Tween to prevent jiterring.
+		controller.camera.position = newPos
+		controller.camera.rotation = newRot
+		--engine.tween:begin(controller.camera, 0.05, {position = newPos, rotation=newRot}, "inOutQuad") --Tween to prevent jiterring.
 	end
 end)
 
