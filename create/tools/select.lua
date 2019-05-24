@@ -1,7 +1,7 @@
 --[[
     Copyright 2019 Teverse
     @File select.lua
-    @Author(s) Jay
+    @Author(s) Jay, joritochip
 --]]
 
 -- TODO: Create a UI that allows the user to input a step size
@@ -13,18 +13,19 @@ TOOL_DESCRIPTION = "Use this select and move primitives."
 local toolsController = require("tevgit:create/controllers/tool.lua")
 local selectionController = require("tevgit:create/controllers/select.lua")
 
--- TODo: move this to a helper module
-local roundToMultiple = function(number, multiple)
-        if multiple == 0 then 
-            return number 
-        end
-
-        return ((number % multiple) > multiple/2) and number + multiple - number%multiple or number - number%multiple
-    end
+-- TODO: move this to a helper module
+function roundToMultiple(number, multiple)
+	if multiple == 0 then 
+		return number 
+	end
+	
+	return ((number % multiple) > multiple/2) and number + multiple - number%multiple or number - number%multiple
+end
 
 local function onToolActivated(toolId)
     local mouseDown = 0
     local applyRot = 0
+	local gridStep = 1
 
     toolsController.tools[toolId].data.mouseDownEvent = engine.input:mouseLeftPressed(function ( inp )
         if not inp.systemHandled and #selectionController.selection > 0 then
@@ -41,7 +42,6 @@ local function onToolActivated(toolId)
             if mouseDown == currentTime then
                 --user held mouse down for 0.25 seconds,
                 --initiate drag
-                local gridStep = 1
                 
                 selectionController.selectable = false
                 
@@ -115,6 +115,14 @@ local function onToolActivated(toolId)
     toolsController.tools[toolId].data.mouseUpEvent = engine.input:mouseLeftReleased(function ( inp )
         mouseDown = 0
     end)
+	
+	toolsController.tools[toolId].data.keyPressedEvent = engine.input:keyPressed(function(input)
+		if input.systemHandled then return end 
+		
+		if input.key == enums.key.r then
+			gridStep = gridStep == 1 and 0 or 1
+		end
+	end)
 end
 
 local function onToolDeactviated(toolId)
@@ -123,6 +131,8 @@ local function onToolDeactviated(toolId)
     toolsController.tools[toolId].data.mouseDownEvent = nil
     toolsController.tools[toolId].data.mouseUpEvent:disconnect()
     toolsController.tools[toolId].data.mouseUpEvent = nil
+	toolsController.tools[toolId].data.keyPressedEvent:disconnect()
+	toolsController.tools[toolId].data.keyPressedEvent = nil
 end
 
 return toolsController:register({

@@ -1,7 +1,7 @@
 --[[
     Copyright 2019 Teverse
     @File add.lua
-    @Author(s) Jay, Ly
+    @Author(s) Jay, Ly, joritochip
     @Updated 5/8/19
 --]]
 
@@ -57,7 +57,9 @@ local function onToolActivated(toolId)
         newBlock.parent = engine.workspace
     end
     
-    tool.data.mouseDownEvent = engine.input:mouseLeftPressed(function()
+    tool.data.mouseDownEvent = engine.input:mouseLeftPressed(function(input)
+		if input.systemHandled then return end 
+		
         placeBlock()
         local curTime = os.clock()
         mouseDown = curTime
@@ -69,7 +71,9 @@ local function onToolActivated(toolId)
         end
     end)
 
-    tool.data.mouseUpEvent = engine.input:mouseLeftReleased(function()
+    tool.data.mouseUpEvent = engine.input:mouseLeftReleased(function(input)
+		if input.systemHandled then return end 
+		
         mouseDown = 0
     end)
     
