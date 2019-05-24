@@ -41,6 +41,14 @@ engine.networking.clients:clientConnected(function (client)
 	controller.characters[client] = { character = char, keys = {false,false,false,false} }
 end)
 
+engine.networking.clients:clientDisconnected(function (client)	wait(1)
+	if controller.characters[client] then
+		controller.characters[client].character:destroy()
+		controller.characters[client] = nil
+	end
+end)
+
+
 controller.keyBinds = {
 	vector3(0,0,1), --w
 	vector3(0,0,-1), --s
