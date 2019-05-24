@@ -3,7 +3,6 @@
 -- Author(s) joritochip, TheCakeChicken
 
 local consoleController = {}
-local consoleCommands = require("tevgit:create/console/commands.lua")
 
 local themeController = require("tevgit:create/controllers/theme.lua")
 local uiController = require("tevgit:create/controllers/ui.lua")
@@ -103,7 +102,7 @@ consoleController.createConsole = function()
 		size = guiCoord(1, -30, 1, 0),
 		position = guiCoord(0, 25, 0, 0),
 		multiline = false,
-		text = "Type a command",
+		text = "Enter a script",
 		align = enums.align.middleLeft,
 		fontSize = 20,
 		textColour = colour(1, 1, 1),
@@ -121,7 +120,7 @@ consoleController.createConsole = function()
 
 	cmdInputText:keyFocused(function() 
 		cmdBarActive = true
-		if cmdInputText.text == "Type a command" then cmdInputText.text = "" end
+		if cmdInputText.text == "Enter a script" then cmdInputText.text = "" end
 	end)
 
 	cmdInputText:keyUnfocused(function()
@@ -134,35 +133,12 @@ consoleController.createConsole = function()
 			consoleController.consoleObject.visible = not consoleController.consoleObject.visible
 		elseif cmdBarActive == true then 
 			if inputObj.key == enums.key["return"] then
-				if cmdInputText.text ~= "Type a command" and cmdInputText.text ~= "" then
+				if cmdInputText.text ~= "Enter a script" and cmdInputText.text ~= "" then
 					table.insert(commandHistory, cmdInputText.text)
 					commandHistoryIndex = #commandHistory + 1
 					
 					print("> "..cmdInputText.text)
-					local args = stringSplit(cmdInputText.text, " ")
-					local cmd = args[1]
-					table.remove(args, 1)
-					
-					for key, command in next, consoleController.commands do
-						for _, alias in next, command.commands do 
-							if string.lower(cmd) == string.lower(alias) then
-								local newArgs = {}
-								for index, arg in next, args do
-									if #command.arguments == index then
-										local concat = arg
-										for i, toConcat in next, args do
-											if i > #command.arguments then concat = concat .. " " .. toConcat end
-										end
-										table.insert(newArgs, concat)
-									else
-										table.remove(args, index)
-										table.insert(newArgs, arg)
-									end
-								end
-								command.execute(newArgs)
-							end
-						end
-					end
+					engine.workshop:loadString(cmdInputText.text)
 					
 					cmdInputText.text = ""
 				end
@@ -211,5 +187,4 @@ consoleController.createConsole = function()
 	end)
 end
 
-consoleController.commands = consoleCommands.getCommands(consoleController)
 return consoleController
