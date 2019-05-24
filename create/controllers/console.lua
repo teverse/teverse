@@ -8,6 +8,8 @@ local uiController = require("tevgit:create/controllers/ui.lua")
 
 consoleController.outputLines = {}
 
+print("Workshop", engine.workshop)
+
 consoleController.commands = require("tevgit:create/console/commands.lua")
 
 function stringSplit(inputStr, sep)
