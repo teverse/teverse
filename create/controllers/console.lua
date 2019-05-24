@@ -1,5 +1,6 @@
 -- Copyright (c) 2019 teverse.com
 -- console.lua
+-- Author(s) joritochip, TheCodeChicken
 
 local consoleController = {}
 local themeController = require("tevgit:create/controllers/theme.lua")
