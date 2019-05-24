@@ -9,6 +9,7 @@ local controller = {}
 controller.characters = {}
 
 update = function(client)
+	if not client or type(client) ~= "client" then return false end
 		local totalForce = vector3()
 		local moved = false
 
@@ -22,6 +23,8 @@ update = function(client)
 		if moved then
 			controller.character:applyForce(totalForce * 50)
 		end
+
+		return moved
 	end
 
 engine.networking.clients:clientConnected(function (client)
@@ -50,7 +53,11 @@ engine.networking:bind( "characterSetInputStarted", function( client, direction 
 	if controller.characters[client].keys[direction] == nil then return end
 
 	controller.characters[client].keys[direction] = true
-	update()
+	engine.graphics:frameDrawn(function()
+		if not update(client) then
+			self:disconnect() -- no input from user.
+		end
+	end)
 end)
 
 engine.networking:bind( "characterSetInputEnded", function( client, direction )
