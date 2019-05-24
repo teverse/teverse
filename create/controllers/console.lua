@@ -1,6 +1,6 @@
 -- Copyright (c) 2019 teverse.com
 -- console.lua
--- Author(s) joritochip, TheCodeChicken
+-- Author(s) joritochip, TheCakeChicken
 
 local consoleController = {}
 local themeController = require("tevgit:create/controllers/theme.lua")
@@ -117,7 +117,6 @@ end)
 
 cmdInputText:keyUnfocused(function()
 	cmdBarActive = false
-    print('cmdbar unfocused with text: ' .. cmdInputText.text)
 end)
 
 engine.input:keyPressed(function(inputObj)
@@ -135,10 +134,23 @@ engine.input:keyPressed(function(inputObj)
 				local cmd = args[1]
 				table.remove(args, 1)
 				
-				for key, command in pairs(consoleController.commands) do
-					for _, alias in pairs(command.commands) do 
+				for key, command in next,consoleController.commands do
+					for _, alias in next,command.commands do 
 						if string.lower(cmd) == string.lower(alias) then
-							command.execute(args)
+							local newArgs = {}
+							for index,arg in next,args do
+								if #command.arguments == index then
+									local concat = ""
+									for i,toConcat in next,args do
+										if i == #args then concat = concat .. toConcat else concat = concat .. toConcat .. " " end
+									end
+									table.insert(newArgs, concat)
+								else
+									table.remove(args, index)
+									table.insert(newArgs, arg)
+								end
+							end
+							command.execute(newArgs)
 						end
 					end
 				end
