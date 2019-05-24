@@ -75,7 +75,7 @@ local cmdInput = uiController.create("guiFrame", windowObject, {
 	size = guiCoord(1, 0, 0, 25);
 	position = guiCoord(0, 0, 1, -25);
 	name = "cmdInput";
-}, "primary")
+}, "secondary")
 
 local cmdDecorText = uiController.create("guiTextBox", cmdInput, {
 	size = guiCoord(0, 20, 1, 0);
@@ -87,7 +87,7 @@ local cmdDecorText = uiController.create("guiTextBox", cmdInput, {
 	fontSize = 20;
 	textColour = colour(1, 1, 1);
 	name = "cmdDecorText";
-}, "primary")
+}, "secondary")
 
 local cmdInputText = uiController.create("guiTextBox", cmdInput, {
 	size = guiCoord(1, -30, 1, 0);
@@ -98,7 +98,7 @@ local cmdInputText = uiController.create("guiTextBox", cmdInput, {
 	fontSize = 20;
 	textColour = colour(1, 1, 1);
 	name = "cmdInputText";
-}, "primary")
+}, "secondary")
 
 closeButton:mouseLeftPressed(function() 
     consoleController.consoleObject.visible = false
