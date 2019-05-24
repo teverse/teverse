@@ -134,15 +134,15 @@ engine.input:keyPressed(function(inputObj)
 				local cmd = args[1]
 				table.remove(args, 1)
 				
-				for key, command in next,consoleController.commands do
-					for _, alias in next,command.commands do 
+				for key, command in next, consoleController.commands do
+					for _, alias in next, command.commands do 
 						if string.lower(cmd) == string.lower(alias) then
 							local newArgs = {}
-							for index,arg in next,args do
+							for index, arg in next, args do
 								if #command.arguments == index then
-									local concat = ""
-									for i,toConcat in next,args do
-										if i == #args then concat = concat .. toConcat else concat = concat .. toConcat .. " " end
+									local concat = arg
+									for i, toConcat in next, args do
+										if i > #command.arguments then concat = concat .. " " .. toConcat end
 									end
 									table.insert(newArgs, concat)
 								else
