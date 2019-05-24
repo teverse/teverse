@@ -21,7 +21,7 @@ update = function(client)
 		end
 
 		if moved then
-			controller.character:applyForce(totalForce * 50)
+			controller.characters[client].character:applyForce(totalForce * 50)
 		end
 		return moved
 	end
