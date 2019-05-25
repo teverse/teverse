@@ -82,7 +82,7 @@ engine.networking:bind( "characterSetInputStarted", function( client, direction 
 		controller.characters[client].updating = true
 	engine.graphics:frameDrawn(function()
 		if not update(client) then
-			controllers.characters[client].updating =false
+			controller.characters[client].updating =false
 			print("Input loop ended", client.name)
 			self:disconnect() -- no input from user.
 		end
