@@ -13,15 +13,15 @@ themeController.currentTheme = {
 		textColour = colour:fromRGB(255, 255, 255)
     },
     main = {
-		backgroundColour  = colour:fromRGB(66, 66, 76),
+		backgroundColour  = colour:fromRGB(28, 32, 46),
 		textColour = colour:fromRGB(255, 255, 255),
 	},
 	secondary = {
-	    backgroundColour  = colour:fromRGB(55, 55, 66),
+	    backgroundColour  = colour:fromRGB(28, 32, 46),
 	    textColour  = colour:fromRGB(255, 255, 255)
 	},
 	primary = {
-	    backgroundColour = colour:fromRGB(78, 83, 91),
+	    backgroundColour = colour:fromRGB(44, 49, 71),
 	    textColour  = colour:fromRGB(255,255,255)
 	},
 	light = {
@@ -29,8 +29,8 @@ themeController.currentTheme = {
 		textColour = colour:fromRGB(66, 66, 76),
 	},
 	tools = {
-		selected = colour:fromRGB(66, 134, 244),
-		hovered = colour(0.9, 0.9, 0.9),
+		selected = colour:fromRGB(69, 147, 255),
+		hovered = colour(1, 1, 1),
 		deselected = colour(0.6, 0.6, 0.6)
 	}
 }
