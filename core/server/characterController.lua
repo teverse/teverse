@@ -71,6 +71,7 @@ engine.networking:bind( "characterSetInputStarted", function( client, direction 
 	if not controller.characters[client] then return end
 
 	if direction == 5 then
+		print("jump")
 		controller.characters[client].character:applyImpulse(0,10,0)
 		return nil
 	elseif controller.characters[client].keys[direction] == nil then 
