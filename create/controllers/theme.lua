@@ -9,27 +9,27 @@ print ("DEBUG: Loading theme.lua")
 themeController.currentTheme = {
     default = {
         fontFile = "OpenSans-Regular",
-		backgroundColour  = colour:fromRGB(66, 66, 76),
+		backgroundColour  = colour:fromRGB(37, 37, 47),
 		textColour = colour:fromRGB(255, 255, 255)
     },
     main = {
-		backgroundColour  = colour:fromRGB(28, 32, 46),
+		backgroundColour  = colour:fromRGB(37, 37, 47),
 		textColour = colour:fromRGB(255, 255, 255),
 	},
 	secondary = {
-	    backgroundColour  = colour:fromRGB(28, 32, 46),
+	    backgroundColour  = colour:fromRGB(25, 33, 34),
 	    textColour  = colour:fromRGB(255, 255, 255)
 	},
 	primary = {
-	    backgroundColour = colour:fromRGB(44, 49, 71),
+	    backgroundColour = colour:fromRGB(39, 39, 50),
 	    textColour  = colour:fromRGB(255,255,255)
 	},
 	light = {
 		backgroundColour  = colour:fromRGB(255,255,255),
-		textColour = colour:fromRGB(66, 66, 76),
+		textColour = colour:fromRGB(25, 33, 34),
 	},
 	tools = {
-		selected = colour:fromRGB(69, 147, 255),
+		selected = colour:fromRGB(42, 151, 255),
 		hovered = colour(1, 1, 1),
 		deselected = colour(0.6, 0.6, 0.6)
 	}
