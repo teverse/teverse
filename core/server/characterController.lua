@@ -20,7 +20,7 @@ update = function(client)
 		end
 	end
 	if moved then
-		controller.characters[client].character:applyForce(totalForce * controller.characters[client].speed)
+		controller.characters[client].character:applyForce(totalForce * 75)
 	end
 	return moved
 end
@@ -70,7 +70,10 @@ controller.keyBinds = {
 engine.networking:bind( "characterSetInputStarted", function( client, direction )
 	if not controller.characters[client] then return end
 
-	if controller.characters[client].keys[direction] == nil then 
+	if direction == 5 then
+		controller.characters[client].character:applyImpulse(0,10,0)
+		return nil
+	elseif controller.characters[client].keys[direction] == nil then 
 		print("input fail")
 		return nil
 	end
