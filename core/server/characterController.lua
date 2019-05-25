@@ -41,6 +41,7 @@ engine.networking.clients:clientConnected(function (client)
 		if property == "position" then
 			-- This should probably not be hard coded like this
 			if value.y < -50 then
+				print("Player fells")
 				char.static = true
 				engine.tween:begin(char, 1, {position = vector3(0,10,10), rotation=quaternion()}, "inOutQuad")
 				wait(1.1)
