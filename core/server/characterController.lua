@@ -29,7 +29,7 @@ engine.networking.clients:clientConnected(function (client)
 	wait(1)
 	local char = engine.construct("block", workspace, {
 		name = client.id,
-		size = vector3(2,3,1),
+		size = vector3(4,1,3),
 		colour = colour(math.random(),math.random(),math.random()),
 		position = vector3(0,20,0),
 		static = false,

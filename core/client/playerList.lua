@@ -41,5 +41,6 @@ engine.networking.clients:clientConnected(addPlayer)
 engine.networking.clients:clientDisconnected(function (client)
 	if container:hasChild(client.name) then
 		container[client.name]:destroy()
+		positionPlayers()
 	end
 end)
