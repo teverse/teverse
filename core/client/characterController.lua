@@ -17,7 +17,6 @@ engine.networking:bind( "characterSpawned", function()
 	end
 end)
 
-
 controller.keyBinds = {
 	[enums.key.w]  = 1,
 	[enums.key.up] = 1,
@@ -29,7 +28,9 @@ controller.keyBinds = {
 	[enums.key.left] = 3,
 
 	[enums.key.d]     = 4,
-	[enums.key.right] = 4
+	[enums.key.right] = 4,
+	
+	[enums.key.space] = 5
 }
 
 engine.input:keyPressed(function (inputObj)
@@ -43,22 +44,5 @@ engine.input:keyReleased(function (inputObj)
 		engine.networking:toServer("characterSetInputEnded", controller.keyBinds[inputObj.key])
 	end
 end)
-
---[[controller.update = function()
-	local totalForce = vector3()
-	local moved = false
-
-	for key, force in pairs(controller.keyBinds) do
-		if engine.input:isKeyDown(enums.key[key]) then
-			moved=true
-			totalForce = totalForce + force
-		end
-	end
-	if moved then
-		controller.character:applyForce(totalForce * controller.speed)
-	end
-end]]
-
---engine.graphics:frameDrawn(controller.update)
 
 return controller
