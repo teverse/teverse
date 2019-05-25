@@ -6,7 +6,7 @@
 
 local controller = {}
 
-controller.defaultSpeed = 45
+controller.defaultSpeed = 50
 controller.characters = {}
 
 update = function(client)
@@ -41,7 +41,7 @@ engine.networking.clients:clientConnected(function (client)
 		if property == "position" then
 			-- This should probably not be hard coded like this
 			if value.y < -50 then
-				print("Player fells")
+				print("Player fells", client.name)
 				char.static = true
 				engine.tween:begin(char, 1, {position = vector3(0,10,10), rotation=quaternion()}, "inOutQuad")
 				wait(1.1)
@@ -50,7 +50,7 @@ engine.networking.clients:clientConnected(function (client)
 		end
 	end)
 	
-	controller.characters[client] = { character = char, keys = {false,false,false,false}, speed = controller.defaultSpeed }
+	controller.characters[client] = { updating=false, character = char, keys = {false,false,false,false}, speed = controller.defaultSpeed }
 end)
 
 engine.networking.clients:clientDisconnected(function (client)	wait(1)
@@ -69,19 +69,25 @@ controller.keyBinds = {
 
 engine.networking:bind( "characterSetInputStarted", function( client, direction )
 	if not controller.characters[client] then return end
+
 	if controller.characters[client].keys[direction] == nil then 
 		return nil
-	elseif direction == 5 then
-		controller.characters[client].character:applyImpulse(vector3(0,5,0))
 	end
 
 	controller.characters[client].keys[direction] = true
+	print(client.name, "key down", direction)
 
+	if not controller.characters[client].updating then
+		print("Input loop begin", client.name)
+		controller.characters[client].updating = true
 	engine.graphics:frameDrawn(function()
 		if not update(client) then
+			controllers.characters[client].updating =false
+			print("Input loop ended", client.name)
 			self:disconnect() -- no input from user.
 		end
 	end)
+end
 end)
 
 engine.networking:bind( "characterSetInputEnded", function( client, direction )
