@@ -36,7 +36,7 @@ engine.networking.clients:clientConnected(function (client)
 		velocity = vector3(0,10,0)
 	})
 	engine.networking:toClient(client, "characterSpawned")
-	
+	print("spawned", client.name, "character")
 	char:changed(function(property, value)
 		if property == "position" then
 			-- This should probably not be hard coded like this
