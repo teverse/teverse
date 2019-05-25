@@ -10,7 +10,7 @@ controller.defaultSpeed = 50
 controller.characters = {}
 
 update = function(client)
-	if not client or type(client) ~= "client" then return false end
+	if not client or type(client) ~= "client" then print("not clients") return false end
 	local totalForce = vector3()
 	local moved = false
 	for i, pressed in pairs(controller.characters[client].keys) do
@@ -71,6 +71,7 @@ engine.networking:bind( "characterSetInputStarted", function( client, direction 
 	if not controller.characters[client] then return end
 
 	if controller.characters[client].keys[direction] == nil then 
+		print("input fail")
 		return nil
 	end
 
@@ -93,7 +94,7 @@ end)
 engine.networking:bind( "characterSetInputEnded", function( client, direction )
 	if not controller.characters[client] then return end
 	if controller.characters[client].keys[direction] == nil then return end
-
+	print("input ended")
 	controller.characters[client].keys[direction] = false
 end)
 
