@@ -5,5 +5,5 @@
     @Description Loads all open sourced components of the server.
 --]]
 
-require("tevgit:core/server/chat.lua")
-require("tevgit:core/server/characterController.lua")
+local chat = require("tevgit:core/server/chat.lua")
+local char = require("tevgit:core/server/characterController.lua")

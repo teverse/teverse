@@ -13,6 +13,9 @@ engine.networking:bind( "characterSpawned", function()
 	controller.character = workspace[engine.networking.me.id]
 
 	if controller.camera then
+	--	controller.character.opacity = 0
+		--controller.camera.camera.position = vector3(0,90,0)
+		--controller.camera.camera:lookAt(vector3(0,0,0))
 		controller.camera.setTarget(controller.character)
 	end
 end)

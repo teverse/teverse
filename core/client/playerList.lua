@@ -36,6 +36,7 @@ end
 for _,client in pairs(engine.networking.clients.children) do
 	addPlayer(client)
 end
+
 engine.networking.clients:clientConnected(addPlayer)
 
 engine.networking.clients:clientDisconnected(function (client)
