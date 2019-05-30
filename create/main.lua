@@ -9,11 +9,13 @@ return function(workshop)
 		camera    = require("tevgit:create/controllers/camera.lua"),
 		console   = require("tevgit:create/controllers/console.lua"),
 		tool      = require("tevgit:create/controllers/tool.lua"),
-		env       = require("tevgit:create/controllers/environment.lua")
+		env       = require("tevgit:create/controllers/environment.lua"),
+		property  = require("tevgit:create/controllers/propertyEditor.lua")
 	}
 
 	controllers.ui.createMainInterface(workshop)
 	controllers.console.createConsole()
+	controllers.property.createUI()
 
 	local tools = {
 		add    = require("tevgit:create/tools/add.lua"),

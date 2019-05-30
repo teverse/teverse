@@ -2,6 +2,10 @@
 -- console.lua
 -- Author(s) joritochip, TheCakeChicken
 
+--[[
+This script accesses engine.workshop, although this should not work as the sandbox for modules will not be able to access workshop level components. The fix for this is to pass a reference to workshop in a function such as createConsole
+--]]
+
 local consoleController = {}
 
 local themeController = require("tevgit:create/controllers/theme.lua")
