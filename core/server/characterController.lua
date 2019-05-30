@@ -11,8 +11,6 @@ controller.characters = {}
 controller.chat = nil
 
 update = function(client)
-	if not client or type(client) ~= "client" then return end
-
 	local totalForce = vector3()
 	local moved = false
 	for i, pressed in pairs(controller.characters[client].keys) do
