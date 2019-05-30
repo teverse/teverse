@@ -10,6 +10,7 @@ controller.character = nil -- server creates this
 
 engine.networking:bind( "characterSpawned", function()
 	repeat wait() until workspace[engine.networking.me.id]
+		wait(1)
 	controller.character = workspace[engine.networking.me.id]
 
 	if controller.camera then
