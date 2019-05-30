@@ -47,13 +47,17 @@ function controller.generateProperties(instance)
             		fontSize = 18,
             		text = v.property
             	}, "main")
+
+              local inputGui = nil
             	
             	if controller.createInput[pType] then
-            		controller.createInput[pType](value,pType, readOnly)
+            		inputGui = controller.createInput[pType](value,pType, readOnly)
             	else
-            		controller.createInput.default(value, pType, readOnly)
+            		inputGui = controller.createInput.default(value, pType, readOnly)
             	end
             	
+              inputGui.position = guiCoord(0.5, 0, 0, y)
+
             	y = y + 18
             end
         end

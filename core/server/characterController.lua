@@ -21,7 +21,7 @@ update = function(client)
 	end
 
 	if moved then
-		controller.characters[client].character:applyForceAtPosition(totalForce * 75, vector3(0,0,-1))
+		controller.characters[client].character:applyForce(totalForce * 500)
 	end
 
 	return moved
@@ -31,12 +31,12 @@ engine.networking.clients:clientConnected(function (client)
 	wait(1)
 	local char = engine.construct("block", workspace, {
 		name = client.id,
-		size = vector3(4,1,3),
+		size = vector3(4,4,4),
 		colour = colour(math.random(),math.random(),math.random()),
 		position = vector3(0,20,0),
 		static = false,
 		velocity = vector3(0,10,0),
-		angularFactor = vector3(1,1,1)
+		angularFactor = vector3(0,0,0)
 	})
 
 	engine.networking:toClient(client, "characterSpawned")
@@ -79,7 +79,7 @@ engine.networking:bind( "characterSetInputStarted", function( client, direction 
 	if not controller.characters[client] then return end
 
 	if direction == 5 then
-		controller.characters[client].character:applyImpulse(0,100,0)
+		controller.characters[client].character:applyImpulse(0,300,0)
 		return nil
 	elseif controller.characters[client].keys[direction] == nil then 
 		return nil
