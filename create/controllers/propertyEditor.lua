@@ -14,7 +14,10 @@ end
 
 controller.createInput = {
 	default = function(value, pType, readOnly)
-		print("Default handler to create input for " .. ptype)
+		return engine.construct("guiFrame", nil, {
+			guiStyle = enums.guiStyle.noBackground,
+			size = guiCoord(0.5, 0, 0, 18)
+		})
 	end
 }
 
@@ -53,10 +56,11 @@ function controller.generateProperties(instance)
             	if controller.createInput[pType] then
             		inputGui = controller.createInput[pType](value,pType, readOnly)
             	else
-            		inputGui = controller.createInput.default(value, pType, readOnly)
+            		inputGui = controller.createInput.default(value, pType, readOnly)		
             	end
             	
               inputGui.position = guiCoord(0.5, 0, 0, y)
+              inputGui.parent = controller.window
 
             	y = y + 18
             end

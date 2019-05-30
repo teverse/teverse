@@ -14,6 +14,7 @@ TOOL_DESCRIPTION = "Use this to insert shapes."
 
 local toolsController = require("tevgit:create/controllers/tool.lua")
 local selectionController = require("tevgit:create/controllers/select.lua")
+local propertyController  = require("tevgit:create/controllers/propertyEditor.lua")
 
 local toolIsActive
 
@@ -55,6 +56,8 @@ local function onToolActivated(toolId)
         newBlock.physics = true
         newBlock.castsShadows = true
         newBlock.parent = engine.workspace
+        
+        propertyController.generateProperties(newBlock)
     end
     
     tool.data.mouseDownEvent = engine.input:mouseLeftPressed(function(input)
