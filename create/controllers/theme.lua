@@ -9,29 +9,29 @@ print ("DEBUG: Loading theme.lua")
 themeController.currentTheme = {
     default = {
         fontFile = "OpenSans-Regular",
-		backgroundColour  = colour:fromRGB(66, 66, 76),
-		textColour = colour:fromRGB(255, 255, 255)
+		backgroundColour  = colour:fromRGB(33, 33, 33),
+		textColour = colour:fromRGB(199, 199, 199)
     },
     main = {
-		backgroundColour  = colour:fromRGB(66, 66, 76),
-		textColour = colour:fromRGB(255, 255, 255),
+		backgroundColour  = colour:fromRGB(33, 33, 33),
+		textColour = colour:fromRGB(199, 199, 199),
 	},
 	secondary = {
-	    backgroundColour  = colour:fromRGB(55, 55, 66),
-	    textColour  = colour:fromRGB(255, 255, 255)
+	    backgroundColour  = colour:fromRGB(48, 48, 48),
+	    textColour  = colour:fromRGB(199, 199, 199)
 	},
 	primary = {
-	    backgroundColour = colour:fromRGB(78, 83, 91),
-	    textColour  = colour:fromRGB(255,255,255)
+	    backgroundColour = colour:fromRGB(48, 48, 48),
+	    textColour  = colour:fromRGB(199, 199, 199)
 	},
 	light = {
-		backgroundColour  = colour:fromRGB(255,255,255),
-		textColour = colour:fromRGB(66, 66, 76),
+		backgroundColour  = colour:fromRGB(242, 242, 242),
+		textColour = colour:fromRGB(21, 21, 25),
 	},
 	tools = {
-		selected = colour:fromRGB(66, 134, 244),
-		hovered = colour(0.9, 0.9, 0.9),
-		deselected = colour(0.6, 0.6, 0.6)
+		selected = colour:fromRGB(0, 78, 203),
+		hovered = colour:fromRGB(229, 230, 232),
+		deselected = colour:fromRGB(199, 199, 199)
 	}
 }
 
@@ -46,10 +46,10 @@ end
 
 themeController.applyTheme = function(gui)
 	local styleName = themeController.guis[gui]
-	
+
 	local style = themeController.currentTheme[styleName]
-	if not style then 
-		style = {} 
+	if not style then
+		style = {}
 	end
 
 	if themeController.currentTheme["default"] then
@@ -69,7 +69,7 @@ end
 
 themeController.add = function(gui, style)
     if themeController.guis[gui] then return end
-    
+
     themeController.guis[gui] = style
 	themeController.applyTheme(gui)
 end
