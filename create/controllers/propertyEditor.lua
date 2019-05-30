@@ -2,8 +2,10 @@ local controller = {}
 local uiController = require("tevgit:create/controllers/ui.lua")
 
 controller.window = nil
+controller.workshop = nil
 
 function controller.createUI(workshop)
+  controller.workshop = workshop
 	controller.window = uiController.create("guiFrame", workshop.interface, {
 		name = "propertyWindow",
 		draggable = true,
@@ -27,7 +29,7 @@ end
 
 function controller.generateProperties(instance)
     if instance and instance.events and instance.events["changed"] then
-        local members = engine.workshop:getMembersOfInstance( instance )
+        local members = controller.workshop:getMembersOfInstance( instance )
         table.sort( members, alphabeticalSorter ) 
        	
        	-- unsure if destroyallchildren is implemented on this instance
