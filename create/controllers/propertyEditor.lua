@@ -1,12 +1,10 @@
 local controller = {}
 local uiController = require("tevgit:create/controllers/ui.lua")
 
-print("Sandbox Test, this should be removed later: ", engine, engine.workshop)
-
 controller.window = nil
 
 function controller.createUI(workshop)
-	local controller.window = uiController.create("guiFrame", workshop.interface, {
+	controller.window = uiController.create("guiFrame", workshop.interface, {
 		name = "propertyWindow",
 		draggable = true,
 		size = guiCoord(0.25, 0, 0.5, 0),
@@ -45,7 +43,7 @@ function controller.generateProperties(instance)
             	local label = uiController.create("guiTextBox", controller.window, {
             		name = "label" .. v.property,
             		size = guiCoord(0.5, 0, 0, 18),
-            		position = guiCoord(0,0,0,y)
+            		position = guiCoord(0,0,0,y),
             		fontSize = 18,
             		text = v.property
             	}, "main")

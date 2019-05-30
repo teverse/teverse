@@ -2,9 +2,7 @@
 -- console.lua
 -- Author(s) joritochip, TheCakeChicken
 
---[[
-This script accesses engine.workshop, although this should not work as the sandbox for modules will not be able to access workshop level components. The fix for this is to pass a reference to workshop in a function such as createConsole
---]]
+
 
 local consoleController = {}
 
@@ -29,8 +27,8 @@ function stringCount(inputStr, pat)
 	return select(2, string.gsub(inputStr, pat, ""))
 end
 
-consoleController.createConsole = function()
-	local windowObject = uiController.create("guiFrame", engine.workshop.interface, {
+consoleController.createConsole = function(workshop)
+	local windowObject = uiController.create("guiFrame", workshop.interface, {
 		name = "outputConsole",
 		visible = false,
 		draggable = true,
@@ -140,7 +138,7 @@ consoleController.createConsole = function()
 					commandHistoryIndex = #commandHistory + 1
 					
 					print("> "..cmdInputText.text)
-					engine.workshop:loadString(cmdInputText.text)
+					workshop:loadString(cmdInputText.text)
 					
 					cmdInputText.text = ""
 				end
