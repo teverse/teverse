@@ -6,6 +6,7 @@ local themeController = {}
 print ("DEBUG: Loading theme.lua")
 
 -- values from default are used in all styles unless overridden.
+-- theme names are probably gonna have to get made meaningful...
 themeController.currentTheme = {
     default = {
         fontFile = "OpenSans-Regular",
@@ -14,6 +15,10 @@ themeController.currentTheme = {
     },
     main = {
 		backgroundColour  = colour:fromRGB(66, 66, 76),
+		textColour = colour:fromRGB(255, 255, 255),
+	},
+	mainTopBar = {
+		backgroundColour  = colour:fromRGB(45, 45, 55),
 		textColour = colour:fromRGB(255, 255, 255),
 	},
 	secondary = {

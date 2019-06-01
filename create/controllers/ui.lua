@@ -63,22 +63,52 @@ uiController.createMainInterface = function(workshop)
     local sideBar = uiController.createFrame(workshop.interface, {
         name = "toolbars",
         size = guiCoord(0,46,1,0),
-        position = guiCoord(0,10,0,70)
+        position = guiCoord(0,10,0,100)
+    }, "main")
+
+    uiController.tabs = uiController.createFrame(workshop.interface, {
+        name = "topbarTabs",
+        size = guiCoord(1, 0, 0, 23),
+        position = guiCoord(0,0,0,0)
+    }, "main")
+
+    uiController.createFrame(uiController.tabs, {
+        name = "borderBottom",
+        size = guiCoord(1, 0, 0, 2),
+        position = guiCoord(0,0,1,-2)
+    }, "secondary")
+
+    local fileTabBtn = uiController.create("guiButton", uiController.tabs, {
+        name = "file",
+        size = guiCoord(0, 50, 0, 18),
+        position = guiCoord(0,10,0,3),
+        text = "File",
+        align = enums.align.middle,
+        fontSize = 18
+    }, "secondary")
+
+    local exampleTabBtn = uiController.create("guiButton", uiController.tabs, {
+        name = "example",
+        size = guiCoord(0, 60, 0, 18),
+        position = guiCoord(0,70,0,3),
+        text = "Example",
+        align = enums.align.middle,
+        fontSize = 18
     }, "main")
     
     uiController.topBar = uiController.createFrame(workshop.interface, {
         name = "topbar",
         size = guiCoord(1, 0, 0, 60),
-        position = guiCoord(0,0,0,0)
-    }, "main")
+        position = guiCoord(0,0,0,23)
+    }, "mainTopBar")
 
     toolsController.container = sideBar
     toolsController.workshop = workshop
     toolsController.ui = uiController
 
     toolsController.registerMenu("topBar", uiController.topBar)
-    local saveBtn = toolsController.createButton("topBar", "fa:s-save", "Save")
-    local saveAsBtn = toolsController.createButton("topBar", "fa:r-save", "Save As")
+    local saveBtn = toolsController.createButton("topBar", "fa:s-file-download", "Save")
+    local saveAsBtn = toolsController.createButton("topBar", "fa:s-file-export", "Save As")
     local openBtn = toolsController.createButton("topBar", "fa:s-folder-open", "Open")
     local publishBtn = toolsController.createButton("topBar", "fa:s-cloud-upload-alt", "Publish")
 
