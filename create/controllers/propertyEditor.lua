@@ -10,7 +10,8 @@ function controller.createUI(workshop)
 		name = "propertyWindow",
 		draggable = true,
 		size = guiCoord(0, 250, 0, 400),
-		position = guiCoord(1, -250, 1, -400)
+		position = guiCoord(1, -250, 1, -400),
+    alpha = 1
 	}, "main")
 end
 
@@ -18,7 +19,8 @@ controller.createInput = {
 	default = function(value, pType, readOnly)
     return uiController.create("guiFrame", nil, {
       alpha = 0.25,
-      size = guiCoord(0.5, -10, 0, 20)
+      size = guiCoord(0.5, 0, 0, 20),
+      position = guiCoord(0.5,0,0,0)
     }, "secondary")
   end,
 
@@ -242,11 +244,13 @@ function controller.generateProperties(instance)
         local members = controller.workshop:getMembersOfInstance( instance )
         table.sort( members, alphabeticalSorter ) 
        	
-       	-- unsure if destroyallchildren is implemented on this instance
+       	-- prototype teverse gui system isn't perfect,
+        -- reuse already created instances to save time.
+
        	for _,v in pairs(controller.window.children) do
-       		v:destroy()
+       		v.visible = false
        	end
-       	wait(.1)
+
        	local y = 10
        	
         for i, v in pairs(members) do
@@ -255,25 +259,40 @@ function controller.generateProperties(instance)
             local readOnly = not v.writable
             
             if not readOnly and pType ~= "function" then
-            	local label = uiController.create("guiTextBox", controller.window, {
-            		name = "label" .. v.property,
-            		size = guiCoord(0.5, -15, 0, 20),
-            		position = guiCoord(0,10,0,y),
-            		fontSize = 18,
-            		text = v.property,
-                align = enums.align.middleRight
-            	}, "main")
 
-              local inputGui = nil
-            	
-            	if controller.createInput[pType] then
-            		inputGui = controller.createInput[pType](value,pType, readOnly)
-            	else
-            		inputGui = controller.createInput.default(value, pType, readOnly)		
-            	end
-            	
-              inputGui.position = guiCoord(0.5, 0, 0, y)
-              inputGui.parent = controller.window
+              local container = controller.window["_" .. v.property]
+
+              if not container then
+                container = engine.construct("guiFrame", controller.window,
+                {
+                  name = "_" .. v.property,
+                  alpha = 0,
+                  size = guiCoord(1, -10, 0, 20)
+                })
+
+                label = uiController.create("guiTextBox", container, {
+                	name = "label",
+                	size = guiCoord(0.5, -10, 0, 20),
+                	position = guiCoord(0,0,0,0),
+                	fontSize = 18,
+                	text = v.property,
+                  align = enums.align.middleRight
+                }, "main")
+
+                local inputGui = nil
+              	
+              	if controller.createInput[pType] then
+              		inputGui = controller.createInput[pType](value,pType, readOnly)
+              	else
+              		inputGui = controller.createInput.default(value, pType, readOnly)		
+              	end
+
+                inputGui.parent = container
+              else
+                container.visible = true
+              end
+
+              container.position = guiCoord(0,5,0,y)
 
             	y = y + 23
             end
