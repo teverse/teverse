@@ -75,7 +75,7 @@ controller.createInput = {
       size = guiCoord(1, -4, 1, -2),
       position = guiCoord(0, 2, 0, 1),
       text = "text input",
-      align = enums.align.middle
+      align = enums.align.middleLeft
     }, "primary")
 
     return container

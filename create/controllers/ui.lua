@@ -32,9 +32,15 @@ uiController.createWindow = function(parent, pos, size, title)
         name = "textLabel",
         readonly=true,
         size = guiCoord(1,-10,1,-2),
-        position = guiCoord(0,5,0,2),
+        position = guiCoord(0,5,0,0),
         text = title
     }, "mainText")
+
+    uiController.createFrame(titleBar, {
+        name = "borderBottom",
+        size = guiCoord(1, 0, 0, 2),
+        position = guiCoord(0,0,1,-2)
+    }, "secondary")
 
     local content = uiController.create("guiFrame", container, {
         name = "content",
@@ -78,7 +84,7 @@ uiController.createMainInterface = function(workshop)
         align = enums.align.middle,
         fontSize = 21,
         guiStyle = enums.guiStyle.noBackground,
-        text = "Loading, maybe dont touch anything rn."
+        text = "Teverse is loading, don't touch right now!"
     }, "main")
 
     local loadingImage = uiController.create("guiImage", uiController.loadingFrame, {
@@ -93,7 +99,7 @@ uiController.createMainInterface = function(workshop)
         name = "toolbars",
         size = guiCoord(0,46,1,0),
         position = guiCoord(0,10,0,100)
-    }, "main")
+    }, "mainTopBar")
 
     uiController.tabs = uiController.createFrame(workshop.interface, {
         name = "topbarTabs",
