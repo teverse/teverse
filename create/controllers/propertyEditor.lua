@@ -21,7 +21,7 @@ controller.updateHandlers = {
     gui.r.text = tostring(value.r)
     gui.g.text = tostring(value.g)
     gui.b.text = tostring(value.b)
-    gui.col.backgroundColour = colour(tostring(value.r),tostring(value.g),tostring(value.b))
+    gui.col.backgroundColour = value
   end
 }
 
