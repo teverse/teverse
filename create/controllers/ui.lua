@@ -16,6 +16,35 @@ uiController.createFrame = function(parent, properties, style)
     return gui
 end
 
+uiController.createWindow = function(parent, pos, size, title)
+    local container = engine.construct("guiFrame", parent, {
+        name = "windowContainer",
+        position = pos,
+        size = size
+    })
+
+    local titleBar = uiController.create("guiFrame", container, {
+        name = "titleBar",
+        size = guiCoord(1,0,0,22)
+    }, "main")
+
+    local textLabel = uiController.create("guiTextBox", titleBar, {
+        name = "textLabel",
+        readonly=true,
+        size = guiCoord(1,-10,1,-2),
+        position = guiCoord(0,5,0,2),
+        text = title
+    }, "mainText")
+
+    local content = uiController.create("guiFrame", container, {
+        name = "content",
+        position = guiCoord(0,0,0,22),
+        size = guiCoord(1,0,1,-22)
+    }, "mainTopBar")
+
+    return container
+end
+
 local function spinCb()
     if not uiController.loadingFrame.visible then
         uiController.loadingTween.tweenObject.rotation = 0

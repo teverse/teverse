@@ -17,6 +17,10 @@ themeController.currentTheme = {
 		backgroundColour  = colour:fromRGB(66, 66, 76),
 		textColour = colour:fromRGB(255, 255, 255),
 	},
+	mainText = {
+		guiStyle = enums.guiStyle.noBackground,
+		textColour = colour:fromRGB(255, 255, 255),
+	},
 	mainTopBar = {
 		backgroundColour  = colour:fromRGB(45, 45, 55),
 		textColour = colour:fromRGB(255, 255, 255),

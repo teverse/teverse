@@ -6,13 +6,7 @@ controller.workshop = nil
 
 function controller.createUI(workshop)
   controller.workshop = workshop
-	controller.window = uiController.create("guiFrame", workshop.interface, {
-		name = "propertyWindow",
-		draggable = true,
-		size = guiCoord(0, 250, 0, 400),
-		position = guiCoord(1, -250, 1, -400),
-    alpha = 1
-	}, "main")
+	controller.window = uiController.createWindow(workshop.interface, guiCoord(1, -250, 1, -400), guiCoord(0, 250, 0, 400), "Properties")
 end
 
 controller.createInput = {
@@ -247,7 +241,7 @@ function controller.generateProperties(instance)
        	-- prototype teverse gui system isn't perfect,
         -- reuse already created instances to save time.
 
-       	for _,v in pairs(controller.window.children) do
+       	for _,v in pairs(controller.window.content.children) do
        		v.visible = false
        	end
 
@@ -260,10 +254,10 @@ function controller.generateProperties(instance)
             
             if not readOnly and pType ~= "function" then
 
-              local container = controller.window["_" .. v.property]
+              local container = controller.window.content["_" .. v.property]
 
               if not container then
-                container = engine.construct("guiFrame", controller.window,
+                container = engine.construct("guiFrame", controller.window.content,
                 {
                   name = "_" .. v.property,
                   alpha = 0,
@@ -277,7 +271,7 @@ function controller.generateProperties(instance)
                 	fontSize = 18,
                 	text = v.property,
                   align = enums.align.middleRight
-                }, "main")
+                }, "mainText")
 
                 local inputGui = nil
               	
