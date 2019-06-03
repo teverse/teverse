@@ -9,16 +9,33 @@ function controller.createUI(workshop)
 	controller.window = uiController.createWindow(workshop.interface, guiCoord(1, -250, 1, -400), guiCoord(0, 250, 0, 400), "Properties")
 end
 
+-- these methods are responsible for setting the propertie gui values when updated 
+
+controller.updateHandlers = {
+  vector3 = function(instance, gui, value)
+    gui.x.text = tostring(value.x)
+    gui.y.text = tostring(value.y)
+    gui.z.text = tostring(value.z)
+  end,
+  colour = function(instance, gui, value)
+    gui.r.text = tostring(value.r)
+    gui.g.text = tostring(value.g)
+    gui.b.text = tostring(value.b)
+    gui.col.backgroundColour = colour(tostring(value.r),tostring(value.g),tostring(value.b))
+  end
+}
+
 controller.createInput = {
-	default = function(value, pType, readOnly)
+	default = function(instance, property, value)
     return uiController.create("guiFrame", nil, {
       alpha = 0.25,
+      name = "inputContainer",
       size = guiCoord(0.5, 0, 0, 20),
       position = guiCoord(0.5,0,0,0)
     }, "secondary")
   end,
 
-  block = function(value, pType, readOnly)
+  block = function(instance, property, value)
     local container = controller.createInput.default(value, pType, readOnly)
     local x = uiController.create("guiTextBox", container, {
       alpha = 0.25,
@@ -34,7 +51,7 @@ controller.createInput = {
     return container
   end,
 
-  boolean = function(value, pType, readOnly)
+  boolean = function(instance, property, value)
     local container = controller.createInput.default(value, pType, readOnly)
     local x = uiController.create("guiButton", container, {
       name = "input",
@@ -47,7 +64,7 @@ controller.createInput = {
     return container
   end,
 
-  number = function(value, pType, readOnly)
+  number = function(instance, property, value)
     local container = controller.createInput.default(value, pType, readOnly)
     local x = uiController.create("guiTextBox", container, {
       alpha = 0.25,
@@ -64,7 +81,7 @@ controller.createInput = {
     return container
   end,
 
-  string = function(value, pType, readOnly)
+  string = function(instance, property, value)
     local container = controller.createInput.default(value, pType, readOnly)
     local x = uiController.create("guiTextBox", container, {
       alpha = 0.25,
@@ -81,7 +98,7 @@ controller.createInput = {
     return container
   end,
 
-  vector3 = function(value, pType, readOnly)
+  vector3 = function(instance, property, value)
     local container = controller.createInput.default(value, pType, readOnly)
     local x = uiController.create("guiTextBox", container, {
       alpha = 0.25,
@@ -108,7 +125,7 @@ controller.createInput = {
     return container
   end,
 
-  vector2 = function(value, pType, readOnly)
+  vector2 = function(instance, property, value)
     local container = controller.createInput.default(value, pType, readOnly)
     local x = uiController.create("guiTextBox", container, {
       alpha = 0.25,
@@ -130,7 +147,7 @@ controller.createInput = {
     return container
   end,
 
-  quaternion = function(value, pType, readOnly)
+  quaternion = function(instance, property, value)
     local container = controller.createInput.default(value, pType, readOnly)
     local x = uiController.create("guiTextBox", container, {
       alpha = 0.25,
@@ -162,7 +179,7 @@ controller.createInput = {
     return container
   end,
 
-  guiCoord = function(value, pType, readOnly)
+  guiCoord = function(instance, property, value)
     local container = controller.createInput.default(value, pType, readOnly)
     local x = uiController.create("guiTextBox", container, {
       alpha = 0.25,
@@ -194,7 +211,7 @@ controller.createInput = {
     return container
   end,
 
-  colour = function(value, pType, readOnly)
+  colour = function(instance, property, value)
     local container = controller.createInput.default(value, pType, readOnly)
     local x = uiController.create("guiTextBox", container, {
       alpha = 0.25,
@@ -276,14 +293,18 @@ function controller.generateProperties(instance)
                 local inputGui = nil
               	
               	if controller.createInput[pType] then
-              		inputGui = controller.createInput[pType](value,pType, readOnly)
+              		inputGui = controller.createInput[pType](instance, v.property, value)
               	else
-              		inputGui = controller.createInput.default(value, pType, readOnly)		
+              		inputGui = controller.createInput.default(instance, v.property, value)		
               	end
 
                 inputGui.parent = container
               else
                 container.visible = true
+              end
+
+              if controller.updateHandlers[pType] then
+                controller.updateHandlers[pType](instance, container.inputContainer, value)
               end
 
               container.position = guiCoord(0,5,0,y)
