@@ -21,6 +21,43 @@ function controller.createUI(workshop)
   end)
 end
 
+local instanceEditing = nil
+local function callbackInput(property, value)
+  if instanceEditing and instanceEditing[property] ~= nil then
+    instanceEditing[property] = value
+  end
+end
+
+controller.parseInputs = {
+  block = function (property, gui)
+
+  end,
+  boolean = function (property, gui)
+    callbackInput(property, gui.input.selected == true)
+  end,
+  number = function (property, gui)
+    callbackInput(property, tonumber(gui.input.text))
+  end,
+  string = function (property, gui)
+    callbackInput(property, gui.input.text)
+  end,
+  vector3 = function(property, gui)
+    callbackInput(property, vector3(tonumber(gui.x.text),tonumber(gui.y.text),tonumber(gui.z.text)))
+  end,
+  vector2 = function(property, gui)
+    callbackInput(property, vector2(tonumber(gui.x.text),tonumber(gui.y.text)))
+  end,
+  colour = function(property, gui)
+    callbackInput(property, colour(tonumber(gui.r.text),tonumber(gui.g.text),tonumber(gui.b.text)))
+  end,
+  quaternion = function(property, gui)
+    callbackInput(property, quaternion(tonumber(gui.x.text),tonumber(gui.y.text),tonumber(gui.z.text),tonumber(gui.w.text)))
+  end,
+  guiCoord = function(property, gui)
+    callbackInput(property, guiCoord(tonumber(gui.scaleX.text),tonumber(gui.offsetX.text),tonumber(gui.scaleY.text),tonumber(gui.offsetY.text)))
+  end,
+}
+
 -- these methods are responsible for setting the propertie gui values when updated 
 
 controller.updateHandlers = {
@@ -88,6 +125,8 @@ controller.createInput = {
       align = enums.align.middle
     }, "primary")
 
+
+
     return container
   end,
 
@@ -100,6 +139,11 @@ controller.createInput = {
       text = "",
       guiStyle = enums.guiStyle.checkBox
     }, "light")
+
+    x:mouseLeftReleased(function ()
+      x.selected = not x.selected
+      controller.parseInputs[type(value)](property, container)
+    end)
 
     return container
   end,
@@ -118,6 +162,10 @@ controller.createInput = {
       align = enums.align.middle
     }, "primary")
 
+    x:textInput(function ()
+      controller.parseInputs[type(value)](property, container)
+    end)
+
     return container
   end,
 
@@ -134,6 +182,10 @@ controller.createInput = {
       text = "text input",
       align = enums.align.middleLeft
     }, "primary")
+
+    x:textInput(function ()
+      controller.parseInputs[type(value)](property, container)
+    end)
 
     return container
   end,
@@ -164,6 +216,13 @@ controller.createInput = {
     z.position = guiCoord(2/3, 2, 0, 1)
     themeController.add(z, "primary")
 
+    local function handler()
+      controller.parseInputs[type(value)](property, container)
+    end
+    x:textInput(handler)
+    y:textInput(handler)
+    z:textInput(handler)
+
     return container
   end,
 
@@ -186,6 +245,11 @@ controller.createInput = {
     y.parent = container
     y.position = guiCoord(1/2, 2, 0, 1)
     themeController.add(y, "primary")
+    local function handler()
+      controller.parseInputs[type(value)](property, container)
+    end
+    x:textInput(handler)
+    y:textInput(handler)
 
     return container
   end,
@@ -222,6 +286,14 @@ controller.createInput = {
     w.position = guiCoord(3/4, 2, 0, 1)
     themeController.add(w, "primary")
 
+    local function handler()
+      controller.parseInputs[type(value)](property, container)
+    end
+    x:textInput(handler)
+    y:textInput(handler)
+    z:textInput(handler)
+    w:textInput(handler)
+
     return container
   end,
 
@@ -257,6 +329,14 @@ controller.createInput = {
     w.position = guiCoord(3/4, 2, 0, 1)
     themeController.add(w, "primary")
 
+    local function handler()
+      controller.parseInputs[type(value)](property, container)
+    end
+    x:textInput(handler)
+    y:textInput(handler)
+    z:textInput(handler)
+    w:textInput(handler)
+
     return container
   end,
 
@@ -286,6 +366,13 @@ controller.createInput = {
     b.position = guiCoord(1/2, 2, 0, 1)
     themeController.add(b, "primary")
 
+    local function handler()
+      controller.parseInputs[type(value)](property, container)
+    end
+    x:textInput(handler)
+    g:textInput(handler)
+    b:textInput(handler)
+
     local col = engine.construct("guiFrame", container, {
       name = "col",
       size = guiCoord(1/4, -4, 1, -2),
@@ -304,12 +391,17 @@ end
 controller.eventHandlers = {}
 
 function controller.generateProperties(instance)
-    if instance and instance.events and instance.events["changed"] then
+  if instanceEditing == instance then return end
+  
+  instanceEditing = nil
 
-        for i,v in pairs(controller.eventHandlers) do
-          v:disconnect()
-        end
-        controller.eventHandlers = {}
+  for i,v in pairs(controller.eventHandlers) do
+    v:disconnect()
+  end
+  controller.eventHandlers = {}
+
+    if instance and instance.events and instance.events["changed"] then
+        instanceEditing = instance
 
         local members = controller.workshop:getMembersOfInstance( instance )
         table.sort( members, alphabeticalSorter ) 
