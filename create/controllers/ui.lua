@@ -137,7 +137,6 @@ uiController.createMainInterface = function(workshop)
     toolsController.ui = uiController
 
     toolsController.registerMenu("windowsTab", uiController.windowsTab)
-    local propertiesBtn = toolsController.createButton("windowsTab", "fa:s-sliders-h", "Properties")
 
     toolsController.registerMenu("topBar", uiController.topBar)
     local saveBtn = toolsController.createButton("topBar", "fa:s-file-download", "Save")

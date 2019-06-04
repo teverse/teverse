@@ -12,6 +12,12 @@ function controller.createUI(workshop)
     name = "scrollview",
     size = guiCoord(1,0,1,0)
   }, "mainTopBar")
+
+  local toolsController = require("tevgit:create/controllers/tool.lua")
+  local propertiesBtn = toolsController.createButton("windowsTab", "fa:s-sliders-h", "Properties")
+  propertiesBtn:mouseLeftReleased(function ()
+    controller.window.visible = not controller.window.visible
+  end)
 end
 
 -- these methods are responsible for setting the propertie gui values when updated 
@@ -63,8 +69,8 @@ controller.createInput = {
     return uiController.create("guiFrame", nil, {
       alpha = 0.25,
       name = "inputContainer",
-      size = guiCoord(0.5, 0, 0, 20),
-      position = guiCoord(0.5,0,0,0)
+      size = guiCoord(0.6, 0, 0, 20),
+      position = guiCoord(0.4,0,0,0)
     }, "secondary")
   end,
 
@@ -283,8 +289,16 @@ local function alphabeticalSorter(a, b)
 	return a.property < b.property
 end
 
+controller.eventHandlers = {}
+
 function controller.generateProperties(instance)
     if instance and instance.events and instance.events["changed"] then
+
+        for i,v in pairs(controller.eventHandlers) do
+          v:disconnect()
+        end
+        controller.eventHandlers = {}
+
         local members = controller.workshop:getMembersOfInstance( instance )
         table.sort( members, alphabeticalSorter ) 
        	
@@ -316,7 +330,7 @@ function controller.generateProperties(instance)
 
                 label = uiController.create("guiTextBox", container, {
                 	name = "label",
-                	size = guiCoord(0.5, -10, 0, 20),
+                	size = guiCoord(0.4, -10, 0, 20),
                 	position = guiCoord(0,0,0,0),
                 	fontSize = 18,
                 	text = v.property,
@@ -338,6 +352,7 @@ function controller.generateProperties(instance)
 
               if controller.updateHandlers[pType] then
                 controller.updateHandlers[pType](instance, container.inputContainer, value)
+
               end
 
               container.position = guiCoord(0,5,0,y)
@@ -345,6 +360,13 @@ function controller.generateProperties(instance)
             	y = y + 23
             end
         end
+
+        table.insert( controller.eventHandlers, instance:changed(function(prop, val)
+          if controller.updateHandlers[type(val)] then
+            local container = controller.scrollView["_" .. prop]
+            controller.updateHandlers[type(val)](instance, container.inputContainer, val)
+          end
+        end))
 
         controller.scrollView.canvasSize = guiCoord(0,0,0,y)
     end
