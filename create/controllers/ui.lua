@@ -4,6 +4,8 @@
 local uiController = {}
 local themeController = require("tevgit:create/controllers/theme.lua")
 local toolsController = require("tevgit:create/controllers/tool.lua")
+local uiTabController = require("tevgit:create/controllers/uiTabController.lua")
+uiTabController.ui = uiController
 
 uiController.create = function(className, parent, properties, style)
     local gui = engine.construct(className, parent, properties)
@@ -113,33 +115,29 @@ uiController.createMainInterface = function(workshop)
         position = guiCoord(0,0,1,-2)
     }, "secondary")
 
-    local fileTabBtn = uiController.create("guiButton", uiController.tabs, {
-        name = "file",
-        size = guiCoord(0, 50, 0, 18),
-        position = guiCoord(0,10,0,3),
-        text = "File",
-        align = enums.align.middle,
-        fontSize = 18
-    }, "secondary")
-
-    local exampleTabBtn = uiController.create("guiButton", uiController.tabs, {
-        name = "example",
-        size = guiCoord(0, 60, 0, 18),
-        position = guiCoord(0,70,0,3),
-        text = "Example",
-        align = enums.align.middle,
-        fontSize = 18
-    }, "main")
-    
     uiController.topBar = uiController.createFrame(workshop.interface, {
         name = "topbar",
         size = guiCoord(1, 0, 0, 60),
         position = guiCoord(0,0,0,23)
     }, "mainTopBar")
 
+    uiController.windowsTab = uiController.createFrame(workshop.interface, {
+        name = "windowsTab",
+        size = guiCoord(1, 0, 0, 60),
+        position = guiCoord(0,0,0,23)
+    }, "mainTopBar")
+
+    local tabController = uiTabController.registerTabs(uiController.tabs, "secondary", "main")
+    uiTabController.createTab(uiController.tabs, "File", uiController.topBar)
+    uiTabController.createTab(uiController.tabs, "Windows", uiController.windowsTab)
+
+
     toolsController.container = sideBar
     toolsController.workshop = workshop
     toolsController.ui = uiController
+
+    toolsController.registerMenu("windowsTab", uiController.windowsTab)
+    local propertiesBtn = toolsController.createButton("windowsTab", "fa:s-sliders-h", "Properties")
 
     toolsController.registerMenu("topBar", uiController.topBar)
     local saveBtn = toolsController.createButton("topBar", "fa:s-file-download", "Save")

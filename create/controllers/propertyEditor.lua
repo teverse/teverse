@@ -3,26 +3,59 @@ local uiController = require("tevgit:create/controllers/ui.lua")
 
 controller.window = nil
 controller.workshop = nil
+controller.scrollView = nil
 
 function controller.createUI(workshop)
   controller.workshop = workshop
 	controller.window = uiController.createWindow(workshop.interface, guiCoord(1, -250, 1, -400), guiCoord(0, 250, 0, 400), "Properties")
+  controller.scrollView = uiController.create("guiScrollView", controller.window.content, {
+    name = "scrollview",
+    size = guiCoord(1,0,1,0)
+  }, "mainTopBar")
 end
 
 -- these methods are responsible for setting the propertie gui values when updated 
 
 controller.updateHandlers = {
+  block = function (instance, gui, value)
+
+  end,
+  boolean = function (instance, gui, value)
+    gui.input.selected = value
+  end,
+  number = function (instance, gui, value)
+    gui.input.text = tostring(value)
+  end,
+  string = function (instance, gui, value)
+    gui.input.text = value
+  end,
   vector3 = function(instance, gui, value)
     gui.x.text = tostring(value.x)
     gui.y.text = tostring(value.y)
     gui.z.text = tostring(value.z)
+  end,
+  vector2 = function(instance, gui, value)
+    gui.x.text = tostring(value.x)
+    gui.y.text = tostring(value.y)
   end,
   colour = function(instance, gui, value)
     gui.r.text = tostring(value.r)
     gui.g.text = tostring(value.g)
     gui.b.text = tostring(value.b)
     gui.col.backgroundColour = value
-  end
+  end,
+  quaternion = function(instance, gui, value)
+    gui.x.text = tostring(value.x)
+    gui.y.text = tostring(value.y)
+    gui.z.text = tostring(value.z)
+    gui.w.text = tostring(value.w)
+  end,
+  guiCoord = function(instance, gui, value)
+    gui.scaleX.text = tostring(value.scaleX)
+    gui.offsetX.text = tostring(value.offsetX)
+    gui.scaleY.text = tostring(value.scaleY)
+    gui.offsetY.text = tostring(value.offsetY)
+  end,
 }
 
 controller.createInput = {
@@ -258,7 +291,7 @@ function controller.generateProperties(instance)
        	-- prototype teverse gui system isn't perfect,
         -- reuse already created instances to save time.
 
-       	for _,v in pairs(controller.window.content.children) do
+       	for _,v in pairs(controller.scrollView.children) do
        		v.visible = false
        	end
 
@@ -271,14 +304,14 @@ function controller.generateProperties(instance)
             
             if not readOnly and pType ~= "function" then
 
-              local container = controller.window.content["_" .. v.property]
+              local container = controller.scrollView["_" .. v.property]
 
               if not container then
-                container = engine.construct("guiFrame", controller.window.content,
+                container = engine.construct("guiFrame", controller.scrollView,
                 {
                   name = "_" .. v.property,
                   alpha = 0,
-                  size = guiCoord(1, -10, 0, 20)
+                  size = guiCoord(1, -30, 0, 20)
                 })
 
                 label = uiController.create("guiTextBox", container, {
@@ -312,6 +345,8 @@ function controller.generateProperties(instance)
             	y = y + 23
             end
         end
+
+        controller.scrollView.canvasSize = guiCoord(0,0,0,y)
     end
 end
 

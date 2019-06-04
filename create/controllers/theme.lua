@@ -77,7 +77,7 @@ themeController.applyTheme = function(gui)
 end
 
 themeController.add = function(gui, style)
-    if themeController.guis[gui] then return end
+    --if themeController.guis[gui] then return end
     
     themeController.guis[gui] = style
 	themeController.applyTheme(gui)
