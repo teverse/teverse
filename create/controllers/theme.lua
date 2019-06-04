@@ -7,7 +7,7 @@ print ("DEBUG: Loading theme.lua")
 
 -- values from default are used in all styles unless overridden.
 -- theme names are probably gonna have to get made meaningful...
-themeController.currentTheme = {
+themeController.darkTheme = {
     default = {
         fontFile = "OpenSans-Regular",
 		backgroundColour  = colour:fromRGB(66, 66, 76),
@@ -43,6 +43,45 @@ themeController.currentTheme = {
 		deselected = colour(0.6, 0.6, 0.6)
 	}
 }
+
+themeController.lightTheme = {
+    default = {
+        fontFile = "OpenSans-Regular",
+		backgroundColour  = colour:fromRGB(189, 195, 199),
+		textColour = colour:fromRGB(0,0,0)
+    },
+    main = {
+		backgroundColour  = colour:fromRGB(189, 195, 199),
+		textColour = colour:fromRGB(0,0,0),
+	},
+	mainText = {
+		guiStyle = enums.guiStyle.noBackground,
+		textColour = colour:fromRGB(0,0,0),
+	},
+	mainTopBar = {
+		backgroundColour  = colour:fromRGB(127, 140, 141),
+		textColour = colour:fromRGB(0,0,0),
+	},
+	secondary = {
+	    backgroundColour  = colour:fromRGB(149, 165, 166),
+	    textColour  = colour:fromRGB(0,0,0)
+	},
+	primary = {
+	    backgroundColour = colour:fromRGB(52, 73, 94),
+	    textColour  = colour:fromRGB(255,255,255)
+	},
+	light = {
+		backgroundColour  = colour:fromRGB(44, 62, 80),
+		textColour = colour:fromRGB(255,255,255),
+	},
+	tools = {
+		selected = colour:fromRGB(66, 134, 244),
+		hovered = colour(0.9, 0.9, 0.9),
+		deselected = colour(0.6, 0.6, 0.6)
+	}
+}
+
+themeController.currentTheme = themeController.darkTheme
 
 themeController.guis = {} --make this a weak metatable (keys)
 

@@ -138,6 +138,17 @@ uiController.createMainInterface = function(workshop)
 
     toolsController.registerMenu("windowsTab", uiController.windowsTab)
 
+    --[[local darkmode = true
+    toolsController.createButton("windowsTab", "fa:s-palette", "Switch themes"):mouseLeftReleased(function ()
+        darkmode = not darkmode 
+        if not darkmode then
+            themeController.set(themeController.lightTheme)
+        else
+            themeController.set(themeController.darkTheme)
+        end
+    end)]]
+    
+
     toolsController.registerMenu("topBar", uiController.topBar)
     local saveBtn = toolsController.createButton("topBar", "fa:s-file-download", "Save")
     local saveAsBtn = toolsController.createButton("topBar", "fa:s-file-export", "Save As")

@@ -1,5 +1,6 @@
 local controller = {}
 local uiController = require("tevgit:create/controllers/ui.lua")
+local themeController = require("tevgit:create/controllers/theme.lua")
 
 controller.window = nil
 controller.workshop = nil
@@ -155,11 +156,13 @@ controller.createInput = {
     y.name = "y"
     y.parent = container
     y.position = guiCoord(1/3, 2, 0, 1)
+    themeController.add(y, "primary")
 
     local z = x:clone()
     z.name = "z"
     z.parent = container
     z.position = guiCoord(2/3, 2, 0, 1)
+    themeController.add(z, "primary")
 
     return container
   end,
@@ -182,6 +185,7 @@ controller.createInput = {
     y.name = "y"
     y.parent = container
     y.position = guiCoord(1/2, 2, 0, 1)
+    themeController.add(y, "primary")
 
     return container
   end,
@@ -204,16 +208,19 @@ controller.createInput = {
     y.name = "y"
     y.parent = container
     y.position = guiCoord(1/4, 2, 0, 1)
+    themeController.add(y, "primary")
 
     local z = x:clone()
     z.name = "z"
     z.parent = container
     z.position = guiCoord(1/2, 2, 0, 1)
+    themeController.add(z, "primary")
 
     local w = x:clone()
     w.name = "w"
     w.parent = container
     w.position = guiCoord(3/4, 2, 0, 1)
+    themeController.add(w, "primary")
 
     return container
   end,
@@ -236,16 +243,19 @@ controller.createInput = {
     y.name = "offsetX"
     y.parent = container
     y.position = guiCoord(1/4, 2, 0, 1)
+    themeController.add(y, "primary")
 
     local z = x:clone()
     z.name = "scaleY"
     z.parent = container
     z.position = guiCoord(1/2, 2, 0, 1)
+    themeController.add(z, "primary")
 
     local w = x:clone()
     w.name = "offsetY"
     w.parent = container
     w.position = guiCoord(3/4, 2, 0, 1)
+    themeController.add(w, "primary")
 
     return container
   end,
@@ -268,11 +278,13 @@ controller.createInput = {
     g.name = "g"
     g.parent = container
     g.position = guiCoord(1/4, 2, 0, 1)
+    themeController.add(g, "primary")
 
     local b = x:clone()
     b.name = "b"
     b.parent = container
     b.position = guiCoord(1/2, 2, 0, 1)
+    themeController.add(b, "primary")
 
     local col = engine.construct("guiFrame", container, {
       name = "col",
