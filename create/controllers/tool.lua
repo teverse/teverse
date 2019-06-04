@@ -158,6 +158,15 @@ function toolsController:register(tool)
         "main"
     )
 
+    if tool.hotKey then
+        engine.input:keyPressed(function(inputObj)
+            if inputObj.systemHandled then return end
+            if inputObj.key == tool.hotKey then
+                onToolButtonMouseLeftReleased(toolId)
+            end
+        end)
+    end
+
     toolButton:mouseLeftReleased(function()
         onToolButtonMouseLeftReleased(toolId)
     end)
@@ -168,6 +177,7 @@ function toolsController:register(tool)
         name = tool.name, 
        
         button = toolButton, 
+        hotKey = tool.hotKey,
         data = tool.data and tool.data or {},
 
         activated = tool.activated, 

@@ -118,6 +118,8 @@ return toolsController:register({
     icon = TOOL_ICON,
     description = TOOL_DESCRIPTION,
 
+    hotKey = enums.key.number1,
+
     activated = onToolActivated,
     deactivated = onToolDeactviated
 
