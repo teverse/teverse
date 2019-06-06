@@ -138,6 +138,7 @@ consoleController.createConsole = function(workshop)
 					commandHistoryIndex = #commandHistory + 1
 					
 					print("> "..cmdInputText.text)
+					wait()
 					workshop:loadString(cmdInputText.text)
 					
 					cmdInputText.text = ""
