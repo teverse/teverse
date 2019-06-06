@@ -107,7 +107,7 @@ consoleController.createConsole = function(workshop)
 		fontSize = 20,
 		textColour = colour(1, 1, 1),
 		name = "cmdInputText"
-	}, "light")
+	}, "secondary")
 
 	closeButton:mouseLeftPressed(function() 
 		consoleController.consoleObject.visible = false
