@@ -154,6 +154,7 @@ uiController.createMainInterface = function(workshop)
     local saveAsBtn = toolsController.createButton("topBar", "fa:s-file-export", "Save As")
     local openBtn = toolsController.createButton("topBar", "fa:s-folder-open", "Open")
     local publishBtn = toolsController.createButton("topBar", "fa:s-cloud-upload-alt", "Publish")
+    local testBtn = toolsController.createButton("topBar", "fa:circle", "TEST BUTTON")
 
     --[[
     local function checkIfPublishable()
@@ -181,6 +182,9 @@ uiController.createMainInterface = function(workshop)
     end)
     publishBtn:mouseLeftReleased(function ()
         workshop:publishDialogue()
+    end)
+    testBtn:mouseLeftReleased(function()
+        workshop:openFileDialogue()
     end)
 end
 
