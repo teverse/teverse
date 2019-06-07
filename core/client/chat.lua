@@ -9,7 +9,6 @@ local container = engine.construct("guiFrame", engine.interface, {
 	position=guiCoord(0, 30, 1, -355),
 	backgroundColour=colour(0.1,0.1,0.1),
 	handleEvents=false,
-	visible = false,
 	alpha = 0.1,
 	zIndex=1001
 })
@@ -33,7 +32,6 @@ local messageInputFrame = engine.construct("guiFrame", engine.interface, {
 	position=guiCoord(0, 30, 1, -55),
 	backgroundColour=colour(0.1,0.1,0.1),
 	handleEvents=false,
-	visible=false,
 	alpha = 0.8,
 	zIndex=1001
 })
@@ -59,28 +57,25 @@ messageInputBox:keyPressed(function(inputObj)
 end)
 
 function addMessage(txt)
-	messagesTextBox.text = messagesTextBox.text .. "\n" .. txt
+	local newValue = messagesTextBox.text .. "\n" .. txt
+	if (newValue:len() > 610) then
+		newValue = newValue:sub(newValue:len() - 600)
+	end
+	messagesTextBox.text = newValue
 end
 
 engine.networking:bind( "message", function( from, message )
 	addMessage(from .. " : " .. message)
 end)
 
-engine.networking:connected(function (serverId)
-	container.visible=true
-	messageInputFrame.visible =true
-	addMessage("You have connected to a server.")
+engine.networking.clients:clientConnected(function (client)
+	addMessage(client.name .. " has joined.")
 end)
 
-engine.networking.clients:clientConnected(function (client)
-	addMessage(client.name.." has joined.")
-end)
 engine.networking.clients:clientDisconnected(function (client)
-	addMessage(tostring(client).." has disconnected.")
+	addMessage(client.name .. " has disconnected.")
 end)
+
 engine.networking:disconnected(function (serverId)
 	addMessage("You have disconnected.")
-end)
-engine.networking:pingUpdate(function (ping)
-	addMessage("You pinged at " .. tostring(ping))
 end)

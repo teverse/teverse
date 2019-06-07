@@ -8,7 +8,7 @@ TOOL_NAME = "Scale"
 TOOL_ICON = "fa:s-expand-arrows-alt"
 TOOL_DESCRIPTION = "Use this to resize primitives."
 
-local toolController = require("tevgit:create/controllers/tool.lua")
+local toolsController = require("tevgit:create/controllers/tool.lua")
 
 local function onToolActivated(toolId)
     
@@ -18,11 +18,13 @@ local function onToolDeactviated(toolId)
   
 end
 
-return toolController:register({
+return toolsController:register({
     
     name = TOOL_NAME,
     icon = TOOL_ICON,
     description = TOOL_DESCRIPTION,
+
+    hotKey = enums.key.number4,
 
     activated = onToolActivated,
     deactivated = onToolDeactviated

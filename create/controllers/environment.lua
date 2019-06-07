@@ -3,6 +3,8 @@
 
 local environmentController = {}
 
+local firstRun = true
+
 environmentController.createStarterMap = function()
 	print("creating starter map")
 	engine.construct("light", workspace, {
@@ -35,12 +37,18 @@ environmentController.createStarterMap = function()
 		position       = vector3(1, 0, 0)
 	})	
 
-	engine.construct("block", workspace, {
+	local block = engine.construct("block", workspace, {
 		name           = "blueBlock",
 		colour         = colour(0, 0, 1),
 		size           = vector3(1, 1, 1),
 		position       = vector3(0.5, 1, 0)
 	})	
+
+	if firstRun then
+		firstRun = false
+		--hack: pregenerate properties
+		require("tevgit:create/controllers/propertyEditor.lua").generateProperties(block)
+	end
 
 	--[[
 	-- Create a script source.

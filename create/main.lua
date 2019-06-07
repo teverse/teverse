@@ -3,16 +3,19 @@
 
 return function(workshop)
 	local controllers = {
+		console   = require("tevgit:create/controllers/console.lua"),
 		selection = require("tevgit:create/controllers/select.lua"),
 		theme     = require("tevgit:create/controllers/theme.lua"),
 		ui        = require("tevgit:create/controllers/ui.lua"),
 		camera    = require("tevgit:create/controllers/camera.lua"),
-		console   = require("tevgit:create/controllers/console.lua"),
 		tool      = require("tevgit:create/controllers/tool.lua"),
-		env       = require("tevgit:create/controllers/environment.lua")
+		env       = require("tevgit:create/controllers/environment.lua"),
+		property  = require("tevgit:create/controllers/propertyEditor.lua")
 	}
 
 	controllers.ui.createMainInterface(workshop)
+	controllers.console.createConsole(workshop)
+	controllers.property.createUI(workshop)
 
 	local tools = {
 		add    = require("tevgit:create/tools/add.lua"),

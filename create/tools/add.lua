@@ -1,7 +1,7 @@
 --[[
     Copyright 2019 Teverse
     @File add.lua
-    @Author(s) Jay, Ly
+    @Author(s) Jay, Ly, joritochip
     @Updated 5/8/19
 --]]
 
@@ -14,6 +14,7 @@ TOOL_DESCRIPTION = "Use this to insert shapes."
 
 local toolsController = require("tevgit:create/controllers/tool.lua")
 local selectionController = require("tevgit:create/controllers/select.lua")
+local propertyController  = require("tevgit:create/controllers/propertyEditor.lua")
 
 local toolIsActive
 
@@ -55,9 +56,13 @@ local function onToolActivated(toolId)
         newBlock.physics = true
         newBlock.castsShadows = true
         newBlock.parent = engine.workspace
+        
+        propertyController.generateProperties(newBlock)
     end
     
-    tool.data.mouseDownEvent = engine.input:mouseLeftPressed(function()
+    tool.data.mouseDownEvent = engine.input:mouseLeftPressed(function(input)
+		if input.systemHandled then return end 
+		
         placeBlock()
         local curTime = os.clock()
         mouseDown = curTime
@@ -69,7 +74,9 @@ local function onToolActivated(toolId)
         end
     end)
 
-    tool.data.mouseUpEvent = engine.input:mouseLeftReleased(function()
+    tool.data.mouseUpEvent = engine.input:mouseLeftReleased(function(input)
+		if input.systemHandled then return end 
+		
         mouseDown = 0
     end)
     
@@ -110,6 +117,8 @@ return toolsController:register({
     name = TOOL_NAME,
     icon = TOOL_ICON,
     description = TOOL_DESCRIPTION,
+
+    hotKey = enums.key.number1,
 
     activated = onToolActivated,
     deactivated = onToolDeactviated

@@ -8,11 +8,10 @@ TOOL_NAME = "Move"
 TOOL_ICON = "fa:s-arrows-alt"
 TOOL_DESCRIPTION = "Use this to move primitives along an axis."
 
-local toolController = require("tevgit:create/controllers/tool.lua")
+local toolsController = require("tevgit:create/controllers/tool.lua")
 local selectionController = require("tevgit:create/controllers/select.lua")
 
 local function onToolActivated(toolId)
-
 	-- This is used to raycast the user's mouse position to an axis
 	local gridGuideline = engine.construct("block", workspace, {
 		size = vector3(0,0,0),
@@ -33,17 +32,18 @@ local function onToolActivated(toolId)
 	local c = 1
 	local o = 0
 	
+	local leftButtonDown = false
+	
 	-- Probably can be improved
 	-- Creates two 'handles' for each axis.
 	-- Should work on all selected items.
 	for i = 1,6 do
-		local componentIndex = c
 		local component = components[c]
 		local face = vector3(0,0,0)
 		face[component] = o == 0 and o-1 or o
 		
-		local handle = engine.contruct("block", nil, {
-			name = "_CreateMode_", --theres some significance to this, i forgot.
+		local handle = engine.construct("block", nil, {
+			name = "_CreateMode_",
 			castsShadows = false,
 			opacity = 0,
 			size = vector3(0.1, 0.1, 0.1),
@@ -51,8 +51,13 @@ local function onToolActivated(toolId)
 			emissiveColour = colour(c==1 and .5 or 0, c==2 and .5 or 0, c==3 and .5 or 0), 
 			workshopLocked = true
 		})
-
+		
 		handle:mouseLeftPressed(function()
+			if leftButtonDown then return end -- how
+			
+			print("left pressed")
+			leftButtonDown = handle 
+			
 			selectionController.selectable = false
 			gridGuideline.size = vector3(300, 0.1, 300)
 			gridGuideline.rotation = handle.rotation
@@ -67,7 +72,7 @@ local function onToolActivated(toolId)
 			end
 
 			local mouseoffsets = {}
-			for _,v in pairs(selectedItems) do
+			for _,v in pairs(selectionController.selection) do
 				mouseoffsets[v] = (mouseHit.hitPosition - v.position)
 			end
 
@@ -75,9 +80,9 @@ local function onToolActivated(toolId)
 
 			local gridStep = nil -- TODO: INTERFACE TO SELECT GRIDSET
 			if not gridStep then gridStep = 0 else gridStep = math.abs(gridStep) end
-			--inputGrid.text = tostring(gridStep)
+			
 			repeat 
-				if activeTool == id then
+				if toolsController.currentToolId == toolId then
 					--Face camera on one Axis
 					gridGuideline.position = handle.position
 					if component == "x" then
@@ -112,11 +117,12 @@ local function onToolActivated(toolId)
 						local target = mouseHit.hitPosition
 						lastHit = target
 
-						for _,v in pairs(selectedItems) do
+						for _,v in pairs(selectionController.selection) do
 							if mouseoffsets[v] then
 								local newPos = target - mouseoffsets[v]
 								local pos = v.position
-								if gridStep > 0 and tools[id].data.axis[componentIndex] then
+
+								if gridStep > 0 and toolsController.tools[toolId].data.axis[c] then
 									pos[component] = roundToMultiple(newPos[component], gridStep)
 								else
 									pos[component] = newPos[component]
@@ -128,14 +134,17 @@ local function onToolActivated(toolId)
 					end
 				end
 				wait()
-			until not engine.input:isMouseButtonDown(enums.mouseButton.left) or not activeTool == id
+			until not leftButtonDown or not toolsController.currentToolId == toolId
+			
 			delay(function() selectionController.selectable = false end, 1)
-			if activeTool == id then
+			
+			if toolsController.currentToolId == toolId then
 				gridGuideline.size = vector3(0,0,0)
 			end
 		end)
 		
-		table.insert(tools[id].data.handles, {handle, face})
+		table.insert(toolsController.tools[toolId].data.handles, {handle, face})
+
 		if i % 2 == 0 then
 			c=c+1
 			o = 0
@@ -143,16 +152,20 @@ local function onToolActivated(toolId)
 			o = o + 1
 		end
 	end
+	
+	engine.input:mouseLeftReleased(function()
+		leftButtonDown = false
+	end)
 
 	updateHandles = function()
 		if selectionController.boundingBox.size == vector3(0,0,0) then
-			for _,v in pairs(tools[id].data.handles) do
+			for _,v in pairs(toolsController.tools[toolId].data.handles) do
 				v[1].size = vector3(0,0,0)
 				v[1].opacity = 0
 			end
 		else
-			for _,v in pairs(tools[id].data.handles) do
-				v[1].position = selectionController.boundingBox.position + selectionController.boundingBox.rotation* ((v[2] * selectionControllerboundingBox.size/2) + (v[2]*1.5)) 
+			for _,v in pairs(toolsController.tools[toolId].data.handles) do
+				v[1].position = selectionController.boundingBox.position + selectionController.boundingBox.rotation* ((v[2] * selectionController.boundingBox.size/2) + (v[2]*1.5)) 
 				v[1]:lookAt(selectionController.boundingBox.position)
 				v[1].size = vector3(0.1, 0.1, 0.25)
 				v[1].opacity = 1
@@ -160,13 +173,13 @@ local function onToolActivated(toolId)
 		end
 	end
 
-	tools[id].data.keyDownEvent = engine.input:keyPressed(function ( inp )
+	toolsController.tools[toolId].data.keyDownEvent = engine.input:keyPressed(function ( inp )
 		if inp.key == enums.key.t then
 			--inputGrid.text = "0"
 		end
 	end)
 
-	tools[id].data.boundingEvent = selectionController.boundingBox:changed(updateHandles)
+	toolsController.tools[toolId].data.boundingEvent = selectionController.boundingBox:changed(updateHandles)
 	updateHandles()
 end
 
@@ -179,15 +192,17 @@ local function onToolDeactviated(toolId)
 	end
 	toolsController.tools[toolId].data.handles = nil
 	
-	tools[id].data.boundingEvent:disconnect()
-	tools[id].data.boundingEvent = nil
+	toolsController.tools[toolId].data.boundingEvent:disconnect()
+	toolsController.tools[toolId].data.boundingEvent = nil
 end
 
-return toolController:register({
+return toolsController:register({
     
     name = TOOL_NAME,
     icon = TOOL_ICON,
-    description = TOOL_DESCRIPTION,
+	description = TOOL_DESCRIPTION,
+	
+    hotKey = enums.key.number3,
 
     activated = onToolActivated,
     deactivated = onToolDeactviated

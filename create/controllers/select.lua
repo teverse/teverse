@@ -5,6 +5,8 @@ local selectionController = {}
 
 selectionController.selectable = true
 
+local propertyEditor  = require("tevgit:create/controllers/propertyEditor.lua")
+
 selectionController.boundingBox = engine.construct("block", nil, {
 	name = "_CreateMode_boundingBox",
 	wireframe = true,
@@ -137,7 +139,7 @@ engine.input:mouseLeftReleased(function(inp)
     		table.insert(selectionController.selection, mouseHit.object)
     		selectionController.addBoundingListener(mouseHit.object)
     		selectionController.calculateBoundingBox()
-
+			propertyEditor.generateProperties(mouseHit.object)
     	end
 
     end

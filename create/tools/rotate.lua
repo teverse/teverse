@@ -8,7 +8,7 @@ TOOL_NAME = "Rotate"
 TOOL_ICON = "local:rotate.png"
 TOOL_DESCRIPTION = "Use this to rotate primitives."
 
-local toolController = require("tevgit:create/controllers/tool.lua")
+local toolsController = require("tevgit:create/controllers/tool.lua")
 
 local function onToolActivated(toolId)
     
@@ -18,11 +18,13 @@ local function onToolDeactviated(toolId)
   
 end
 
-return toolController:register({
+return toolsController:register({
     
     name = TOOL_NAME,
     icon = TOOL_ICON,
     description = TOOL_DESCRIPTION,
+
+    hotKey = enums.key.number5,
 
     activated = onToolActivated,
     deactivated = onToolDeactviated
