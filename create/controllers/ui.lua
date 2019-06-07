@@ -73,11 +73,11 @@ end
 
 uiController.createMainInterface = function(workshop)
     uiController.loadingFrame = uiController.create("guiFrame", workshop.interface, {
-                                name = "loadingFrame",
-                                size = guiCoord(0,300,0,100),
-                                position = guiCoord(0.5,-150,0.5,-50),
-                                guiStyle = enums.guiStyle.rounded
-                            }, "main")
+        name = "loadingFrame",
+        size = guiCoord(0,300,0,100),
+        position = guiCoord(0.5,-150,0.5,-50),
+        guiStyle = enums.guiStyle.rounded
+    }, "main")
 
     uiController.create("guiTextBox", uiController.loadingFrame, {
         name = "loadingMessage",
@@ -154,7 +154,6 @@ uiController.createMainInterface = function(workshop)
     local saveAsBtn = toolsController.createButton("topBar", "fa:s-file-export", "Save As")
     local openBtn = toolsController.createButton("topBar", "fa:s-folder-open", "Open")
     local publishBtn = toolsController.createButton("topBar", "fa:s-cloud-upload-alt", "Publish")
-    local testBtn = toolsController.createButton("topBar", "fa:circle", "TEST BUTTON")
 
     --[[
     local function checkIfPublishable()
@@ -182,9 +181,6 @@ uiController.createMainInterface = function(workshop)
     end)
     publishBtn:mouseLeftReleased(function ()
         workshop:publishDialogue()
-    end)
-    testBtn:mouseLeftReleased(function()
-        workshop:openFileDialogue()
     end)
 end
 
