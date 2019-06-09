@@ -73,11 +73,11 @@ end
 
 uiController.createMainInterface = function(workshop)
     uiController.loadingFrame = uiController.create("guiFrame", workshop.interface, {
-                                name = "loadingFrame",
-                                size = guiCoord(0,300,0,100),
-                                position = guiCoord(0.5,-150,0.5,-50),
-                                guiStyle = enums.guiStyle.rounded
-                            }, "main")
+        name = "loadingFrame",
+        size = guiCoord(0,300,0,100),
+        position = guiCoord(0.5,-150,0.5,-50),
+        guiStyle = enums.guiStyle.rounded
+    }, "main")
 
     uiController.create("guiTextBox", uiController.loadingFrame, {
         name = "loadingMessage",
