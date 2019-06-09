@@ -27,7 +27,8 @@ function controller.createTab(container, name, callback)
 	        text = name,
 	        align = enums.align.middle,
 	        hoverCursor = "fa:s-hand-pointer",
-	        fontSize = 18
+			fontSize = 18,
+			readOnly = true
 	    }, active and controller.widgets[container].selected or controller.widgets[container].deselected)
 
 		controller.widgets[container].tabs[btn] = callback
