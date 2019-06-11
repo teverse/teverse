@@ -18,6 +18,9 @@ return function(workshop)
 
 	--loaded here due to dependencies
 	controllers.env = require("tevgit:create/controllers/environment.lua")
+	
+	controllers.toolSettings = require("tevgit:create/controllers/toolSettings.lua")
+	controllers.toolSettings.createUI(workshop)
 
 	local tools = {
 		add    = require("tevgit:create/tools/add.lua"),

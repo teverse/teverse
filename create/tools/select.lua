@@ -63,13 +63,7 @@ local function onToolActivated(toolId)
         
                         local currentPosition = currentHit.hitPosition + (forward * (selectionController.selection[1].size/2)) --+ (selectedItems[1].size/2)
 
-                        if gridStep > 0 then
-                            for i, v in pairs(toolSettings.axis) do
-                                if v[2] then
-                                    currentPosition[v[1]] = helpers.roundToMultiple(currentPosition[v[1]], gridStep)
-                                end
-                            end
-                        end
+                        currentPosition = helpers.roundVectorWithToolSettings(currentPosition)
 
                         if lastPosition ~= currentPosition or lastRot ~= applyRot then
                             lastRot = applyRot

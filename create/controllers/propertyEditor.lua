@@ -440,7 +440,7 @@ function controller.generateProperties(instance)
             local pType = type(value)
             local readOnly = not v.writable
             
-            if not readOnly and pType ~= "function" and v.property ~= "physics" then
+            if not readOnly and pType ~= "function" then
 
               local container = controller.scrollView["_" .. v.property]
 

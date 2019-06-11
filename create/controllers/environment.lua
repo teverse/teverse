@@ -6,7 +6,7 @@ local environmentController = {}
 local firstRun = true
 
 local toolsController = require("tevgit:create/controllers/tool.lua")
-local physicsButton = toolsController.createButton("testingTab", "fa:s-play", "Resume")
+local physicsButton = toolsController.createButton("testingTab", "fa:s-pause", "Pause")
 physicsButton:mouseLeftReleased(function ()
     if engine.physics.running then
     	engine.physics:pause()
@@ -73,6 +73,8 @@ environmentController.createStarterMap = function()
 		mesh           = "tevurl:3d/Duck.glb"
 	})	
 
+	--[[
+	
 	local corset = engine.construct("block", workspace, {
 		name           = "corset",
 		colour         = colour(1, 1, 1),
@@ -82,7 +84,7 @@ environmentController.createStarterMap = function()
 		mesh           = "tevurl:3d/Corset.glb"
 	})
 
-	--[[local light = engine.construct("light", workspace, {
+	local light = engine.construct("light", workspace, {
 		name               = "corsetSpotLight",
 		diffuseColour      = colour(20, 15, 15), --Lights accept colours higher than the standard 1,1,1 scheme
 		specularColour     = colour(20, 15, 15),

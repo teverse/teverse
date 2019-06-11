@@ -85,7 +85,7 @@ uiController.createMainInterface = function(workshop)
         align = enums.align.middleTop,
         fontSize = 21,
         guiStyle = enums.guiStyle.noBackground,
-        text = "Teverse is loading, don't touch right now!"
+        text = "Please wait whilst Teverse loads the latest assets."
     }, "main")
 
     local loadingImage = uiController.create("guiImage", uiController.loadingFrame, {
