@@ -6,7 +6,7 @@ local environmentController = {}
 local firstRun = true
 
 local toolsController = require("tevgit:create/controllers/tool.lua")
-local physicsButton = toolsController.createButton("testingTab", "fa:s-play", "Run Physics")
+local physicsButton = toolsController.createButton("testingTab", "fa:s-play", "Resume")
 physicsButton:mouseLeftReleased(function ()
     if engine.physics.running then
     	engine.physics:pause()
@@ -18,10 +18,10 @@ engine.physics:changed(function (p,v)
 	if p == "running" then
 		if v then
 			physicsButton.image.texture = "fa:s-pause"
-			physicsButton.text.text = "Sim Pause"
+			physicsButton.text.text = "Pause"
 		else
 			physicsButton.image.texture = "fa:s-play"
-			physicsButton.text.text = "Sim Run"
+			physicsButton.text.text = "Resume"
 		end
 	end
 end)

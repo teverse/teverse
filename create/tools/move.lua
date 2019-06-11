@@ -10,6 +10,8 @@ TOOL_DESCRIPTION = "Use this to move primitives along an axis."
 
 local toolsController = require("tevgit:create/controllers/tool.lua")
 local selectionController = require("tevgit:create/controllers/select.lua")
+local toolSettings = require("tevgit:create/controllers/toolSettings.lua")
+local helpers = require("tevgit:create/helpers.lua")
 
 local function onToolActivated(toolId)
 	-- This is used to raycast the user's mouse position to an axis
@@ -41,6 +43,7 @@ local function onToolActivated(toolId)
 		local component = components[c]
 		local face = vector3(0,0,0)
 		face[component] = o == 0 and o-1 or o
+		local thisC = c
 		
 		local handle = engine.construct("block", nil, {
 			name = "_CreateMode_",
@@ -78,8 +81,7 @@ local function onToolActivated(toolId)
 
 			local lastHit = mouseHit.hitPosition
 
-			local gridStep = nil -- TODO: INTERFACE TO SELECT GRIDSET
-			if not gridStep then gridStep = 0 else gridStep = math.abs(gridStep) end
+			local gridStep = toolSettings.gridStep
 			
 			repeat 
 				if toolsController.currentToolId == toolId then
@@ -121,9 +123,8 @@ local function onToolActivated(toolId)
 							if mouseoffsets[v] then
 								local newPos = target - mouseoffsets[v]
 								local pos = v.position
-
-								if gridStep > 0 and toolsController.tools[toolId].data.axis[c] then
-									pos[component] = roundToMultiple(newPos[component], gridStep)
+								if gridStep > 0 and toolSettings.axis[thisC][2] then
+									pos[component] = helpers.roundToMultiple(newPos[component], gridStep)
 								else
 									pos[component] = newPos[component]
 								end

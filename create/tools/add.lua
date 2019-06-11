@@ -15,6 +15,8 @@ TOOL_DESCRIPTION = "Use this to insert shapes."
 local toolsController = require("tevgit:create/controllers/tool.lua")
 local selectionController = require("tevgit:create/controllers/select.lua")
 local propertyController  = require("tevgit:create/controllers/propertyEditor.lua")
+local toolSettings  = require("tevgit:create/controllers/toolSettings.lua")
+local helpers = require("tevgit:create/helpers.lua")
 
 local toolIsActive
 
@@ -83,7 +85,7 @@ local function onToolActivated(toolId)
     while (toolIsActive and wait() and tool.data.placeholderBlock) do
         local mouseHit = engine.physics:rayTestScreenAllHits(engine.input.mousePosition, tool.data.placeholderBlock)
         if #mouseHit > 0 then
-            tool.data.placeholderBlock.position = mouseHit[1].hitPosition + vector3(0, 0.5, 0)
+            tool.data.placeholderBlock.position = helpers.roundVectorToMultiple(mouseHit[1].hitPosition, toolSettings.gridStep) + vector3(0, 0.5, 0)
         end
     end
     

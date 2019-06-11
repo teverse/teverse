@@ -9,6 +9,8 @@ controller.scrollView = nil
 function controller.createUI(workshop)
   controller.workshop = workshop
 	controller.window = uiController.createWindow(workshop.interface, guiCoord(1, -250, 1, -400), guiCoord(0, 250, 0, 400), "Properties")
+  controller.window.visible = false
+  
   controller.scrollView = uiController.create("guiScrollView", controller.window.content, {
     name = "scrollview",
     size = guiCoord(1,0,1,0)
