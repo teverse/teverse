@@ -7,11 +7,11 @@ local firstRun = true
 
 environmentController.createStarterMap = function()
 	print("creating starter map")
-	engine.construct("light", workspace, {
+	local mainLight = engine.construct("light", workspace, {
 		name           = "mainLight",
-		offsetPosition = vector3(3, 4, 0),
+		position       = vector3(3, 4, 0),
 		type           = enums.lightType.directional,
-		offsetRotation = quaternion():setEuler(-0.2, 0.2, 0),
+		rotation       = quaternion():setEuler(-0.2, 0.2, 0),
 		shadows        = true
 	})	
 
@@ -43,11 +43,48 @@ environmentController.createStarterMap = function()
 		size           = vector3(1, 1, 1),
 		position       = vector3(0.5, 1, 0)
 	})	
+	
+	engine.construct("block", workspace, {
+		name           = "duck",
+		colour         = colour(1, 1, 1),
+		size           = vector3(1.68787964, 1.67249405, 1.117558464),
+		position       = vector3(0.5, 2.21, 0),
+		mesh           = "tevurl:3d/Duck.glb"
+	})	
+
+	local corset = engine.construct("block", workspace, {
+		name           = "corset",
+		colour         = colour(1, 1, 1),
+		size           = vector3(1.98645, 2.9499, 1.98645),
+		position       = vector3(-3, 0.94, 4),
+		rotation       = quaternion:setEuler(0, math.rad(-45), 0),
+		mesh           = "tevurl:3d/Corset.glb"
+	})
+
+	--[[local light = engine.construct("light", workspace, {
+		name               = "corsetSpotLight",
+		diffuseColour      = colour(20, 15, 15), --Lights accept colours higher than the standard 1,1,1 scheme
+		specularColour     = colour(20, 15, 15),
+		position           = vector3(2, 3.94, 7.5),
+		falloff            = 2,
+		lumThreshold       = 0.15,
+		shadows            = true,
+		shadowFarDistance  = 100,
+		shadowFarClip      = 30,
+		type               = enums.lightType.spot
+	})
+
+	light:lookAt(corset.position)
+
+	]]
+
+	
 
 	if firstRun then
 		firstRun = false
 		--hack: pregenerate properties
 		require("tevgit:create/controllers/propertyEditor.lua").generateProperties(block)
+		require("tevgit:create/controllers/propertyEditor.lua").generateProperties(mainLight)
 	end
 
 	--[[

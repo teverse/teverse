@@ -74,16 +74,15 @@ end
 uiController.createMainInterface = function(workshop)
     uiController.loadingFrame = uiController.create("guiFrame", workshop.interface, {
                                 name = "loadingFrame",
-                                size = guiCoord(0,300,0,100),
-                                position = guiCoord(0.5,-150,0.5,-50),
-                                guiStyle = enums.guiStyle.rounded
+                                size = guiCoord(1,0,1,0),
+                                position = guiCoord(0,0,0,0)
                             }, "main")
 
     uiController.create("guiTextBox", uiController.loadingFrame, {
         name = "loadingMessage",
         position = guiCoord(0, 10, 0.5, 0),
         size = guiCoord(1, -20, 0.5, -10),
-        align = enums.align.middle,
+        align = enums.align.middleTop,
         fontSize = 21,
         guiStyle = enums.guiStyle.noBackground,
         text = "Teverse is loading, don't touch right now!"
