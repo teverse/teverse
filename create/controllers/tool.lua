@@ -67,9 +67,9 @@ function toolsController.createButton(menuName, image, label, height)
     local gui = toolsController.ui.createFrame(menu.gui, {size=guiCoord(0,50,height,0)}, "mainTopBar")
     if image then
         local imgSize = math.min(50, menu.gui.absoluteSize.y) - 5
-        local img = toolsController.ui.create("guiImage", gui, {size=guiCoord(0, (2/3) * imgSize, 0, (2/3) * imgSize), position=guiCoord(0.5, -((1/3) * imgSize),0,5), texture=image, handleEvents=false}, "mainTopBar")
+        local img = toolsController.ui.create("guiImage", gui, {name = "image", size=guiCoord(0, (2/3) * imgSize, 0, (2/3) * imgSize), position=guiCoord(0.5, -((1/3) * imgSize),0,5), texture=image, handleEvents=false}, "mainTopBar")
     end
-    local txt = toolsController.ui.create("guiTextBox", gui, {size=guiCoord(1, 0, image and 1/3 or 1, -5), position=guiCoord(0,0,image and 2/3 or 0,0), text=label, fontSize=15, align=enums.align.middle, handleEvents=false}, "mainTopBar")
+    local txt = toolsController.ui.create("guiTextBox", gui, {name = "text", size=guiCoord(1, 0, image and 1/3 or 1, -5), position=guiCoord(0,0,image and 2/3 or 0,0), text=label, fontSize=15, align=enums.align.middle, handleEvents=false}, "mainTopBar")
     toolsController.registerButton(menuName, gui)
     return gui
 end

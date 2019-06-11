@@ -126,9 +126,17 @@ uiController.createMainInterface = function(workshop)
         position = guiCoord(0,0,0,23)
     }, "mainTopBar")
 
+
+    uiController.testingTab = uiController.createFrame(workshop.interface, {
+        name = "testingTab",
+        size = guiCoord(1, 0, 0, 60),
+        position = guiCoord(0,0,0,23)
+    }, "mainTopBar")
+
     local tabController = uiTabController.registerTabs(uiController.tabs, "secondary", "main")
     uiTabController.createTab(uiController.tabs, "File", uiController.topBar)
     uiTabController.createTab(uiController.tabs, "Windows", uiController.windowsTab)
+    uiTabController.createTab(uiController.tabs, "Testing", uiController.testingTab)
 
 
     toolsController.container = sideBar
@@ -136,6 +144,7 @@ uiController.createMainInterface = function(workshop)
     toolsController.ui = uiController
 
     toolsController.registerMenu("windowsTab", uiController.windowsTab)
+    toolsController.registerMenu("testingTab", uiController.testingTab)
 
     --[[local darkmode = true
     toolsController.createButton("windowsTab", "fa:s-palette", "Switch themes"):mouseLeftReleased(function ()

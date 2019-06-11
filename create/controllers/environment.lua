@@ -5,6 +5,27 @@ local environmentController = {}
 
 local firstRun = true
 
+local toolsController = require("tevgit:create/controllers/tool.lua")
+local physicsButton = toolsController.createButton("testingTab", "fa:s-play", "Run Physics")
+physicsButton:mouseLeftReleased(function ()
+    if engine.physics.running then
+    	engine.physics:pause()
+    else
+    	engine.physics:resume()
+    end
+end)
+engine.physics:changed(function (p,v)
+	if p == "running" then
+		if v then
+			physicsButton.image.texture = "fa:s-pause"
+			physicsButton.text.text = "Sim Pause"
+		else
+			physicsButton.image.texture = "fa:s-play"
+			physicsButton.text.text = "Sim Run"
+		end
+	end
+end)
+
 environmentController.createStarterMap = function()
 	print("creating starter map")
 	local mainLight = engine.construct("light", workspace, {
