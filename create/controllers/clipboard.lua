@@ -17,6 +17,7 @@ engine.input:keyPressed(function (inputObj)
 
 			for _,v in pairs(controller.clipboard) do
 				if v then
+					v.emissiveColour = colour(0,0,0)
 					local new = v:clone()
 					new.position = v.position + vector3(0,size.y,0)
 					table.insert(newItems, new)
