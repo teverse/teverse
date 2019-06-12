@@ -7,14 +7,14 @@ local uiController = require("tevgit:create/controllers/ui.lua")
 local themeController = require("tevgit:create/controllers/theme.lua")
 
 controller.gridStep = 1
-controller.axis = {{"x", true},{"y", false},{"z", true}} -- should grid step be on .. axis
+controller.axis = {{"x", true},{"y", true},{"z", true}} -- should grid step be on .. axis
 
 controller.window = nil
 controller.workshop = nil
 
 function controller.createUI(workshop)
   controller.workshop = workshop
-  controller.window = uiController.createWindow(workshop.interface, guiCoord(0, 66, 0, 100), guiCoord(0, 140, 0, 73), "Tool settings")
+  controller.window = uiController.createWindow(workshop.interface, guiCoord(0, 66, 0, 100), guiCoord(0, 140, 0, 73), "Tool Settings")
   
   local toolsController = require("tevgit:create/controllers/tool.lua")
   local settingsBtn = toolsController.createButton("windowsTab", "fa:s-cogs", "Tool Settings")

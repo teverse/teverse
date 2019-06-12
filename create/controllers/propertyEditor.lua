@@ -409,11 +409,13 @@ local function alphabeticalSorter(a, b)
 end
 
 controller.eventHandlers = {}
+controller.instanceEditing = nil
 
 function controller.generateProperties(instance)
   if instanceEditing == instance then return end
   
   instanceEditing = nil
+  controller.instanceEditing = nil
 
   for i,v in pairs(controller.eventHandlers) do
     v:disconnect()
@@ -422,6 +424,7 @@ function controller.generateProperties(instance)
 
     if instance and instance.events and instance.events["changed"] then
         instanceEditing = instance
+        controller.instanceEditing = instance
 
         local members = controller.workshop:getMembersOfInstance( instance )
         table.sort( members, alphabeticalSorter ) 
@@ -440,7 +443,7 @@ function controller.generateProperties(instance)
             local pType = type(value)
             local readOnly = not v.writable
             
-            if not readOnly and pType ~= "function" then
+            if not readOnly and pType ~= "function" and v.property ~= "physics" then
 
               local container = controller.scrollView["_" .. v.property]
 

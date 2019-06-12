@@ -18,7 +18,7 @@ return function(workshop)
 
 	--loaded here due to dependencies
 	controllers.env = require("tevgit:create/controllers/environment.lua")
-	
+
 	controllers.toolSettings = require("tevgit:create/controllers/toolSettings.lua")
 	controllers.toolSettings.createUI(workshop)
 
@@ -27,7 +27,7 @@ return function(workshop)
 		select = require("tevgit:create/tools/select.lua"),
 		move   = require("tevgit:create/tools/move.lua"),
 		scale  = require("tevgit:create/tools/scale.lua"),
-		rotate = require("tevgit:create/tools/rotate.lua")
+		--rotate = require("tevgit:create/tools/rotate.lua")
 	}
 
 	-- create default environment

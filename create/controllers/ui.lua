@@ -8,17 +8,20 @@ local uiTabController = require("tevgit:create/controllers/uiTabController.lua")
 uiTabController.ui = uiController
 
 uiController.create = function(className, parent, properties, style)
+    if not parent then parent = uiController.workshop.interface end
     local gui = engine.construct(className, parent, properties)
     themeController.add(gui, style and style or "default")
     return gui
 end
 
 uiController.createFrame = function(parent, properties, style)
+    if not parent then parent = uiController.workshop.interface end
     local gui = uiController.create("guiFrame", parent, properties, style)
     return gui
 end
 
 uiController.createWindow = function(parent, pos, size, title)
+    if not parent then parent = uiController.workshop.interface end
     local container = engine.construct("guiFrame", parent, {
         name = "windowContainer",
         position = pos,
@@ -141,6 +144,7 @@ uiController.createMainInterface = function(workshop)
 
     toolsController.container = sideBar
     toolsController.workshop = workshop
+    uiController.workshop = workshop
     toolsController.ui = uiController
 
     toolsController.registerMenu("windowsTab", uiController.windowsTab)

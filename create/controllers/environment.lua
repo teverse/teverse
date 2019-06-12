@@ -64,7 +64,9 @@ environmentController.createStarterMap = function()
 		size           = vector3(1, 1, 1),
 		position       = vector3(0.5, 1, 0)
 	})	
-	
+
+	--[[
+
 	engine.construct("block", workspace, {
 		name           = "duck",
 		colour         = colour(1, 1, 1),
@@ -72,8 +74,6 @@ environmentController.createStarterMap = function()
 		position       = vector3(0.5, 2.21, 0),
 		mesh           = "tevurl:3d/Duck.glb"
 	})	
-
-	--[[
 	
 	local corset = engine.construct("block", workspace, {
 		name           = "corset",
