@@ -19,7 +19,7 @@ engine.input:keyPressed(function (inputObj)
 				if v then
 					local new = v:clone()
 					new.position = v.position + vector3(0,size.y,0)
-					table.insert(newItems, new))
+					table.insert(newItems, new)
 				end
 			end
 			selectionController.setSelection(newItems)
