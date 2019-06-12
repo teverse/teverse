@@ -163,7 +163,7 @@ local function onToolActivated(toolId)
         placeBlock()
         local curTime = os.clock()
         mouseDown = curTime
-        wait(0.2) 
+        wait(1) 
         if (mouseDown == curTime) then
             while (wait(.05)) and (mouseDown == curTime and toolsController.currentToolId == toolId) do
                 placeBlock()
@@ -186,7 +186,7 @@ local function onToolActivated(toolId)
             end
         end
     end
-    
+    placeholderBlock.position = vector3(0,-10000,0) --lol
 end
 
 local function onToolDeactviated(toolId)
