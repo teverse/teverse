@@ -12,20 +12,13 @@ TOOL_DESCRIPTION = "Use this select and move primitives."
 
 local toolsController = require("tevgit:create/controllers/tool.lua")
 local selectionController = require("tevgit:create/controllers/select.lua")
-
--- TODO: move this to a helper module
-function roundToMultiple(number, multiple)
-	if multiple == 0 then 
-		return number 
-	end
-	
-	return ((number % multiple) > multiple/2) and number + multiple - number%multiple or number - number%multiple
-end
+local toolSettings = require("tevgit:create/controllers/toolSettings.lua")
+local helpers = require("tevgit:create/helpers.lua")
 
 local function onToolActivated(toolId)
     local mouseDown = 0
     local applyRot = 0
-	local gridStep = 1
+	local gridStep = toolSettings.gridStep
 
     toolsController.tools[toolId].data.mouseDownEvent = engine.input:mouseLeftPressed(function ( inp )
         if not inp.systemHandled and #selectionController.selection > 0 then
@@ -70,13 +63,7 @@ local function onToolActivated(toolId)
         
                         local currentPosition = currentHit.hitPosition + (forward * (selectionController.selection[1].size/2)) --+ (selectedItems[1].size/2)
 
-                        if gridStep > 0 then
-                            for i, v in pairs(toolsController.tools[toolId].data.axis) do
-                                if v[2] then
-                                    currentPosition[v[1]] = roundToMultiple(currentPosition[v[1]], gridStep)
-                                end
-                            end
-                        end
+                        currentPosition = helpers.roundVectorWithToolSettings(currentPosition)
 
                         if lastPosition ~= currentPosition or lastRot ~= applyRot then
                             lastRot = applyRot

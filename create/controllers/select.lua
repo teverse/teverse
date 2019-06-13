@@ -145,4 +145,28 @@ engine.input:mouseLeftReleased(function(inp)
     end
 end)
 
+selectionController.setSelection = function (selection)
+    for _,v in pairs(selectionController.selection) do
+        v.emissiveColour = colour(0.0, 0.0, 0.0)
+    end
+
+    for _,v in pairs(selectionController.boundingBoxListeners) do
+        v[2]:disconnect()
+    end
+    selectionController.boundingBoxListeners = {}
+    selectionController.selection = {}
+
+    for _,v in pairs(selection) do
+        v.emissiveColour = colour(0.025, 0.025, 0.15)
+        table.insert(selectionController.selection, v)
+        selectionController.addBoundingListener(v)
+    end
+
+    if (#selection > 0) then
+        propertyEditor.generateProperties(selection[1])
+    end
+
+    selectionController.calculateBoundingBox()
+end
+
 return selectionController

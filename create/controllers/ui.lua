@@ -8,17 +8,20 @@ local uiTabController = require("tevgit:create/controllers/uiTabController.lua")
 uiTabController.ui = uiController
 
 uiController.create = function(className, parent, properties, style)
+    if not parent then parent = uiController.workshop.interface end
     local gui = engine.construct(className, parent, properties)
     themeController.add(gui, style and style or "default")
     return gui
 end
 
 uiController.createFrame = function(parent, properties, style)
+    if not parent then parent = uiController.workshop.interface end
     local gui = uiController.create("guiFrame", parent, properties, style)
     return gui
 end
 
 uiController.createWindow = function(parent, pos, size, title)
+    if not parent then parent = uiController.workshop.interface end
     local container = engine.construct("guiFrame", parent, {
         name = "windowContainer",
         position = pos,
@@ -74,19 +77,18 @@ end
 uiController.createMainInterface = function(workshop)
     uiController.loadingFrame = uiController.create("guiFrame", workshop.interface, {
                                 name = "loadingFrame",
-                                size = guiCoord(0,300,0,100),
-                                position = guiCoord(0.5,-150,0.5,-50),
-                                guiStyle = enums.guiStyle.rounded
+                                size = guiCoord(1,0,1,0),
+                                position = guiCoord(0,0,0,0)
                             }, "main")
 
     uiController.create("guiTextBox", uiController.loadingFrame, {
         name = "loadingMessage",
         position = guiCoord(0, 10, 0.5, 0),
         size = guiCoord(1, -20, 0.5, -10),
-        align = enums.align.middle,
+        align = enums.align.middleTop,
         fontSize = 21,
         guiStyle = enums.guiStyle.noBackground,
-        text = "Teverse is loading, don't touch right now!"
+        text = "Please wait whilst Teverse loads the latest assets."
     }, "main")
 
     local loadingImage = uiController.create("guiImage", uiController.loadingFrame, {
@@ -127,16 +129,26 @@ uiController.createMainInterface = function(workshop)
         position = guiCoord(0,0,0,23)
     }, "mainTopBar")
 
+
+    uiController.testingTab = uiController.createFrame(workshop.interface, {
+        name = "testingTab",
+        size = guiCoord(1, 0, 0, 60),
+        position = guiCoord(0,0,0,23)
+    }, "mainTopBar")
+
     local tabController = uiTabController.registerTabs(uiController.tabs, "secondary", "main")
     uiTabController.createTab(uiController.tabs, "File", uiController.topBar)
     uiTabController.createTab(uiController.tabs, "Windows", uiController.windowsTab)
+    uiTabController.createTab(uiController.tabs, "Testing", uiController.testingTab)
 
 
     toolsController.container = sideBar
     toolsController.workshop = workshop
+    uiController.workshop = workshop
     toolsController.ui = uiController
 
     toolsController.registerMenu("windowsTab", uiController.windowsTab)
+    toolsController.registerMenu("testingTab", uiController.testingTab)
 
     --[[local darkmode = true
     toolsController.createButton("windowsTab", "fa:s-palette", "Switch themes"):mouseLeftReleased(function ()

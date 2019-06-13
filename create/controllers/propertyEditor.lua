@@ -9,6 +9,8 @@ controller.scrollView = nil
 function controller.createUI(workshop)
   controller.workshop = workshop
 	controller.window = uiController.createWindow(workshop.interface, guiCoord(1, -250, 1, -400), guiCoord(0, 250, 0, 400), "Properties")
+  controller.window.visible = false
+  
   controller.scrollView = uiController.create("guiScrollView", controller.window.content, {
     name = "scrollview",
     size = guiCoord(1,0,1,0)
@@ -36,25 +38,43 @@ controller.parseInputs = {
     callbackInput(property, gui.input.selected == true)
   end,
   number = function (property, gui)
-    callbackInput(property, tonumber(gui.input.text))
+    local num = tonumber(gui.input.text)
+    if num then
+      callbackInput(property, num)
+    end
   end,
   string = function (property, gui)
     callbackInput(property, gui.input.text)
   end,
   vector3 = function(property, gui)
-    callbackInput(property, vector3(tonumber(gui.x.text),tonumber(gui.y.text),tonumber(gui.z.text)))
+    local x,y,z = tonumber(gui.x.text),tonumber(gui.y.text),tonumber(gui.z.text)
+    if x and y and z then
+      callbackInput(property, vector3(x,y,z))
+    end
   end,
   vector2 = function(property, gui)
-    callbackInput(property, vector2(tonumber(gui.x.text),tonumber(gui.y.text)))
+    local x,y = tonumber(gui.x.text),tonumber(gui.y.text)
+    if x and y then
+      callbackInput(property, vector2(x,y))
+    end
   end,
   colour = function(property, gui)
-    callbackInput(property, colour(tonumber(gui.r.text),tonumber(gui.g.text),tonumber(gui.b.text)))
+    local r,g,b = tonumber(gui.r.text),tonumber(gui.g.text),tonumber(gui.b.text)
+    if r and g and b then
+      callbackInput(property, colour(r,g,b))
+    end
   end,
   quaternion = function(property, gui)
-    callbackInput(property, quaternion(tonumber(gui.x.text),tonumber(gui.y.text),tonumber(gui.z.text),tonumber(gui.w.text)))
+    local x,y,z,w = tonumber(gui.x.text),tonumber(gui.y.text),tonumber(gui.z.text),tonumber(gui.w.text)
+    if x and y and z and w then
+      callbackInput(property, quaternion(x,y,z,w))
+    end
   end,
   guiCoord = function(property, gui)
-    callbackInput(property, guiCoord(tonumber(gui.scaleX.text),tonumber(gui.offsetX.text),tonumber(gui.scaleY.text),tonumber(gui.offsetY.text)))
+    local sx,ox,sy,oy = tonumber(gui.scaleX.text),tonumber(gui.offsetX.text),tonumber(gui.scaleY.text),tonumber(gui.offsetY.text)
+    if sx and ox and sy and oy then
+      callbackInput(property, guiCoord(sx,ox,sy,oy))
+    end
   end,
 }
 
@@ -389,11 +409,13 @@ local function alphabeticalSorter(a, b)
 end
 
 controller.eventHandlers = {}
+controller.instanceEditing = nil
 
 function controller.generateProperties(instance)
   if instanceEditing == instance then return end
   
   instanceEditing = nil
+  controller.instanceEditing = nil
 
   for i,v in pairs(controller.eventHandlers) do
     v:disconnect()
@@ -402,6 +424,7 @@ function controller.generateProperties(instance)
 
     if instance and instance.events and instance.events["changed"] then
         instanceEditing = instance
+        controller.instanceEditing = instance
 
         local members = controller.workshop:getMembersOfInstance( instance )
         table.sort( members, alphabeticalSorter ) 
@@ -420,7 +443,7 @@ function controller.generateProperties(instance)
             local pType = type(value)
             local readOnly = not v.writable
             
-            if not readOnly and pType ~= "function" then
+            if not readOnly and pType ~= "function" and v.property ~= "physics" then
 
               local container = controller.scrollView["_" .. v.property]
 
@@ -468,7 +491,9 @@ function controller.generateProperties(instance)
         table.insert( controller.eventHandlers, instance:changed(function(prop, val)
           if controller.updateHandlers[type(val)] then
             local container = controller.scrollView["_" .. prop]
-            controller.updateHandlers[type(val)](instance, container.inputContainer, val)
+            if container then
+              controller.updateHandlers[type(val)](instance, container.inputContainer, val)
+            end
           end
         end))
 
