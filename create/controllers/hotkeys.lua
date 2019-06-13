@@ -76,7 +76,7 @@ hotkeysController:bind({
 })
 
 hotkeysController:bind({
-	name = "clone",
+	name = "copy",
 	priorKey = enums.key.leftCtrl,
 	key = enums.key.c, 
 	action = function()
