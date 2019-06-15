@@ -8,7 +8,7 @@ controller.scrollView = nil
 
 function controller.createUI(workshop)
   controller.workshop = workshop
-	controller.window = uiController.createWindow(workshop.interface, guiCoord(1, -250, 1, -400), guiCoord(0, 250, 0, 400), "Properties")
+	controller.window = uiController.createWindow(workshop.interface, guiCoord(1, -300, 1, -400), guiCoord(0, 300, 0, 400), "Properties")
   controller.window.visible = false
   
   controller.scrollView = uiController.create("guiScrollView", controller.window.content, {
@@ -61,6 +61,9 @@ controller.parseInputs = {
   colour = function(property, gui)
     local r,g,b = tonumber(gui.r.text),tonumber(gui.g.text),tonumber(gui.b.text)
     if r and g and b then
+      r = r / 255
+      g = g / 255
+      b = b / 255
       callbackInput(property, colour(r,g,b))
     end
   end,
@@ -78,7 +81,7 @@ controller.parseInputs = {
   end,
 }
 
--- these methods are responsible for setting the propertie gui values when updated 
+-- these methods are responsible for setting the property gui values when updated 
 
 controller.updateHandlers = {
   block = function (instance, gui, value)
@@ -103,9 +106,9 @@ controller.updateHandlers = {
     gui.y.text = tostring(value.y)
   end,
   colour = function(instance, gui, value)
-    gui.r.text = tostring(value.r)
-    gui.g.text = tostring(value.g)
-    gui.b.text = tostring(value.b)
+    gui.r.text = tostring(value.r * 255)
+    gui.g.text = tostring(value.g * 255)
+    gui.b.text = tostring(value.b * 255)
     gui.col.backgroundColour = value
   end,
   quaternion = function(instance, gui, value)
