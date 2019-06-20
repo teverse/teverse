@@ -36,6 +36,6 @@ return function(workshop)
 		controllers.env.setDefault()
 		controllers.env.createStarterMap() -- Starter map, or the enviroment, may be overriden by teverse if the user is opening an existing .tev file.
 	end
-	wait(2)
+	
 	controllers.ui.setLoading(false)
 end

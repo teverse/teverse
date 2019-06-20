@@ -78,14 +78,15 @@ uiController.createMainInterface = function(workshop)
     uiController.loadingFrame = uiController.create("guiFrame", workshop.interface, {
                                 name = "loadingFrame",
                                 size = guiCoord(1,0,1,0),
-                                position = guiCoord(0,0,0,0)
+                                position = guiCoord(0,0,0,0),
+                                zIndex = 100,
                             }, "main")
 
     uiController.create("guiTextBox", uiController.loadingFrame, {
         name = "loadingMessage",
         position = guiCoord(0, 10, 0.5, 0),
         size = guiCoord(1, -20, 0.5, -10),
-        align = enums.align.middleTop,
+        align = enums.align.topMiddle,
         fontSize = 21,
         guiStyle = enums.guiStyle.noBackground,
         text = "Please wait whilst Teverse loads the latest assets."

@@ -14,6 +14,14 @@ physicsButton:mouseLeftReleased(function ()
     	engine.physics:resume()
     end
 end)
+
+local reloadButton = toolsController.createButton("testingTab", "fa:s-sync", "Reload all")
+reloadButton:mouseLeftReleased(function ()
+    toolsController.workshop:reloadCreate()
+end)
+
+
+
 engine.physics:changed(function (p,v)
 	if p == "running" then
 		if v then

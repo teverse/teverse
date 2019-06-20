@@ -14,7 +14,7 @@ controller.workshop = nil
 
 function controller.createUI(workshop)
   controller.workshop = workshop
-  controller.window = uiController.createWindow(workshop.interface, guiCoord(0, 66, 0, 100), guiCoord(0, 140, 0, 73), "Tool Settings")
+  controller.window = uiController.createWindow(workshop.interface, guiCoord(0, 66, 0, 100), guiCoord(0, 150, 0, 73), "Tool Settings")
   
   local toolsController = require("tevgit:create/controllers/tool.lua")
   local settingsBtn = toolsController.createButton("windowsTab", "fa:s-cogs", "Tool Settings")
@@ -23,9 +23,10 @@ function controller.createUI(workshop)
   end)
 
   local gridLabel = uiController.create("guiTextBox", controller.window.content, {
-  	size = guiCoord(0.5,-15,0,18),
+  	size = guiCoord(0.5,-10,0,18),
   	position = guiCoord(0,5,0,4),
   	align = enums.align.middleRight,
+    wrap = false,
   	text = "Grid Step"
   }, "mainText")
 
@@ -33,6 +34,7 @@ function controller.createUI(workshop)
   	size = guiCoord(0.5,-10,0,18),
   	position = guiCoord(0.5,5,0,4),
   	readOnly = false,
+    align = enums.align.middle,
   	guiStyle = enums.guiStyle.rounded,
   	text = tostring(controller.gridStep)
   }, "main")
@@ -55,12 +57,12 @@ function controller.createUI(workshop)
 	}, "mainText")
   	x=x+20
   	local gridAxisInput = uiController.create("guiButton", controller.window.content, {
-	  	size = guiCoord(0,22,0,18),
+	  	size = guiCoord(0,18,0,18),
 	  	position = guiCoord(0,x,0,28),
 	  	text = "",
 	  	selected = v[2],
 	  	guiStyle = enums.guiStyle.checkBox
-	}, "light")
+	}, "main")
 	gridAxisInput:mouseLeftReleased(function ()
 		controller.axis[i][2] = not controller.axis[i][2]
 		gridAxisInput.selected = controller.axis[i][2]

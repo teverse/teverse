@@ -9,6 +9,8 @@ local hotkeysController = {
 }
 
 local selectionController = require("tevgit:create/controllers/select.lua")
+local toolsController = require("tevgit:create/controllers/tool.lua")
+local themeController = require("tevgit:create/controllers/theme.lua")
 
 function hotkeysController:bind(hotkeyData)
 	
@@ -118,6 +120,23 @@ hotkeysController:bind({
 			end
 		end
 		selectionController.setSelection(newItems)
+	end
+})
+
+
+
+hotkeysController:bind({
+	name = "deselect",
+	key = enums.key.escape, 
+	action = function()
+		if (toolsController.currentToolId > 0) then
+			-- there should probably be a deselect method that does this in toolscontroller...
+			local currentTool = toolsController.tools[toolsController.currentToolId]
+	        currentTool.button.imageColour = themeController.currentTheme.tools.deselected
+	        currentTool.deactivated(currentTool.id)   
+
+	        toolsController.currentToolId = 0
+	    end
 	end
 })
 
