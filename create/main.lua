@@ -34,8 +34,8 @@ return function(workshop)
 	-- create default environment
 	if workshop.gameFilePath == "" then
 		controllers.env.setDefault()
-		controllers.env.createStarterMap() -- Starter map, or the enviroment, may be overriden by teverse if the user is opening an existing .tev file.
+		controllers.env.createStarterMap() -- Starter map, or the environment, may be overriden by teverse if the user is opening an existing .tev file.
 	end
-	
+	wait()
 	controllers.ui.setLoading(false)
 end

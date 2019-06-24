@@ -113,9 +113,9 @@ environmentController.createStarterMap = function()
 
 	if firstRun then
 		firstRun = false
-		--hack: pregenerate properties
-		--require("tevgit:create/controllers/propertyEditor.lua").generateProperties(block)
-		--require("tevgit:create/controllers/propertyEditor.lua").generateProperties(mainLight)
+		--hack: pregenerate properties, this wont be needed after some bottlenecks are fixed.
+		require("tevgit:create/controllers/propertyEditor.lua").generateProperties(block)
+		require("tevgit:create/controllers/propertyEditor.lua").generateProperties(mainLight)
 	end
 
 	--[[

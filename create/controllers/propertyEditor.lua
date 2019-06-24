@@ -154,9 +154,10 @@ controller.createInput = {
     local container = controller.createInput.default(value, pType, readOnly)
     local x = uiController.create("guiButton", container, {
       name = "input",
-      size = guiCoord(1, -4, 1, -2),
+      size = guiCoord(0, 20, 1, -2),
       position = guiCoord(0, 2, 0, 1),
       text = "",
+      alpha = 0.75,
       guiStyle = enums.guiStyle.checkBox
     }, "light")
 
@@ -452,7 +453,7 @@ function controller.generateProperties(instance)
                 {
                   name = "_" .. v.property,
                   alpha = 0,
-                  size = guiCoord(1, -30, 0, 20)
+                  size = guiCoord(1, -10, 0, 20)
                 })
 
                 label = uiController.create("guiTextBox", container, {

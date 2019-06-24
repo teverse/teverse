@@ -79,7 +79,7 @@ uiController.createMainInterface = function(workshop)
                                 name = "loadingFrame",
                                 size = guiCoord(1,0,1,0),
                                 position = guiCoord(0,0,0,0),
-                                zIndex = 100,
+                                zIndex = 1000,
                             }, "main")
 
     uiController.create("guiTextBox", uiController.loadingFrame, {
@@ -89,7 +89,7 @@ uiController.createMainInterface = function(workshop)
         align = enums.align.topMiddle,
         fontSize = 21,
         guiStyle = enums.guiStyle.noBackground,
-        text = "Please wait whilst Teverse loads the latest assets."
+        text = "Please wait whilst Create Mode loads the latest assets."
     }, "main")
 
     local loadingImage = uiController.create("guiImage", uiController.loadingFrame, {
@@ -167,6 +167,8 @@ uiController.createMainInterface = function(workshop)
     local saveAsBtn = toolsController.createButton("topBar", "fa:s-file-export", "Save As")
     local openBtn = toolsController.createButton("topBar", "fa:s-folder-open", "Open")
     local publishBtn = toolsController.createButton("topBar", "fa:s-cloud-upload-alt", "Publish")
+    publishBtn.image.alpha = 0.45
+    publishBtn.text.textAlpha = 0.45
 
     --[[
     local function checkIfPublishable()
@@ -192,8 +194,51 @@ uiController.createMainInterface = function(workshop)
     openBtn:mouseLeftReleased(function()
         workshop:openFileDialogue()
     end)
+
+    uiController.publishStatus = uiController.createFrame(workshop.interface, {
+        name = "publishStatus",
+        size = guiCoord(0, 200, 0, 60),
+        position = guiCoord(0.5, -100, 0.5, -30),
+        borderRadius = 5,
+        visible = false,
+    }, "main")
+
+    uiController.create("guiTextBox", uiController.publishStatus, {
+        name = "label",
+        size = guiCoord(1, 0, 0, 24),
+        position = guiCoord(0,0,0,4),
+        align = enums.align.middle,
+        text = "Publishing..."
+    }, "main")
+
+    workshop:changed(function (p)
+        if workshop.gameFilePath ~= "" then
+            publishBtn.image.alpha = 1
+            publishBtn.text.textAlpha = 1
+        else
+            publishBtn.image.alpha = 0.45
+            publishBtn.text.textAlpha = 0.45
+        end
+    end)
+
+    workshop:published(function (success)
+        if success then
+            uiController.publishStatus.label.text = "Success! " .. workshop.gameCloudId
+            wait(2)
+            uiController.publishStatus.visible = false
+        else
+            uiController.publishStatus.label.text = "Failed"
+            wait(2)
+            uiController.publishStatus.visible = false
+        end
+    end)
+
     publishBtn:mouseLeftReleased(function ()
+
+        uiController.publishStatus.visible = true
+        uiController.publishStatus.label.text = "Publishing"
         workshop:publishDialogue()
+
     end)
 end
 
