@@ -64,7 +64,7 @@ end
 function toolsController.createButton(menuName, image, label, height)
     if not height then height = 1 end
     local menu = toolsController.menus[menuName]
-    local gui = toolsController.ui.createFrame(menu.gui, {size=guiCoord(0,50,height,0)}, "mainTopBar")
+    local gui = toolsController.ui.createFrame(menu.gui, {size=guiCoord(0,55,height,0), hoverCursor = "fa:s-hand-pointer"}, "mainTopBar")
     if image then
         local imgSize = math.min(50, menu.gui.absoluteSize.y) - 5
         local img = toolsController.ui.create("guiImage", gui, {name = "image", size=guiCoord(0, (2/3) * imgSize, 0, (2/3) * imgSize), position=guiCoord(0.5, -((1/3) * imgSize),0,5), texture=image, handleEvents=false}, "mainTopBar")
@@ -149,9 +149,9 @@ function toolsController:register(tool)
         "guiImage",
         self.container,
         {
+            hoverCursor = "fa:s-hand-pointer",
             size = TOOL_BUTTON_SIZE,
             position = TOOL_BUTTON_DEFAULT_POSITION + guiCoord(0, 0, 0, TOOL_BUTTON_OFFSET * #self.tools),
-            guiStyle = enums.guiStyle.noBackground,
             imageColour = themeController.currentTheme.tools.deselected,
             texture = tool.icon
         },

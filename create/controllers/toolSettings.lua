@@ -17,7 +17,7 @@ function controller.createUI(workshop)
   controller.window = uiController.createWindow(workshop.interface, guiCoord(0, 66, 0, 100), guiCoord(0, 150, 0, 73), "Tool Settings")
   
   local toolsController = require("tevgit:create/controllers/tool.lua")
-  local settingsBtn = toolsController.createButton("windowsTab", "fa:s-cogs", "Tool Settings")
+  local settingsBtn = toolsController.createButton("windowsTab", "fa:s-cogs", "Settings")
   settingsBtn:mouseLeftReleased(function ()
     controller.window.visible = not controller.window.visible
   end)
@@ -35,7 +35,7 @@ function controller.createUI(workshop)
   	position = guiCoord(0.5,5,0,4),
   	readOnly = false,
     align = enums.align.middle,
-  	guiStyle = enums.guiStyle.rounded,
+  	borderRadius = 5,
   	text = tostring(controller.gridStep)
   }, "main")
 
@@ -52,7 +52,7 @@ function controller.createUI(workshop)
   	local gridAxisLabel = uiController.create("guiTextBox", controller.window.content, {
 	  	size = guiCoord(0,20,0,18),
 	  	position = guiCoord(0,x,0,28),
-	  	guiStyle = enums.guiStyle.rounded,
+      borderRadius = 5,
 	  	text = v[1] .. ":"
 	}, "mainText")
   	x=x+20

@@ -9,7 +9,7 @@ print ("DEBUG: Loading theme.lua")
 -- theme names are probably gonna have to get made meaningful...
 themeController.darkTheme = {
     default = {
-        fontFile = "OpenSans-Regular",
+        fontFile = "OpenSans-Regular.ttf",
 		backgroundColour  = colour:fromRGB(66, 66, 76),
 		textColour = colour:fromRGB(255, 255, 255)
     },
@@ -18,7 +18,7 @@ themeController.darkTheme = {
 		textColour = colour:fromRGB(255, 255, 255),
 	},
 	mainText = {
-		guiStyle = enums.guiStyle.noBackground,
+		alpha = 0, -- background
 		textColour = colour:fromRGB(255, 255, 255),
 	},
 	mainTopBar = {
@@ -46,7 +46,7 @@ themeController.darkTheme = {
 
 themeController.lightTheme = {
     default = {
-        fontFile = "OpenSans-Regular",
+        fontFile = "OpenSans-Regular.ttf",
 		backgroundColour  = colour:fromRGB(189, 195, 199),
 		textColour = colour:fromRGB(0,0,0)
     },
@@ -55,7 +55,7 @@ themeController.lightTheme = {
 		textColour = colour:fromRGB(0,0,0),
 	},
 	mainText = {
-		guiStyle = enums.guiStyle.noBackground,
+		alpha = 0,
 		textColour = colour:fromRGB(0,0,0),
 	},
 	mainTopBar = {

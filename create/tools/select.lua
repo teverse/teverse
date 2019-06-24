@@ -5,7 +5,7 @@
 --]]
 
 -- TODO: Create a UI that allows the user to input a step size
-
+print("load")
 TOOL_NAME = "Select"
 TOOL_ICON = "fa:s-hand-paper"
 TOOL_DESCRIPTION = "Use this select and move primitives."

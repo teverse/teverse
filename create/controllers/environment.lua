@@ -6,6 +6,7 @@ local environmentController = {}
 local firstRun = true
 
 local toolsController = require("tevgit:create/controllers/tool.lua")
+--[[
 local physicsButton = toolsController.createButton("testingTab", "fa:s-pause", "Pause")
 physicsButton:mouseLeftReleased(function ()
     if engine.physics.running then
@@ -14,14 +15,15 @@ physicsButton:mouseLeftReleased(function ()
     	engine.physics:resume()
     end
 end)
-
+]]
 local reloadButton = toolsController.createButton("testingTab", "fa:s-sync", "Reload all")
 reloadButton:mouseLeftReleased(function ()
+	engine.input.cursorTexture = "fa:s-mouse-pointer"
     toolsController.workshop:reloadCreate()
 end)
 
 
-
+--[[
 engine.physics:changed(function (p,v)
 	if p == "running" then
 		if v then
@@ -32,7 +34,7 @@ engine.physics:changed(function (p,v)
 			physicsButton.text.text = "Resume"
 		end
 	end
-end)
+end)]]
 
 environmentController.createStarterMap = function()
 	print("creating starter map")

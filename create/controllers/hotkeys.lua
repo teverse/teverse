@@ -11,6 +11,7 @@ local hotkeysController = {
 local selectionController = require("tevgit:create/controllers/select.lua")
 local toolsController = require("tevgit:create/controllers/tool.lua")
 local themeController = require("tevgit:create/controllers/theme.lua")
+local helpers = require("tevgit:create/helpers.lua")
 
 function hotkeysController:bind(hotkeyData)
 	
@@ -123,8 +124,6 @@ hotkeysController:bind({
 	end
 })
 
-
-
 hotkeysController:bind({
 	name = "deselect",
 	key = enums.key.escape, 
@@ -137,6 +136,17 @@ hotkeysController:bind({
 
 	        toolsController.currentToolId = 0
 	    end
+	end
+})
+
+hotkeysController:bind({
+	name = "focus on selection",
+	key = enums.key.f, 
+	action = function()
+		if #selectionController.selection > 0 then
+			local mdn = vector3(helpers.median(selectionController.selection, "x"), helpers.median(selectionController.selection, "y"), helpers.median(selectionController.selection, "z") )
+			engine.tween:begin(workspace.camera, .2, {position = mdn + (workspace.camera.rotation * vector3(0,0,1) * 15)}, "outQuad")
+		end
 	end
 })
 

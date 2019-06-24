@@ -24,4 +24,23 @@ function controller.roundVectorWithToolSettings(vec)
 	return vec
 end
 
+--Calculate median of vector
+--modified from http://lua-users.org/wiki/SimpleStats
+function controller.median( t, component )
+  local temp={}
+
+  for k,v in pairs(t) do
+    table.insert(temp, v.position[component])
+  end
+
+  table.sort( temp )
+
+  if math.fmod(#temp,2) == 0 then
+    return ( temp[#temp/2] + temp[(#temp/2)+1] ) / 2
+  else
+    return temp[math.ceil(#temp/2)]
+  end
+end
+
+
 return controller

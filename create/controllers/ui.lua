@@ -88,7 +88,7 @@ uiController.createMainInterface = function(workshop)
         size = guiCoord(1, -20, 0.5, -10),
         align = enums.align.topMiddle,
         fontSize = 21,
-        guiStyle = enums.guiStyle.noBackground,
+        alpha = 0,
         text = "Please wait whilst Create Mode loads the latest assets."
     }, "main")
 
