@@ -88,7 +88,7 @@ scriptEditor.lex = function()
 			--print(t)
 			end
 			scriptEditor.mainText:setTextColour(lineStart + v.posFirst, (v.posLast-v.posFirst), scriptEditor.colours[v.type] and scriptEditor.colours[v.type] or colour(0.5,0.5,0.5))
-			--print(t,v)f
+			print("'"..v.data.."'", lineStart + v.posFirst, (v.posLast-v.posFirst))
 		--	curC = curC + len
 			thisLine = v.posLast
 		end
