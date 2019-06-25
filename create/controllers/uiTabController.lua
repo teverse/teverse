@@ -21,7 +21,6 @@ function controller.createTab(container, name, callback)
 
 		local btn = controller.ui.create("guiTextBox", container, {
 	        name = name,
-	        readonly=true,
 	        size = guiCoord(0, 50, 0, 18),
 	        position = guiCoord(0,controller.widgets[container].currentX,0,3),
 	        text = name,

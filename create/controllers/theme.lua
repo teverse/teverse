@@ -24,6 +24,7 @@ themeController.darkTheme = {
 	mainTopBar = {
 		backgroundColour  = colour:fromRGB(45, 45, 55),
 		textColour = colour:fromRGB(255, 255, 255),
+		borderColour = colour:fromRGB(15, 15, 25)
 	},
 	secondary = {
 	    backgroundColour  = colour:fromRGB(55, 55, 66),

@@ -35,7 +35,6 @@ uiController.createWindow = function(parent, pos, size, title)
 
     local textLabel = uiController.create("guiTextBox", titleBar, {
         name = "textLabel",
-        readonly=true,
         size = guiCoord(1,-10,1,-2),
         position = guiCoord(0,5,0,0),
         text = title

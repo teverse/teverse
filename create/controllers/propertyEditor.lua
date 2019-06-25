@@ -6,6 +6,8 @@ controller.window = nil
 controller.workshop = nil
 controller.scrollView = nil
 
+controller.excludePropertyList = {}
+
 function controller.createUI(workshop)
   controller.workshop = workshop
 	controller.window = uiController.createWindow(workshop.interface, guiCoord(1, -250, 1, -400), guiCoord(0, 250, 0, 400), "Properties")
@@ -444,7 +446,7 @@ function controller.generateProperties(instance)
             local pType = type(value)
             local readOnly = not v.writable
             
-            if not readOnly and pType ~= "function" and v.property ~= "physics" then
+            if not readOnly and pType ~= "function" and v.property ~= "physics" and not controller.excludePropertyList[v.property] then
 
               local container = controller.scrollView["_" .. v.property]
 

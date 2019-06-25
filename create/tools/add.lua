@@ -33,7 +33,8 @@ local placeholderBlock = engine.construct(
             physics = false,
             workshopLocked=true,
             static=true,
-            castsShadows = false        
+            castsShadows = false,
+            position = vector3(0, -100, 0)     
         }
     )
 
@@ -62,6 +63,16 @@ gridLabel:mouseLeftReleased(function ()
 
     editing = true
     gridLabel.text = "Back"
+
+    -- hide these from the property editor...
+    propertyController.excludePropertyList = {
+        ["position"]=true,
+        ["workshopLocked"]=true,
+        ["name"]=true
+    }
+
+    local wasPropertyEditing = propertyController.instanceEditing
+
     propertyController.generateProperties(placeholderBlock)
     propertyController.window.visible = true
 
@@ -101,6 +112,12 @@ gridLabel:mouseLeftReleased(function ()
 
     engine.tween:begin(propertyController.window, 0.25, {position = startPos, size = startSize}, "inOutQuad")
     wait(0.3)
+
+    propertyController.excludePropertyList = {}
+    if wasPropertyEditing then
+        propertyController.generateProperties(wasPropertyEditing)
+    end
+
     editing = false
     db=false
     gridLabel.text = "Edit Insertable"

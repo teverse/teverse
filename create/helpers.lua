@@ -30,7 +30,9 @@ function controller.median( t, component )
   local temp={}
 
   for k,v in pairs(t) do
-    table.insert(temp, v.position[component])
+  	if v and v.position then
+    	table.insert(temp, v.position[component])
+    end
   end
 
   table.sort( temp )

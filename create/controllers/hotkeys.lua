@@ -128,14 +128,8 @@ hotkeysController:bind({
 	name = "deselect",
 	key = enums.key.escape, 
 	action = function()
-		if (toolsController.currentToolId > 0) then
-			-- there should probably be a deselect method that does this in toolscontroller...
-			local currentTool = toolsController.tools[toolsController.currentToolId]
-	        currentTool.button.imageColour = themeController.currentTheme.tools.deselected
-	        currentTool.deactivated(currentTool.id)   
-
-	        toolsController.currentToolId = 0
-	    end
+		-- it makes sense for escape to deselect selection...?
+		selectionController.setSelection({})
 	end
 })
 
