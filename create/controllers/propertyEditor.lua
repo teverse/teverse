@@ -102,13 +102,13 @@ controller.updateHandlers = {
     gui.input.text = value
   end,
   vector3 = function(instance, gui, value)
-    gui.x.text = string.format("%.3f", math.deg(value.x))
-    gui.y.text = string.format("%.3f", math.deg(value.x))
-    gui.z.text = string.format("%.3f", math.deg(value.x))
+    gui.x.text = string.format("%.3f", value.x)
+    gui.y.text = string.format("%.3f", value.y)
+    gui.z.text = string.format("%.3f", value.z)
   end,
   vector2 = function(instance, gui, value)
-    gui.x.text = string.format("%.3f", math.deg(value.x))
-    gui.y.text = string.format("%.3f", math.deg(value.y))
+    gui.x.text = string.format("%.3f", value.x)
+    gui.y.text = string.format("%.3f", value.y)
   end,
   colour = function(instance, gui, value)
     gui.r.text = tostring(value.r)
