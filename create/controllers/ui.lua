@@ -7,6 +7,9 @@ local toolsController = require("tevgit:create/controllers/tool.lua")
 local uiTabController = require("tevgit:create/controllers/uiTabController.lua")
 uiTabController.ui = uiController
 
+local dockController = require("tevgit:create/controllers/dock.lua")
+dockController.ui = uiController
+
 uiController.create = function(className, parent, properties, style)
     if not parent then parent = uiController.workshop.interface end
     local gui = engine.construct(className, parent, properties)
@@ -30,14 +33,20 @@ uiController.createWindow = function(parent, pos, size, title)
 
     local titleBar = uiController.create("guiFrame", container, {
         name = "titleBar",
-        size = guiCoord(1,0,0,22)
+        size = guiCoord(1,0,0,22),
+        hoverCursor = "fa:s-hand-pointer"
     }, "main")
+
+    titleBar:mouseLeftPressed(function ()
+        dockController.beginWindowDrag(container)
+    end)
 
     local textLabel = uiController.create("guiTextBox", titleBar, {
         name = "textLabel",
         size = guiCoord(1,-10,1,-2),
         position = guiCoord(0,5,0,0),
-        text = title
+        text = title,
+        handleEvents=false
     }, "mainText")
 
     uiController.createFrame(titleBar, {

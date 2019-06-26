@@ -2,6 +2,7 @@ local controller = {}
 local uiController = require("tevgit:create/controllers/ui.lua")
 local themeController = require("tevgit:create/controllers/theme.lua")
 local colourPickerController = require("tevgit:create/extras/colourPicker.lua")
+local dockController = require("tevgit:create/controllers/dock.lua")
 
 controller.window = nil
 controller.workshop = nil
@@ -15,8 +16,11 @@ function controller.createUI(workshop)
   controller.workshop = workshop
   controller.colourPicker = colourPickerController.create()
   controller.colourPicker.window.visible = false
-	controller.window = uiController.createWindow(workshop.interface, guiCoord(1, -250, 1, -400), guiCoord(0, 250, 0, 400), "Properties")
+	controller.window = uiController.createWindow(workshop.interface, guiCoord(1, -300, 1, -400), guiCoord(0, 250, 0, 400), "Properties")
   controller.window.visible = true
+
+
+  dockController.dockWindow(controller.window, dockController.rightDock)
   
   controller.scrollView = uiController.create("guiScrollView", controller.window.content, {
     name = "scrollview",
