@@ -1,6 +1,7 @@
 local controller = {}
 local uiController = require("tevgit:create/controllers/ui.lua")
 local themeController = require("tevgit:create/controllers/theme.lua")
+local colourPickerController = require("tevgit:create/extras/colourPicker.lua")
 
 controller.window = nil
 controller.workshop = nil
@@ -8,8 +9,12 @@ controller.scrollView = nil
 
 controller.excludePropertyList = {}
 
+controller.colourPicker = nil
+
 function controller.createUI(workshop)
   controller.workshop = workshop
+  controller.colourPicker = colourPickerController.create()
+  controller.colourPicker.window.visible = false
 	controller.window = uiController.createWindow(workshop.interface, guiCoord(1, -250, 1, -400), guiCoord(0, 250, 0, 400), "Properties")
   controller.window.visible = true
   
@@ -513,6 +518,10 @@ controller.createInput = {
       backgroundColour = colour(1,1,1),
       borderRadius = 2,
     })
+
+    col:mouseLeftReleased(function ()
+      controller.colourPicker.window.visible  = not controller.colourPicker.window.visible 
+    end)
 
     return container
   end,
