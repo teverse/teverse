@@ -89,7 +89,6 @@ consoleController.createConsole = function(workshop)
 	local cmdDecorText = uiController.create("guiTextBox", cmdInput, {
 		size = guiCoord(0, 20, 1, 0),
 		position = guiCoord(0, 5, 0, 0),
-		readOnly = true,
 		multiline = false,
 		text = ">",
 		align = enums.align.middle,
@@ -106,7 +105,8 @@ consoleController.createConsole = function(workshop)
 		align = enums.align.middleLeft,
 		fontSize = 20,
 		textColour = colour(1, 1, 1),
-		name = "cmdInputText"
+		name = "cmdInputText",
+		readOnly = false
 	}, "secondary")
 
 	closeButton:mouseLeftPressed(function() 

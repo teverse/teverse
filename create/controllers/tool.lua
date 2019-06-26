@@ -17,7 +17,6 @@ local toolsController = {
     ui = nil,
     workshop = nil,
     container = nil
-
 }
 
 -- Not sure if the following should be in this controller... Oh well.
@@ -75,7 +74,6 @@ function toolsController.createButton(menuName, image, label, height)
 end
 
 local themeController = require("tevgit:create/controllers/theme.lua")
-
 
 local function onToolButtonMouseLeftReleased(toolId) 
    
