@@ -6,6 +6,73 @@ controller.bottomDock = {}
 controller.rightDock = {}
 
 local luaHelpers = require("tevgit:create/helpers.lua")
+local lastUpdate = os.clock()
+local pendingSave = false
+local saveDocks = function()
+	if pendingSave then return end
+	pendingSave = true
+	repeat 
+		wait()
+	until os.clock() - lastUpdate > 5 -- delay so we're sure user has stopped messing with the layout
+
+	local setting = {
+		bottomDock = {},
+		rightDock = {}
+	}
+
+	for i,v in pairs(controller.bottomDock) do
+		setting.bottomDock[i] = v.titleBar.textLabel.text
+	end
+
+	for i,v in pairs(controller.rightDock) do
+		setting.rightDock[i] = v.titleBar.textLabel.text
+	end
+
+	print("Saving dock layout")
+	controller.ui.workshop:setSettings("docks", setting) 
+	pendingSave = false
+end
+
+controller.loadSettings = function()
+	local setting = controller.ui.workshop:getSettings("docks") 
+	if setting then
+		print("Restoring dock layout")
+		local easyWayBottom = {}
+		local easyWayRight = {}
+
+		for i,v in pairs(controller.bottomDock) do
+			easyWayBottom[v.titleBar.textLabel.text] = v
+			v.position = v.position - guiCoord(0,0,0,30)
+		end
+
+		for i,v in pairs(controller.rightDock) do
+			easyWayRight[v.titleBar.textLabel.text] = v
+			v.position = v.position - guiCoord(0,30,0,0)
+		end
+
+		controller.bottomDock = {}
+		controller.rightDock = {}
+		controller.dockDictionary = {}
+
+		table.sort(setting.bottomDock)
+		for i,v in ipairs(setting.bottomDock) do
+			if easyWayBottom[v] then
+				easyWayBottom[v] = nil
+				controller.dockWindow(v, controller.bottomDock)
+			end
+		end
+
+		table.sort(setting.rightDock)
+		for i,v in ipairs(setting.rightDock) do
+			if easyWayRight[v] then
+				easyWayRight[v] = nil
+				controller.dockWindow(v, controller.rightDock)
+			end
+		end
+
+
+	end
+end
 
 -- direction: up, down, left or right
 local function renderHelper(parent, direction, pos)
@@ -229,6 +296,7 @@ controller.beginWindowDrag = function(window)
 
 		wait()
 	end
+	local start = os.cpuClock()
 	helpers:destroy()
 	if engine.input.mousePosition.y >= engine.input.screenSize.y * 0.75 and
 		engine.input.mousePosition.x < engine.input.screenSize.x * 0.75 then
@@ -236,9 +304,13 @@ controller.beginWindowDrag = function(window)
 	elseif engine.input.mousePosition.x >= engine.input.screenSize.x * 0.75 then
 		controller.dockWindow(window, controller.rightDock, luaHelpers.roundToMultiple(engine.input.mousePosition.y/engine.input.screenSize.y, 1/(#controller.rightDock+1)))
 	end
+	print("Time elapsed", os.cpuClock() - start)
 
 	window.alpha = startAlpha
 	window.zIndex = startZ
+	
+	lastUpdate = os.clock()
+	saveDocks()
 end
 
 return controller
