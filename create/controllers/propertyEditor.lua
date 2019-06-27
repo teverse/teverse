@@ -19,6 +19,7 @@ function controller.createUI(workshop)
 	controller.window = uiController.createWindow(workshop.interface, guiCoord(1, -300, 1, -400), guiCoord(0, 250, 0, 400), "Properties")
   controller.window.visible = true
 
+  controller.window2 = uiController.createWindow(workshop.interface, guiCoord(0.3, -300, 1, -400), guiCoord(0, 250, 0, 250), "Test Window")
 
   dockController.dockWindow(controller.window, dockController.rightDock)
   

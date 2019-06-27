@@ -1,7 +1,5 @@
 local controller = {}
 
-local toolSettings = require("tevgit:create/controllers/toolSettings.lua")
-
 function controller.roundToMultiple(number, multiple)
 	if multiple == 0 then 
 		return number 
@@ -17,6 +15,7 @@ function controller.roundVectorToMultiple(vec, multiple)
 end
 
 function controller.roundVectorWithToolSettings(vec)
+	local toolSettings = require("tevgit:create/controllers/toolSettings.lua")
 	local multiple = toolSettings.gridStep
 	vec.x = toolSettings.axis[1][2] and controller.roundToMultiple(vec.x, multiple) or vec.x
 	vec.y = toolSettings.axis[2][2] and controller.roundToMultiple(vec.y, multiple) or vec.y
