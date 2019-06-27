@@ -34,19 +34,19 @@ local saveDocks = function()
 end
 
 controller.loadSettings = function()
-	local setting = controller.ui.workshop:getSettings("docks") 
+	local setting = controller.ui.workshop:getSettings("docks")
 	if setting then
 		print("Restoring dock layout")
-		local easyWayBottom = {}
-		local easyWayRight = {}
+		local easyWay = {}
 
 		for i,v in pairs(controller.bottomDock) do
-			easyWayBottom[v.titleBar.textLabel.text] = v
+			easyWay[v.titleBar.textLabel.text] = v
 			v.position = v.position - guiCoord(0,0,0,30)
 		end
 
 		for i,v in pairs(controller.rightDock) do
-			easyWayRight[v.titleBar.textLabel.text] = v
+			easyWay[v.titleBar.textLabel.text] = v
+			--print(v.titleBar.textLabel.text, v)
 			v.position = v.position - guiCoord(0,30,0,0)
 		end
 
@@ -56,17 +56,19 @@ controller.loadSettings = function()
 
 		table.sort(setting.bottomDock)
 		for i,v in ipairs(setting.bottomDock) do
-			if easyWayBottom[v] then
-				easyWayBottom[v] = nil
-				controller.dockWindow(v, controller.bottomDock)
+			--print("look:", v)
+			if easyWay[v] then
+				controller.dockWindow(easyWay[v], controller.bottomDock)
+			--	print("dockng")
+				easyWay[v] = nil
 			end
 		end
 
 		table.sort(setting.rightDock)
 		for i,v in ipairs(setting.rightDock) do
-			if easyWayRight[v] then
-				easyWayRight[v] = nil
-				controller.dockWindow(v, controller.rightDock)
+			if easyWay[v] then
+				controller.dockWindow(easyWay[v], controller.rightDock)
+				easyWay[v] = nil
 			end
 		end
 
@@ -308,7 +310,7 @@ controller.beginWindowDrag = function(window)
 
 	window.alpha = startAlpha
 	window.zIndex = startZ
-	
+
 	lastUpdate = os.clock()
 	saveDocks()
 end
