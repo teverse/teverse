@@ -28,6 +28,7 @@ return function(workshop)
 		select = require("tevgit:create/tools/select.lua"),
 		move   = require("tevgit:create/tools/move.lua"),
 		scale  = require("tevgit:create/tools/scale.lua"),
+		paint  = require("tevgit:create/tools/paint.lua"),
 		--rotate = require("tevgit:create/tools/rotate.lua")
 	}
 
