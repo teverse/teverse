@@ -27,10 +27,10 @@ scriptEditor.mainText = engine.construct("guiTextBox", scriptEditor.mainFrame, {
 	guiStyle=enums.guiStyle.noBackground
 })
 
---[[
+
 scriptEditor.colouredText = engine.construct("guiTextBox", scriptEditor.mainFrame, {
 	size=guiCoord(1,-10,1,-10),
-	position=guiCoord(0,5,0,5),
+	position=guiCoord(0.5,5,0,5),
 	zIndex=1003,
 	align=enums.align.topLeft,
 	fontFile = "FiraMono-Regular.ttf",
@@ -41,7 +41,7 @@ scriptEditor.colouredText = engine.construct("guiTextBox", scriptEditor.mainFram
 	readOnly=true,
 	text = "",
 	guiStyle=enums.guiStyle.noBackground
-})]]
+})
 
 scriptEditor.colours = {
 	background = colour:fromRGB(40, 42, 54),
@@ -72,6 +72,8 @@ scriptEditor.lex = function()
 
 	--local curC = 0
 	local text = scriptEditor.mainText.text
+	scriptEditor.colouredText.text = text
+	scriptEditor.mainText:setTextColour(0, text:len(), colour(0.5,0.5,0.5))
 	--scriptEditor.colouredText.text = text
 	--wait()
 	--print(engine.lexer.lex, type(engine.lexer.lex))

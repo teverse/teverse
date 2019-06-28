@@ -1,6 +1,8 @@
 local controller = {}
 local uiController = require("tevgit:create/controllers/ui.lua")
 local themeController = require("tevgit:create/controllers/theme.lua")
+local colourPickerController = require("tevgit:create/extras/colourPicker.lua")
+local dockController = require("tevgit:create/controllers/dock.lua")
 
 controller.window = nil
 controller.workshop = nil
@@ -8,10 +10,16 @@ controller.scrollView = nil
 
 controller.excludePropertyList = {}
 
+controller.colourPicker = nil
+
 function controller.createUI(workshop)
   controller.workshop = workshop
-	controller.window = uiController.createWindow(workshop.interface, guiCoord(1, -250, 1, -400), guiCoord(0, 250, 0, 400), "Properties")
-  controller.window.visible = false
+  controller.colourPicker = colourPickerController.create()
+  controller.colourPicker.window.visible = false
+	controller.window = uiController.createWindow(workshop.interface, guiCoord(1, -300, 1, -400), guiCoord(0, 250, 0, 400), "Properties")
+  controller.window.visible = true
+
+  dockController.dockWindow(controller.window, dockController.rightDock)
   
   controller.scrollView = uiController.create("guiScrollView", controller.window.content, {
     name = "scrollview",
@@ -67,9 +75,10 @@ controller.parseInputs = {
     end
   end,
   quaternion = function(property, gui)
-    local x,y,z,w = tonumber(gui.x.text),tonumber(gui.y.text),tonumber(gui.z.text),tonumber(gui.w.text)
-    if x and y and z and w then
-      callbackInput(property, quaternion(x,y,z,w))
+    --local x,y,z,w = tonumber(gui.x.text),tonumber(gui.y.text),tonumber(gui.z.text),tonumber(gui.w.text)
+    local x,y,z = tonumber(gui.x.text),tonumber(gui.y.text),tonumber(gui.z.text)
+    if x and y and z then
+      callbackInput(property, quaternion:setEuler(math.rad(x),math.rad(y),math.rad(z)))
     end
   end,
   guiCoord = function(property, gui)
@@ -96,13 +105,13 @@ controller.updateHandlers = {
     gui.input.text = value
   end,
   vector3 = function(instance, gui, value)
-    gui.x.text = tostring(value.x)
-    gui.y.text = tostring(value.y)
-    gui.z.text = tostring(value.z)
+    gui.x.text = string.format("%.3f", value.x)
+    gui.y.text = string.format("%.3f", value.y)
+    gui.z.text = string.format("%.3f", value.z)
   end,
   vector2 = function(instance, gui, value)
-    gui.x.text = tostring(value.x)
-    gui.y.text = tostring(value.y)
+    gui.x.text = string.format("%.3f", value.x)
+    gui.y.text = string.format("%.3f", value.y)
   end,
   colour = function(instance, gui, value)
     gui.r.text = tostring(value.r)
@@ -111,10 +120,11 @@ controller.updateHandlers = {
     gui.col.backgroundColour = value
   end,
   quaternion = function(instance, gui, value)
-    gui.x.text = tostring(value.x)
-    gui.y.text = tostring(value.y)
-    gui.z.text = tostring(value.z)
-    gui.w.text = tostring(value.w)
+    local euler = value:getEuler()
+    gui.x.text = string.format("%.3f", math.deg(euler.x))
+    gui.y.text = string.format("%.3f", math.deg(euler.y))
+    gui.z.text = string.format("%.3f", math.deg(euler.z))
+    --gui.w.text = tostring(value.w)
   end,
   guiCoord = function(instance, gui, value)
     gui.scaleX.text = tostring(value.scaleX)
@@ -129,8 +139,9 @@ controller.createInput = {
     return uiController.create("guiFrame", nil, {
       alpha = 0.25,
       name = "inputContainer",
-      size = guiCoord(0.6, 0, 0, 20),
-      position = guiCoord(0.4,0,0,0)
+      size = guiCoord(0.5, 0, 0, 20),
+      position = guiCoord(0.5,0,0,0),
+      cropChildren = false
     }, "secondary")
   end,
 
@@ -156,7 +167,7 @@ controller.createInput = {
     local container = controller.createInput.default(value, pType, readOnly)
     local x = uiController.create("guiButton", container, {
       name = "input",
-      size = guiCoord(0, 20, 1, -2),
+      size = guiCoord(0, 18, 1, -2),
       position = guiCoord(0, 2, 0, 1),
       text = "",
       alpha = 0.75,
@@ -215,28 +226,54 @@ controller.createInput = {
 
   vector3 = function(instance, property, value)
     local container = controller.createInput.default(value, pType, readOnly)
+    container.size = guiCoord(container.size.scaleX, 0, 0, 60)
+
+    local xLabel = uiController.create("guiTextBox", container, {
+      name = "labelX",
+      size = guiCoord(0, 10, 1/3, -1),
+      position = guiCoord(0,-10,0,1),
+      fontSize = 16,
+      textAlpha = 0.6,
+      text = "X",
+      align = enums.align.topLeft
+    }, "mainText")
+    
     local x = uiController.create("guiTextBox", container, {
       alpha = 0.25,
       readOnly = false,
       multiline = false,
       fontSize = 18,
       name = "x",
-      size = guiCoord(1/3, -4, 1, -2),
-      position = guiCoord(0, 2, 0, 1),
+      size = guiCoord(1, -4, 1/3, -1),
+      position = guiCoord(0, 2, 0, 0),
       text = "0",
       align = enums.align.middle
     }, "primary")
 
+    local yLabel = xLabel:clone()
+    yLabel.name = "yLabel"
+    yLabel.text = "Y"
+    yLabel.parent = container
+    yLabel.position = guiCoord(0, -10, 1/3, 1)
+    themeController.add(yLabel, "mainText")
+
     local y = x:clone()
     y.name = "y"
     y.parent = container
-    y.position = guiCoord(1/3, 2, 0, 1)
+    y.position = guiCoord(0, 2, 1/3, 0)
     themeController.add(y, "primary")
+
+    local zLabel = xLabel:clone()
+    zLabel.name = "zLabel"
+    zLabel.text = "Z"
+    zLabel.parent = container
+    zLabel.position = guiCoord(0, -10, 2/3, 1)
+    themeController.add(yLabel, "mainText")
 
     local z = x:clone()
     z.name = "z"
     z.parent = container
-    z.position = guiCoord(2/3, 2, 0, 1)
+    z.position = guiCoord(0, 2, 2/3, 0)
     themeController.add(z, "primary")
 
     local function handler()
@@ -251,22 +288,41 @@ controller.createInput = {
 
   vector2 = function(instance, property, value)
     local container = controller.createInput.default(value, pType, readOnly)
+    container.size = guiCoord(container.size.scaleX, 0, 0, 40)
+
+    local xLabel = uiController.create("guiTextBox", container, {
+      name = "labelX",
+      size = guiCoord(0, 10, 1/2, -1),
+      position = guiCoord(0,-10,0,2),
+      fontSize = 16,
+      textAlpha = 0.6,
+      text = "X",
+      align = enums.align.topLeft
+    }, "mainText")
+
     local x = uiController.create("guiTextBox", container, {
       alpha = 0.25,
       readOnly = false,
       multiline = false,
       fontSize = 18,
       name = "x",
-      size = guiCoord(1/2, -4, 1, -2),
+      size = guiCoord(0, -4, 1/2, -2),
       position = guiCoord(0, 2, 0, 1),
       text = "0",
       align = enums.align.middle
     }, "primary")
 
+    local yLabel = xLabel:clone()
+    yLabel.name = "yLabel"
+    yLabel.text = "Y"
+    yLabel.parent = container
+    yLabel.position = guiCoord(0, -10, 1/2, 2)
+    themeController.add(yLabel, "mainText")
+
     local y = x:clone()
     y.name = "y"
     y.parent = container
-    y.position = guiCoord(1/2, 2, 0, 1)
+    y.position = guiCoord(0, 2, 1/2, 1)
     themeController.add(y, "primary")
     local function handler()
       controller.parseInputs[type(value)](property, container)
@@ -278,36 +334,72 @@ controller.createInput = {
   end,
 
   quaternion = function(instance, property, value)
+
+    -- maybe quaternions need an Euler editor?
+
     local container = controller.createInput.default(value, pType, readOnly)
+    container.size = guiCoord(container.size.scaleX, 0, 0, 60)
+
+    local xLabel = uiController.create("guiTextBox", container, {
+      name = "labelX",
+      size = guiCoord(0, 12, 1/3, -1),
+      position = guiCoord(0,-10,0,1),
+      fontSize = 16,
+      textAlpha = 0.6,
+      text = "X",
+      align = enums.align.topLeft
+    }, "mainText")
+
     local x = uiController.create("guiTextBox", container, {
       alpha = 0.25,
       readOnly = false,
       multiline = false,
       fontSize = 18,
       name = "x",
-      size = guiCoord(1/4, -4, 1, -2),
-      position = guiCoord(0, 2, 0, 1),
+      size = guiCoord(1, -4, 1/3, -1),
+      position = guiCoord(0, 2, 0, 0),
       text = "0",
       align = enums.align.middle
     }, "primary")
 
+    local yLabel = xLabel:clone()
+    yLabel.name = "yLabel"
+    yLabel.text = "Y"
+    yLabel.parent = container
+    yLabel.position = guiCoord(0, -10, 1/3, 1)
+    themeController.add(yLabel, "mainText")
+
     local y = x:clone()
     y.name = "y"
     y.parent = container
-    y.position = guiCoord(1/4, 2, 0, 1)
+    y.position = guiCoord(0, 2, 1/3, 0)
     themeController.add(y, "primary")
+
+    local zLabel = xLabel:clone()
+    zLabel.name = "zLabel"
+    zLabel.text = "Z"
+    zLabel.parent = container
+    zLabel.position = guiCoord(0, -10, 2/3, 1)
+    themeController.add(zLabel, "mainText")
 
     local z = x:clone()
     z.name = "z"
     z.parent = container
-    z.position = guiCoord(1/2, 2, 0, 1)
+    z.position = guiCoord(0, 2, 2/3, 0)
     themeController.add(z, "primary")
+
+    --[[local wLabel = xLabel:clone()
+    wLabel.name = "wLabel"
+    wLabel.text = "W"
+    wLabel.parent = container
+    wLabel.position = guiCoord(0, -12, 3/4, 2)
+    themeController.add(wLabel, "mainText")
 
     local w = x:clone()
     w.name = "w"
     w.parent = container
-    w.position = guiCoord(3/4, 2, 0, 1)
-    themeController.add(w, "primary")
+    w.position = guiCoord(0, 2, 3/4, 1)
+    themeController.add(w, "primary")]]
 
     local function handler()
       controller.parseInputs[type(value)](property, container)
@@ -315,7 +407,7 @@ controller.createInput = {
     x:textInput(handler)
     y:textInput(handler)
     z:textInput(handler)
-    w:textInput(handler)
+    --w:textInput(handler)
 
     return container
   end,
@@ -365,28 +457,54 @@ controller.createInput = {
 
   colour = function(instance, property, value)
     local container = controller.createInput.default(value, pType, readOnly)
+    container.size = guiCoord(container.size.scaleX, 0, 0, 60)
+
+    local rLabel = uiController.create("guiTextBox", container, {
+      name = "labelR",
+      size = guiCoord(0, 10, 1/3, -1),
+      position = guiCoord(0,-10,0,2),
+      fontSize = 16,
+      textAlpha = 0.6,
+      text = "R",
+      align = enums.align.topLeft
+    }, "mainText")
+
     local x = uiController.create("guiTextBox", container, {
       alpha = 0.25,
       readOnly = false,
       multiline = false,
       fontSize = 18,
       name = "r",
-      size = guiCoord(1/4, -4, 1, -2),
+      size = guiCoord(1, -24, 1/3, -2),
       position = guiCoord(0, 2, 0, 1),
       text = "1",
       align = enums.align.middle
     }, "primary")
 
+    local gLabel = rLabel:clone()
+    gLabel.name = "gLabel"
+    gLabel.text = "G"
+    gLabel.parent = container
+    gLabel.position = guiCoord(0, -10, 1/3, 1)
+    themeController.add(gLabel, "mainText")
+
     local g = x:clone()
     g.name = "g"
     g.parent = container
-    g.position = guiCoord(1/4, 2, 0, 1)
+    g.position = guiCoord(0, 2, 1/3, 1)
     themeController.add(g, "primary")
+
+    local bLabel = rLabel:clone()
+    bLabel.name = "bLabel"
+    bLabel.text = "B"
+    bLabel.parent = container
+    bLabel.position = guiCoord(0, -10, 2/3, 1)
+    themeController.add(bLabel, "mainText")
 
     local b = x:clone()
     b.name = "b"
     b.parent = container
-    b.position = guiCoord(1/2, 2, 0, 1)
+    b.position = guiCoord(0, 2, 2/3, 1)
     themeController.add(b, "primary")
 
     local function handler()
@@ -398,10 +516,15 @@ controller.createInput = {
 
     local col = engine.construct("guiFrame", container, {
       name = "col",
-      size = guiCoord(1/4, -4, 1, -2),
-      position = guiCoord(3/4, 2, 0, 1),
-      backgroundColour = colour(1,1,1)
+      size = guiCoord(0, 14, 1, -2),
+      position = guiCoord(1, -18, 0, 1),
+      backgroundColour = colour(1,1,1),
+      borderRadius = 2,
     })
+
+    col:mouseLeftReleased(function ()
+      controller.colourPicker.window.visible  = not controller.colourPicker.window.visible 
+    end)
 
     return container
   end,
@@ -460,11 +583,11 @@ function controller.generateProperties(instance)
 
                 label = uiController.create("guiTextBox", container, {
                 	name = "label",
-                	size = guiCoord(0.4, -10, 0, 20),
+                	size = guiCoord(0.5, -15, 1, 0),
                 	position = guiCoord(0,0,0,0),
                 	fontSize = 18,
                 	text = v.property,
-                  align = enums.align.middleRight
+                  align = enums.align.topRight
                 }, "mainText")
 
                 local inputGui = nil
@@ -475,10 +598,13 @@ function controller.generateProperties(instance)
               		inputGui = controller.createInput.default(instance, v.property, value)		
               	end
 
+                container.size = guiCoord(1, -10, 0, inputGui.size.offsetY)
+
                 inputGui.parent = container
               else
                 container.visible = true
               end
+
 
               if controller.updateHandlers[pType] then
                 controller.updateHandlers[pType](instance, container.inputContainer, value)
@@ -487,7 +613,7 @@ function controller.generateProperties(instance)
 
               container.position = guiCoord(0,5,0,y)
 
-            	y = y + 23
+            	y = y + container.size.offsetY + 3
             end
         end
 

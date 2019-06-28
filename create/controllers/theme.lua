@@ -11,6 +11,7 @@ themeController.darkTheme = {
     default = {
         fontFile = "OpenSans-Regular.ttf",
 		backgroundColour  = colour:fromRGB(66, 66, 76),
+		borderColour  = colour:fromRGB(56, 56, 66),
 		textColour = colour:fromRGB(255, 255, 255)
     },
     main = {
@@ -34,9 +35,15 @@ themeController.darkTheme = {
 	    backgroundColour = colour:fromRGB(78, 83, 91),
 	    textColour  = colour:fromRGB(255,255,255)
 	},
+	primaryText = {
+	    alpha = 0, -- background
+	    textColour  = colour:fromRGB(255,255,255)
+	},
 	light = {
 		backgroundColour  = colour:fromRGB(255,255,255),
 		textColour = colour:fromRGB(66, 66, 76),
+		imageColour = colour:fromRGB(66, 66, 76),
+		borderColour  = colour:fromRGB(245,245,245),
 	},
 	tools = {
 		selected = colour:fromRGB(66, 134, 244),
