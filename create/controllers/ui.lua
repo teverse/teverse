@@ -23,7 +23,7 @@ uiController.createFrame = function(parent, properties, style)
     return gui
 end
 
-uiController.createWindow = function(parent, pos, size, title)
+uiController.createWindow = function(parent, pos, size, title, dontDock)
     if not parent then parent = uiController.workshop.interface end
     local container = engine.construct("guiFrame", parent, {
         name = "windowContainer",
@@ -37,9 +37,11 @@ uiController.createWindow = function(parent, pos, size, title)
         hoverCursor = "fa:s-hand-pointer"
     }, "main")
 
-    titleBar:mouseLeftPressed(function ()
-        dockController.beginWindowDrag(container)
-    end)
+    if not dontDock then
+        titleBar:mouseLeftPressed(function ()
+            dockController.beginWindowDrag(container)
+        end)
+    end
 
     local textLabel = uiController.create("guiTextBox", titleBar, {
         name = "textLabel",

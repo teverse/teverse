@@ -74,14 +74,13 @@ local function onToolActivated(toolId)
                             engine.tween:begin(selectionController.selection[1], .2, {position = currentPosition,
                                                                        rotation = targetRot }, "outQuad")
 
-                            --selectedItems[1].position = currentPosition 
-                            --selectedItems[1].rotation = startRotation * quaternion:setEuler(0,math.rad(applyRot),0)
-                            --print(selectedItems[1].name)
+                            --selectionController.selection[1].position = currentPosition
+                            --selectionController.selection[1].rotation = targetRot
 
                             for i,v in pairs(selectionController.selection) do
                                 if i > 1 then 
-                                    --v.position = (currentPosition) + (offsets[v][2]*selectedItems[1].rotation) * offsets[v][1]
-                                    --v.rotation = offsets[v][2]*selectedItems[1].rotation 
+                                   -- v.position = (currentPosition) + (offsets[v][2]*targetRot) * offsets[v][1]
+                                   -- v.rotation = offsets[v][2]*targetRot
 
                                     engine.tween:begin(v, .2, {position = (currentPosition) + (offsets[v][2]*targetRot) * offsets[v][1],
                                                                rotation = offsets[v][2]*targetRot }, "outQuad")
@@ -107,7 +106,8 @@ local function onToolActivated(toolId)
 		if input.systemHandled then return end 
 		
 		if input.key == enums.key.r then
-			gridStep = gridStep == 1 and 0 or 1
+            applyRot = applyRot + 45
+			--gridStep = gridStep == 1 and 0 or 1
 		end
 	end)
 end
