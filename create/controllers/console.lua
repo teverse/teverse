@@ -28,42 +28,17 @@ function stringCount(inputStr, pat)
 end
 
 consoleController.createConsole = function(workshop)
-	local windowObject = uiController.create("guiFrame", workshop.interface, {
-		name = "outputConsole",
-		visible = false,
-		draggable = true,
-		size = guiCoord(0.5, 0, 0.5, 0),
-		position = guiCoord(0.25, 0, 0.25, 0)
-	})
+	local windowObject = uiController.createWindow(
+		workshop.interface,
+		guiCoord(0.25, 0, 0.25, 0),
+		guiCoord(0.5, 0, 0.5, 0),
+		"Console"
+	)
 
 	consoleController.consoleObject = windowObject
 
-	local topbar = uiController.create("guiFrame", windowObject, {
-		size = guiCoord(1, 0, 0, 25),
-		name = "topbar"
-	}, "primary")
-
-	local titleText = uiController.create("guiTextBox", topbar, {
-		size = guiCoord(0.2, 0, 1, -10),
-		position = guiCoord(0, 10, 0, 5),
-		text = "Console",
-		fontSize = 20,
-		readOnly = true,
-		name = "windowTitle"
-	}, "primary")
-
-	local closeButton = uiController.create("guiTextBox", topbar, {
-		backgroundColour  = colour:fromRGB(255, 0, 0),
-		text = "X",
-		size = guiCoord(0, 25, 0, 25),
-		align = enums.align.middle,
-		position = guiCoord(1, -25, 0, 0),
-		name = "closeButton",
-		readOnly = true
-	}, "primary")
-
 	local scrollView = uiController.create("guiScrollView", windowObject, {
-		size = guiCoord(1, 0, 1, -50),
+		size = guiCoord(1, 0, 1, -47),
 		position = guiCoord(0, 0, 0, 25),
 		canvasSize = guiCoord(1, 0, 0, 0)
 	})
