@@ -35,11 +35,12 @@ consoleController.createConsole = function(workshop)
 		"Console"
 	)
 
+	windowObject.visible = false
 	consoleController.consoleObject = windowObject
 
-	local scrollView = uiController.create("guiScrollView", windowObject, {
-		size = guiCoord(1, 0, 1, -47),
-		position = guiCoord(0, 0, 0, 25),
+	local scrollView = uiController.create("guiScrollView", windowObject.content, {
+		size = guiCoord(1, 0, 1, -25),
+		position = guiCoord(0, 0, 0, 0),
 		canvasSize = guiCoord(1, 0, 0, 0)
 	})
 
@@ -55,7 +56,7 @@ consoleController.createConsole = function(workshop)
 		textColour = colour(1, 1, 1)
 	}, "default")
 
-	local cmdInput = uiController.create("guiFrame", windowObject, {
+	local cmdInput = uiController.create("guiFrame", windowObject.content, {
 		size = guiCoord(1, 0, 0, 25),
 		position = guiCoord(0, 0, 1, -25),
 		name = "cmdInput"
@@ -83,10 +84,6 @@ consoleController.createConsole = function(workshop)
 		name = "cmdInputText",
 		readOnly = false
 	}, "secondary")
-
-	closeButton:mouseLeftPressed(function() 
-		consoleController.consoleObject.visible = false
-	end)
 
 	local cmdBarActive = false 
 
