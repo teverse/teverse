@@ -14,7 +14,7 @@ local function onToolActivated(toolId)
     
 end
 
-local function onToolDeactviated(toolId)
+local function onToolDeactivated(toolId)
   
 end
 
@@ -27,6 +27,6 @@ return toolsController:register({
     hotKey = enums.key.number6,
 
     activated = onToolActivated,
-    deactivated = onToolDeactviated
+    deactivated = onToolDeactivated
 
 })

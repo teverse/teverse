@@ -112,7 +112,7 @@ local function onToolActivated(toolId)
 	end)
 end
 
-local function onToolDeactviated(toolId)
+local function onToolDeactivated(toolId)
     --clean up
     toolsController.tools[toolId].data.mouseDownEvent:disconnect()
     toolsController.tools[toolId].data.mouseDownEvent = nil
@@ -131,7 +131,7 @@ return toolsController:register({
     hotKey = enums.key.number2,
 
     activated = onToolActivated,
-    deactivated = onToolDeactviated,
+    deactivated = onToolDeactivated,
 
     data = {axis={{"x", true},{"y", false},{"z", true}}}
 

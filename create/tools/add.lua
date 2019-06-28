@@ -206,7 +206,7 @@ local function onToolActivated(toolId)
     placeholderBlock.position = vector3(0,-10000,0) --lol
 end
 
-local function onToolDeactviated(toolId)
+local function onToolDeactivated(toolId)
     
     configWindow.visible = false
     --[[
@@ -242,7 +242,7 @@ return toolsController:register({
     hotKey = enums.key.number1,
 
     activated = onToolActivated,
-    deactivated = onToolDeactviated
+    deactivated = onToolDeactivated
 
 })
 

@@ -205,7 +205,7 @@ local function onToolActivated(toolId)
 	updateHandles()
 end
 
-local function onToolDeactviated(toolId)
+local function onToolDeactivated(toolId)
 	toolsController.tools[toolId].data.gridGuideline:destroy()
 	toolsController.tools[toolId].data.gridGuideline = nil
 	
@@ -227,6 +227,6 @@ return toolsController:register({
     hotKey = enums.key.number4,
 
     activated = onToolActivated,
-    deactivated = onToolDeactviated
+    deactivated = onToolDeactivated
 
 })
