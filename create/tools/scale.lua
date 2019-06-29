@@ -148,9 +148,9 @@ local function onToolActivated(toolId)
 								local offsetPos = startSizes[v][2] 
 								local positionCalc = (offsetPos * newSize)
 						
-							    --offsetPos = offsetPos (size-totalSize)
-								--v.position = pos
-								engine.tween:begin(v, .05, {size = size*startSizes[v][3], position = newPos + positionCalc}, "inOutQuad")
+							    v.size = size*startSizes[v][3]
+							    v.position = newPos + positionCalc
+								--engine.tween:begin(v, .05, {size = size*startSizes[v][3], position = newPos + positionCalc}, "inOutQuad")
 							end
 						end
 					end

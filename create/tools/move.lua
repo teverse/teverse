@@ -128,8 +128,8 @@ local function onToolActivated(toolId)
 								else
 									pos[component] = newPos[component]
 								end
-								--v.position = pos
-								engine.tween:begin(v, .05, {position = pos}, "inOutQuad")
+								v.position = pos
+								--engine.tween:begin(v, .05, {position = pos}, "inOutQuad")
 							end
 						end
 					end

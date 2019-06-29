@@ -15,7 +15,7 @@ local selectionController  = require("tevgit:create/controllers/select.lua")
 local toolActive = false
 local currentColour = colour:fromRGB(255,255,255)
 
-local configWindow = uiController.createWindow(uiController.workshop.interface, guiCoord(0, 66, 0, 183), guiCoord(0, 140, 0, 90), "Colour Picker")
+local configWindow = uiController.createWindow(uiController.workshop.interface, guiCoord(0, 66, 0, 203), guiCoord(0, 140, 0, 90), "Colour Picker")
 
 local colourDisplay = engine.construct("guiFrame", configWindow.content, {
     name = "colourPreview",

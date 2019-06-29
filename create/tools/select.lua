@@ -22,8 +22,11 @@ local function onToolActivated(toolId)
 
     toolsController.tools[toolId].data.mouseDownEvent = engine.input:mouseLeftPressed(function ( inp )
         if not inp.systemHandled and #selectionController.selection > 0 then
+
+            local selectionAtBegin = selectionController.selection
+
             local hit, didExclude = engine.physics:rayTestScreenAllHits(engine.input.mousePosition,
-                                                                        selectionController.selection)
+                                                                        selectionAtBegin)
 			
 			-- Didexclude is false if the user didnt drag starting from one of the selected items.
 			if didExclude == false then return end
@@ -41,13 +44,13 @@ local function onToolActivated(toolId)
                 hit = hit and hit[1] or nil
 				local startPosition = hit and hit.hitPosition or vector3(0,0,0)
 				local lastPosition = startPosition
-				local startRotation = selectionController.selection[1].rotation
+				local startRotation = selectionAtBegin[1].rotation
 				local offsets = {}
 
-				for i,v in pairs(selectionController.selection) do
+				for i,v in pairs(selectionAtBegin) do
 					if i > 1 then 
 						local relative = startRotation:inverse() * v.rotation;	
-						local positionOffset = (relative*selectionController.selection[1].rotation):inverse() * (v.position - selectionController.selection[1].position) 
+						local positionOffset = (relative*selectionAtBegin[1].rotation):inverse() * (v.position - selectionAtBegin[1].position) 
 						offsets[v] = {positionOffset, relative}
 					end
 				end
@@ -55,13 +58,13 @@ local function onToolActivated(toolId)
 				local lastRot = applyRot
 				
 				while mouseDown == currentTime and toolsController.currentToolId == toolId do
-                    local currentHit = engine.physics:rayTestScreenAllHits(engine.input.mousePosition, selectionController.selection)
+                    local currentHit = engine.physics:rayTestScreenAllHits(engine.input.mousePosition, selectionAtBegin)
                     if #currentHit >= 1 then 
                         currentHit = currentHit[1]
 
                         local forward = (currentHit.object.rotation * currentHit.hitNormal):normal()-- * quaternion:setEuler(0,math.rad(applyRot),0)
         
-                        local currentPosition = currentHit.hitPosition + (forward * (selectionController.selection[1].size/2)) --+ (selectedItems[1].size/2)
+                        local currentPosition = currentHit.hitPosition + (forward * (selectionAtBegin[1].size/2)) --+ (selectedItems[1].size/2)
 
                         currentPosition = helpers.roundVectorWithToolSettings(currentPosition)
 
@@ -71,19 +74,19 @@ local function onToolActivated(toolId)
 
                             local targetRot = startRotation * quaternion:setEuler(0,math.rad(applyRot),0)
 
-                            engine.tween:begin(selectionController.selection[1], .2, {position = currentPosition,
-                                                                       rotation = targetRot }, "outQuad")
+                            --engine.tween:begin(selectionAtBegin[1], .2, {position = currentPosition,
+                            --                                           rotation = targetRot }, "outQuad")
 
-                            --selectionController.selection[1].position = currentPosition
-                            --selectionController.selection[1].rotation = targetRot
+                            selectionAtBegin[1].position = currentPosition
+                            selectionAtBegin[1].rotation = targetRot
 
-                            for i,v in pairs(selectionController.selection) do
+                            for i,v in pairs(selectionAtBegin) do
                                 if i > 1 then 
-                                   -- v.position = (currentPosition) + (offsets[v][2]*targetRot) * offsets[v][1]
-                                   -- v.rotation = offsets[v][2]*targetRot
+                                    v.position = (currentPosition) + (offsets[v][2]*targetRot) * offsets[v][1]
+                                    v.rotation = offsets[v][2]*targetRot
 
-                                    engine.tween:begin(v, .2, {position = (currentPosition) + (offsets[v][2]*targetRot) * offsets[v][1],
-                                                               rotation = offsets[v][2]*targetRot }, "outQuad")
+                                    --engine.tween:begin(v, .2, {position = (currentPosition) + (offsets[v][2]*targetRot) * offsets[v][1],
+                                    --                           rotation = offsets[v][2]*targetRot }, "outQuad")
                                 end
                             end
 
