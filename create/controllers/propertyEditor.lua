@@ -91,7 +91,7 @@ controller.parseInputs = {
     --local x,y,z,w = tonumber(gui.x.text),tonumber(gui.y.text),tonumber(gui.z.text),tonumber(gui.w.text)
     local x,y,z = tonumber(gui.x.text),tonumber(gui.y.text),tonumber(gui.z.text)
     if x and y and z then
-      callbackInput(property, quaternion:setEuler(math.rad(x),math.rad(y),math.rad(z)))
+      callbackInput(property, quaternion():setEuler(math.rad(x),math.rad(y),math.rad(z)))
     end
   end,
   guiCoord = function(property, gui)
