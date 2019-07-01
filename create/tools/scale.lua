@@ -158,7 +158,7 @@ local function onToolActivated(toolId)
 				wait()
 			until not leftButtonDown or not toolsController.currentToolId == toolId
 			
-			delay(function() selectionController.selectable = false end, 1)
+			delay(function() if not leftButtonDown then selectionController.selectable = true end end, 0.3)
 			
 			if toolsController.currentToolId == toolId then
 				gridGuideline.size = vector3(0,0,0)

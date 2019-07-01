@@ -20,6 +20,8 @@ local function onToolActivated(toolId)
     local applyRot = 0
 	local gridStep = toolSettings.gridStep
 
+    selectionController.selectable = true
+
     toolsController.tools[toolId].data.mouseDownEvent = engine.input:mouseLeftPressed(function ( inp )
         if not inp.systemHandled and #selectionController.selection > 0 then
     

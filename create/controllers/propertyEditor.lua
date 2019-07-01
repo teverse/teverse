@@ -678,10 +678,9 @@ function controller.generateProperties(instance)
             local pType = type(value)
             local readOnly = not v.writable
             
-            --emissiveColour is not ready to be played with (may be glitchy/ turned off currently)
             --letting the user turn physics off would cause raycasts to die.
-            
-            if not readOnly and pType ~= "function" and v.property ~= "physics"  and v.property ~= "emissiveColour" and not controller.excludePropertyList[v.property] then
+
+            if not readOnly and pType ~= "function" and v.property ~= "physics" and not controller.excludePropertyList[v.property] then
 
               local container = controller.scrollView["_" .. v.property]
 
