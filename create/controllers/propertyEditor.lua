@@ -12,6 +12,9 @@ local meshShorcuts = {
   cone = "primitive:cone",
   wedge = "primitive:wedge",
   corner = "primitive:corner",
+  worker = "tevurl:3d/worker.glb",
+  duck = "tevurl:3d/Duck.glb",
+  avocado = "tevurl:3d/Avocado.glb",
 }
 
 controller.window = nil
@@ -239,8 +242,8 @@ controller.createInput = {
 
 
       local presetSelect = uiController.create("guiTextBox", container, {
-          size = guiCoord(1, -14, 0, 18),
-          position = guiCoord(0, 7, 0, 22),
+          size = guiCoord(1, -4, 0, 16),
+          position = guiCoord(0, 2, 0, 23),
           borderRadius = 3,
           text = "Mesh Presets",
           fontSize = 16,
@@ -249,12 +252,13 @@ controller.createInput = {
       }, "primary")
 
       local meshModal = uiController.create("guiFrame", container, {
-          position = guiCoord(0, 7, 0, 48),
+          position = guiCoord(-0.8, 7, 0, 48),
           borderRadius = 6,
           visible = false,
           zIndex = 40,
+          borderWidth = 1,
           cropChildren = false
-      }, "light")
+      }, "main")
 
       local isFocused = false
       local pendingHide = false
@@ -291,7 +295,7 @@ controller.createInput = {
 
       uiController.create("guiImage", meshModal, {
         size = guiCoord(0, 24, 0, 24),
-        position = guiCoord(0, 12, 0, -15),
+        position = guiCoord(0.75, -12, 0, -15),
         handleEvents=false,
         zIndex = 10,
         texture = "fa:s-caret-up",
@@ -299,11 +303,12 @@ controller.createInput = {
       })
 
       local curY = 0
+      local curX = 0
       for meshName, actualMeshName in pairs(meshShorcuts) do
 
         local btn = uiController.create("guiTextBox", meshModal, {
-          size = guiCoord(1, -10, 0, 18),
-          position = guiCoord(0, 5, 0, curY + 4),
+          size = guiCoord(.5, -10, 0, 18),
+          position = guiCoord(curX, 5, 0, curY + 4),
           borderRadius = 3,
           text = meshName,
           fontSize = 16,
@@ -322,10 +327,15 @@ controller.createInput = {
           controller.parseInputs[type(value)](property, container)
         end)
 
-        curY = curY + 24
+        if curX == 0.5 then
+          curY = curY + 24
+          curX = 0
+        else
+          curX = 0.5
+        end
       end
 
-      meshModal.size = guiCoord(1, -10, 0, curY+4)
+      meshModal.size = guiCoord(1.8, -10, 0, curY+4)
 
 
     end

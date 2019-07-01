@@ -1,3 +1,5 @@
+-- Mean to be a module dedicated to debugging create mode?
+
 local toolsController = require("tevgit:create/controllers/tool.lua")
 local uiController = require("tevgit:create/controllers/ui.lua")
 local uiTabController = require("tevgit:create/controllers/uiTabController.lua")
@@ -41,7 +43,7 @@ gcnow:mouseLeftReleased(function ()
 	collectgarbage()
 end)
 
-local garbageButton = toolsController.createButton("devTab", "fa:s-trash-alt", "G...Collector")
+local garbageButton = toolsController.createButton("devTab", "fa:s-trash-alt", "GC")
 garbageButton:mouseLeftReleased(function ()
    	gcWindow.visible = not gcWindow.visible
 
