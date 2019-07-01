@@ -98,6 +98,7 @@ hotkeysController:bind({
 			if v then
 				v.emissiveColour = colour(0,0,0)
 				local new = v:clone()
+				new.parent = workspace
 				new.position = v.position + vector3(0,size.y,0)
 				table.insert(newItems, new)
 			end
@@ -117,6 +118,7 @@ hotkeysController:bind({
 			if v then
 				v.emissiveColour = colour(0,0,0)
 				local new = v:clone()
+				new.parent = workspace
 				table.insert(newItems, new)
 			end
 		end
