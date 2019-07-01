@@ -60,7 +60,6 @@ local function onToolActivated(toolId)
 		handle:mouseLeftPressed(function()
 			if leftButtonDown then return end -- how
 			
-			print("left pressed")
 			leftButtonDown = handle 
 			
 			selectionController.selectable = false
