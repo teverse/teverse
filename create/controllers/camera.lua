@@ -5,7 +5,7 @@ local cameraController = {}
 local selectionController = require("tevgit:create/controllers/select.lua")
 
 cameraController.zoomStep = 3
-cameraController.rotateStep = -0.0045
+cameraController.rotateStep = -0.003
 cameraController.moveStep = 0.5 -- how fast the camera moves
 
 cameraController.camera = workspace.camera
@@ -48,7 +48,7 @@ end)
 
 engine.input:keyPressed(function( inputObj )
 	if inputObj.systemHandled then return end
-
+	
 	if cameraController.cameraKeyArray[inputObj.key] and not cameraController.cameraKeyEventLooping then
 		cameraController.cameraKeyEventLooping = true
 		repeat
