@@ -47,8 +47,8 @@ engine.input:mouseMoved(function( input )
 end)
 
 engine.input:keyPressed(function( inputObj )
-	if inputObj.systemHandled then return end
-	
+	if inputObj.systemHandled or engine.input:isKeyDown(enums.key.leftCtrl) then return end
+
 	if cameraController.cameraKeyArray[inputObj.key] and not cameraController.cameraKeyEventLooping then
 		cameraController.cameraKeyEventLooping = true
 		repeat

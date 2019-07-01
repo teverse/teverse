@@ -144,4 +144,21 @@ hotkeysController:bind({
 	end
 })
 
+
+hotkeysController:bind({
+	name = "select all",
+	priorKey = enums.key.leftCtrl,
+	key = enums.key.a, 
+	action = function()
+		local selection = {}
+		for _,v in pairs(workspace.children) do
+			if not v.workshopLocked and type(v) == "block" then
+				table.insert(selection, v)
+			end
+		end
+		selectionController.setSelection(selection)
+	end
+})
+
+
 return hotkeysController
