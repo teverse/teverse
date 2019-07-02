@@ -135,9 +135,9 @@ local function onToolActivated(toolId)
 
 							local size = totalSize:clone()
 							if gridStep > 0 and toolSettings.axis[componentIndex][2] then
-								size[component] = helpers.roundToMultiple(newSize[component], gridStep)
+								size[component] = math.max(0.05, helpers.roundToMultiple(newSize[component], gridStep))
 							else
-								size[component] = newSize[component]
+								size[component] = math.max(0.05, newSize[component])
 							end
 
 							local newPos = totalposition:clone()

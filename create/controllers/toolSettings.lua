@@ -6,7 +6,7 @@ local controller = {}
 local uiController = require("tevgit:create/controllers/ui.lua")
 local themeController = require("tevgit:create/controllers/theme.lua")
 
-controller.gridStep = 1
+controller.gridStep = 0.2
 controller.rotateStep = 45
 controller.axis = {{"x", true},{"y", true},{"z", true}} -- should grid step be on .. axis
 

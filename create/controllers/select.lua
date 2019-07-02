@@ -89,6 +89,11 @@ engine.input:mouseLeftReleased(function(inp)
     if not inp.systemHandled and selectionController.selectable then
         local mouseHit = engine.physics:rayTestScreen( engine.input.mousePosition )
 	    if not mouseHit or mouseHit.object.workshopLocked then
+
+            if mouseHit then
+                print(mouseHit.object, mouseHit.object.workshopLocked, mouseHit.object.name)
+            end
+
     		if mouseHit and mouseHit.object.name == "_CreateMode_" then return end -- dont deselect
     		-- User clicked empty space, deselect everything??#
     		for _,v in pairs(selectionController.selection) do
