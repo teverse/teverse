@@ -19,6 +19,19 @@ local propertyController  = require("tevgit:create/controllers/propertyEditor.lu
 local toolSettings  = require("tevgit:create/controllers/toolSettings.lua")
 local helpers = require("tevgit:create/helpers.lua")
 
+local meshShortcuts = {
+    cube = "primitive:cube",
+    sphere = "primitive:sphere",
+    cylinder = "primitive:cylinder",
+    torus = "primitive:torus",
+    cone = "primitive:cone",
+    wedge = "primitive:wedge",
+    corner = "primitive:corner",
+    worker = "tevurl:3d/worker.glb",
+    duck = "tevurl:3d/Duck.glb",
+    avocado = "tevurl:3d/Avocado.glb",
+  }
+
 local toolIsActive
 
 -- storing tool specific content in tool.data isn't really needed anymore due to modules...
@@ -46,23 +59,59 @@ local insertProps = {
 }
 
 local configWindow = uiController.createWindow(uiController.workshop.interface, guiCoord(0, 66, 0, 203), guiCoord(0, 140, 0, 48), "Inserter")
-local gridLabel = uiController.create("guiTextBox", configWindow.content, {
+local editBtn = uiController.create("guiTextBox", configWindow.content, {
     size = guiCoord(1,-10,1,-10),
     position = guiCoord(0,5,0,5),
     align = enums.align.middle,
     text = "Edit Insertable"
 }, "main")
 
+local meshWindow = uiController.createWindow(uiController.workshop.interface, guiCoord(0, 66, 0, 256), guiCoord(0, 175, 0, 22), "Presets")
+
+local curY = 0
+local curX = 0
+local btnNum = 0
+for meshName, actualMeshName in pairs(meshShortcuts) do
+    local btn = uiController.create("guiTextBox", meshWindow.content, {
+        size = guiCoord(.5, -10, 0, 18),
+        position = guiCoord(curX, 5, 0, curY + 4),
+        borderRadius = 3,
+        text = meshName,
+        fontSize = 16,
+        align = enums.align.middle
+    }, "primary")
+
+    btn:mouseLeftReleased(function()
+        placeholderBlock.mesh = actualMeshName
+    end)
+
+    btnNum = btnNum + 1
+
+    if curX == 0.5 then
+        curY = curY + 24
+        curX = 0
+    else
+        curX = 0.5
+    end
+end
+
+local meshWindowY = (22 + (math.ceil(btnNum / 2) * 26))
+print(btnNum)
+print((math.ceil(btnNum / 2) * 26))
+print(meshWindowY)
+
+meshWindow.size = guiCoord(0, 175, 0, meshWindowY)
+
 local editing = false
 local db = false
 
-gridLabel:mouseLeftReleased(function ()
+editBtn:mouseLeftReleased(function ()
     if editing then editing = false return end
     if db then return end
     db = true
 
     editing = true
-    gridLabel.text = "Back"
+    editBtn.text = "Back"
 
     -- hide these from the property editor...
     propertyController.excludePropertyList = {
@@ -120,14 +169,17 @@ gridLabel:mouseLeftReleased(function ()
 
     editing = false
     db=false
-    gridLabel.text = "Edit Insertable"
+    editBtn.text = "Edit Insertable"
 
 end)
 
 configWindow.visible = false
+meshWindow.visible = false
 
 local function onToolActivated(toolId)
     configWindow.visible = true
+    meshWindow.visible = true
+
     --[[
         @Description
             Initializes the process (making placeholders & events) for placing blocks
@@ -219,6 +271,8 @@ end
 local function onToolDeactivated(toolId)
     
     configWindow.visible = false
+    meshWindow.visible = false
+
     --[[
         @Description
             Clears up any loose ends during deactivation
