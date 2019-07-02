@@ -16,11 +16,7 @@ physicsButton:mouseLeftReleased(function ()
     end
 end)
 ]]
-local reloadButton = toolsController.createButton("testingTab", "fa:s-sync", "Reload all")
-reloadButton:mouseLeftReleased(function ()
-	engine.input.cursorTexture = "fa:s-mouse-pointer"
-    toolsController.workshop:reloadCreate()
-end)
+
 
 
 --[[

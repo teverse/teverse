@@ -4,6 +4,19 @@ local themeController = require("tevgit:create/controllers/theme.lua")
 local colourPickerController = require("tevgit:create/extras/colourPicker.lua")
 local dockController = require("tevgit:create/controllers/dock.lua")
 
+local meshShorcuts = {
+  cube = "primitive:cube",
+  sphere = "primitive:sphere",
+  cylinder = "primitive:cylinder",
+  torus = "primitive:torus",
+  cone = "primitive:cone",
+  wedge = "primitive:wedge",
+  corner = "primitive:corner",
+  worker = "tevurl:3d/worker.glb",
+  duck = "tevurl:3d/Duck.glb",
+  avocado = "tevurl:3d/Avocado.glb",
+}
+
 controller.window = nil
 controller.workshop = nil
 controller.scrollView = nil
@@ -78,7 +91,7 @@ controller.parseInputs = {
     --local x,y,z,w = tonumber(gui.x.text),tonumber(gui.y.text),tonumber(gui.z.text),tonumber(gui.w.text)
     local x,y,z = tonumber(gui.x.text),tonumber(gui.y.text),tonumber(gui.z.text)
     if x and y and z then
-      callbackInput(property, quaternion:setEuler(math.rad(x),math.rad(y),math.rad(z)))
+      callbackInput(property, quaternion():setEuler(math.rad(x),math.rad(y),math.rad(z)))
     end
   end,
   guiCoord = function(property, gui)
@@ -205,21 +218,127 @@ controller.createInput = {
 
   string = function(instance, property, value)
     local container = controller.createInput.default(value, pType, readOnly)
+
     local x = uiController.create("guiTextBox", container, {
       alpha = 0.25,
       readOnly = false,
       multiline = false,
       fontSize = 18,
       name = "input",
-      size = guiCoord(1, -4, 1, -2),
+      size = guiCoord(1, -4, 0, 18),
       position = guiCoord(0, 2, 0, 1),
       text = "text input",
-      align = enums.align.middleLeft
+      align = enums.align.middleLeft,
+      zIndex = 2
     }, "primary")
 
     x:textInput(function ()
       controller.parseInputs[type(value)](property, container)
     end)
+
+    if property == "mesh" then
+      container.zIndex = 30 -- important because child elements need to be rendered above other properties!
+      container.size = container.size + guiCoord(0,0,0,20)
+
+
+      local presetSelect = uiController.create("guiTextBox", container, {
+          size = guiCoord(1, -4, 0, 16),
+          position = guiCoord(0, 2, 0, 23),
+          borderRadius = 3,
+          text = "Mesh Presets",
+          fontSize = 16,
+          align = enums.align.middle,
+          alpha = 0.75
+      }, "primary")
+
+      local meshModal = uiController.create("guiFrame", container, {
+          position = guiCoord(-0.8, 7, 0, 48),
+          borderRadius = 6,
+          visible = false,
+          zIndex = 40,
+          borderWidth = 1,
+          cropChildren = false
+      }, "main")
+
+      local isFocused = false
+      local pendingHide = false
+      local function queueCloseModal()
+        if not pendingHide and meshModal.visible then
+          pendingHide = true
+          wait(.4)
+          if not isFocused then
+            --still unfocused, lets hide.
+            meshModal.visible = false
+          end
+          pendingHide=false
+        end
+      end
+
+      presetSelect:mouseFocused(function ()
+        meshModal.visible = true
+        isFocused = true
+      end)
+
+      meshModal:mouseFocused(function ()
+        isFocused = true
+      end)
+
+      presetSelect:mouseUnfocused(function ()
+        isFocused = false
+        queueCloseModal()
+      end)
+
+      meshModal:mouseUnfocused(function ()
+        isFocused = false
+        queueCloseModal()
+      end)
+
+      uiController.create("guiImage", meshModal, {
+        size = guiCoord(0, 24, 0, 24),
+        position = guiCoord(0.75, -12, 0, -15),
+        handleEvents=false,
+        zIndex = 10,
+        texture = "fa:s-caret-up",
+        imageColour = meshModal.backgroundColour
+      })
+
+      local curY = 0
+      local curX = 0
+      for meshName, actualMeshName in pairs(meshShorcuts) do
+
+        local btn = uiController.create("guiTextBox", meshModal, {
+          size = guiCoord(.5, -10, 0, 18),
+          position = guiCoord(curX, 5, 0, curY + 4),
+          borderRadius = 3,
+          text = meshName,
+          fontSize = 16,
+          align = enums.align.middle
+        }, "primary")
+
+        btn:mouseFocused(function ()
+          isFocused = true
+        end)
+        btn:mouseUnfocused(function ()
+          isFocused = false
+          queueCloseModal()
+        end)
+        btn:mouseLeftReleased(function ()
+          x.text = actualMeshName
+          controller.parseInputs[type(value)](property, container)
+        end)
+
+        if curX == 0.5 then
+          curY = curY + 24
+          curX = 0
+        else
+          curX = 0.5
+        end
+      end
+
+      meshModal.size = guiCoord(1.8, -10, 0, curY+4)
+
+
+    end
 
     return container
   end,
@@ -569,6 +688,8 @@ function controller.generateProperties(instance)
             local pType = type(value)
             local readOnly = not v.writable
             
+            --letting the user turn physics off would cause raycasts to die.
+
             if not readOnly and pType ~= "function" and v.property ~= "physics" and not controller.excludePropertyList[v.property] then
 
               local container = controller.scrollView["_" .. v.property]
@@ -578,7 +699,8 @@ function controller.generateProperties(instance)
                 {
                   name = "_" .. v.property,
                   alpha = 0,
-                  size = guiCoord(1, -10, 0, 20)
+                  size = guiCoord(1, -10, 0, 20),
+                  cropChildren = false
                 })
 
                 label = uiController.create("guiTextBox", container, {
@@ -599,7 +721,7 @@ function controller.generateProperties(instance)
               	end
 
                 container.size = guiCoord(1, -10, 0, inputGui.size.offsetY)
-
+                container.zIndex = inputGui.zIndex
                 inputGui.parent = container
               else
                 container.visible = true

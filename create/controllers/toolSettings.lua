@@ -7,6 +7,7 @@ local uiController = require("tevgit:create/controllers/ui.lua")
 local themeController = require("tevgit:create/controllers/theme.lua")
 
 controller.gridStep = 1
+controller.rotateStep = 45
 controller.axis = {{"x", true},{"y", true},{"z", true}} -- should grid step be on .. axis
 
 controller.window = nil
@@ -14,7 +15,7 @@ controller.workshop = nil
 
 function controller.createUI(workshop)
   controller.workshop = workshop
-  controller.window = uiController.createWindow(workshop.interface, guiCoord(0, 66, 0, 100), guiCoord(0, 150, 0, 73), "Tool Settings")
+  controller.window = uiController.createWindow(workshop.interface, guiCoord(0, 66, 0, 100), guiCoord(0, 150, 0, 93), "Tool Settings")
   
   local toolsController = require("tevgit:create/controllers/tool.lua")
   local settingsBtn = toolsController.createButton("windowsTab", "fa:s-cogs", "Settings")
@@ -23,27 +24,27 @@ function controller.createUI(workshop)
   end)
 
   local gridLabel = uiController.create("guiTextBox", controller.window.content, {
-  	size = guiCoord(0.5,-10,0,18),
-  	position = guiCoord(0,5,0,4),
-  	align = enums.align.middleRight,
+    size = guiCoord(0.5,-10,0,18),
+    position = guiCoord(0,5,0,4),
+    align = enums.align.middleRight,
     wrap = false,
-  	text = "Grid Step"
+    text = "Grid Step"
   }, "mainText")
 
   local gridStepInput = uiController.create("guiTextBox", controller.window.content, {
-  	size = guiCoord(0.5,-10,0,18),
-  	position = guiCoord(0.5,5,0,4),
-  	readOnly = false,
+    size = guiCoord(0.5,-10,0,18),
+    position = guiCoord(0.5,5,0,4),
+    readOnly = false,
     align = enums.align.middle,
-  	borderRadius = 5,
-  	text = tostring(controller.gridStep)
+    borderRadius = 5,
+    text = tostring(controller.gridStep)
   }, "main")
 
   gridStepInput:textInput(function ()
-  	local value = tonumber(gridStepInput.text)
-  	if value then
-  		controller.gridStep = value
-  	end
+    local value = tonumber(gridStepInput.text)
+    if value then
+      controller.gridStep = value
+    end
   end)
 
 
@@ -69,6 +70,33 @@ function controller.createUI(workshop)
 	end)
 	x=x+22
   end
+
+
+    local rotateLabel = uiController.create("guiTextBox", controller.window.content, {
+    size = guiCoord(0.5,-10,0,18),
+    position = guiCoord(0,5,0,50),
+    align = enums.align.middleRight,
+    wrap = false,
+    text = "Rotate Step"
+  }, "mainText")
+
+  local rotateStepInput = uiController.create("guiTextBox", controller.window.content, {
+    size = guiCoord(0.5,-10,0,18),
+    position = guiCoord(0.5,5,0,50),
+    readOnly = false,
+    align = enums.align.middle,
+    borderRadius = 5,
+    text = tostring(controller.rotateStep)
+  }, "main")
+
+  rotateStepInput:textInput(function ()
+    local value = tonumber(gridStepInput.text)
+    if value then
+      controller.rotateStep = value
+    end
+  end)
+
+
 end
 
 return controller

@@ -37,11 +37,13 @@ return function(workshop)
 		controllers.env.setDefault()
 		controllers.env.createStarterMap() -- Starter map, or the environment, may be overriden by teverse if the user is opening an existing .tev file.
 	end
-	wait()
-	controllers.ui.setLoading(false)
-	
-	wait(1)
+	wait(.3)
+	collectgarbage()
 	require("tevgit:create/controllers/dock.lua").loadSettings()
+	require("tevgit:create/controllers/devtools.lua")
+	collectgarbage()
+	controllers.ui.setLoading(false)
 	--wait(1)
 	--scriptEditor   = require("tevgit:create/scriptEditor/main.lua")
+
 end

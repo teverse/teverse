@@ -45,7 +45,7 @@ local insertProps = {
     static=true
 }
 
-local configWindow = uiController.createWindow(uiController.workshop.interface, guiCoord(0, 66, 0, 183), guiCoord(0, 140, 0, 48), "Inserter")
+local configWindow = uiController.createWindow(uiController.workshop.interface, guiCoord(0, 66, 0, 203), guiCoord(0, 140, 0, 48), "Inserter")
 local gridLabel = uiController.create("guiTextBox", configWindow.content, {
     size = guiCoord(1,-10,1,-10),
     position = guiCoord(0,5,0,5),
@@ -171,6 +171,7 @@ local function onToolActivated(toolId)
             end
 
             propertyController.generateProperties(newBlock)
+            selectionController.setSelection({newBlock})
         end
     end
     
@@ -184,6 +185,7 @@ local function onToolActivated(toolId)
         if (mouseDown == curTime) then
             while (wait(.05)) and (mouseDown == curTime and toolsController.currentToolId == toolId) do
                 placeBlock()
+
             end
         end
     end)
@@ -192,6 +194,14 @@ local function onToolActivated(toolId)
 		if input.systemHandled then return end 
 		
         mouseDown = 0
+    end)
+
+    tool.data.keyPressedEvent = engine.input:keyPressed(function(input)
+        if input.systemHandled then return end 
+        
+        if input.key == enums.key.r then
+            placeholderBlock.rotation = placeholderBlock.rotation * quaternion:setEuler(0,math.rad(45),0)
+        end
     end)
     
 
@@ -225,6 +235,8 @@ local function onToolDeactivated(toolId)
     tool.data.mouseDownEvent = nil
     tool.data.mouseUpEvent:disconnect()
     tool.data.mouseUpEvent = nil
+    tool.data.keyPressedEvent:disconnect()
+    tool.data.keyPressedEvent = nil
     
     --tool.data.placeholderBlock:destroy()
     --tool.data.placeholderBlock = nil

@@ -49,16 +49,17 @@ local function onToolActivated(toolId)
 			name = "_CreateMode_",
 			castsShadows = false,
 			opacity = 0,
+			renderQueue=1,
 			size = vector3(0.1, 0.1, 0.1),
 			colour = colour(c==1 and 1 or 0, c==2 and 1 or 0, c==3 and 1 or 0),
-			emissiveColour = colour(c==1 and .5 or 0, c==2 and .5 or 0, c==3 and .5 or 0), 
-			workshopLocked = true
+			emissiveColour = colour(c==1 and .8 or 0, c==2 and .8 or 0, c==3 and .8 or 0), 
+			workshopLocked = true,
+			mesh = "primitive:cone"
 		})
 		
 		handle:mouseLeftPressed(function()
 			if leftButtonDown then return end -- how
 			
-			print("left pressed")
 			leftButtonDown = handle 
 			
 			selectionController.selectable = false
@@ -128,8 +129,8 @@ local function onToolActivated(toolId)
 								else
 									pos[component] = newPos[component]
 								end
-								--v.position = pos
-								engine.tween:begin(v, .05, {position = pos}, "inOutQuad")
+								v.position = pos
+								--engine.tween:begin(v, .05, {position = pos}, "inOutQuad")
 							end
 						end
 					end
@@ -137,7 +138,7 @@ local function onToolActivated(toolId)
 				wait()
 			until not leftButtonDown or not toolsController.currentToolId == toolId
 			
-			delay(function() selectionController.selectable = false end, 1)
+		delay(function() if not leftButtonDown then selectionController.selectable = true end end, 0.3)
 			
 			if toolsController.currentToolId == toolId then
 				gridGuideline.size = vector3(0,0,0)
@@ -168,7 +169,8 @@ local function onToolActivated(toolId)
 			for _,v in pairs(toolsController.tools[toolId].data.handles) do
 				v[1].position = selectionController.boundingBox.position + selectionController.boundingBox.rotation* ((v[2] * selectionController.boundingBox.size/2) + (v[2]*1.5)) 
 				v[1]:lookAt(selectionController.boundingBox.position)
-				v[1].size = vector3(0.1, 0.1, 0.25)
+				v[1].rotation = v[1].rotation * quaternion():setEuler(math.rad(90),0,0)
+				v[1].size = vector3(0.2, 0.4, 0.2)
 				v[1].opacity = 1
 			end
 		end
