@@ -47,6 +47,7 @@ local function onToolActivated(toolId)
                 
                 hit = hit and hit[1] or nil
 				local startPosition = hit and hit.hitPosition or vector3(0,0,0)
+                local startOffset = selectionAtBegin[1].position - startPosition
 				local lastPosition = startPosition
 				local startRotation = selectionAtBegin[1].rotation
 				local offsets = {}
@@ -68,7 +69,7 @@ local function onToolActivated(toolId)
 
                         local forward = (currentHit.object.rotation * currentHit.hitNormal):normal()-- * quaternion:setEuler(0,math.rad(applyRot),0)
         
-                        local currentPosition = currentHit.hitPosition + (forward * (selectionAtBegin[1].size/2)) --+ (selectedItems[1].size/2)
+                        local currentPosition = (currentHit.hitPosition + startOffset) + (forward * (selectionAtBegin[1].size/2)) --+ (selectedItems[1].size/2)
 
                         currentPosition = helpers.roundVectorWithToolSettings(currentPosition)
 
