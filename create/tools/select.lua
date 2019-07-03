@@ -31,9 +31,23 @@ local function onToolActivated(toolId)
 
             local hit, didExclude = engine.physics:rayTestScreenAllHits(engine.input.mousePosition,
                                                                         selectionAtBegin)
+
+            local objectSelectedHit = nil
+            local objectSelectedHits = engine.physics:rayTestScreenAllHits(engine.input.mousePosition)
+            for _,v in pairs(objectSelectedHits) do
+                for _,vv in pairs(selectionAtBegin) do
+                    if vv == v.object then
+                        objectSelectedHit = v
+                        goto continue
+                    end
+                end
+            end
 			
+            ::continue::
+
 			-- Didexclude is false if the user didnt drag starting from one of the selected items.
-			if didExclude == false then return end
+			if didExclude == false or not objectSelectedHit then return end
+
 			
             local currentTime = os.clock()
             mouseDown = currentTime
@@ -47,15 +61,16 @@ local function onToolActivated(toolId)
                 
                 hit = hit and hit[1] or nil
 				local startPosition = hit and hit.hitPosition or vector3(0,0,0)
-                local startOffset = selectionAtBegin[1].position - startPosition
+                local startOffset = (objectSelectedHit.object.position -objectSelectedHit.hitPosition)
+                startOffset.y =0
 				local lastPosition = startPosition
-				local startRotation = selectionAtBegin[1].rotation
+				local startRotation = objectSelectedHit.object.rotation
 				local offsets = {}
 
 				for i,v in pairs(selectionAtBegin) do
-					if i > 1 then 
+					if v ~= objectSelectedHit.object then 
 						local relative = startRotation:inverse() * v.rotation;	
-						local positionOffset = (relative*selectionAtBegin[1].rotation):inverse() * (v.position - selectionAtBegin[1].position) 
+						local positionOffset = (relative*objectSelectedHit.object.rotation):inverse() * (v.position - objectSelectedHit.object.position) 
 						offsets[v] = {positionOffset, relative}
 					end
 				end
@@ -67,9 +82,11 @@ local function onToolActivated(toolId)
                     if #currentHit >= 1 then 
                         currentHit = currentHit[1]
 
+                        -- supposed to get the face of the object the mouse it over, and then position the block to be on that face.
                         local forward = (currentHit.object.rotation * currentHit.hitNormal):normal()-- * quaternion:setEuler(0,math.rad(applyRot),0)
         
-                        local currentPosition = (currentHit.hitPosition + startOffset) + (forward * (selectionAtBegin[1].size/2)) --+ (selectedItems[1].size/2)
+         
+                        local currentPosition = (currentHit.hitPosition) + startOffset +  (forward * (objectSelectedHit.object.size/2)) --+ (selectedItems[1].size/2)
 
                         currentPosition = helpers.roundVectorWithToolSettings(currentPosition)
 
@@ -82,11 +99,11 @@ local function onToolActivated(toolId)
                             --engine.tween:begin(selectionAtBegin[1], .2, {position = currentPosition,
                             --                                           rotation = targetRot }, "outQuad")
 
-                            selectionAtBegin[1].position = currentPosition
-                            selectionAtBegin[1].rotation = targetRot
+                            objectSelectedHit.object.position = currentPosition
+                            objectSelectedHit.object.rotation = targetRot
 
                             for i,v in pairs(selectionAtBegin) do
-                                if i > 1 then 
+                                if v ~= objectSelectedHit.object then 
                                     v.position = (currentPosition) + (offsets[v][2]*targetRot) * offsets[v][1]
                                     v.rotation = offsets[v][2]*targetRot
 

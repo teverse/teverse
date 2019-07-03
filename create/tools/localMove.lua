@@ -1,12 +1,15 @@
 --[[
-    Copyright 2019 Teverse
-    @File scale.lua
-    @Author(s) Jay
+    This file remains here for reference. 
+    This tool behaves as a move tool that operates on the local axes.
+
+    It was being modified for the scale too.
 --]]
 
-TOOL_NAME = "Scale"
+return error("bad.")
+TOOL_NAME = "Resize"
 TOOL_ICON = "fa:s-expand-arrows-alt"
 TOOL_DESCRIPTION = "Use this to resize primitives."
+
 
 local toolsController = require("tevgit:create/controllers/tool.lua")
 local selectionController = require("tevgit:create/controllers/select.lua")
@@ -41,7 +44,6 @@ local function onToolActivated(toolId)
 	-- Should work on all selected items.
 	for i = 1,6 do
 		local component = components[c]
-		local componentIndex = c
 		local face = vector3(0,0,0)
 		face[component] = o == 0 and o-1 or o
 		local thisC = c
@@ -51,55 +53,45 @@ local function onToolActivated(toolId)
 			castsShadows = false,
 			opacity = 0,
 			renderQueue=1,
-			size = vector3(0.5, 0.5, 0.5),
+			size = vector3(0.1, 0.1, 0.1),
 			colour = colour(c==1 and 1 or 0, c==2 and 1 or 0, c==3 and 1 or 0),
-			emissiveColour = colour(c==1 and .5 or 0, c==2 and .5 or 0, c==3 and .5 or 0), 
-			workshopLocked = true,
-
+			emissiveColour = colour(c==1 and .8 or 0, c==2 and .8 or 0, c==3 and .8 or 0), 
+			workshopLocked = true
 		})
 		
 		handle:mouseLeftPressed(function()
 			if leftButtonDown then return end -- how
 			
-			print("left pressed")
 			leftButtonDown = handle 
 			
 			selectionController.selectable = false
 			gridGuideline.size = vector3(300, 0.1, 300)
 			gridGuideline.rotation = handle.rotation
+			gridGuideline.opacity = 0.5
 			gridGuideline.position = handle.position
-			if component == "x" then
-				gridGuideline.rotation =  gridGuideline.rotation * quaternion():setEuler(math.rad(-45),math.rad(-45),0)
-			end
+
 
 			local mouseHit = engine.physics:rayTestScreen( engine.input.mousePosition )
 			if not mouseHit or not mouseHit.object == gridGuideline then
 				return print("Error, couldn't cast ray to guideline.")
 			end
 
-			local startSizes = {}
-			local totalSize, totalposition = selectionController.calculateBounding(selectionController.selection)
-
+			local mouseoffsets = {}
 			for _,v in pairs(selectionController.selection) do
-				startSizes[v] = {v.size, (v.position - totalposition)/totalSize,  v.size/totalSize}
+				mouseoffsets[v] = (mouseHit.hitPosition - v.position)
 			end
 
 			local lastHit = mouseHit.hitPosition
-			local firstHit = lastHit[component]
 
 			local gridStep = toolSettings.gridStep
 			
 			repeat 
 				if toolsController.currentToolId == toolId then
 					--Face camera on one Axis
-					gridGuideline.position = handle.position
-					if component == "x" then
-						local xVector1 = vector3(0, gridGuideline.position.y,gridGuideline.position.z)
-						local xVector2 = vector3(0, workspace.camera.position.y, workspace.camera.position.z)
+					 --gridGuideline.position = handle.position
+					--gridGuideline.rotation = handle.rotation
 
-						local lookAt = gridGuideline.rotation:setLookRotation( xVector1 - xVector2 )
-						gridGuideline.rotation =  lookAt * quaternion():setEuler(math.rad(45),0,0)
-					else
+					if component == "y" then
 						local pos1 = gridGuideline.position
 						pos1[component] = 0
 
@@ -123,36 +115,37 @@ local function onToolActivated(toolId)
 
 					if mouseHit and mouseHit.object == gridGuideline and lastHit ~= mouseHit.hitPosition then
 						local target = mouseHit.hitPosition
+						local moved = lastHit - target
 						lastHit = target
 
-							local offsetVec = vector3(0,0,0)
-							offsetVec[component] = target[component] - firstHit
-
-							offsetVec  = offsetVec * face
-
-
-							local newSize = totalSize + (offsetVec)
-
-							local size = totalSize:clone()
-							if gridStep > 0 and toolSettings.axis[componentIndex][2] then
-								size[component] = math.max(0.05, helpers.roundToMultiple(newSize[component], gridStep))
-							else
-								size[component] = math.max(0.05, newSize[component])
-							end
-
-							local newPos = totalposition:clone()
-						    newPos = newPos + ((size-totalSize) /2) *face
-
-					
 						for _,v in pairs(selectionController.selection) do
-							if startSizes[v] then
-								local sizeRatio = startSizes[v][3]
-								local offsetPos = startSizes[v][2] 
-								local positionCalc = (offsetPos * newSize)
-						
-							    v.size = size*startSizes[v][3]
-							    v.position = newPos + positionCalc
-								--engine.tween:begin(v, .05, {size = size*startSizes[v][3], position = newPos + positionCalc}, "inOutQuad")
+							if mouseoffsets[v] then
+								local newPos = target - mouseoffsets[v]
+								local pos = v.position
+
+								if component == "y" then
+									if gridStep > 0 and toolSettings.axis[2][2] then
+										pos.y = helpers.roundToMultiple(newPos.y, gridStep)
+									else
+										pos.y = newPos.y
+									end
+								else
+
+									if gridStep > 0 and toolSettings.axis[1][2] then
+										pos.x = helpers.roundToMultiple(newPos.x, gridStep)
+									else
+										pos.x = newPos.x
+									end
+
+
+									if gridStep > 0 and toolSettings.axis[3][2] then
+										pos.z = helpers.roundToMultiple(newPos.z, gridStep)
+									else
+										pos.z = newPos.z
+									end
+								end
+								v.position = pos
+								--engine.tween:begin(v, .05, {position = pos}, "inOutQuad")
 							end
 						end
 					end
@@ -160,7 +153,7 @@ local function onToolActivated(toolId)
 				wait()
 			until not leftButtonDown or not toolsController.currentToolId == toolId
 			
-			delay(function() if not leftButtonDown then selectionController.selectable = true end end, 0.3)
+		delay(function() if not leftButtonDown then selectionController.selectable = true end end, 0.3)
 			
 			if toolsController.currentToolId == toolId then
 				gridGuideline.size = vector3(0,0,0)
@@ -182,16 +175,17 @@ local function onToolActivated(toolId)
 	end)
 
 	updateHandles = function()
-		if selectionController.boundingBox.size == vector3(0,0,0) then
+		if #selectionController.selection == 0 then
 			for _,v in pairs(toolsController.tools[toolId].data.handles) do
 				v[1].size = vector3(0,0,0)
 				v[1].opacity = 0
 			end
 		else
 			for _,v in pairs(toolsController.tools[toolId].data.handles) do
-				v[1].position = selectionController.boundingBox.position + selectionController.boundingBox.rotation* ((v[2] * selectionController.boundingBox.size/2) + (v[2]*1.5)) 
-				v[1]:lookAt(selectionController.boundingBox.position)
-				v[1].rotation = v[1].rotation * quaternion():setEuler(math.rad(90),0,0)
+				local b = selectionController.selection[1]
+				v[1].position = b.position + b.rotation* ((v[2] * b.size/2) + (v[2]*1.5)) 
+				v[1]:lookAt(b.position)
+				v[1].rotation = v[1].rotation * quaternion():setEuler(math.rad(-90),math.rad(90),0)
 				v[1].size = vector3(0.35, 0.35, 0.35)
 				v[1].opacity = 1
 			end
