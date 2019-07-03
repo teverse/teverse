@@ -51,6 +51,7 @@ local function onToolActivated(toolId)
 		local handle = engine.construct("block", nil, {
 			name = "_CreateMode_",
 			castsShadows = false,
+   			doNotSerialise=true,
 			opacity = 0,
 			renderQueue=1,
 			size = vector3(0.1, 0.1, 0.1),

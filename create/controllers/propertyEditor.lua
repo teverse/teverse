@@ -690,7 +690,7 @@ function controller.generateProperties(instance)
             
             --letting the user turn physics off would cause raycasts to die.
 
-            if not readOnly and pType ~= "function" and v.property ~= "physics" and not controller.excludePropertyList[v.property] then
+            if not readOnly and pType ~= "function" and v.property ~= "physics" and v.property ~= "doNotSerialise" and not controller.excludePropertyList[v.property] then
 
               local container = controller.scrollView["_" .. v.property]
 
