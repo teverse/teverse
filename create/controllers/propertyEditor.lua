@@ -203,7 +203,7 @@ controller.createInput = {
       multiline = false,
       fontSize = 18,
       name = "input",
-      size = guiCoord(1, -4, 1, -2),
+      size = guiCoord(1, -4, 0, 18),
       position = guiCoord(0, 2, 0, 1),
       text = "0",
       align = enums.align.middle
@@ -212,6 +212,114 @@ controller.createInput = {
     x:textInput(function ()
       controller.parseInputs[type(value)](property, container)
     end)
+
+  if property == "type" and type(instance) == "light" then
+      container.zIndex = 30 -- important because child elements need to be rendered above other properties!
+      container.size = container.size + guiCoord(0,0,0,20)
+
+
+      local presetSelect = uiController.create("guiTextBox", container, {
+          size = guiCoord(1, -4, 0, 16),
+          position = guiCoord(0, 2, 0, 23),
+          borderRadius = 3,
+          text = "Light Options",
+          fontSize = 16,
+          align = enums.align.middle,
+          alpha = 0.75
+      }, "primary")
+
+      local optionsModal = uiController.create("guiFrame", container, {
+          position = guiCoord(-0.8, 7, 0, 48),
+          borderRadius = 6,
+          visible = false,
+          zIndex = 40,
+          borderWidth = 1,
+          cropChildren = false
+      }, "main")
+
+      local isFocused = false
+      local pendingHide = false
+      local function queueCloseModal()
+        if not pendingHide and optionsModal.visible then
+          pendingHide = true
+          wait(.4)
+          if not isFocused then
+            --still unfocused, lets hide.
+            optionsModal.visible = false
+          end
+          pendingHide=false
+        end
+      end
+
+      presetSelect:mouseFocused(function ()
+        optionsModal.visible = true
+        isFocused = true
+      end)
+
+      optionsModal:mouseFocused(function ()
+        isFocused = true
+      end)
+
+      presetSelect:mouseUnfocused(function ()
+        isFocused = false
+        queueCloseModal()
+      end)
+
+      optionsModal:mouseUnfocused(function ()
+        isFocused = false
+        queueCloseModal()
+      end)
+
+      uiController.create("guiImage", optionsModal, {
+        size = guiCoord(0, 24, 0, 24),
+        position = guiCoord(0.75, -12, 0, -15),
+        handleEvents=false,
+        zIndex = 10,
+        texture = "fa:s-caret-up",
+        imageColour = optionsModal.backgroundColour
+      })
+
+      local curY = 0
+      local curX = 0
+      for lightType, num in pairs(enums.lightType) do
+
+        local btn = uiController.create("guiTextBox", optionsModal, {
+          size = guiCoord(.5, -10, 0, 18),
+          position = guiCoord(curX, 5, 0, curY + 4),
+          borderRadius = 3,
+          text = lightType,
+          fontSize = 16,
+          align = enums.align.middle
+        }, "primary")
+
+        btn:mouseFocused(function ()
+          isFocused = true
+        end)
+        btn:mouseUnfocused(function ()
+          isFocused = false
+          queueCloseModal()
+        end)
+        btn:mouseLeftReleased(function ()
+          x.text = tostring(num)
+          controller.parseInputs[type(value)](property, container)
+        end)
+
+        if curX == 0.5 then
+          curY = curY + 24
+          curX = 0
+        else
+          curX = 0.5
+        end
+      end
+
+      if curX == 0.5 then
+        curY = curY + 24
+      end
+
+      optionsModal.size = guiCoord(1.8, -10, 0, curY+4)
+
+
+    end
 
     return container
   end,
@@ -235,6 +343,10 @@ controller.createInput = {
     x:textInput(function ()
       controller.parseInputs[type(value)](property, container)
     end)
+
+    -- TODO TODO TODO TODO 
+    -- We need some sort of helper function that'll make 
+    -- modals for situations like this:
 
     if property == "mesh" then
       container.zIndex = 30 -- important because child elements need to be rendered above other properties!
@@ -333,6 +445,10 @@ controller.createInput = {
         else
           curX = 0.5
         end
+      end
+
+      if curX == 0.5 then
+        curY = curY + 24
       end
 
       meshModal.size = guiCoord(1.8, -10, 0, curY+4)

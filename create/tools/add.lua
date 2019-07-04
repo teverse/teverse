@@ -66,7 +66,7 @@ local editBtn = uiController.create("guiTextBox", configWindow.content, {
     text = "Edit Insertable"
 }, "main")
 
-local meshWindow = uiController.createWindow(uiController.workshop.interface, guiCoord(0, 66, 0, 256), guiCoord(0, 175, 0, 22), "Presets")
+local meshWindow = uiController.createWindow(uiController.workshop.interface, guiCoord(0, 66, 0, 266), guiCoord(0, 175, 0, 22), "Presets")
 
 local curY = 0
 local curX = 0
@@ -74,7 +74,7 @@ local btnNum = 0
 for meshName, actualMeshName in pairs(meshShortcuts) do
     local btn = uiController.create("guiTextBox", meshWindow.content, {
         size = guiCoord(.5, -10, 0, 18),
-        position = guiCoord(curX, 5, 0, curY + 4),
+        position = guiCoord(curX, 5, 0, curY + 8),
         borderRadius = 3,
         text = meshName,
         fontSize = 16,
