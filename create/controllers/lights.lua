@@ -30,13 +30,26 @@ controller.registerLight = function(light)
 		newBlock:destroy()
 	end)
 
+	--delay updates to block to lower risk of loop
+	local lastUpdate = nil
 	light:changed(function (k,v)
-		if newBlock[k] then
-			if k == "diffuseColour" then
-				newBlock.emissiveColour = light.diffuseColour * 20
+		if not lastUpdate and newBlock[k] then
+			lastUpdate = os.time()
+			repeat wait(.1) until os.time() - lastUpdate > 0.6
+			
+			newBlock.emissiveColour = light.diffuseColour * 20
+
+			if newBlock.position ~= light.position then
+				newBlock.position = light.position
+			elseif newBlock.rotation ~= light.rotation  then
+				newBlock.rotation = light.rotation
 			end
+			lastUpdate = nil
+		elseif lastUpdate then
+			lastUpdate = os.time()
 		end
 	end)
+
 	newBlock:changed(function (k,v)
 		if k == "position" and light.position ~= v then
 			light.position = v
