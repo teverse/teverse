@@ -643,6 +643,9 @@ controller.createInput = {
 
     col:mouseLeftReleased(function ()
       controller.colourPicker.window.visible  = not controller.colourPicker.window.visible 
+      if controller.colourPicker.window.visible then
+        controller.colourPicker.setColour(instance[property])
+      end
     end)
 
     return container

@@ -266,7 +266,7 @@ end
 
 -- window should be a window created in ui.lua... it's a guiframe consisting of other guis.
 -- this function should be called when the user begins dragging on a window
-controller.beginWindowDrag = function(window)
+controller.beginWindowDrag = function(window, dontDock)
 	controller.undockWindow(window)
 	local offset = window.absolutePosition - engine.input.mousePosition
 	local startAlpha = window.alpha
@@ -274,7 +274,11 @@ controller.beginWindowDrag = function(window)
 	window.zIndex = 99
 
 	window.alpha = startAlpha*0.5;
-	local helpers = controller.renderDockLocationHelpers()
+
+	local helpers
+	if not dontDock then
+		helpers = controller.renderDockLocationHelpers()
+	end
 
 	local selectedPosition = window.position
 	local selectedSize = window.size
@@ -283,30 +287,34 @@ controller.beginWindowDrag = function(window)
 		local newpos = engine.input.mousePosition + offset
 		window.position = guiCoord(0, newpos.x, 0, newpos.y)
 
-		if engine.input.mousePosition.y >= engine.input.screenSize.y * 0.75 and
-			engine.input.mousePosition.x < engine.input.screenSize.x * 0.75 then
-			helpers.outline.size = guiCoord(1/(#controller.bottomDock+1), 0, 0.2, 0)
-			helpers.outline.position = guiCoord(luaHelpers.roundToMultiple(engine.input.mousePosition.x/engine.input.screenSize.x, 1/(#controller.bottomDock+1)), 0, 0.8, 0)
-			helpers.outline.visible = true
-		elseif engine.input.mousePosition.x >= engine.input.screenSize.x * 0.75 then
-			helpers.outline.size = guiCoord(0.2, 0, 1/(#controller.rightDock+1), 0)
-			helpers.outline.position = guiCoord(0.8, 0, luaHelpers.roundToMultiple(engine.input.mousePosition.y/engine.input.screenSize.y, 1/(#controller.rightDock+1)), 0)
-			helpers.outline.visible = true
-		else
-			helpers.outline.visible = false
+		if not dontDock then
+			if engine.input.mousePosition.y >= engine.input.screenSize.y * 0.75 and
+				engine.input.mousePosition.x < engine.input.screenSize.x * 0.75 then
+				helpers.outline.size = guiCoord(1/(#controller.bottomDock+1), 0, 0.2, 0)
+				helpers.outline.position = guiCoord(luaHelpers.roundToMultiple(engine.input.mousePosition.x/engine.input.screenSize.x, 1/(#controller.bottomDock+1)), 0, 0.8, 0)
+				helpers.outline.visible = true
+			elseif engine.input.mousePosition.x >= engine.input.screenSize.x * 0.75 then
+				helpers.outline.size = guiCoord(0.2, 0, 1/(#controller.rightDock+1), 0)
+				helpers.outline.position = guiCoord(0.8, 0, luaHelpers.roundToMultiple(engine.input.mousePosition.y/engine.input.screenSize.y, 1/(#controller.rightDock+1)), 0)
+				helpers.outline.visible = true
+			else
+				helpers.outline.visible = false
+			end
 		end
 
 		wait()
 	end
 	local start = os.cpuClock()
-	helpers:destroy()
-	if engine.input.mousePosition.y >= engine.input.screenSize.y * 0.75 and
-		engine.input.mousePosition.x < engine.input.screenSize.x * 0.75 then
-		controller.dockWindow(window, controller.bottomDock, luaHelpers.roundToMultiple(engine.input.mousePosition.x/engine.input.screenSize.x, 1/(#controller.bottomDock+1)))
-	elseif engine.input.mousePosition.x >= engine.input.screenSize.x * 0.75 then
-		controller.dockWindow(window, controller.rightDock, luaHelpers.roundToMultiple(engine.input.mousePosition.y/engine.input.screenSize.y, 1/(#controller.rightDock+1)))
+	if not dontDock then
+		helpers:destroy()
+
+		if engine.input.mousePosition.y >= engine.input.screenSize.y * 0.75 and
+			engine.input.mousePosition.x < engine.input.screenSize.x * 0.75 then
+			controller.dockWindow(window, controller.bottomDock, luaHelpers.roundToMultiple(engine.input.mousePosition.x/engine.input.screenSize.x, 1/(#controller.bottomDock+1)))
+		elseif engine.input.mousePosition.x >= engine.input.screenSize.x * 0.75 then
+			controller.dockWindow(window, controller.rightDock, luaHelpers.roundToMultiple(engine.input.mousePosition.y/engine.input.screenSize.y, 1/(#controller.rightDock+1)))
+		end
 	end
-	print("Time elapsed", os.cpuClock() - start)
 
 	window.alpha = startAlpha
 	window.zIndex = startZ

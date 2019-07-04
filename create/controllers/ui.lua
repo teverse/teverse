@@ -37,11 +37,10 @@ uiController.createWindow = function(parent, pos, size, title, dontDock)
         hoverCursor = "fa:s-hand-pointer"
     }, "main")
 
-    if not dontDock then
-        titleBar:mouseLeftPressed(function ()
-            dockController.beginWindowDrag(container)
-        end)
-    end
+    titleBar:mouseLeftPressed(function ()
+        dockController.beginWindowDrag(container, dontDock)
+    end)
+    
 
     local textLabel = uiController.create("guiTextBox", titleBar, {
         name = "textLabel",

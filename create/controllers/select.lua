@@ -139,7 +139,7 @@ engine.input:mouseLeftReleased(function(inp)
 
     	if doSelect then
 
-            if type(mouseHit.object) == "block"   mouseHit.object.name ~= "_CreateMode_Light_Placeholder" then
+            if type(mouseHit.object) == "block" and mouseHit.object.name ~= "_CreateMode_Light_Placeholder" then
         		mouseHit.object.emissiveColour = colour(0.025, 0.025, 0.15)
             end
 
