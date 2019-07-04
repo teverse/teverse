@@ -1,5 +1,6 @@
 local toolsController = require("tevgit:create/controllers/tool.lua")
 local selectionController = require("tevgit:create/controllers/select.lua")
+local propertyController  = require("tevgit:create/controllers/propertyEditor.lua")
 
 local light = toolsController.createButton("createTab", "fa:s-lightbulb", "Light")
 light:mouseLeftReleased(function ()
