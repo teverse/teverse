@@ -24,10 +24,15 @@ controller.registerLight = function(light)
 		rotation = light.rotation
 	})
 
+	local destroyed = false
+
 	controller.lights[newBlock] = light
 	light:destroying(function ()
-		controller.lights[newBlock] = nil
-		newBlock:destroy()
+		if not destroyed then
+			destroyed = true
+			controller.lights[newBlock] = nil
+			newBlock:destroy()
+		end
 	end)
 
 	--delay updates to block to lower risk of loop
@@ -55,6 +60,13 @@ controller.registerLight = function(light)
 			light.position = v
 		elseif k == "rotation" and light.rotation ~= v  then
 			light.rotation = v
+		end
+	end)
+
+	newBlock:destroying(function ()
+		if not destroyed then
+			destroyed = true
+			light:destroy()
 		end
 	end)
 
