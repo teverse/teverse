@@ -35,7 +35,7 @@ engine.networking.clients:clientConnected(function (client)
 		colour = colour(math.random(),math.random(),math.random()),
 		position = vector3(0,20,0),
 		static = false,
-		velocity = vector3(0,10,0),
+	--	velocity = vector3(0,10,0),
 		angularFactor = vector3(0,0,0)
 	})
 
