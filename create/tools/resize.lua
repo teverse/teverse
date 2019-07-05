@@ -152,7 +152,7 @@ local function onToolActivated(toolId)
 								end
 
 								local totalMoved = pos - mouseoffsets[v][2]
-								local totalMovedSize = totalMoved:clone()
+								local totalMovedSize = totalMoved:clone() * 2
 
 								if component ~= "x" then
 									totalMovedSize.x = 0

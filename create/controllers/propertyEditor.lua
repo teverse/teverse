@@ -759,8 +759,8 @@ controller.createInput = {
 
     col:mouseLeftReleased(function ()
       controller.colourPicker.window.visible  = not controller.colourPicker.window.visible 
-      if controller.colourPicker.window.visible then
-        controller.colourPicker.setColour(instance[property])
+      if controller.colourPicker.window.visible and instanceEditing and instanceEditing[property] then
+        controller.colourPicker.setColour(instanceEditing[property])
         controller.colourPicker.setCallback(function (c)
           x.text = tostring(c.r)
           g.text = tostring(c.g)
