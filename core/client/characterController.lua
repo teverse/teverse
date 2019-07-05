@@ -9,7 +9,9 @@ local controller = {}
 controller.character = nil -- server creates this
 
 engine.networking:bind( "characterSpawned", function()
+	print("Waiting for character to spawn in workspace ",engine.networking.me.id)
 	repeat wait() until workspace[engine.networking.me.id]
+	print("Spawned. ",engine.networking.me.id)
 		wait(1)
 	controller.character = workspace[engine.networking.me.id]
 

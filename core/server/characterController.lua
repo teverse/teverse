@@ -29,6 +29,7 @@ end
 
 engine.networking.clients:clientConnected(function (client)
 	wait(1)
+	print("spawning", client.id)
 	local char = engine.construct("block", workspace, {
 		name = client.id,
 		size = vector3(4,4,4),
