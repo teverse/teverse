@@ -12,7 +12,7 @@ light:mouseLeftReleased(function ()
 end)
 
     -- temp:
-    local graphicsSettings = toolsController.createButton("topBar", "fa:s-cogs", "GFX settings")
+    local graphicsSettings = toolsController.createButton("topBar", "fa:s-cogs", "Graphics")
     graphicsSettings:mouseLeftReleased(function ()
         propertyController.generateProperties(engine.graphics)
     end)
