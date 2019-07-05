@@ -184,6 +184,7 @@ uiController.createMainInterface = function(workshop)
     local saveAsBtn = toolsController.createButton("topBar", "fa:s-file-export", "Save As")
     local openBtn = toolsController.createButton("topBar", "fa:s-folder-open", "Open")
     local publishBtn = toolsController.createButton("topBar", "fa:s-cloud-upload-alt", "Publish")
+
     publishBtn.image.alpha = 0.45
     publishBtn.text.textAlpha = 0.45
 

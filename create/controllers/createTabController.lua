@@ -5,9 +5,14 @@ local propertyController  = require("tevgit:create/controllers/propertyEditor.lu
 local light = toolsController.createButton("createTab", "fa:s-lightbulb", "Light")
 light:mouseLeftReleased(function ()
 	local l = engine.construct("light", workspace, {
-		position = workspace.camera.position + (workspace.camera.rotation * vector3(0,0,6))
+		position = workspace.camera.position - (workspace.camera.rotation * vector3(0,0,5))
 	})
 
-	selectionController.setSelection({l})
 	propertyController.generateProperties(l)
 end)
+
+    -- temp:
+    local graphicsSettings = toolsController.createButton("topBar", "fa:s-cogs", "GFX settings")
+    graphicsSettings:mouseLeftReleased(function ()
+        propertyController.generateProperties(engine.graphics)
+    end)

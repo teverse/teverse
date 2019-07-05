@@ -17,7 +17,10 @@ colourPicker.create = function()
 											guiCoord(0, 300, 0, 180), 
 											"Colour Picker",
 											true)
+	local callback = nil
+
 	local startColour = colour(1,0,0)
+	local currentColour = colour(1,0,0)
 
   	window.visible = true
 
@@ -84,42 +87,6 @@ colourPicker.create = function()
 	  	borderWidth = 2,
 	  	borderAlpha = 1
 	})
-
-	hueBar:mouseLeftPressed(function ()
-		while engine.input:isMouseButtonDown(enums.mouseButton.left) do
-			local pos = engine.input.mousePosition - hueBar.absolutePosition
-			local size = hueBar.absoluteSize
-
-			local y = pos.y/hueBar.absoluteSize.y
-
-			local sector = math.ceil(pos.y/(size.y * (1/6)))
-			local hue = hues[sector]
-			if hue and hues[sector+1] then 
-
-				hueBarMARKER.position = guiCoord(0,0,y,0)
-
-				local selected = hue:lerp(hues[sector+1], (y - ((size.y * ((sector-1)/6))/hueBar.absoluteSize.y)) / (1/6))
-				startColour = selected
-				colourPickerGradient.topRightColour = startColour
-				colourPickerGradient.bottomRightColour = startColour
-
-				local x = marker.absolutePosition.x/colourPickerGradient.absoluteSize.x
-				local y = marker.absolutePosition.y/colourPickerGradient.absoluteSize.y
-
-				local selectedColour = startColour:lerp(colour(1,1,1), 1-x)
-				selectedColour = selectedColour:lerp(colour(0,0,0), y)
-
-				window.content.backgroundColour = selectedColour
-
-				rInput.text = tostring(selectedColour.r*255)
-				g.text = tostring(selectedColour.g*255)
-				b.text = tostring(selectedColour.b*255)
-				HEX.text = selectedColour:getHex()
-			end
-
-			wait()
-		end
-	end)
 
 	for i = 1, 6 do
 		local colourPickerGradient = engine.construct("guiFrameMultiColour", hueBar, {
@@ -207,6 +174,47 @@ colourPicker.create = function()
     g:textInput(handler)
     b:textInput(handler)
 
+    hueBar:mouseLeftPressed(function ()
+		while engine.input:isMouseButtonDown(enums.mouseButton.left) do
+			local pos = engine.input.mousePosition - hueBar.absolutePosition
+			local size = hueBar.absoluteSize
+
+			local y = pos.y/hueBar.absoluteSize.y
+
+			local sector = math.ceil(pos.y/(size.y * (1/6)))
+			local hue = hues[sector]
+			if hue and hues[sector+1] then 
+
+				hueBarMARKER.position = guiCoord(0,0,y,0)
+
+				local selected = hue:lerp(hues[sector+1], (y - ((size.y * ((sector-1)/6))/hueBar.absoluteSize.y)) / (1/6))
+				startColour = selected
+				colourPickerGradient.topRightColour = startColour
+				colourPickerGradient.bottomRightColour = startColour
+
+				local x = marker.absolutePosition.x/colourPickerGradient.absoluteSize.x
+				local y = marker.absolutePosition.y/colourPickerGradient.absoluteSize.y
+
+				local selectedColour = startColour:lerp(colour(1,1,1), 1-x)
+				selectedColour = selectedColour:lerp(colour(0,0,0), y)
+
+				window.content.backgroundColour = selectedColour
+
+				rInput.text = tostring(selectedColour.r*255)
+				g.text = tostring(selectedColour.g*255)
+				b.text = tostring(selectedColour.b*255)
+				HEX.text = selectedColour:getHex()
+
+				if type(callback) == "function" and selectedColour ~= currentColour then
+					callback(selectedColour)
+					currentColour = selectedColour
+				end
+			end
+
+			wait()
+		end
+	end)
+
     colourPickerGradient:mouseLeftPressed(function ()
 		while engine.input:isMouseButtonDown(enums.mouseButton.left) do
 			local pos = engine.input.mousePosition - colourPickerGradient.absolutePosition
@@ -224,6 +232,12 @@ colourPicker.create = function()
 			g.text = tostring(selectedColour.g*255)
 			b.text = tostring(selectedColour.b*255)
 			HEX.text = selectedColour:getHex()
+
+			if type(callback) == "function" and selectedColour ~= currentColour then
+				callback(selectedColour)
+				currentColour = selectedColour
+			end
+
 			wait()
 		end
 	end)
@@ -249,10 +263,14 @@ colourPicker.create = function()
 			colourPickerGradient.topRightColour = startColour
 			colourPickerGradient.bottomRightColour = startColour
 
+			rInput.text = tostring(c.r*255)
+			g.text = tostring(c.g*255)
+			b.text = tostring(c.b*255)
+			HEX.text = c:getHex()
+
 			hueBarMARKER.position = guiCoord(0,0,h/360,0)
-
-
-  		end
+  		end,
+  		setCallback = function(c) callback = c end
   	}
 end
 

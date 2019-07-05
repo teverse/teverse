@@ -127,9 +127,9 @@ controller.updateHandlers = {
     gui.y.text = string.format("%.3f", value.y)
   end,
   colour = function(instance, gui, value)
-    gui.r.text = tostring(value.r)
-    gui.g.text = tostring(value.g)
-    gui.b.text = tostring(value.b)
+    gui.r.text = string.format("%.5f", value.r)
+    gui.g.text = string.format("%.5f", value.g)
+    gui.b.text = string.format("%.5f", value.b)
     gui.col.backgroundColour = value
   end,
   quaternion = function(instance, gui, value)
@@ -761,6 +761,12 @@ controller.createInput = {
       controller.colourPicker.window.visible  = not controller.colourPicker.window.visible 
       if controller.colourPicker.window.visible then
         controller.colourPicker.setColour(instance[property])
+        controller.colourPicker.setCallback(function (c)
+          x.text = tostring(c.r)
+          g.text = tostring(c.g)
+          b.text = tostring(c.b)
+          controller.parseInputs[type(value)](property, container)
+        end)
       end
     end)
 
@@ -786,7 +792,7 @@ function controller.generateProperties(instance)
   end
   controller.eventHandlers = {}
 
-    if instance and instance.events and instance.events["changed"] then
+    if instance and instance.events then
         instanceEditing = instance
         controller.instanceEditing = instance
 
