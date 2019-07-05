@@ -37,7 +37,7 @@ controller.registerLight = function(light)
 			lastUpdate = os.time()
 			repeat wait(.1) until os.time() - lastUpdate > 0.6
 			
-			newBlock.emissiveColour = (light.diffuseColour * 20):min(colour(0.1,0.1,0.1))
+			newBlock.emissiveColour = (light.diffuseColour * 20):max(colour(0.1,0.1,0.1))
 
 			if newBlock.position ~= light.position then
 				newBlock.position = light.position
