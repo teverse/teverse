@@ -11,19 +11,15 @@ local char = require("tevgit:core/server/characterController.lua")
 -- Purely for testing purposes only:
 while wait(1) do
 	local blocks = {}
-	for i = 1,15 do
-		local block = engine.construct("block", workspace, {size = vector3(1,1,1), position = vector3(0,i,0), static=false, colour = colour(math.random(),math.random(),math.random())})
-		table.insert(blocks, block)
+	for x = 1, 5 do
+		for i = 1,5 do
+			local block = engine.construct("block", workspace, {size = vector3(1,1,1), position = vector3(x,i,0), static=false, colour = colour(math.random(),math.random(),math.random())})
+			table.insert(blocks, block)
+		end
+		wait()
 	end
 
-	wait(1)
-
-	for i = 1,15 do
-		local block = engine.construct("block", workspace, {size = vector3(1,1,1), position = vector3(0,i,10), static=false, colour = colour(math.random(),math.random(),math.random())})
-		table.insert(blocks, block)
-	end
-
-	wait(5)
+	wait(10)
 
 	for _,v in pairs(blocks) do v:destroy() end
 end
