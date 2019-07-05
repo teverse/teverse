@@ -24,6 +24,7 @@ local function addPlayer(client)
 	local playerGui = engine.construct("guiTextBox", container, {
 		name = client.name,
 		size = guiCoord(1, -10, 0, 16),
+		fontSize = 16,
 		text = client.name,
 		readOnly=true,
 		backgroundColour=colour(0.1,0.1,0.1),
