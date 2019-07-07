@@ -9,8 +9,9 @@ print ("DEBUG: Loading theme.lua")
 -- theme names are probably gonna have to get made meaningful...
 themeController.darkTheme = {
     default = {
-        fontFile = "OpenSans-Regular",
+        fontFile = "OpenSans-Regular.ttf",
 		backgroundColour  = colour:fromRGB(66, 66, 76),
+		borderColour  = colour:fromRGB(56, 56, 66),
 		textColour = colour:fromRGB(255, 255, 255)
     },
     main = {
@@ -18,12 +19,13 @@ themeController.darkTheme = {
 		textColour = colour:fromRGB(255, 255, 255),
 	},
 	mainText = {
-		guiStyle = enums.guiStyle.noBackground,
+		alpha = 0, -- background
 		textColour = colour:fromRGB(255, 255, 255),
 	},
 	mainTopBar = {
 		backgroundColour  = colour:fromRGB(45, 45, 55),
 		textColour = colour:fromRGB(255, 255, 255),
+		borderColour = colour:fromRGB(15, 15, 25)
 	},
 	secondary = {
 	    backgroundColour  = colour:fromRGB(55, 55, 66),
@@ -33,9 +35,15 @@ themeController.darkTheme = {
 	    backgroundColour = colour:fromRGB(78, 83, 91),
 	    textColour  = colour:fromRGB(255,255,255)
 	},
+	primaryText = {
+	    alpha = 0, -- background
+	    textColour  = colour:fromRGB(255,255,255)
+	},
 	light = {
 		backgroundColour  = colour:fromRGB(255,255,255),
 		textColour = colour:fromRGB(66, 66, 76),
+		imageColour = colour:fromRGB(66, 66, 76),
+		borderColour  = colour:fromRGB(245,245,245),
 	},
 	tools = {
 		selected = colour:fromRGB(66, 134, 244),
@@ -46,7 +54,7 @@ themeController.darkTheme = {
 
 themeController.lightTheme = {
     default = {
-        fontFile = "OpenSans-Regular",
+        fontFile = "OpenSans-Regular.ttf",
 		backgroundColour  = colour:fromRGB(189, 195, 199),
 		textColour = colour:fromRGB(0,0,0)
     },
@@ -55,7 +63,7 @@ themeController.lightTheme = {
 		textColour = colour:fromRGB(0,0,0),
 	},
 	mainText = {
-		guiStyle = enums.guiStyle.noBackground,
+		alpha = 0,
 		textColour = colour:fromRGB(0,0,0),
 	},
 	mainTopBar = {

@@ -27,15 +27,24 @@ return function(workshop)
 		add    = require("tevgit:create/tools/add.lua"),
 		select = require("tevgit:create/tools/select.lua"),
 		move   = require("tevgit:create/tools/move.lua"),
-		scale  = require("tevgit:create/tools/scale.lua"),
+		resize  = require("tevgit:create/tools/resize.lua"),
+		paint  = require("tevgit:create/tools/paint.lua"),
 		--rotate = require("tevgit:create/tools/rotate.lua")
 	}
 
 	-- create default environment
 	if workshop.gameFilePath == "" then
 		controllers.env.setDefault()
-		controllers.env.createStarterMap() -- Starter map, or the enviroment, may be overriden by teverse if the user is opening an existing .tev file.
+		controllers.env.createStarterMap() -- Starter map, or the environment, may be overriden by teverse if the user is opening an existing .tev file.
 	end
-	wait(2)
+	wait(.3)
+	collectgarbage()
+	require("tevgit:create/controllers/dock.lua").loadSettings()
+	require("tevgit:create/controllers/devtools.lua")
+	require("tevgit:create/controllers/createTabController.lua")
+	collectgarbage()
 	controllers.ui.setLoading(false)
+	--wait(1)
+	--scriptEditor   = require("tevgit:create/scriptEditor/main.lua")
+
 end

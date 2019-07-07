@@ -9,6 +9,9 @@ local hotkeysController = {
 }
 
 local selectionController = require("tevgit:create/controllers/select.lua")
+local toolsController = require("tevgit:create/controllers/tool.lua")
+local themeController = require("tevgit:create/controllers/theme.lua")
+local helpers = require("tevgit:create/helpers.lua")
 
 function hotkeysController:bind(hotkeyData)
 	
@@ -95,6 +98,7 @@ hotkeysController:bind({
 			if v then
 				v.emissiveColour = colour(0,0,0)
 				local new = v:clone()
+				new.parent = workspace
 				new.position = v.position + vector3(0,size.y,0)
 				table.insert(newItems, new)
 			end
@@ -114,11 +118,49 @@ hotkeysController:bind({
 			if v then
 				v.emissiveColour = colour(0,0,0)
 				local new = v:clone()
+				new.parent = workspace
 				table.insert(newItems, new)
 			end
 		end
 		selectionController.setSelection(newItems)
 	end
 })
+
+hotkeysController:bind({
+	name = "deselect",
+	key = enums.key.escape, 
+	action = function()
+		-- it makes sense for escape to deselect selection...?
+		selectionController.setSelection({})
+	end
+})
+
+hotkeysController:bind({
+	name = "focus on selection",
+	key = enums.key.f, 
+	action = function()
+		if #selectionController.selection > 0 then
+			local mdn = vector3(helpers.median(selectionController.selection, "x"), helpers.median(selectionController.selection, "y"), helpers.median(selectionController.selection, "z") )
+			engine.tween:begin(workspace.camera, .2, {position = mdn + (workspace.camera.rotation * vector3(0,0,1) * 15)}, "outQuad")
+		end
+	end
+})
+
+
+hotkeysController:bind({
+	name = "select all",
+	priorKey = enums.key.leftCtrl,
+	key = enums.key.a, 
+	action = function()
+		local selection = {}
+		for _,v in pairs(workspace.children) do
+			if not v.workshopLocked and type(v) == "block" then
+				table.insert(selection, v)
+			end
+		end
+		selectionController.setSelection(selection)
+	end
+})
+
 
 return hotkeysController

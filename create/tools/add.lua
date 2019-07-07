@@ -19,6 +19,19 @@ local propertyController  = require("tevgit:create/controllers/propertyEditor.lu
 local toolSettings  = require("tevgit:create/controllers/toolSettings.lua")
 local helpers = require("tevgit:create/helpers.lua")
 
+local meshShortcuts = {
+    cube = "primitive:cube",
+    sphere = "primitive:sphere",
+    cylinder = "primitive:cylinder",
+    torus = "primitive:torus",
+    cone = "primitive:cone",
+    wedge = "primitive:wedge",
+    corner = "primitive:corner",
+    worker = "tevurl:3d/worker.glb",
+    duck = "tevurl:3d/Duck.glb",
+    avocado = "tevurl:3d/Avocado.glb",
+  }
+
 local toolIsActive
 
 -- storing tool specific content in tool.data isn't really needed anymore due to modules...
@@ -33,7 +46,8 @@ local placeholderBlock = engine.construct(
             physics = false,
             workshopLocked=true,
             static=true,
-            castsShadows = false        
+            castsShadows = false,
+            position = vector3(0, -100, 0)     
         }
     )
 
@@ -44,24 +58,70 @@ local insertProps = {
     static=true
 }
 
-local configWindow = uiController.createWindow(uiController.workshop.interface, guiCoord(0, 66, 0, 183), guiCoord(0, 140, 0, 48), "Inserter")
-local gridLabel = uiController.create("guiTextBox", configWindow.content, {
+local configWindow = uiController.createWindow(uiController.workshop.interface, guiCoord(0, 66, 0, 203), guiCoord(0, 140, 0, 48), "Inserter")
+local editBtn = uiController.create("guiTextBox", configWindow.content, {
     size = guiCoord(1,-10,1,-10),
     position = guiCoord(0,5,0,5),
     align = enums.align.middle,
     text = "Edit Insertable"
 }, "main")
 
+local meshWindow = uiController.createWindow(uiController.workshop.interface, guiCoord(0, 66, 0, 266), guiCoord(0, 175, 0, 22), "Presets")
+
+local curY = 0
+local curX = 0
+local btnNum = 0
+for meshName, actualMeshName in pairs(meshShortcuts) do
+    local btn = uiController.create("guiTextBox", meshWindow.content, {
+        size = guiCoord(.5, -10, 0, 18),
+        position = guiCoord(curX, 5, 0, curY + 8),
+        borderRadius = 3,
+        text = meshName,
+        fontSize = 16,
+        align = enums.align.middle
+    }, "primary")
+
+    btn:mouseLeftReleased(function()
+        placeholderBlock.mesh = actualMeshName
+    end)
+
+    btnNum = btnNum + 1
+
+    if curX == 0.5 then
+        curY = curY + 24
+        curX = 0
+    else
+        curX = 0.5
+    end
+end
+
+local meshWindowY = (22 + (math.ceil(btnNum / 2) * 26))
+print(btnNum)
+print((math.ceil(btnNum / 2) * 26))
+print(meshWindowY)
+
+meshWindow.size = guiCoord(0, 175, 0, meshWindowY)
+
 local editing = false
 local db = false
 
-gridLabel:mouseLeftReleased(function ()
+editBtn:mouseLeftReleased(function ()
     if editing then editing = false return end
     if db then return end
     db = true
 
     editing = true
-    gridLabel.text = "Back"
+    editBtn.text = "Back"
+
+    -- hide these from the property editor...
+    propertyController.excludePropertyList = {
+        ["position"]=true,
+        ["workshopLocked"]=true,
+        ["name"]=true
+    }
+
+    local wasPropertyEditing = propertyController.instanceEditing
+
     propertyController.generateProperties(placeholderBlock)
     propertyController.window.visible = true
 
@@ -101,16 +161,25 @@ gridLabel:mouseLeftReleased(function ()
 
     engine.tween:begin(propertyController.window, 0.25, {position = startPos, size = startSize}, "inOutQuad")
     wait(0.3)
+
+    propertyController.excludePropertyList = {}
+    if wasPropertyEditing then
+        propertyController.generateProperties(wasPropertyEditing)
+    end
+
     editing = false
     db=false
-    gridLabel.text = "Edit Insertable"
+    editBtn.text = "Edit Insertable"
 
 end)
 
 configWindow.visible = false
+meshWindow.visible = false
 
 local function onToolActivated(toolId)
     configWindow.visible = true
+    meshWindow.visible = true
+
     --[[
         @Description
             Initializes the process (making placeholders & events) for placing blocks
@@ -154,6 +223,7 @@ local function onToolActivated(toolId)
             end
 
             propertyController.generateProperties(newBlock)
+            selectionController.setSelection({newBlock})
         end
     end
     
@@ -167,6 +237,7 @@ local function onToolActivated(toolId)
         if (mouseDown == curTime) then
             while (wait(.05)) and (mouseDown == curTime and toolsController.currentToolId == toolId) do
                 placeBlock()
+
             end
         end
     end)
@@ -175,6 +246,14 @@ local function onToolActivated(toolId)
 		if input.systemHandled then return end 
 		
         mouseDown = 0
+    end)
+
+    tool.data.keyPressedEvent = engine.input:keyPressed(function(input)
+        if input.systemHandled then return end 
+        
+        if input.key == enums.key.r then
+            placeholderBlock.rotation = placeholderBlock.rotation * quaternion:setEuler(0,math.rad(45),0)
+        end
     end)
     
 
@@ -189,9 +268,11 @@ local function onToolActivated(toolId)
     placeholderBlock.position = vector3(0,-10000,0) --lol
 end
 
-local function onToolDeactviated(toolId)
+local function onToolDeactivated(toolId)
     
     configWindow.visible = false
+    meshWindow.visible = false
+
     --[[
         @Description
             Clears up any loose ends during deactivation
@@ -208,6 +289,8 @@ local function onToolDeactviated(toolId)
     tool.data.mouseDownEvent = nil
     tool.data.mouseUpEvent:disconnect()
     tool.data.mouseUpEvent = nil
+    tool.data.keyPressedEvent:disconnect()
+    tool.data.keyPressedEvent = nil
     
     --tool.data.placeholderBlock:destroy()
     --tool.data.placeholderBlock = nil
@@ -225,7 +308,7 @@ return toolsController:register({
     hotKey = enums.key.number1,
 
     activated = onToolActivated,
-    deactivated = onToolDeactviated
+    deactivated = onToolDeactivated
 
 })
 

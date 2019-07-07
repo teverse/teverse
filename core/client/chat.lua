@@ -22,7 +22,7 @@ local messagesTextBox = engine.construct("guiTextBox",container, {
 	align = enums.align.bottomLeft,
 	fontSize = 21,
 	text="",
-	fontFile = "OpenSans-Regular",
+	fontFile = "OpenSans-Regular.ttf",
 	zIndex=1001
 })
 
@@ -45,7 +45,7 @@ local messageInputBox = engine.construct("guiTextBox",messageInputFrame, {
 	text="type here, and enter!",
 	readOnly=false,
 	multiline=false,
-	fontFile = "OpenSans-Regular",
+	fontFile = "OpenSans-Regular.ttf",
 	zIndex=1001
 })
 

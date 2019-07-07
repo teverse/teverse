@@ -6,6 +6,7 @@ local environmentController = {}
 local firstRun = true
 
 local toolsController = require("tevgit:create/controllers/tool.lua")
+--[[
 local physicsButton = toolsController.createButton("testingTab", "fa:s-pause", "Pause")
 physicsButton:mouseLeftReleased(function ()
     if engine.physics.running then
@@ -14,6 +15,11 @@ physicsButton:mouseLeftReleased(function ()
     	engine.physics:resume()
     end
 end)
+]]
+
+
+
+--[[
 engine.physics:changed(function (p,v)
 	if p == "running" then
 		if v then
@@ -24,7 +30,7 @@ engine.physics:changed(function (p,v)
 			physicsButton.text.text = "Resume"
 		end
 	end
-end)
+end)]]
 
 environmentController.createStarterMap = function()
 	print("creating starter map")
@@ -105,7 +111,7 @@ environmentController.createStarterMap = function()
 
 	if firstRun then
 		firstRun = false
-		--hack: pregenerate properties
+		--hack: pregenerate properties, this wont be needed after some bottlenecks are fixed.
 		require("tevgit:create/controllers/propertyEditor.lua").generateProperties(block)
 		require("tevgit:create/controllers/propertyEditor.lua").generateProperties(mainLight)
 	end

@@ -7,6 +7,9 @@ local toolsController = require("tevgit:create/controllers/tool.lua")
 local uiTabController = require("tevgit:create/controllers/uiTabController.lua")
 uiTabController.ui = uiController
 
+local dockController = require("tevgit:create/controllers/dock.lua")
+dockController.ui = uiController
+
 uiController.create = function(className, parent, properties, style)
     if not parent then parent = uiController.workshop.interface end
     local gui = engine.construct(className, parent, properties)
@@ -20,7 +23,7 @@ uiController.createFrame = function(parent, properties, style)
     return gui
 end
 
-uiController.createWindow = function(parent, pos, size, title)
+uiController.createWindow = function(parent, pos, size, title, dontDock)
     if not parent then parent = uiController.workshop.interface end
     local container = engine.construct("guiFrame", parent, {
         name = "windowContainer",
@@ -30,15 +33,21 @@ uiController.createWindow = function(parent, pos, size, title)
 
     local titleBar = uiController.create("guiFrame", container, {
         name = "titleBar",
-        size = guiCoord(1,0,0,22)
+        size = guiCoord(1,0,0,22),
+        hoverCursor = "fa:s-hand-pointer"
     }, "main")
+
+    titleBar:mouseLeftPressed(function ()
+        dockController.beginWindowDrag(container, dontDock)
+    end)
+    
 
     local textLabel = uiController.create("guiTextBox", titleBar, {
         name = "textLabel",
-        readonly=true,
         size = guiCoord(1,-10,1,-2),
         position = guiCoord(0,5,0,0),
-        text = title
+        text = title,
+        handleEvents=false
     }, "mainText")
 
     uiController.createFrame(titleBar, {
@@ -78,17 +87,18 @@ uiController.createMainInterface = function(workshop)
     uiController.loadingFrame = uiController.create("guiFrame", workshop.interface, {
                                 name = "loadingFrame",
                                 size = guiCoord(1,0,1,0),
-                                position = guiCoord(0,0,0,0)
+                                position = guiCoord(0,0,0,0),
+                                zIndex = 1000,
                             }, "main")
 
     uiController.create("guiTextBox", uiController.loadingFrame, {
         name = "loadingMessage",
         position = guiCoord(0, 10, 0.5, 0),
         size = guiCoord(1, -20, 0.5, -10),
-        align = enums.align.middleTop,
+        align = enums.align.topMiddle,
         fontSize = 21,
-        guiStyle = enums.guiStyle.noBackground,
-        text = "Please wait whilst Teverse loads the latest assets."
+        alpha = 0,
+        text = "Please wait whilst Create Mode loads the latest assets."
     }, "main")
 
     local loadingImage = uiController.create("guiImage", uiController.loadingFrame, {
@@ -129,6 +139,12 @@ uiController.createMainInterface = function(workshop)
         position = guiCoord(0,0,0,23)
     }, "mainTopBar")
 
+    uiController.createTab = uiController.createFrame(workshop.interface, {
+        name = "createTab",
+        size = guiCoord(1, 0, 0, 60),
+        position = guiCoord(0,0,0,23)
+    }, "mainTopBar")
+
 
     uiController.testingTab = uiController.createFrame(workshop.interface, {
         name = "testingTab",
@@ -139,6 +155,7 @@ uiController.createMainInterface = function(workshop)
     local tabController = uiTabController.registerTabs(uiController.tabs, "secondary", "main")
     uiTabController.createTab(uiController.tabs, "File", uiController.topBar)
     uiTabController.createTab(uiController.tabs, "Windows", uiController.windowsTab)
+    uiTabController.createTab(uiController.tabs, "Create", uiController.createTab)
     uiTabController.createTab(uiController.tabs, "Testing", uiController.testingTab)
 
 
@@ -148,6 +165,7 @@ uiController.createMainInterface = function(workshop)
     toolsController.ui = uiController
 
     toolsController.registerMenu("windowsTab", uiController.windowsTab)
+    toolsController.registerMenu("createTab", uiController.createTab)
     toolsController.registerMenu("testingTab", uiController.testingTab)
 
     --[[local darkmode = true
@@ -166,6 +184,9 @@ uiController.createMainInterface = function(workshop)
     local saveAsBtn = toolsController.createButton("topBar", "fa:s-file-export", "Save As")
     local openBtn = toolsController.createButton("topBar", "fa:s-folder-open", "Open")
     local publishBtn = toolsController.createButton("topBar", "fa:s-cloud-upload-alt", "Publish")
+
+    publishBtn.image.alpha = 0.45
+    publishBtn.text.textAlpha = 0.45
 
     --[[
     local function checkIfPublishable()
@@ -191,8 +212,51 @@ uiController.createMainInterface = function(workshop)
     openBtn:mouseLeftReleased(function()
         workshop:openFileDialogue()
     end)
+
+    uiController.publishStatus = uiController.createFrame(workshop.interface, {
+        name = "publishStatus",
+        size = guiCoord(0, 200, 0, 60),
+        position = guiCoord(0.5, -100, 0.5, -30),
+        borderRadius = 5,
+        visible = false,
+    }, "main")
+
+    uiController.create("guiTextBox", uiController.publishStatus, {
+        name = "label",
+        size = guiCoord(1, 0, 0, 24),
+        position = guiCoord(0,0,0,4),
+        align = enums.align.middle,
+        text = "Publishing..."
+    }, "main")
+
+    workshop:changed(function (p)
+        if workshop.gameFilePath ~= "" then
+            publishBtn.image.alpha = 1
+            publishBtn.text.textAlpha = 1
+        else
+            publishBtn.image.alpha = 0.45
+            publishBtn.text.textAlpha = 0.45
+        end
+    end)
+
+    workshop:published(function (success)
+        if success then
+            uiController.publishStatus.label.text = "Success! " .. workshop.gameCloudId
+            wait(2)
+            uiController.publishStatus.visible = false
+        else
+            uiController.publishStatus.label.text = "Failed"
+            wait(2)
+            uiController.publishStatus.visible = false
+        end
+    end)
+
     publishBtn:mouseLeftReleased(function ()
+
+        uiController.publishStatus.visible = true
+        uiController.publishStatus.label.text = "Publishing"
         workshop:publishDialogue()
+
     end)
 end
 

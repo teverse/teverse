@@ -6,6 +6,7 @@ local selectionController = {}
 selectionController.selectable = true
 
 local propertyEditor  = require("tevgit:create/controllers/propertyEditor.lua")
+local lights  = require("tevgit:create/controllers/lights.lua")
 
 selectionController.boundingBox = engine.construct("block", nil, {
 	name = "_CreateMode_boundingBox",
@@ -15,7 +16,8 @@ selectionController.boundingBox = engine.construct("block", nil, {
 	physics = false, 
 	colour = colour(1, 0.8, 0.8),
 	opacity = 0,
-	size = vector3(0, 0, 0)
+	size = vector3(0, 0, 0),
+    doNotSerialise=true
 })
 
 selectionController.boundingBoxListeners = {}
@@ -90,6 +92,7 @@ engine.input:mouseLeftReleased(function(inp)
         local mouseHit = engine.physics:rayTestScreen( engine.input.mousePosition )
 	    if not mouseHit or mouseHit.object.workshopLocked then
     		if mouseHit and mouseHit.object.name == "_CreateMode_" then return end -- dont deselect
+
     		-- User clicked empty space, deselect everything??#
     		for _,v in pairs(selectionController.selection) do
     			v.emissiveColour = colour(0.0, 0.0, 0.0)
@@ -105,6 +108,8 @@ engine.input:mouseLeftReleased(function(inp)
     		selectionController.calculateBoundingBox()
     		return
     	end
+
+        
 
     	local doSelect = true
 
@@ -134,11 +139,22 @@ engine.input:mouseLeftReleased(function(inp)
 
     	if doSelect then
 
-    		mouseHit.object.emissiveColour = colour(0.025, 0.025, 0.15)
+            if type(mouseHit.object) == "block" and mouseHit.object.name ~= "_CreateMode_Light_Placeholder" then
+        		mouseHit.object.emissiveColour = colour(0.025, 0.025, 0.15)
+            end
 
     		table.insert(selectionController.selection, mouseHit.object)
     		selectionController.addBoundingListener(mouseHit.object)
     		selectionController.calculateBoundingBox()
+
+            if mouseHit and mouseHit.object.name == "_CreateMode_Light_Placeholder" then
+                if lights.lights[mouseHit.object] then
+                    --ignore the block they pressed, they clicked a light
+                    propertyEditor.generateProperties(lights.lights[mouseHit.object])
+                    return
+                end
+            end
+
 			propertyEditor.generateProperties(mouseHit.object)
     	end
 

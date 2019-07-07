@@ -29,13 +29,14 @@ end
 
 engine.networking.clients:clientConnected(function (client)
 	wait(1)
+	print("spawning", client.id)
 	local char = engine.construct("block", workspace, {
 		name = client.id,
 		size = vector3(4,4,4),
 		colour = colour(math.random(),math.random(),math.random()),
 		position = vector3(0,20,0),
 		static = false,
-		velocity = vector3(0,10,0),
+	--	velocity = vector3(0,10,0),
 		angularFactor = vector3(0,0,0)
 	})
 
