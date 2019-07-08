@@ -33,7 +33,7 @@ engine.networking.clients:clientConnected(function (client)
 	local char = engine.construct("block", workspace, {
 		name = client.id,
 		size = vector3(4,4,4),
-		colour = colour(math.random(),math.random(),math.random()),
+		colour = colour(1,0,0),
 		position = vector3(0,20,0),
 		static = false,
 	--	velocity = vector3(0,10,0),

@@ -9,7 +9,10 @@ local chat = require("tevgit:core/server/chat.lua")
 local char = require("tevgit:core/server/characterController.lua")
 
 -- Purely for testing purposes only:
-local block = engine.construct("block", workspace, {size = vector3(1,1,1), position = vector3(0,15,0), static=false, colour = colour(math.random(),math.random(),math.random())})
-while wait(5) do
-	block.position = vector3(0,15,0)
+while wait(.1) do
+	spawnThread(function()
+		local block = engine.construct("block", workspace, {size = vector3(1,1,1), position = vector3(0,15,0), static=false, colour = colour(math.random(),math.random(),math.random())})
+		wait(2)
+		block:destroy()
+	end)
 end
