@@ -39,8 +39,67 @@ controller.keyBinds = {
 	[enums.key.space] = 5
 }
 
+controller.keyBindsDir = {
+	vector3(0,0,1), --w
+	vector3(0,0,-1), --s
+	vector3(1,0,0), --a
+	vector3(-1,0,0) -- d
+}
+
+controller.keys = {
+	false,
+	false,
+	false,
+	false,
+	false
+}
+
+local isPredicting = false
+
+local updatePrediction = function()
+	local totalForce = vector3()
+	local moved = false
+	for i, pressed in pairs(controller.keys) do
+		if pressed then
+			moved=true
+			totalForce = totalForce + controller.keyBinds[i]
+		end
+	end
+
+	if moved then
+		controller.character:applyForce(totalForce * 500)
+	end
+
+	return moved
+end
+
+-- The purpose of this function is to predict how the server will move the character
+-- based on the input we send.
+local function predictServerMovementOnClient(direction)
+	if not controller.character then return end
+
+	if direction == 5 then
+		controller.character:applyImpulse(0,300,0)
+		return nil
+	elseif controller.keys[direction] == nil then 
+		return nil
+	end
+
+	controller.keys[direction] = true
+	if not isPredicting then
+		isPredicting = true
+		engine.graphics:frameDrawn(function()
+			if not updatePrediction() then
+				isPredicting =false
+				self:disconnect() -- no input from user.
+			end
+		end)
+	end
+end
+
 engine.input:keyPressed(function (inputObj)
 	if controller.keyBinds[inputObj.key] then
+		predictServerMovementOnClient(controller.keyBinds[inputObj.key])
 		engine.networking:toServer("characterSetInputStarted", controller.keyBinds[inputObj.key])
 	end
 end)
@@ -48,6 +107,7 @@ end)
 engine.input:keyReleased(function (inputObj)
 	if controller.keyBinds[inputObj.key]  then
 		engine.networking:toServer("characterSetInputEnded", controller.keyBinds[inputObj.key])
+		controller.keys[controller.keyBinds[inputObj.key]] = false
 	end
 end)
 
