@@ -10,7 +10,7 @@ local char = require("tevgit:core/server/characterController.lua")
 
 -- Purely for testing purposes only:
 
-for x = 0,3 do
+for x = 6,9 do
 	for y = 2,6 do
 		for z = 0,3 do
 			local block = engine.construct("block", workspace, {
