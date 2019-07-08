@@ -12,7 +12,7 @@ local char = require("tevgit:core/server/characterController.lua")
 while wait(.1) do
 	spawnThread(function()
 		local block = engine.construct("block", workspace, {size = vector3(1,1,1), position = vector3(0,15,0), static=false, colour = colour(math.random(),math.random(),math.random())})
-		wait(2)
+		wait(5)
 		block:destroy()
 	end)
 end
