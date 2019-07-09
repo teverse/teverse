@@ -11,12 +11,12 @@ local target = nil
 
 controller.setTarget = function(t)
 	target = t
-	controller.camera.position = target.position + vector3(0,20,-30)
+	controller.camera.position = target.position + vector3(0,20,-50)
 	controller.camera:lookAt(target.position)
 
 	target:changed(function ()
-		controller.camera.position = target.position + vector3(0,20,-30)
-		controller.camera:lookAt(target.position)
+		--controller.camera.position = target.position + vector3(0,20,-30)
+		--controller.camera:lookAt(target.position)
 	end)
 end
 

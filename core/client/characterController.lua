@@ -62,7 +62,7 @@ local updatePrediction = function()
 	for i, pressed in pairs(controller.keys) do
 		if pressed then
 			moved=true
-			totalForce = totalForce + controller.keyBinds[i]
+			totalForce = totalForce + controller.keyBindsDir[i]
 		end
 	end
 
