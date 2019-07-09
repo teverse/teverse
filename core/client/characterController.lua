@@ -14,7 +14,7 @@ engine.networking:bind( "characterSpawned", function()
 	print("Spawned. ",engine.networking.me.id)
 		wait(1)
 	controller.character = workspace[engine.networking.me.id]
-
+	controller.character.physics=false
 	if controller.camera then
 	--	controller.character.opacity = 0
 		--controller.camera.camera.position = vector3(0,90,0)

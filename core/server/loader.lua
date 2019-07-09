@@ -19,6 +19,7 @@ for x = 6,9 do
 				static=false, 
 				colour = colour(math.random(),math.random(),math.random())
 			})
+			wait()
 		end
 	end
 end
