@@ -100,7 +100,7 @@ consoleController.createConsole = function(workshop)
 	end)
 
 	engine.input:keyPressed(function(inputObj)
-		if inputObj.key == enums.key.f12 then
+		if inputObj.key == enums.key.f12 or inputObj.key == enums.key.number0 then
 			if inputObj.systemHandled then return end
 			consoleController.consoleObject.visible = not consoleController.consoleObject.visible
 		elseif cmdBarActive == true then 
