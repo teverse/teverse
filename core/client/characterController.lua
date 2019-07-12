@@ -56,7 +56,10 @@ end
 for _,v in pairs(engine.networking.clients) do
 	characterSpawnedHandler(v.id)
 end
-engine.networking:bind( "characterSpawned", characterSpawnedHandler )
+
+engine.networking.clients:clientConnected(function (client)
+	characterSpawnedHandler(client.id)
+end)
 
 
 controller.keyBinds = {
