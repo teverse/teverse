@@ -8,18 +8,48 @@ local controller = {}
 
 controller.character = nil -- server creates this
 
-engine.networking:bind( "characterSpawned", function()
-	print("Waiting for character to spawn in workspace ",engine.networking.me.id)
-	repeat wait() until workspace[engine.networking.me.id]
-	print("Spawned. ",engine.networking.me.id)
-		wait(1)
-	controller.character = workspace[engine.networking.me.id]
-	controller.character.physics=false
-	if controller.camera then
-	--	controller.character.opacity = 0
-		--controller.camera.camera.position = vector3(0,90,0)
-		--controller.camera.camera:lookAt(vector3(0,0,0))
-		controller.camera.setTarget(controller.character)
+local function setupCharacterLocally(client, char)
+	local nameTag = engine.construct("guiTextBox", engine.interface, {
+		name = client.id,
+		size = guiCoord(0,100,0,16),
+		align = enums.align.middle,
+		text = client.name,
+		alpha = 0,
+		fontSize = 16,
+		fontFile = "OpenSans-SemiBold.ttf"
+	})
+
+	char:changed(function(property, value)
+		if property == "position" then
+			local inFrontOfCamera, screenPos = workspace.camera:worldToScreen(value + vector3(0,char.size.y/2,0))
+			if inFrontOfCamera then
+				nameTag.visible = true
+				nameTag.position = guiCoord(0, screenPos.x - 50, 0, screenPos.y)
+			else
+				nameTag.visible = false
+			end
+		end
+	end)
+end
+
+engine.networking:bind( "characterSpawned", function(newClientId)
+	if engine.networking.me.id == newClientId then
+		print("Waiting for character to spawn in workspace ",engine.networking.me.id)
+		repeat wait() until workspace[engine.networking.me.id]
+		print("Spawned. ",engine.networking.me.id)
+		controller.character = workspace[engine.networking.me.id]
+		setupCharacterLocally(engine.networking.me, controller.character)
+	--	controller.character.physics=false
+		if controller.camera then
+		--	controller.character.opacity = 0
+			--controller.camera.camera.position = vector3(0,90,0)
+			--controller.camera.camera:lookAt(vector3(0,0,0))
+			controller.camera.setTarget(controller.character)
+		end
+	else
+		repeat wait() until workspace[newClientId]
+		local client = engine.networking.clients:getClientFromId(newClientId)
+		setupCharacterLocally(client, workspace[newClientId])
 	end
 end)
 

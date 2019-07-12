@@ -33,14 +33,15 @@ engine.networking.clients:clientConnected(function (client)
 	local char = engine.construct("block", workspace, {
 		name = client.id,
 		size = vector3(4,4,4),
-		colour = colour(1,0,0),
+		colour = colour(1,2,3),
 		position = vector3(0,20,0),
 		static = false,
+	--	mesh = "primitive:sphere",
 	--	velocity = vector3(0,10,0),
 		angularFactor = vector3(0,0,0)
 	})
 
-	engine.networking:toClient(client, "characterSpawned")
+	engine.networking:toAllClients("characterSpawned", client.id)
 
 	local fallen = false
 	char:changed(function(property, value)
@@ -51,7 +52,7 @@ engine.networking.clients:clientConnected(function (client)
 				print("Player fell: ", client.name)
 				char.static = true
 				wait(.1)
-				engine.tween:begin(char, 1, {position = vector3(0,10,10), rotation=quaternion()}, "inOutQuad")
+				engine.tween:begin(char, 1, {position = vector3(0,10,10)}, "inOutQuad")
 				wait(1.2)
 				char.static = false
 				fallen = false
