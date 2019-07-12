@@ -5,8 +5,8 @@
 --]]
 
 local container = engine.construct("guiFrame", engine.interface, {
-	size=guiCoord(0,350,0,300),
-	position=guiCoord(0, 30, 1, -355),
+	size=guiCoord(0,350,0,600),
+	position=guiCoord(0, 30, 1, -655),
 	backgroundColour=colour(0.1,0.1,0.1),
 	handleEvents=false,
 	alpha = 0.1,

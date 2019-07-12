@@ -32,7 +32,7 @@ local function setupCharacterLocally(client, char)
 	end)
 end
 
-engine.networking:bind( "characterSpawned", function(newClientId)
+local function characterSpawnedHandler(newClientId)
 	if engine.networking.me.id == newClientId then
 		print("Waiting for character to spawn in workspace ",engine.networking.me.id)
 		repeat wait() until workspace[engine.networking.me.id]
@@ -51,7 +51,13 @@ engine.networking:bind( "characterSpawned", function(newClientId)
 		local client = engine.networking.clients:getClientFromId(newClientId)
 		setupCharacterLocally(client, workspace[newClientId])
 	end
-end)
+end
+
+for _,v in pairs(engine.networking.clients) do
+	characterSpawnedHandler(v.id)
+end
+engine.networking:bind( "characterSpawned", characterSpawnedHandler )
+
 
 controller.keyBinds = {
 	[enums.key.w]  = 1,
