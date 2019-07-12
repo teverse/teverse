@@ -41,7 +41,7 @@ engine.networking.clients:clientConnected(function (client)
 		angularFactor = vector3(0,0,0)
 	})
 
-	engine.networking:toAllClients("characterSpawned", client.id)
+	--engine.networking:toAllClients("characterSpawned", client.id)
 
 	local fallen = false
 	char:changed(function(property, value)
