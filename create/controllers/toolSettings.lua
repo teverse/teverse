@@ -60,13 +60,13 @@ function controller.createUI(workshop)
   	local gridAxisInput = uiController.create("guiButton", controller.window.content, {
 	  	size = guiCoord(0,18,0,18),
 	  	position = guiCoord(0,x,0,28),
-	  	text = "",
-	  	selected = v[2],
-	  	guiStyle = enums.guiStyle.checkBox
+	  	text = v[2] and "X" or " ",
+	  	selected = v[2]
 	}, "main")
 	gridAxisInput:mouseLeftReleased(function ()
 		controller.axis[i][2] = not controller.axis[i][2]
 		gridAxisInput.selected = controller.axis[i][2]
+    gridAxisInput.text = gridAxisInput.selected and "X" or " "
 	end)
 	x=x+22
   end

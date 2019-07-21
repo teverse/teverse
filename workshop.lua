@@ -209,7 +209,7 @@ local function addTool(image, activate, deactivate)
 	toolButton.size = guiCoord(0, 24, 0, 24)
 	toolButton.position = guiCoord(0, 10 + (30 * #tools), 0, 3)
 	toolButton.parent = toolBarMain
-	toolButton.guiStyle = enums.guiStyle.noBackground
+	toolButton.backgroundAlpha = 0
 	toolButton.imageColour = themeColourToolDeselected
 	toolButton.texture = image;
 	toolButton:mouseLeftReleased(function()
@@ -273,9 +273,9 @@ end
 local function setReadOnly( textbox, value )
 	textbox.readOnly = value
 	if value then
-		textbox.alpha = 0.8
+		textbox.backgroundAlpha = 0.8
 	else
-		textbox.alpha = 1
+		textbox.backgroundAlpha = 1
 	end
 end
 
@@ -305,7 +305,7 @@ end
 local txtProperty = generateLabel("0 items selected", windowProperties)
 txtProperty.name = "txtProperty"
 txtProperty.textColour = themeColourWindowText
-txtProperty.alpha = 0.9
+txtProperty.backgroundAlpha = 0.9
 
 local event = nil -- stores the instance changed event so we can disconnect it
 local showing = nil
@@ -426,7 +426,7 @@ local function generateProperties( instance )
 			lblProp.name = "lbl"..prop.property 
 
 			if readOnly then
-				lblProp.alpha = 0.5
+				lblProp.backgroundAlpha = 0.5
 			end
 			
 			local propContainer = engine.guiFrame() 
@@ -434,7 +434,7 @@ local function generateProperties( instance )
 			propContainer.name = prop.property
 			propContainer.size = guiCoord(0.54, -9, 0, 21) -- Compensates for the natural padding inside a guiWindow.
 			propContainer.position = guiCoord(0.45,0,0,y)
-			propContainer.alpha = 0
+			propContainer.backgroundAlpha = 0
 		
 
 			if propertyType == "vector2" then
@@ -663,7 +663,7 @@ local function generateProperties( instance )
 				placeholder.position = guiCoord(0,0,0,0)
 				placeholder.size = guiCoord(1, 0, 1, 0)
 				placeholder.align = enums.align.middle
-				placeholder.alpha = 0.6
+				placeholder.backgroundAlpha = 0.6
 			elseif propertyType == "number" then
 
 				local txtProp = generateInputBox(value, propContainer)
@@ -1064,9 +1064,9 @@ engine.debug:output(function(msg, type)
 	-- This function is deprecated.
 	lbl:setText(text)
 
-		local textSize = lbl.textSize
-		lbl.size = guiCoord(1, -10, 1, textSize.y)
-		scrollViewOutput.canvasSize = guiCoord(1, 0, 1, textSize.y)
+		local textDimensions = lbl.textDimensions
+		lbl.size = guiCoord(1, -10, 1, textDimensions.y)
+		scrollViewOutput.canvasSize = guiCoord(1, 0, 1, textDimensions.y)
 	
 end)
 
@@ -1100,13 +1100,13 @@ local scrollBarHierarchy = engine.guiFrame("scrollBarFrame")
 scrollBarHierarchy.size = guiCoord(1,-5,1,-1)
 scrollBarHierarchy.parent = windowHierarchy
 scrollBarHierarchy.position = guiCoord(1,-20,0,0)
-scrollBarHierarchy.alpha = 0.05
+scrollBarHierarchy.backgroundAlpha = 0.05
 
 local scrollBarPositionFrame = engine.guiFrame("scrollBarPositionFrame")
 scrollBarPositionFrame.size = guiCoord(1, 0, 0.1, 0)
 scrollBarPositionFrame.parent = scrollBarHierarchy
 scrollBarPositionFrame.position = guiCoord(0, 0, 0, 0)
-scrollBarPositionFrame.alpha = 0.1
+scrollBarPositionFrame.backgroundAlpha = 0.1
 
 local scrollBarMarkersFolder = engine.folder("scrollBarMarkers")
 scrollBarMarkersFolder.parent = scrollBarHierarchy
@@ -1115,7 +1115,7 @@ local scrollViewHierarchy = engine.guiFrame("scrollView")
 scrollViewHierarchy.size = guiCoord(1,-25,1,-1)
 scrollViewHierarchy.parent = windowHierarchy
 scrollViewHierarchy.position = guiCoord(0,0,0,0)
-scrollViewHierarchy.alpha = 0
+scrollViewHierarchy.backgroundAlpha = 0
 
 local buttonLog = {}
 local classNameIcons = {

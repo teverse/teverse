@@ -99,7 +99,7 @@ local function renderHelper(parent, direction, pos)
 	controller.ui.create("guiImage", frame, {
 		size = guiCoord(0, 18, 0, 18),
 		position = guiCoord(0.5,-9,0,18),
-		alpha = 0.75,
+		backgroundAlpha = 0.75,
 		texture = "fa:r-window-maximize"
 	}, "light")
 
@@ -107,12 +107,12 @@ local function renderHelper(parent, direction, pos)
 end
 
 controller.renderDockLocationHelpers = function()
-	local helpers = engine.construct("guiFrame", controller.ui.workshop.interface, { zIndex=100, size = guiCoord(1,0,1,0), alpha = 0, handleEvents=false})
+	local helpers = engine.construct("guiFrame", controller.ui.workshop.interface, { zIndex=100, size = guiCoord(1,0,1,0), backgroundAlpha = 0, handleEvents=false})
 
 	local outline = controller.ui.create("guiFrame", helpers, {
 		name = "outline",
 		size = guiCoord(0, 100, 0, 220),
-		alpha = 0,
+		backgroundAlpha = 0,
 		borderRadius = 2,
 		borderWidth = 1,
 		borderAlpha = 1,
@@ -269,11 +269,11 @@ end
 controller.beginWindowDrag = function(window, dontDock)
 	controller.undockWindow(window)
 	local offset = window.absolutePosition - engine.input.mousePosition
-	local startAlpha = window.alpha
+	local startAlpha = window.backgroundAlpha
 	local startZ = window.zIndex
 	window.zIndex = 99
 
-	window.alpha = startAlpha*0.5;
+	window.backgroundAlpha = startAlpha*0.5;
 
 	local helpers
 	if not dontDock then
@@ -316,7 +316,7 @@ controller.beginWindowDrag = function(window, dontDock)
 		end
 	end
 
-	window.alpha = startAlpha
+	window.backgroundAlpha = startAlpha
 	window.zIndex = startZ
 
 	lastUpdate = os.clock()

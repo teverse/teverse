@@ -31,7 +31,7 @@ function controller.createTab(container, name, callback)
 	    }, active and controller.widgets[container].selected or controller.widgets[container].deselected)
 
 		controller.widgets[container].tabs[btn] = callback
-		local newX = math.min(130, btn.textSize.x + 40)
+		local newX = math.min(130, btn.textDimensions.x + 40)
 		btn.size = guiCoord(0, newX, 0, 18)
 		controller.widgets[container].currentX = controller.widgets[container].currentX + newX + 10
 

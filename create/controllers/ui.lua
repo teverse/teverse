@@ -97,7 +97,7 @@ uiController.createMainInterface = function(workshop)
         size = guiCoord(1, -20, 0.5, -10),
         align = enums.align.topMiddle,
         fontSize = 21,
-        alpha = 0,
+        backgroundAlpha = 0,
         text = "Please wait whilst Create Mode loads the latest assets."
     }, "main")
 
@@ -185,7 +185,7 @@ uiController.createMainInterface = function(workshop)
     local openBtn = toolsController.createButton("topBar", "fa:s-folder-open", "Open")
     local publishBtn = toolsController.createButton("topBar", "fa:s-cloud-upload-alt", "Publish")
 
-    publishBtn.image.alpha = 0.45
+    publishBtn.image.backgroundAlpha = 0.45
     publishBtn.text.textAlpha = 0.45
 
     --[[
@@ -231,10 +231,10 @@ uiController.createMainInterface = function(workshop)
 
     workshop:changed(function (p)
         if workshop.gameFilePath ~= "" then
-            publishBtn.image.alpha = 1
+            publishBtn.image.backgroundAlpha = 1
             publishBtn.text.textAlpha = 1
         else
-            publishBtn.image.alpha = 0.45
+            publishBtn.image.backgroundAlpha = 0.45
             publishBtn.text.textAlpha = 0.45
         end
     end)

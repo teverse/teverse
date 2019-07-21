@@ -14,7 +14,7 @@ local function setupCharacterLocally(client, char)
 		size = guiCoord(0,100,0,16),
 		align = enums.align.middle,
 		text = client.name,
-		alpha = 0,
+		textAlpha = 0,
 		fontSize = 16,
 		fontFile = "OpenSans-SemiBold.ttf"
 	})

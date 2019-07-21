@@ -9,7 +9,7 @@ local container = engine.construct("guiFrame", engine.interface, {
 	position=guiCoord(0, 30, 1, -655),
 	backgroundColour=colour(0.1,0.1,0.1),
 	handleEvents=false,
-	alpha = 0.1,
+	backgroundAlpha = 0.1,
 	zIndex=1001
 })
 
@@ -17,7 +17,8 @@ local container = engine.construct("guiFrame", engine.interface, {
 local messagesTextBox = engine.construct("guiTextBox",container, {
 	size=guiCoord(1, -8, 1, -4),
 	position=guiCoord(0,4,0,2),
-	guiStyle = enums.guiStyle.noBackground,
+	--backgroundAlpha = 0.5,
+	backgroundAlpha = 0,
 	handleEvents=false,
 	align = enums.align.bottomLeft,
 	fontSize = 21,
@@ -32,14 +33,14 @@ local messageInputFrame = engine.construct("guiFrame", engine.interface, {
 	position=guiCoord(0, 30, 1, -55),
 	backgroundColour=colour(0.1,0.1,0.1),
 	handleEvents=false,
-	alpha = 0.8,
+	backgroundAlpha = 0.8,
 	zIndex=1001
 })
 
 local messageInputBox = engine.construct("guiTextBox",messageInputFrame, {
 	size=guiCoord(1, -8, 1, -4),
 	position=guiCoord(0,4,0,2),
-	guiStyle = enums.guiStyle.noBackground,
+	backgroundAlpha = 0.5,
 	align = enums.align.middleLeft,
 	fontSize = 21,
 	text="type here, and enter!",

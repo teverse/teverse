@@ -150,7 +150,7 @@ controller.updateHandlers = {
 controller.createInput = {
 	default = function(instance, property, value)
     return uiController.create("guiFrame", nil, {
-      alpha = 0.25,
+      backgroundAlpha = 0.25,
       name = "inputContainer",
       size = guiCoord(0.5, 0, 0, 20),
       position = guiCoord(0.5,0,0,0),
@@ -161,7 +161,7 @@ controller.createInput = {
   block = function(instance, property, value)
     local container = controller.createInput.default(value, pType, readOnly)
     local x = uiController.create("guiTextBox", container, {
-      alpha = 0.25,
+      backgroundAlpha = 0.25,
       readOnly = true,
       fontSize = 18,
       name = "input",
@@ -183,12 +183,12 @@ controller.createInput = {
       size = guiCoord(0, 18, 1, -2),
       position = guiCoord(0, 2, 0, 1),
       text = "",
-      alpha = 0.75,
-      guiStyle = enums.guiStyle.checkBox
+      backgroundAlpha = 0.75,
     }, "light")
 
     x:mouseLeftReleased(function ()
       x.selected = not x.selected
+      x.text = x.selected and "X" or " " -- temporary
       controller.parseInputs[type(value)](property, container)
     end)
 
@@ -198,7 +198,7 @@ controller.createInput = {
   number = function(instance, property, value)
     local container = controller.createInput.default(value, pType, readOnly)
     local x = uiController.create("guiTextBox", container, {
-      alpha = 0.25,
+      backgroundAlpha = 0.25,
       readOnly = false,
       multiline = false,
       fontSize = 18,
@@ -225,7 +225,7 @@ controller.createInput = {
           text = "Light Options",
           fontSize = 16,
           align = enums.align.middle,
-          alpha = 0.75
+          backgroundAlpha = 0.75
       }, "primary")
 
       local optionsModal = uiController.create("guiFrame", container, {
@@ -275,6 +275,7 @@ controller.createInput = {
         position = guiCoord(0.75, -12, 0, -15),
         handleEvents=false,
         zIndex = 10,
+        backgroundAlpha = 0,
         texture = "fa:s-caret-up",
         imageColour = optionsModal.backgroundColour
       })
@@ -328,7 +329,7 @@ controller.createInput = {
     local container = controller.createInput.default(value, pType, readOnly)
 
     local x = uiController.create("guiTextBox", container, {
-      alpha = 0.25,
+      backgroundAlpha = 0.25,
       readOnly = false,
       multiline = false,
       fontSize = 18,
@@ -360,7 +361,7 @@ controller.createInput = {
           text = "Mesh Presets",
           fontSize = 16,
           align = enums.align.middle,
-          alpha = 0.75
+          backgroundAlpha = 0.75
       }, "primary")
 
       local meshModal = uiController.create("guiFrame", container, {
@@ -377,30 +378,34 @@ controller.createInput = {
       local function queueCloseModal()
         if not pendingHide and meshModal.visible then
           pendingHide = true
-          wait(.4)
-          if not isFocused then
-            --still unfocused, lets hide.
-            meshModal.visible = false
-          end
-          pendingHide=false
+          spawnThread(function ()
+              -- Code here...
+            wait(.4)
+            if not isFocused then
+              --still unfocused, lets hide.
+              meshModal.visible = false
+            end
+            pendingHide=false
+            
+          end)
         end
       end
 
-      presetSelect:mouseFocused(function ()
+      presetSelect:onSync("mouseFocused", function ()
         meshModal.visible = true
         isFocused = true
       end)
 
-      meshModal:mouseFocused(function ()
+      meshModal:onSync("mouseFocused", function ()
         isFocused = true
       end)
 
-      presetSelect:mouseUnfocused(function ()
+      presetSelect:onSync("mouseUnfocused", function ()
         isFocused = false
         queueCloseModal()
       end)
 
-      meshModal:mouseUnfocused(function ()
+      meshModal:onSync("mouseUnfocused", function ()
         isFocused = false
         queueCloseModal()
       end)
@@ -410,6 +415,7 @@ controller.createInput = {
         position = guiCoord(0.75, -12, 0, -15),
         handleEvents=false,
         zIndex = 10,
+        backgroundAlpha = 0,
         texture = "fa:s-caret-up",
         imageColour = meshModal.backgroundColour
       })
@@ -427,10 +433,10 @@ controller.createInput = {
           align = enums.align.middle
         }, "primary")
 
-        btn:mouseFocused(function ()
+        btn:onSync("mouseFocused", function ()
           isFocused = true
         end)
-        btn:mouseUnfocused(function ()
+        btn:onSync("mouseUnfocused", function ()
           isFocused = false
           queueCloseModal()
         end)
@@ -474,7 +480,7 @@ controller.createInput = {
     }, "mainText")
     
     local x = uiController.create("guiTextBox", container, {
-      alpha = 0.25,
+      backgroundAlpha = 0.25,
       readOnly = false,
       multiline = false,
       fontSize = 18,
@@ -536,7 +542,7 @@ controller.createInput = {
     }, "mainText")
 
     local x = uiController.create("guiTextBox", container, {
-      alpha = 0.25,
+      backgroundAlpha = 0.25,
       readOnly = false,
       multiline = false,
       fontSize = 18,
@@ -586,7 +592,7 @@ controller.createInput = {
     }, "mainText")
 
     local x = uiController.create("guiTextBox", container, {
-      alpha = 0.25,
+      backgroundAlpha = 0.25,
       readOnly = false,
       multiline = false,
       fontSize = 18,
@@ -650,7 +656,7 @@ controller.createInput = {
   guiCoord = function(instance, property, value)
     local container = controller.createInput.default(value, pType, readOnly)
     local x = uiController.create("guiTextBox", container, {
-      alpha = 0.25,
+      backgroundAlpha = 0.25,
       readOnly = false,
       multiline = false,
       fontSize = 18,
@@ -705,7 +711,7 @@ controller.createInput = {
     }, "mainText")
 
     local x = uiController.create("guiTextBox", container, {
-      alpha = 0.25,
+      backgroundAlpha = 0.25,
       readOnly = false,
       multiline = false,
       fontSize = 18,
@@ -792,7 +798,7 @@ function controller.generateProperties(instance)
   end
   controller.eventHandlers = {}
 
-    if instance and instance.events then
+    if instance then
         instanceEditing = instance
         controller.instanceEditing = instance
 
@@ -823,7 +829,7 @@ function controller.generateProperties(instance)
                 container = engine.construct("guiFrame", controller.scrollView,
                 {
                   name = "_" .. v.property,
-                  alpha = 0,
+                  backgroundAlpha = 0,
                   size = guiCoord(1, -10, 0, 20),
                   cropChildren = false
                 })
