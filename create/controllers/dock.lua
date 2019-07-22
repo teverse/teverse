@@ -304,7 +304,7 @@ controller.beginWindowDrag = function(window, dontDock)
 
 		wait()
 	end
-	local start = os.cpuClock()
+	local start = os.clock()
 	if not dontDock then
 		helpers:destroy()
 
