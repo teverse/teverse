@@ -4,14 +4,11 @@ local propertyController  = require("tevgit:create/controllers/propertyEditor.lu
 
 local light = toolsController.createButton("createTab", "fa:s-lightbulb", "Light")
 light:mouseLeftReleased(function ()
-	print("Workspace: ", workspaace)
 	local l = engine.construct("light", workspace, {
 		position = workspace.camera.position - (workspace.camera.rotation * vector3(0,0,5))
 	})
 
 	propertyController.generateProperties(l)
-
-	print(l.parent)
 end)
 
     -- temp:

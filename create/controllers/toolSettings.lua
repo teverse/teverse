@@ -15,7 +15,7 @@ controller.workshop = nil
 
 function controller.createUI(workshop)
   controller.workshop = workshop
-  controller.window = uiController.createWindow(workshop.interface, guiCoord(0, 66, 0, 100), guiCoord(0, 150, 0, 93), "Tool Settings")
+  controller.window = uiController.createWindow(workshop.interface, guiCoord(0, 66, 0, 100), guiCoord(0, 165, 0, 93), "Tool Settings")
   
   local toolsController = require("tevgit:create/controllers/tool.lua")
   local settingsBtn = toolsController.createButton("windowsTab", "fa:s-cogs", "Settings")
@@ -24,7 +24,7 @@ function controller.createUI(workshop)
   end)
 
   local gridLabel = uiController.create("guiTextBox", controller.window.content, {
-    size = guiCoord(0.5,-10,0,18),
+    size = guiCoord(0.6,-10,0,18),
     position = guiCoord(0,5,0,4),
     align = enums.align.middleRight,
     wrap = false,
@@ -32,8 +32,8 @@ function controller.createUI(workshop)
   }, "mainText")
 
   local gridStepInput = uiController.create("guiTextBox", controller.window.content, {
-    size = guiCoord(0.5,-10,0,18),
-    position = guiCoord(0.5,5,0,4),
+    size = guiCoord(0.4,-10,0,18),
+    position = guiCoord(0.6,5,0,4),
     readOnly = false,
     align = enums.align.middle,
     borderRadius = 5,
@@ -60,6 +60,7 @@ function controller.createUI(workshop)
   	local gridAxisInput = uiController.create("guiButton", controller.window.content, {
 	  	size = guiCoord(0,18,0,18),
 	  	position = guiCoord(0,x,0,28),
+      align = enums.align.middle,
 	  	text = v[2] and "X" or " ",
 	  	selected = v[2]
 	}, "main")
@@ -73,7 +74,7 @@ function controller.createUI(workshop)
 
 
     local rotateLabel = uiController.create("guiTextBox", controller.window.content, {
-    size = guiCoord(0.5,-10,0,18),
+    size = guiCoord(0.6,-10,0,18),
     position = guiCoord(0,5,0,50),
     align = enums.align.middleRight,
     wrap = false,
@@ -81,8 +82,8 @@ function controller.createUI(workshop)
   }, "mainText")
 
   local rotateStepInput = uiController.create("guiTextBox", controller.window.content, {
-    size = guiCoord(0.5,-10,0,18),
-    position = guiCoord(0.5,5,0,50),
+    size = guiCoord(0.4,-10,0,18),
+    position = guiCoord(0.6,5,0,50),
     readOnly = false,
     align = enums.align.middle,
     borderRadius = 5,

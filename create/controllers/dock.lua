@@ -21,11 +21,11 @@ local saveDocks = function()
 	}
 
 	for i,v in pairs(controller.bottomDock) do
-		setting.bottomDock[i] = v.titleBar.textLabel.text
+		table.insert(setting.bottomDock, {i, v.titleBar.textLabel.text})
 	end
 
 	for i,v in pairs(controller.rightDock) do
-		setting.rightDock[i] = v.titleBar.textLabel.text
+		table.insert(setting.rightDock, {i, v.titleBar.textLabel.text})
 	end
 
 	print("Saving dock layout")
@@ -57,18 +57,18 @@ controller.loadSettings = function()
 		table.sort(setting.bottomDock)
 		for i,v in ipairs(setting.bottomDock) do
 			--print("look:", v)
-			if easyWay[v] then
-				controller.dockWindow(easyWay[v], controller.bottomDock)
+			if easyWay[v[2]] then
+				controller.dockWindow(easyWay[v[2]], controller.bottomDock)
 			--	print("dockng")
-				easyWay[v] = nil
+				easyWay[v[2]] = nil
 			end
 		end
 
 		table.sort(setting.rightDock)
 		for i,v in ipairs(setting.rightDock) do
-			if easyWay[v] then
-				controller.dockWindow(easyWay[v], controller.rightDock)
-				easyWay[v] = nil
+			if easyWay[v[2]] then
+				controller.dockWindow(easyWay[v[2]], controller.rightDock)
+				easyWay[v[2]] = nil
 			end
 		end
 
@@ -149,7 +149,7 @@ controller.undockWindow = function(window)
 	controller.dockDictionary[window] = nil
 	if dockDic then
 		if dockDic == 0 then
-			local foundi = 0
+			local foundi = nil
 			for i,v in pairs(controller.bottomDock) do
 				if v == window then
 					controller.bottomDock[i] = nil
@@ -157,47 +157,42 @@ controller.undockWindow = function(window)
 
 					
 					
-				elseif i > foundi then
+				elseif foundi and i > foundi then
 					controller.bottomDock[i-1] = v
 					controller.bottomDock[i] = nil
 				end
 			end
 
 			local scale = 1
-					if #controller.rightDock > 0 then
-						scale = 0.8
-					end
+			if #controller.rightDock > 0 then
+				scale = 0.8
+			end
 
 
 			for i,v in pairs(controller.bottomDock) do
-						engine.tween:begin(v, 0.1, {
-							size = guiCoord(scale*(1/#controller.bottomDock), 0, 0.2, 0),
-							position = guiCoord(scale*((i-1) * (1/#controller.bottomDock)), 0, 0.8, 0)
-						}, "inOutQuad")
-					end
+			-- No tween because other parts of the script needs to read the size and position instantly.
+				v.size = guiCoord(scale*(1/#controller.bottomDock), 0, 0.2, 0)
+				v.position = guiCoord(scale*((i-1) * (1/#controller.bottomDock)), 0, 0.8, 0)
+			end
 
 		elseif dockDic == 1 then
 
-			local foundi = 0
+			local foundi = nil
 			for i,v in pairs(controller.rightDock) do
 				if v == window then
 					controller.rightDock[i] = nil
 					foundi = i
-
-					
-					
-				elseif i > foundi then
+				elseif foundi and i > foundi then
 					controller.rightDock[i-1] = v
 					controller.rightDock[i] = nil
 				end
 			end
 
 			for i,v in pairs(controller.rightDock) do
-						engine.tween:begin(v, 0.1, {
-							size = guiCoord(0.2, 0, 1/#controller.rightDock, i == 1 and -83 or 0),
-							position = guiCoord(0.8,0,(i-1) * (1/#controller.rightDock), i == 1 and 83 or 0)
-						}, "inOutQuad")
-					end
+				-- No tween because other parts of the script needs to read the size and position instantly.
+				v.size = guiCoord(0.2, 0, 1/#controller.rightDock, i == 1 and -83 or 0)
+				v.position = guiCoord(0.8,0,(i-1) * (1/#controller.rightDock), i == 1 and 83 or 0)
+			end
 		end
 	end
 end

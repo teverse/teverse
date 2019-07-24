@@ -73,7 +73,6 @@ controller.registerLight = function(light)
 end
 
 local function handleChild(c)
-	print("child added", c, type(c))
 	if type(c) == "light" then
 		controller.registerLight(c)
 	end
