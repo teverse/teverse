@@ -19,7 +19,7 @@ themeController.darkTheme = {
 		textColour = colour:fromRGB(255, 255, 255),
 	},
 	mainText = {
-		alpha = 0, -- background
+		backgroundAlpha = 0, -- background
 		textColour = colour:fromRGB(255, 255, 255),
 	},
 	mainTopBar = {
@@ -36,7 +36,7 @@ themeController.darkTheme = {
 	    textColour  = colour:fromRGB(255,255,255)
 	},
 	primaryText = {
-	    alpha = 0, -- background
+	    backgroundAlpha = 0, -- background
 	    textColour  = colour:fromRGB(255,255,255)
 	},
 	light = {
@@ -63,7 +63,7 @@ themeController.lightTheme = {
 		textColour = colour:fromRGB(0,0,0),
 	},
 	mainText = {
-		alpha = 0,
+		backgroundAlpha = 0,
 		textColour = colour:fromRGB(0,0,0),
 	},
 	mainTopBar = {

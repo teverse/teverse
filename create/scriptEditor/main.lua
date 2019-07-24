@@ -22,9 +22,9 @@ scriptEditor.mainText = engine.construct("guiTextBox", scriptEditor.mainFrame, {
 	multiline=true,
 	readOnly=false,
 	wrapped = true,
-	alpha=0.2,
+	textAlpha=0.2,
 	text = [[print("Hello Teverse!")]],
-	guiStyle=enums.guiStyle.noBackground
+	backgroundAlpha = 0
 })
 
 
@@ -40,7 +40,7 @@ scriptEditor.colouredText = engine.construct("guiTextBox", scriptEditor.mainFram
 	handleEvents=false,
 	readOnly=true,
 	text = "",
-	guiStyle=enums.guiStyle.noBackground
+	backgroundAlpha = 0
 })
 
 scriptEditor.colours = {
@@ -140,7 +140,7 @@ scriptEditor.leftText = engine.construct("guiTextBox", scriptEditor.leftFrame, {
 	multiline=true,
 	textColour=scriptEditor.colours.comment,
 	text = [[0]],
-	guiStyle=enums.guiStyle.noBackground
+	backgroundAlpha = 0
 })
 
 scriptEditor.lex()

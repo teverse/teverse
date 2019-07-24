@@ -73,7 +73,7 @@ colourPicker.create = function()
 		name = "hueBar",
 		size = guiCoord(0, 30, 1, -10),
 	  	position = guiCoord(0, 160, 0, 5),
-	  	alpha = 0
+	  	backgroundAlpha = 0
 	})
 
 	local hueBarMARKER = engine.construct("guiFrame", hueBar, {
@@ -81,7 +81,7 @@ colourPicker.create = function()
 		size = guiCoord(1, 0, 0, 1),
 	  	position = guiCoord(0, 0, 0, 0),
 	  	handleEvents=false,
-	  	alpha = 0,
+	  	backgroundAlpha = 0,
 	  	borderColour = colour(0,0,0),
 	  	zIndex = 10,
 	  	borderWidth = 2,
@@ -112,7 +112,7 @@ colourPicker.create = function()
     }, "mainText")
 
     local rInput = uiController.create("guiTextBox", window.content, {
-      alpha = 0.25,
+      backgroundAlpha = 0.25,
       readOnly = false,
       multiline = false,
       fontSize = 18,

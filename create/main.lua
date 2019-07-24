@@ -1,9 +1,9 @@
 -- Copyright (c) 2019 teverse.com
 -- main.lua
-
 return function(workshop)
 	local controllers = {
-		console   = require("tevgit:create/controllers/console.lua"),
+		-- 1.0.0 has an internal console
+		--   = require("tevgit:create/controllers/console.lua"),
 		selection = require("tevgit:create/controllers/select.lua"),
 		theme     = require("tevgit:create/controllers/theme.lua"),
 		ui        = require("tevgit:create/controllers/ui.lua"),
@@ -14,7 +14,7 @@ return function(workshop)
 	}
 
 	controllers.ui.createMainInterface(workshop)
-	controllers.console.createConsole(workshop)
+--	controllers.console.createConsole(workshop)
 	controllers.property.createUI(workshop)
 
 	--loaded here due to dependencies

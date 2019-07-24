@@ -54,4 +54,3 @@ garbageButton:mouseLeftReleased(function ()
 		end
 	end)	
 end)
-

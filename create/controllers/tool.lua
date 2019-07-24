@@ -151,7 +151,8 @@ function toolsController:register(tool)
             size = TOOL_BUTTON_SIZE,
             position = TOOL_BUTTON_DEFAULT_POSITION + guiCoord(0, 0, 0, TOOL_BUTTON_OFFSET * #self.tools),
             imageColour = themeController.currentTheme.tools.deselected,
-            texture = tool.icon
+            texture = tool.icon,
+            backgroundAlpha = 0,
         },
         "main"
     )
