@@ -4,9 +4,12 @@
     @Author(s) Jay
 --]]
 
+print("loading chars")
+
 local controller = {}
 
 controller.character = nil -- server creates this
+controller.camera = require("tevgit:core/client/cameraController.lua")
 
 local function setupCharacterLocally(client, char)
 	local nameTag = engine.construct("guiTextBox", engine.interface, {
@@ -14,7 +17,8 @@ local function setupCharacterLocally(client, char)
 		size = guiCoord(0,100,0,16),
 		align = enums.align.middle,
 		text = client.name,
-		textAlpha = 0,
+		textColour = colour(1,1,1),
+		backgroundAlpha = 0,
 		fontSize = 16,
 		fontFile = "OpenSans-SemiBold.ttf"
 	})
@@ -34,9 +38,7 @@ end
 
 local function characterSpawnedHandler(newClientId)
 	if engine.networking.me.id == newClientId then
-		print("Waiting for character to spawn in workspace ",engine.networking.me.id)
 		repeat wait() until workspace[engine.networking.me.id]
-		print("Spawned. ",engine.networking.me.id)
 		controller.character = workspace[engine.networking.me.id]
 		setupCharacterLocally(engine.networking.me, controller.character)
 	--	controller.character.physics=false
@@ -53,7 +55,7 @@ local function characterSpawnedHandler(newClientId)
 	end
 end
 
-for _,v in pairs(engine.networking.clients) do
+for _,v in pairs(engine.networking.clients.children) do
 	characterSpawnedHandler(v.id)
 end
 

@@ -8,7 +8,7 @@ local container = engine.construct("guiFrame", engine.interface, {
 	position=guiCoord(0, 30, 0, 30),
 	backgroundColour=colour(0.1,0.1,0.1),
 	handleEvents=false,
-	backgroundAlpha = 0.5,
+	backgroundAlpha = 0,
 	zIndex=1001
 })
 
