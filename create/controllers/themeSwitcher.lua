@@ -27,7 +27,7 @@ function controller.createUI(workshop)
         position = guiCoord(0, 50, 0, 5),
         text = "",
         backgroundAlpha = 0.75,
-        backgroundColour = colour:fromRGB(0,0,0)
+        backgroundColour = colour:fromRGB(200,200,200)
     })
 
     local moreBtn = engine.construct("guiFrame", controller.window.content, {
@@ -36,7 +36,7 @@ function controller.createUI(workshop)
         position = guiCoord(0, 75, 0, 5),
         text = "...",
         backgroundAlpha = 0.75,
-        backgroundColour = colour:fromRGB(0,0,0)
+        backgroundColour = colour:fromRGB(255,255,255)
     })
 
     darkBtn:mouseLeftReleased(function()
