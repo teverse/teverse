@@ -9,13 +9,13 @@ controller.scrollView = nil
 
 function controller.createUI(workshop) 
     controller.workshop = workshop
-    controller.window = uiController.createWindow(workshop.interface, guiCoord(1, 15, 1, 50), guiCoord(1, -250, 1, -40), "Theme")
+    controller.window = uiController.createWindow(workshop.interface, guiCoord(1, -400, 1, -50), guiCoord(1, 100, 1, 30), "Theme")
     controller.window.visible = true
 
     local darkBtn = engine.construct("guiFrame", controller.window.content, {
         name = "input",
-        size = guiCoord(0, 5, 0, 5),
-        position = guiCoord(0, 5, 0, 5),
+        size = guiCoord(0, 20, 0, 20),
+        position = guiCoord(0, 25, 0, 5),
         text = "",
         backgroundAlpha = 0.75,
         backgroundColour = colour:fromRGB(66, 66, 76)
@@ -23,8 +23,8 @@ function controller.createUI(workshop)
 
     local lightBtn = engine.construct("guiFrame", controller.window.content, {
         name = "input",
-        size = guiCoord(0, 5, 0, 5),
-        position = guiCoord(0, 15, 0, 5),
+        size = guiCoord(0, 20, 0, 20),
+        position = guiCoord(0, 50, 0, 5),
         text = "",
         backgroundAlpha = 0.75,
         backgroundColour = colour:fromRGB(0,0,0)
@@ -32,8 +32,8 @@ function controller.createUI(workshop)
 
     local moreBtn = engine.construct("guiFrame", controller.window.content, {
         name = "input",
-        size = guiCoord(0, 5, 0, 5),
-        position = guiCoord(0, 15, 0, 5),
+        size = guiCoord(0, 20, 0, 20),
+        position = guiCoord(0, 75, 0, 5),
         text = "...",
         backgroundAlpha = 0.75,
         backgroundColour = colour:fromRGB(0,0,0)
