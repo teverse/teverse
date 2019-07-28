@@ -34,7 +34,7 @@ function controller.createUI(workshop)
         name = "input",
         size = guiCoord(0, 20, 0, 20),
         position = guiCoord(0, 75, 0, 5),
-        text = "...",
+        text = "+",
         backgroundAlpha = 0.75,
         backgroundColour = colour:fromRGB(255,255,255)
     })
