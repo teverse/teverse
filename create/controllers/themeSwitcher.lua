@@ -9,7 +9,7 @@ controller.scrollView = nil
 
 function controller.createUI(workshop) 
     controller.workshop = workshop
-    controller.window = uiController.createWindow(workshop.interface, guiCoord(1, -400, 1, -50), guiCoord(1, 100, 1, 30), "Theme")
+    controller.window = uiController.createWindow(workshop.interface, guiCoord(1, -400, 1, -50), guiCoord(0, 100, 0, 30), "Theme")
     controller.window.visible = true
 
     local darkBtn = engine.construct("guiFrame", controller.window.content, {
