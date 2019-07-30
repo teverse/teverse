@@ -12,6 +12,7 @@ local toolsController = require("tevgit:create/controllers/tool.lua")
 local selectionController = require("tevgit:create/controllers/select.lua")
 local toolSettings = require("tevgit:create/controllers/toolSettings.lua")
 local helpers = require("tevgit:create/helpers.lua")
+local history = require("tevgit:create/controllers/history.lua")
 
 local function onToolActivated(toolId)
 	-- This is used to raycast the user's mouse position to an axis
@@ -130,6 +131,9 @@ local function onToolActivated(toolId)
 								else
 									pos[component] = newPos[component]
 								end
+								-- Add the old value to the history (Undo list)
+								history.addPoint(v, "position", v.position)
+
 								v.position = pos
 								--engine.tween:begin(v, .05, {position = pos}, "inOutQuad")
 							end

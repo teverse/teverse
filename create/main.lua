@@ -10,7 +10,8 @@ return function(workshop)
 		camera    = require("tevgit:create/controllers/camera.lua"),
 		tool      = require("tevgit:create/controllers/tool.lua"),
 		property  = require("tevgit:create/controllers/propertyEditor.lua"),
-		hotkeys   = require("tevgit:create/controllers/hotkeys.lua")
+		hotkeys   = require("tevgit:create/controllers/hotkeys.lua"),
+		history = require("tevgit:create/controllers/history.lua")
 	}
 
 	controllers.ui.createMainInterface(workshop)

@@ -18,6 +18,7 @@ local uiController = require("tevgit:create/controllers/ui.lua")
 local propertyController  = require("tevgit:create/controllers/propertyEditor.lua")
 local toolSettings  = require("tevgit:create/controllers/toolSettings.lua")
 local helpers = require("tevgit:create/helpers.lua")
+local history = require("tevgit:create/controllers/history.lua")
 
 local meshShortcuts = {
     cube = "primitive:cube",
@@ -224,6 +225,9 @@ local function onToolActivated(toolId)
 
             propertyController.generateProperties(newBlock)
             selectionController.setSelection({newBlock})
+
+            -- Add this action to the history (Undo list)
+            history.addPoint(newBlock, "HISTORY_CREATED")
         end
     end
     
