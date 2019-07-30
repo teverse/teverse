@@ -4,6 +4,7 @@ return function(workshop)
 	local controllers = {
 		-- 1.0.0 has an internal console
 		--   = require("tevgit:create/controllers/console.lua"),
+    
 		selection 	  = require("tevgit:create/controllers/select.lua"),
 		theme     	  = require("tevgit:create/controllers/theme.lua"),
 		ui        	  = require("tevgit:create/controllers/ui.lua"),
@@ -12,6 +13,8 @@ return function(workshop)
 		property  	  = require("tevgit:create/controllers/propertyEditor.lua"),
 		hotkeys   	  = require("tevgit:create/controllers/hotkeys.lua"),
 		themeSwitcher = require("tevgit:create/controllers/themeSwitcher.lua")
+		history = require("tevgit:create/controllers/history.lua")
+
 	}
 
 	controllers.ui.createMainInterface(workshop)
