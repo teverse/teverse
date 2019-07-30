@@ -17,7 +17,7 @@ scriptEditor.mainText = engine.construct("guiTextBox", scriptEditor.mainFrame, {
 	position=guiCoord(0,5,0,5),
 	zIndex=1002,
 	align=enums.align.topLeft,
-	fontFile = "FiraMono-Regular",
+	fontFile = "FiraMono-Regular.ttf",
 	fontSize=18,
 	multiline=true,
 	readOnly=false,
@@ -26,30 +26,13 @@ scriptEditor.mainText = engine.construct("guiTextBox", scriptEditor.mainFrame, {
 	text = [[print("Hello Teverse!")]],
 	backgroundAlpha = 0
 })
-
-
-scriptEditor.colouredText = engine.construct("guiTextBox", scriptEditor.mainFrame, {
-	size=guiCoord(1,-10,1,-10),
-	position=guiCoord(0.5,5,0,5),
-	zIndex=1003,
-	align=enums.align.topLeft,
-	fontFile = "FiraMono-Regular.ttf",
-	fontSize=18,
-	multiline=true,
-	name="script",
-	handleEvents=false,
-	readOnly=true,
-	text = "",
-	backgroundAlpha = 0
-})
-
 scriptEditor.colours = {
 	background = colour:fromRGB(40, 42, 54),
 	currentLine = colour:fromRGB(68, 71, 90),
 	selection = colour:fromRGB(68, 71, 90),
 	foreground = colour:fromRGB(248, 248, 242),
 	
-	comment=colour:fromRGB(98,114,164), 
+	comment=colour:fromRGB(30,30,70), 
 	string_start=colour:fromRGB(241,250,140), --YELLOW
 	string_end=colour:fromRGB(241,250,140),--yellow
 	string=colour:fromRGB(241,250,140),--yellow
@@ -72,25 +55,23 @@ scriptEditor.lex = function()
 
 	--local curC = 0
 	local text = scriptEditor.mainText.text
-	scriptEditor.colouredText.text = text
-	scriptEditor.mainText:setTextColour(0, text:len(), colour(0.5,0.5,0.5))
+	scriptEditor.mainText.textColour = colour(0.5, 0.5, 0.5)
 	--scriptEditor.colouredText.text = text
 	--wait()
 	--print(engine.lexer.lex, type(engine.lexer.lex))
 	local lexxed = lexer.lex(text)
 	local lineStart =0
 	local lineText = ""
+
+	print(text:len())
 	--print(lexxed, type(lexxed))
 	for i, line in pairs(lexxed) do
 		local thisLine = 0
 		for t,v in pairs(line) do
 			v.posFirst = v.posFirst -1
-		--	local len = string.len(v.data)
-			if not scriptEditor.colours[v.type] then
-			--print(t)
-			end
-			scriptEditor.mainText:setTextColour(lineStart + v.posFirst, (v.posLast-v.posFirst), scriptEditor.colours[v.type] and scriptEditor.colours[v.type] or colour(0.5,0.5,0.5))
-			print("'"..v.data.."'", lineStart + v.posFirst, (v.posLast-v.posFirst))
+
+			scriptEditor.mainText:setTextColour(lineStart + v.posFirst, lineStart + v.posLast, scriptEditor.colours[v.type] and scriptEditor.colours[v.type] or colour(0.5,0.5,0.5))
+			print("'"..v.data.."'", lineStart + v.posFirst, lineStart + v.posLast, scriptEditor.colours[v.type] and scriptEditor.colours[v.type] or colour(0.5,0.5,0.5))
 		--	curC = curC + len
 			thisLine = v.posLast
 		end
