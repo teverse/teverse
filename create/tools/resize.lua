@@ -156,9 +156,11 @@ local function onToolActivated(toolId)
 
 								if component ~= "x" then
 									totalMovedSize.x = 0
-								elseif component ~= "y" then
+								end
+								if component ~= "y" then
 									totalMovedSize.y = 0
-								elseif component ~= "z" then
+								end
+								if component ~= "z" then
 									totalMovedSize.z = 0
 								end
 
