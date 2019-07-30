@@ -12,8 +12,8 @@ return function(workshop)
 		tool      	  = require("tevgit:create/controllers/tool.lua"),
 		property  	  = require("tevgit:create/controllers/propertyEditor.lua"),
 		hotkeys   	  = require("tevgit:create/controllers/hotkeys.lua"),
-		themeSwitcher = require("tevgit:create/controllers/themeSwitcher.lua")
-		history = require("tevgit:create/controllers/history.lua")
+		themeSwitcher = require("tevgit:create/controllers/themeSwitcher.lua"),
+	--	history = require("tevgit:create/controllers/history.lua")
 
 	}
 
