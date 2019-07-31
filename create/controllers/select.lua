@@ -43,15 +43,18 @@ selectionController.calculateBounding = function(items)
         local min, max;
 
                 for _,v in pairs(items) do
-                    if not min then min = v.position; max=v.position end
-                    local vertices = helpers.calculateVertices(v)
-                    for i,v in pairs(vertices) do
-                        min = min:min(v)
-                        max = max:max(v)
-                    end
+					if v and v.alive then
+						if not min then min = v.position; max=v.position end
+						local vertices = calculateVertices(v)
+						for i,v in pairs(vertices) do
+							min = min:min(v)
+							max = max:max(v)
+						end
+					end
                 end
-
-        return (max-min), (max - (max-min)/2)
+	if max ~= nil and min ~= nil then
+		return (max-min), (max - (max-min)/2)
+	end
 end
 
 local isCalculating = false
@@ -69,8 +72,10 @@ selectionController.calculateBoundingBox = function ()
     selectionController.boundingBox.opacity = 0.5
 
     local size, pos = selectionController.calculateBounding(selectionController.selection)
-    selectionController.boundingBox.size = size
-    selectionController.boundingBox.position = pos
+	if size and pos then
+		selectionController.boundingBox.size = size
+		selectionController.boundingBox.position = pos
+	end
 
     --engine.tween:begin(boundingBox, .025, {size = max-min, position = max - (max-min)/2}, "inQuad")
 
@@ -85,7 +90,12 @@ engine.input:mouseLeftReleased(function(inp)
 
     		-- User clicked empty space, deselect everything??#
     		for _,v in pairs(selectionController.selection) do
-    			v.emissiveColour = colour(0.0, 0.0, 0.0)
+				if v and v.alive then
+					v.emissiveColour = colour(0.0, 0.0, 0.0)
+				else
+					print("Cannot change emissiveColour: Object deleted.")
+				end
+
     		end
     		selectionController.selection = {}
 
