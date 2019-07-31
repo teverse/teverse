@@ -40,7 +40,7 @@ uiController.createWindow = function(parent, pos, size, title, dontDock)
     local closeButton = uiController.create("guiImage", titleBar, {
         name = "Close",
         texture = "fa:s-times",
-        position = guiCoord(0.94 ,0 ,0,0),
+        position = guiCoord(1 , -20 ,0,3),
         hoverCursor = "fa:s-hand-pointer",
         size = guiCoord(0, 15, 0, 15),
     })

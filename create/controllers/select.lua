@@ -7,6 +7,7 @@ selectionController.selectable = true
 
 local propertyEditor  = require("tevgit:create/controllers/propertyEditor.lua")
 local lights  = require("tevgit:create/controllers/lights.lua")
+local helpers  = require("tevgit:create/helpers.lua")
 
 selectionController.boundingBox = engine.construct("block", nil, {
 	name = "_CreateMode_boundingBox",
@@ -36,17 +37,6 @@ selectionController.addBoundingListener = function(block)
 	table.insert(selectionController.boundingBoxListeners, {block, block:changed(selectionController.calculateBoundingBox)})
 end
 
-function calculateVertices(block)
-	local vertices = {}
-	for x = -1,1,2 do
-		for y = -1,1,2 do
-			for z = -1,1,2 do
-				table.insert(vertices, block.position + block.rotation* (vector3(x,y,z) *block.size/2))
-			end
-		end
-	end
-	return vertices
-end
 
 selectionController.calculateBounding = function(items)
 
@@ -61,7 +51,6 @@ selectionController.calculateBounding = function(items)
 							max = max:max(v)
 						end
 					end
-
                 end
 	if max ~= nil and min ~= nil then
 		return (max-min), (max - (max-min)/2)

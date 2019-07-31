@@ -57,7 +57,8 @@ local function onToolActivated(toolId)
 			size = vector3(0.1, 0.1, 0.1),
 			colour = colour(c==1 and 1 or 0, c==2 and 1 or 0, c==3 and 1 or 0),
 			emissiveColour = colour(c==1 and .8 or 0, c==2 and .8 or 0, c==3 and .8 or 0), 
-			workshopLocked = true
+			workshopLocked = true,
+			mesh = "primitive:sphere"
 		})
 		
 		handle:mouseLeftPressed(function()

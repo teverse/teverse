@@ -8,6 +8,19 @@ function controller.roundToMultiple(number, multiple)
 	return ((number % multiple) > multiple/2) and number + multiple - number%multiple or number - number%multiple
 end
 
+function controller.calculateVertices(block)
+	local vertices = {}
+	for x = -1,1,2 do
+		for y = -1,1,2 do
+			for z = -1,1,2 do
+				table.insert(vertices, block.position + block.rotation* (vector3(x,y,z) *block.size/2))
+			end
+		end
+	end
+	return vertices
+end
+
+
 function controller.roundVectorToMultiple(vec, multiple)
 	return vector3(controller.roundToMultiple(vec.x, multiple),
 				   controller.roundToMultiple(vec.y, multiple),
