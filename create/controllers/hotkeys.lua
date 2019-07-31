@@ -12,6 +12,7 @@ local selectionController = require("tevgit:create/controllers/select.lua")
 local toolsController = require("tevgit:create/controllers/tool.lua")
 local themeController = require("tevgit:create/controllers/theme.lua")
 local helpers = require("tevgit:create/helpers.lua")
+local history = require("tevgit:create/controllers/history.lua")
 
 function hotkeysController:bind(hotkeyData)
 	
