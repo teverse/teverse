@@ -14,6 +14,8 @@ local toolSettings = require("tevgit:create/controllers/toolSettings.lua")
 local helpers = require("tevgit:create/helpers.lua")
 local history = require("tevgit:create/controllers/history.lua")
 
+local mouseUpEvent
+
 local function onToolActivated(toolId)
 	-- This is used to raycast the user's mouse position to an axis
 	local gridGuideline = engine.construct("block", workspace, {
@@ -36,10 +38,14 @@ local function onToolActivated(toolId)
 	local o = 0
 	
 	local leftButtonDown = false
-	
+
+	-- For history and adding undo points.
+	local originalPositions = {}
+
 	-- Probably can be improved
 	-- Creates two 'handles' for each axis.
 	-- Should work on all selected items.
+
 	for i = 1,6 do
 		local component = components[c]
 		local face = vector3(0,0,0)
@@ -58,10 +64,13 @@ local function onToolActivated(toolId)
 			workshopLocked = true,
 			mesh = "primitive:cone"
 		})
-		
+
+
+
 		handle:mouseLeftPressed(function()
+            print("clicked")
 			if leftButtonDown then return end -- how
-			
+			print("continued")
 			leftButtonDown = handle 
 			
 			selectionController.selectable = false
@@ -78,14 +87,21 @@ local function onToolActivated(toolId)
 			end
 
 			local mouseoffsets = {}
+            originalPositions = {}
 			for _,v in pairs(selectionController.selection) do
 				mouseoffsets[v] = (mouseHit.hitPosition - v.position)
+				originalPositions[v] = v.position
 			end
 
 			local lastHit = mouseHit.hitPosition
 
 			local gridStep = toolSettings.gridStep
-			
+			-- IM CURRENTLY THINKING
+			-- Add special hook function to history.lua for only accepting values with intervals (needed for move & resize, maybe rotate)
+			-- and it gets the difference between two values
+
+			-- OR: Detect when mouse released from marker and then store that value. Add it to history if pos if updated again?
+			-- This could use lastHit or something similar?
 			repeat 
 				if toolsController.currentToolId == toolId then
 					--Face camera on one Axis
@@ -131,8 +147,6 @@ local function onToolActivated(toolId)
 								else
 									pos[component] = newPos[component]
 								end
-								-- Add the old value to the history (Undo list)
-								history.addPoint(v, "position", v.position)
 
 								v.position = pos
 								--engine.tween:begin(v, .05, {position = pos}, "inOutQuad")
@@ -160,8 +174,15 @@ local function onToolActivated(toolId)
 		end
 	end
 	
-	engine.input:mouseLeftReleased(function()
+	mouseUpEvent = engine.input:mouseLeftReleased(function()
 		leftButtonDown = false
+		if originalPositions then
+			for item, pos in pairs(originalPositions) do
+				history.addPoint(item, "position", pos)
+			end
+		end
+
+
 	end)
 
 	updateHandles = function()
@@ -202,6 +223,11 @@ local function onToolDeactivated(toolId)
 	
 	toolsController.tools[toolId].data.boundingEvent:disconnect()
 	toolsController.tools[toolId].data.boundingEvent = nil
+
+	if mouseUpEvent then
+		mouseUpEvent:disconnect()
+		mouseUpEvent = nil
+	end
 end
 
 return toolsController:register({
