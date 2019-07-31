@@ -13,7 +13,7 @@ return function(workshop)
 		property  	  = require("tevgit:create/controllers/propertyEditor.lua"),
 		hotkeys   	  = require("tevgit:create/controllers/hotkeys.lua"),
 		themeSwitcher = require("tevgit:create/controllers/themeSwitcher.lua"),
-	--	history = require("tevgit:create/controllers/history.lua")
+		history = require("tevgit:create/controllers/history.lua")
 
 	}
 
@@ -21,6 +21,7 @@ return function(workshop)
 	controllers.themeSwitcher.createUI(workshop)
 --	controllers.console.createConsole(workshop)
 	controllers.property.createUI(workshop)
+	controllers.history.giveWorkshop(workshop)
 
 	--loaded here due to dependencies
 	controllers.env = require("tevgit:create/controllers/environment.lua")

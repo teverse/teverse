@@ -45,7 +45,7 @@ selectionController.calculateBounding = function(items)
                 for _,v in pairs(items) do
 					if v and v.alive then
 						if not min then min = v.position; max=v.position end
-						local vertices = calculateVertices(v)
+						local vertices = helpers.calculateVertices(v)
 						for i,v in pairs(vertices) do
 							min = min:min(v)
 							max = max:max(v)
