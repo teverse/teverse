@@ -7,7 +7,7 @@ local uiController = require("tevgit:create/controllers/ui.lua")
 local themeController = require("tevgit:create/controllers/theme.lua")
 
 controller.gridStep = 0.2
-controller.rotateStep = 45
+controller.rotateStep = math.rad(9)
 controller.axis = {{"x", true},{"y", true},{"z", true}} -- should grid step be on .. axis
 
 controller.window = nil
@@ -87,11 +87,11 @@ function controller.createUI(workshop)
     readOnly = false,
     align = enums.align.middle,
     borderRadius = 5,
-    text = tostring(controller.rotateStep)
+    text = tostring(math.deg(controller.rotateStep))
   }, "main")
 
   rotateStepInput:textInput(function ()
-    local value = tonumber(gridStepInput.text)
+    local value = math.rad(tonumber(gridStepInput.text))
     if value then
       controller.rotateStep = value
     end

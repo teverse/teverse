@@ -20,6 +20,34 @@ function controller.calculateVertices(block)
 	return vertices
 end
 
+-- these numbers are vertices indexes calculated in above function
+local faces = {
+	{5, 6, 8, 7},  -- x forward,
+	{1, 2, 4, 3},  -- x backward,
+	{7, 8, 4, 3},  -- y upward,
+	{5, 6, 2, 1},  -- y downward,
+	{6, 2, 4, 8},  -- z forward
+	{5, 1, 3, 7}  -- z backward
+}
+
+function controller.getCentreOfFace(block, face)
+	local vertices = controller.calculateVertices(block)
+	local avg = vector3(0,0,0)
+	for _,i in pairs(faces[face]) do
+		avg = avg + vertices[i] 
+	end
+
+	return avg/4
+end
+
+function controller.vector3ToGuiCoord(vec)
+	local inFrontOfCamera, screenPos = workspace.camera:worldToScreen(vec)
+	if inFrontOfCamera then
+		return guiCoord(0, screenPos.x, 0, screenPos.y)
+	else
+		return guiCoord(-1,0,0,0)
+	end
+end
 
 function controller.roundVectorToMultiple(vec, multiple)
 	return vector3(controller.roundToMultiple(vec.x, multiple),
