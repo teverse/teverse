@@ -7,8 +7,11 @@ local toolsController = require("tevgit:create/controllers/tool.lua")
 local selectionController = require("tevgit:create/controllers/select.lua")
 local toolSettings = require("tevgit:create/controllers/toolSettings.lua")
 local helpers = require("tevgit:create/helpers.lua")
+local history = require("tevgit:create/controllers/history.lua")
+
 
 local updateHandles
+local mouseUpEvent
 
 local function onToolActivated(toolId)
 	-- This is used to raycast the user's mouse position to an axis
@@ -19,7 +22,9 @@ local function onToolActivated(toolId)
 		workshopLocked = true,
 		castsShadows = false
 	})
-	
+
+	local originalSizes = {}
+
 	toolsController.tools[toolId].data.gridGuideline = gridGuideline
 	
 	-- TODO: Refactor code from old create mode...
@@ -77,12 +82,17 @@ local function onToolActivated(toolId)
 
 			local mouseoffsets = {}
 
+
 			local lastHit = mouseHit.hitPosition
+
+			originalSizes = {}
 			for _,v in pairs(selectionController.selection) do
 				mouseoffsets[v] = {(lastHit - v.position), v.position, v.size}
+				originalSizes[v] = v.size
 			end
 
-	
+			-- For history and adding undo points.
+
 			
 
 			local gridStep = toolSettings.gridStep
@@ -198,8 +208,15 @@ local function onToolActivated(toolId)
 		end
 	end
 	
-	engine.input:mouseLeftReleased(function()
+	mouseUpEvent = engine.input:mouseLeftReleased(function()
+		print("Event fired")
 		leftButtonDown = false
+
+		if originalSizes then
+			for item, size in pairs(originalSizes) do
+				history.addPoint(item, "size", size)
+			end
+		end
 	end)
 
 	updateHandles = function()
@@ -241,6 +258,11 @@ local function onToolDeactivated(toolId)
 	
 	toolsController.tools[toolId].data.boundingEvent:disconnect()
 	toolsController.tools[toolId].data.boundingEvent = nil
+
+	if mouseUpEvent then
+		mouseUpEvent:disconnect()
+		mouseUpEvent = nil
+	end
 end
 
 return toolsController:register({
