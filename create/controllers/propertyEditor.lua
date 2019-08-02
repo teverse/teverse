@@ -110,6 +110,7 @@ controller.updateHandlers = {
   end,
   boolean = function (instance, gui, value)
     gui.input.selected = value
+    gui.input.text = gui.input.selected and "X" or " " -- temporary
   end,
   number = function (instance, gui, value)
     gui.input.text = tostring(value)
@@ -184,6 +185,7 @@ controller.createInput = {
       position = guiCoord(0, 2, 0, 1),
       text = "",
       backgroundAlpha = 0.75,
+      align = enums.align.middle
     }, "light")
 
     x:mouseLeftReleased(function ()

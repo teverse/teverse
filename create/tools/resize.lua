@@ -63,7 +63,7 @@ local function onToolActivated(toolId)
 		
 		handle:mouseLeftPressed(function()
 			if leftButtonDown then return end -- how
-			
+			print("handle")
 			updateHandles()
 						leftButtonDown = handle 
 			
@@ -209,7 +209,7 @@ local function onToolActivated(toolId)
 	end
 	
 	mouseUpEvent = engine.input:mouseLeftReleased(function()
-		print("Event fired")
+		--print("Event fired")
 		leftButtonDown = false
 
 		if originalSizes then
