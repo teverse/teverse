@@ -879,7 +879,14 @@ function controller.generateProperties(instance)
           end
         end))
 
-        controller.scrollView.canvasSize = guiCoord(0,0,0,y)
+        local newSize = guiCoord(0,0,0,y)
+
+        if newSize ~= controller.scrollView.canvasSize then
+          controller.scrollView.viewOffset = vector2(0,0)
+        end
+
+        controller.scrollView.canvasSize = newSize
+        
     end
 end
 

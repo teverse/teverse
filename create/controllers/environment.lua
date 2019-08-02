@@ -61,60 +61,19 @@ environmentController.createStarterMap = function()
 		name           = "greenBlock",
 		colour         = colour(0, 1, 0),
 		size           = vector3(1, 1, 1),
-		position       = vector3(1, 0, 0)
+		position       = vector3(1, 0, 0),
+		mesh		   = "primitive:wedge",
+		rotation       = quaternion:setEuler(0, math.rad(90), 0)
 	})	
 
 	local block = engine.construct("block", workspace, {
 		name           = "blueBlock",
 		colour         = colour(0, 0, 1),
 		size           = vector3(1, 1, 1),
-		position       = vector3(0.5, 1, 0)
+		position       = vector3(0.5, 1, 0),
+		mesh  		   = "primitive:sphere"
 	})	
 
-	--[[
-
-	engine.construct("block", workspace, {
-		name           = "duck",
-		colour         = colour(1, 1, 1),
-		size           = vector3(1.68787964, 1.67249405, 1.117558464),
-		position       = vector3(0.5, 2.21, 0),
-		mesh           = "tevurl:3d/Duck.glb"
-	})	
-	
-	local corset = engine.construct("block", workspace, {
-		name           = "corset",
-		colour         = colour(1, 1, 1),
-		size           = vector3(1.98645, 2.9499, 1.98645),
-		position       = vector3(-3, 0.94, 4),
-		rotation       = quaternion:setEuler(0, math.rad(-45), 0),
-		mesh           = "tevurl:3d/Corset.glb"
-	})
-
-	local light = engine.construct("light", workspace, {
-		name               = "corsetSpotLight",
-		diffuseColour      = colour(20, 15, 15), --Lights accept colours higher than the standard 1,1,1 scheme
-		specularColour     = colour(20, 15, 15),
-		position           = vector3(2, 3.94, 7.5),
-		falloff            = 2,
-		lumThreshold       = 0.15,
-		shadows            = true,
-		shadowFarDistance  = 100,
-		shadowFarClip      = 30,
-		type               = enums.lightType.spot
-	})
-
-	light:lookAt(corset.position)
-
-	]]
-
-	
-
-	if firstRun then
-		firstRun = false
-		--hack: pregenerate properties, this wont be needed after some bottlenecks are fixed.
-		require("tevgit:create/controllers/propertyEditor.lua").generateProperties(block)
-		require("tevgit:create/controllers/propertyEditor.lua").generateProperties(mainLight)
-	end
 
 	--[[
 	-- Create a script source.
@@ -130,7 +89,7 @@ environmentController.createStarterMap = function()
 	-- Create a script container, this container is responsible for executing code referenced from a script source.
 	-- Each container is treat as its own script and gets its own sandbox.
 	local scriptRunner = engine.construct("scriptContainer", engine.workspace, {name = "mainRunner"})
-	scriptRunner:attach(scriptSource) -- autoruns if autorun is true (defaults to true)
+	scriptRunner.source = scriptSource -- autoruns if autorun is true (defaults to true)
 	]]
 end
 

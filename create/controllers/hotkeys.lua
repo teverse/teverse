@@ -97,13 +97,24 @@ hotkeysController:bind({
         local newItems = {}
         local size, pos = selectionController.calculateBounding(hotkeysController.clipboard)
         for _,v in pairs(hotkeysController.clipboard) do
-            if v then
+            if v and v.name ~= "_CreateMode_Light_Placeholder" then
                 history.addPoint(v, "HISTORY_CREATED")
                 v.emissiveColour = colour(0,0,0)
                 local new = v:clone()
                 new.parent = workspace
                 new.position = v.position + vector3(0,size.y,0)
                 table.insert(newItems, new)
+            elseif v then
+                --copying a light
+                local light = require("tevgit:create/controllers/lights.lua").lights[v]
+                if light then
+                    history.addPoint(light, "HISTORY_CREATED")
+                    local new = light:clone()
+                    new.shadows = false -- purely a performance boost.
+                    new.parent = workspace
+                    new.position = light.position + vector3(0,1,0)
+                   -- table.insert(newItems, new)
+                end
             end
         end
         selectionController.setSelection(newItems)
@@ -118,13 +129,24 @@ hotkeysController:bind({
         hotkeysController.clipboard = selectionController.selection
         local newItems = {}
         for _,v in pairs(hotkeysController.clipboard) do
-            if v then
+            if v and v.name ~= "_CreateMode_Light_Placeholder" then
                 history.addPoint(v, "HISTORY_CREATED")
 
                 v.emissiveColour = colour(0,0,0)
                 local new = v:clone()
                 new.parent = workspace
                 table.insert(newItems, new)
+            elseif v then
+                --copying a light
+                local light = require("tevgit:create/controllers/lights.lua").lights[v]
+                if light then
+                    history.addPoint(light, "HISTORY_CREATED")
+                    local new = light:clone()
+                    new.shadows = false -- purely a performance boost.
+                    new.parent = workspace
+                    new.position = light.position
+                    --table.insert(newItems, new)
+                end
             end
         end
         selectionController.setSelection(newItems)

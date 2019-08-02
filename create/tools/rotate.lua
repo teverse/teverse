@@ -126,6 +126,7 @@ local function onToolActivated(toolId)
 			::skip_loop::
 
 			if not mouseHit then
+				print("Did not collide")
 				hitbox:destroy()
 				return nil
 			end
@@ -133,6 +134,7 @@ local function onToolActivated(toolId)
 			local startRotations = {}
 			for _,v in pairs(selectionController.selection) do
 				startRotations[v] = v.rotation
+				print("Start, ", v)
 			end
 
 			local start = mouseHit.hitPosition
@@ -182,7 +184,17 @@ local function onToolActivated(toolId)
 				end
 			end
 			hitbox:destroy()
+
+			for _,v in pairs(selectionController.selection) do
+				print("END", v)
+				if startRotations[v] and startRotations[v] ~= v.rotation then
+					history.addPoint(v, "rotation", startRotations[v])
+				end
+			end
+
 		end)
+
+	
 
 		table.insert(arrows[axis], newArrow)
 	end

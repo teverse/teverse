@@ -74,6 +74,7 @@ end
 
 local function handleChild(c)
 	if type(c) == "light" then
+		print("Registering new light", c)
 		controller.registerLight(c)
 	end
 end
