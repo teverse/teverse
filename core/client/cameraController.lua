@@ -15,8 +15,8 @@ controller.setTarget = function(t)
 	controller.camera:lookAt(target.position)
 
 	target:changed(function ()
-	--	controller.camera.position = target.position + vector3(0,20,-30)
-	--	controller.camera:lookAt(target.position)
+		controller.camera.position = target.position + vector3(0,20,-30)
+		controller.camera:lookAt(target.position)
 	end)
 end
 

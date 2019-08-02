@@ -53,6 +53,4 @@ return function(workshop)
 	controllers.ui.setLoading(false)
 	--wait(1)
 	--scriptEditor   = require("tevgit:create/scriptEditor/main.lua")
-
-	
 end

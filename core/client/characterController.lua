@@ -23,15 +23,13 @@ local function setupCharacterLocally(client, char)
 		fontFile = "OpenSans-SemiBold.ttf"
 	})
 
-	char:changed(function(property, value)
-		if property == "position" then
-			local inFrontOfCamera, screenPos = workspace.camera:worldToScreen(value + vector3(0,char.size.y/2,0))
-			if inFrontOfCamera then
-				nameTag.visible = true
-				nameTag.position = guiCoord(0, screenPos.x - 50, 0, screenPos.y)
-			else
-				nameTag.visible = false
-			end
+	workspace.camera:onSync("changed", function()
+		local inFrontOfCamera, screenPos = workspace.camera:worldToScreen(char.position + vector3(0,char.size.y/2,0))
+		if inFrontOfCamera then
+			nameTag.visible = true
+			nameTag.position = guiCoord(0, screenPos.x - 50, 0, screenPos.y)
+		else
+			nameTag.visible = false
 		end
 	end)
 end
