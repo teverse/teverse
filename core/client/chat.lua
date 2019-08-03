@@ -5,49 +5,43 @@
 --]]
 
 local container = engine.construct("guiFrame", engine.interface, {
-	size=guiCoord(0,350,0,600),
-	position=guiCoord(0, 30, 1, -655),
-	backgroundColour=colour(0.1,0.1,0.1),
-	handleEvents=false,
-	backgroundAlpha = 0.1,
-	zIndex=1001
+	size			 = guiCoord(0,350,0,600),
+	position		 = guiCoord(0, 0, 1, -655),
+	backgroundColour = colour(0.1, 0.1, 0.1),
+	handleEvents	 = false,
+	backgroundAlpha  = 0.1,
+	zIndex			 = 1001
 })
 
-
-local messagesTextBox = engine.construct("guiTextBox",container, {
-	size=guiCoord(1, -8, 1, -4),
-	position=guiCoord(0,4,0,2),
-	--backgroundAlpha = 0.5,
+local messagesOutput = engine.construct("guiTextBox", container, {
+	size			= guiCoord(1, -8, 1, -34),
+	position		= guiCoord(0, 4, 0, 2),
 	backgroundAlpha = 0,
-	handleEvents=false,
-	align = enums.align.bottomLeft,
-	fontSize = 21,
-	text="",
-	fontFile = "OpenSans-Regular.ttf",
-	zIndex=1001
+	handleEvents	= false,
+	align 			= enums.align.bottomLeft,
+	fontSize 		= 21,
+	text			= ""
 })
 
-
-local messageInputFrame = engine.construct("guiFrame", engine.interface, {
-	size=guiCoord(0,350,0,25),
-	position=guiCoord(0, 30, 1, -55),
-	backgroundColour=colour(0.1,0.1,0.1),
-	handleEvents=false,
-	backgroundAlpha = 0.8,
-	zIndex=1001
+local messageInputFrame = engine.construct("guiFrame", container, {
+	size			 = guiCoord(0, 350, 0, 25),
+	position		 = guiCoord(0, 30, 1, -30),
+	backgroundColour = colour(0.1, 0.1, 0.1),
+	handleEvents	 = false,
+	backgroundAlpha  = 0.8,
+	zIndex			 = 1001
 })
 
-local messageInputBox = engine.construct("guiTextBox",messageInputFrame, {
-	size=guiCoord(1, -8, 1, -4),
-	position=guiCoord(0,4,0,2),
+local messageInputBox = engine.construct("guiTextBox", messageInputFrame, {
+	size			= guiCoord(1, -8, 1, -4),
+	position		= guiCoord(0, 4, 0, 2),
 	backgroundAlpha = 0,
-	align = enums.align.middleLeft,
-	fontSize = 21,
-	text="type here, and enter!",
-	readOnly=false,
-	multiline=false,
-	fontFile = "OpenSans-Regular.ttf",
-	zIndex=1001
+	align 			= enums.align.middleLeft,
+	fontSize 		= 21,
+	text			= "Type here",
+	readOnly		= false,
+	multiline		= false,
+	zIndex			= 1001
 })
 
 messageInputBox:keyPressed(function(inputObj)
@@ -62,7 +56,7 @@ function addMessage(txt)
 	if (newValue:len() > 610) then
 		newValue = newValue:sub(newValue:len() - 600)
 	end
-	messagesTextBox.text = newValue
+	messagesOutput.text = newValue
 end
 
 engine.networking:bind( "message", function( from, message )
