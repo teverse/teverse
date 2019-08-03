@@ -13,18 +13,18 @@ controller.camera = require("tevgit:core/client/cameraController.lua")
 
 local function setupCharacterLocally(client, char)
 	local nameTag = engine.construct("guiTextBox", engine.interface, {
-		name = client.id,
-		size = guiCoord(0,100,0,16),
-		align = enums.align.middle,
-		text = client.name,
-		textColour = colour(1,1,1),
+		name 			= client.id,
+		size 			= guiCoord(0, 100, 0, 16),
+		align 			= enums.align.middle,
+		text 			= client.name,
+		textColour 		= colour(1, 1, 1),
 		backgroundAlpha = 0,
-		fontSize = 16,
-		fontFile = "OpenSans-SemiBold.ttf"
+		fontSize 		= 16,
+		fontFile 		= "OpenSans-SemiBold.ttf"
 	})
 
 	workspace.camera:onSync("changed", function()
-		local inFrontOfCamera, screenPos = workspace.camera:worldToScreen(char.position + vector3(0,char.size.y/2,0))
+		local inFrontOfCamera, screenPos = workspace.camera:worldToScreen(char.position + vector3(0,char.size.y/2,0)) 
 		if inFrontOfCamera then
 			nameTag.visible = true
 			nameTag.position = guiCoord(0, screenPos.x - 50, 0, screenPos.y)

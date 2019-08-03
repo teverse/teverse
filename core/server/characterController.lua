@@ -31,14 +31,13 @@ engine.networking.clients:clientConnected(function (client)
 	wait(1)
 	print("spawning", client.id)
 	local char = engine.construct("block", workspace, {
-		name = client.id,
-		size = vector3(4,4,4),
-		colour = colour(1,2,3),
-		position = vector3(0,20,0),
-		static = false,
+		name 		  = client.id,
+		size 		  = vector3(2.5, 4, 2.5),
+		colour 		  = colour(1, 2, 3),
+		position 	  = vector3(0, 20, 0),
+		static 		  = false,
 	--	mesh = "primitive:sphere",
-	--	velocity = vector3(0,10,0),
-		angularFactor = vector3(0,0,0)
+		angularFactor = vector3(0, 0, 0)
 	})
 
 	--engine.networking:toAllClients("characterSpawned", client.id)
@@ -71,10 +70,10 @@ engine.networking.clients:clientDisconnected(function (client)	wait(1)
 end)
 
 controller.keyBinds = {
-	vector3(0,0,1), --w
-	vector3(0,0,-1), --s
-	vector3(1,0,0), --a
-	vector3(-1,0,0) -- d
+	vector3( 0,  0,  1), --w
+	vector3( 0,  0, -1), --s
+	vector3( 1,  0,  0), --a
+	vector3(-1,  0,  0) -- d
 }
 
 engine.networking:bind( "characterSetInputStarted", function( client, direction )
