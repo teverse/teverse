@@ -7,12 +7,14 @@
 -- tab
 
 local container = engine.construct("guiFrame", engine.interface, {
-	size=guiCoord(0,350,0,200),
-	position=guiCoord(0, 30, 0, 30),
-	backgroundColour=colour(0.1,0.1,0.1),
-	handleEvents=false,
-	backgroundAlpha = 0,
-	zIndex=1001
+	name 			 = "playerList",
+	size			 = guiCoord(0,355,0,205),
+	position		 = guiCoord(1, -350, 0, -5),
+	backgroundColour = colour(0.1, 0.1, 0.1),
+	handleEvents	 = false,
+	backgroundAlpha  = 0,
+	borderRadius 	 = 5,
+	zIndex			 = 1001
 })
 
 local function positionPlayers()
@@ -24,14 +26,20 @@ local function positionPlayers()
 end
 
 local function addPlayer(client)
-	local playerGui = engine.construct("guiTextBox", container, {
-		name = client.name,
-		size = guiCoord(1, -10, 0, 16),
-		fontSize = 16,
-		text = client.name,
-		readOnly=true,
-		backgroundColour=colour(0.1,0.1,0.1),
-		zIndex=1002
+	local playerGui = engine.construct("guiFrame", container, {
+		name 			 = client.name,
+		size 			 = guiCoord(1, -15, 0, 22),
+		backgroundColour = colour(0.1, 0.1, 0.1),
+		backgroundAlpha  = 0.5
+	})
+	
+	local label = engine.construct("guiTextBox", playerGui, {
+		name 		= "label",
+		size 		= guiCoord(1, -30, 1, 0),
+		position    = guiCoord(0, 30, 0, 0),
+		align 		= enums.align.middleLeft,
+		fontSize    = 18,
+		text 		= client.name
 	})
 
 	positionPlayers()
@@ -46,6 +54,7 @@ engine.networking.clients:clientConnected(addPlayer)
 engine.networking.clients:clientDisconnected(function (client)
 	if container:hasChild(client.name) then
 		container[client.name]:destroy()
+		container[client.name] = nil
 		positionPlayers()
 	end
 end)
