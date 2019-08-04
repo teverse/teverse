@@ -4,9 +4,18 @@
     @Author(s) Jay
 --]]
 
+-- Used to add a background to the version/user info on bottom left of Teverse.
+local bottomLeftInfoBG = engine.construct("guiFrame", engine.interface, {
+	name = "InfoBG",
+	size = guiCoord(0, 350, 0, 45),
+	position = guiCoord(0, 0, 1, -45),
+	backgroundColour = colour:black(),
+	backgroundAlpha = 0.4
+})
+
 local container = engine.construct("guiFrame", engine.interface, {
-	size			 = guiCoord(0,350,0,600),
-	position		 = guiCoord(0, 0, 1, -655),
+	size			 = guiCoord(0,350,0,250),
+	position		 = guiCoord(0, 0, 1, -295),
 	backgroundColour = colour(0.1, 0.1, 0.1),
 	handleEvents	 = false,
 	backgroundAlpha  = 0.1,
@@ -24,11 +33,13 @@ local messagesOutput = engine.construct("guiTextBox", container, {
 })
 
 local messageInputFrame = engine.construct("guiFrame", container, {
-	size			 = guiCoord(0, 350, 0, 25),
-	position		 = guiCoord(0, 30, 1, -30),
+	size			 = guiCoord(1, -30, 0, 24),
+	position		 = guiCoord(0, 15, 1, -30),
 	backgroundColour = colour(0.1, 0.1, 0.1),
+	fontSize         = 18,
 	handleEvents	 = false,
-	backgroundAlpha  = 0.8,
+	backgroundAlpha  = 0.4,
+	borderRadius	 = 2,
 	zIndex			 = 1001
 })
 
@@ -44,6 +55,12 @@ local messageInputBox = engine.construct("guiTextBox", messageInputFrame, {
 	zIndex			= 1001
 })
 
+messageInputBox:keyFocused(function ()
+	if messageInputBox.text == "Type here" then
+		messageInputBox.text = ""
+	end
+end)
+
 messageInputBox:keyPressed(function(inputObj)
 	if inputObj.key == enums.key['return'] then
 		engine.networking:toServer("message", messageInputBox.text)
@@ -52,7 +69,7 @@ messageInputBox:keyPressed(function(inputObj)
 end)
 
 function addMessage(txt)
-	local newValue = messagesTextBox.text .. "\n" .. txt
+	local newValue = messagesOutput.text .. "\n" .. txt
 	if (newValue:len() > 610) then
 		newValue = newValue:sub(newValue:len() - 600)
 	end
