@@ -43,14 +43,16 @@ selectionController.calculateBounding = function(items)
         local min, max;
 
                 for _,v in pairs(items) do
-					if v and v.alive then
-						if not min then min = v.position; max=v.position end
-						local vertices = helpers.calculateVertices(v)
-						for i,v in pairs(vertices) do
-							min = min:min(v)
-							max = max:max(v)
-						end
-					end
+                    if type(v) == "block" then
+    					if v and v.alive then
+    						if not min then min = v.position; max=v.position end
+    						local vertices = helpers.calculateVertices(v)
+    						for i,v in pairs(vertices) do
+    							min = min:min(v)
+    							max = max:max(v)
+    						end
+    					end
+                    end
                 end
 	if max ~= nil and min ~= nil then
 		return (max-min), (max - (max-min)/2)
@@ -90,11 +92,13 @@ engine.input:mouseLeftReleased(function(inp)
 
     		-- User clicked empty space, deselect everything??#
     		for _,v in pairs(selectionController.selection) do
-				if v and v.alive then
-					v.emissiveColour = colour(0.0, 0.0, 0.0)
-				else
-					print("Cannot change emissiveColour: Object deleted.")
-				end
+                if type(v) == "block" then
+    				if v and v.alive then
+    					v.emissiveColour = colour(0.0, 0.0, 0.0)
+    				else
+    					print("Cannot change emissiveColour: Object deleted.")
+    				end
+                end
 
     		end
     		selectionController.selection = {}
@@ -116,7 +120,9 @@ engine.input:mouseLeftReleased(function(inp)
     	if not engine.input:isKeyDown(enums.key.leftShift) then
     		-- deselect everything that's already selected and move on
     		for _,v in pairs(selectionController.selection) do
-    			v.emissiveColour = colour(0.0, 0.0, 0.0)
+                if type(v) == "block" then
+        			v.emissiveColour = colour(0.0, 0.0, 0.0)
+                end
     		end
     		selectionController.selection = {}
 
@@ -163,7 +169,9 @@ end)
 
 selectionController.setSelection = function (selection)
     for _,v in pairs(selectionController.selection) do
-        v.emissiveColour = colour(0.0, 0.0, 0.0)
+        if type(v) == "block" then
+            v.emissiveColour = colour(0.0, 0.0, 0.0)
+        end
     end
 
     for _,v in pairs(selectionController.boundingBoxListeners) do
@@ -173,9 +181,11 @@ selectionController.setSelection = function (selection)
     selectionController.selection = {}
 
     for _,v in pairs(selection) do
-        v.emissiveColour = colour(0.025, 0.025, 0.15)
+        if type(v) == "block" then
+            v.emissiveColour = colour(0.025, 0.025, 0.15)
+            selectionController.addBoundingListener(v)
+        end
         table.insert(selectionController.selection, v)
-        selectionController.addBoundingListener(v)
     end
 
     if (#selection > 0) then
@@ -183,6 +193,14 @@ selectionController.setSelection = function (selection)
     end
 
     selectionController.calculateBoundingBox()
+end
+
+selectionController.isSelected = function (object)
+    for _,v in pairs(selectionController.selection) do
+        if v == object then 
+            return true
+        end
+    end
 end
 
 return selectionController

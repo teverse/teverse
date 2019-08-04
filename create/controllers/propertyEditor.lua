@@ -35,8 +35,18 @@ function controller.createUI(workshop)
   dockController.dockWindow(controller.window, dockController.rightDock)
   
   controller.scrollView = uiController.create("guiScrollView", controller.window.content, {
-    name = "scrollview",
-    size = guiCoord(1,0,1,0)
+    name     = "scrollview",
+    size     = guiCoord(1,0,1,-32),
+    position = guiCoord(0,0,0,32)
+  }, "mainTopBar")
+  
+  controller.info = uiController.create("guiTextBox", controller.window.content, {
+    name      = "info",
+    size      = guiCoord(1,-6,0,32),
+    position  = guiCoord(0,3,0,0),
+    fontSize  = 16,
+    textAlpha = 0.5,
+    text      = "Nothing selected."
   }, "mainTopBar")
 
   local toolsController = require("tevgit:create/controllers/tool.lua")
@@ -815,6 +825,7 @@ function controller.generateProperties(instance)
        	end
 
        	local y = 10
+        local propertiesCount = 0
        	
         for i, v in pairs(members) do
             local value = instance[v.property]
@@ -824,7 +835,7 @@ function controller.generateProperties(instance)
             --letting the user turn physics off would cause raycasts to die.
 
             if not readOnly and pType ~= "function" and v.property ~= "physics" and v.property ~= "doNotSerialise" and not controller.excludePropertyList[v.property] then
-
+              propertiesCount = propertiesCount + 1
               local container = controller.scrollView["_" .. v.property]
 
               if not container then
@@ -872,6 +883,8 @@ function controller.generateProperties(instance)
             end
         end
 
+        controller.info.text = type(instance) .. " has " .. tostring(propertiesCount) .. " visible members."
+
         table.insert( controller.eventHandlers, instance:changed(function(prop, val)
           if controller.updateHandlers[type(val)] then
             local container = controller.scrollView["_" .. prop]
@@ -888,7 +901,8 @@ function controller.generateProperties(instance)
         end
 
         controller.scrollView.canvasSize = newSize
-        
+    else
+        controller.info.text = "Nothing selected."
     end
 end
 
