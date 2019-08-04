@@ -814,7 +814,7 @@ function controller.generateProperties(instance)
         instanceEditing = instance
         controller.instanceEditing = instance
 
-        local members = controller.workshop:getMembersOfInstance( instance )
+        local members = controller.workshop:getMembersOfObject( instance )
         table.sort( members, alphabeticalSorter ) 
        	
        	-- prototype teverse gui system isn't perfect,
