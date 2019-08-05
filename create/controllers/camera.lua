@@ -46,29 +46,16 @@ engine.input:mouseMoved(function( input )
 	end
 end)
 
-engine.input:keyPressed(function( inputObj )
-	if inputObj.systemHandled or engine.input:isKeyDown(enums.key.leftCtrl) then return end
-
-	if cameraController.cameraKeyArray[inputObj.key] and not cameraController.cameraKeyEventLooping then
-		cameraController.cameraKeyEventLooping = true
-		repeat
-			local cameraPos = cameraController.camera.position
-
-			for key, vector in pairs(cameraController.cameraKeyArray) do
-				-- check this key is pressed (still)
-				if engine.input:isKeyDown(key) then
-					cameraPos = cameraPos + (cameraController.camera.rotation * vector * cameraController.moveStep)
-				end
-			end
-
-			cameraController.cameraKeyEventLooping = (cameraPos ~= cameraController.camera.position)
-			cameraController.camera.position = cameraPos	
-
-			wait(0.001)
-
-		until not cameraController.cameraKeyEventLooping
+engine.graphics:frameDrawn(function()
+	if engine.input:isKeyDown(enums.key.leftCtrl) then return end
+	
+	for key, vector in pairs(cameraController.cameraKeyArray) do
+		-- check if this key is pressed and move camera if it is
+		if engine.input:isKeyDown(key) then
+			cameraController.camera.position = cameraController.camera.position + (cameraController.camera.rotation * (engine.input:isKeyDown(enums.key.leftShift) and vector / 4 or vector) * cameraController.moveStep)
+		end
 	end
-
+	
 	-- SELECTION SYSTEM REQUIRED
 	--[[
 	if inputObj.key == enums.key.f and #selectionController.selection>0 then
@@ -76,7 +63,6 @@ engine.input:keyPressed(function( inputObj )
 		--camera.position = mdn + (camera.rotation * vector3(0,0,1) * 15)
 		--print(mdn)
 		engine.tween:begin(cameraController.camera, .2, {position = mdn + (cameraController.camera.rotation * vector3(0,0,1) * 15)}, "outQuad")
-
 	end]]
 end)
 

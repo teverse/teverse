@@ -19,7 +19,7 @@ return function(workshop)
 
 	controllers.ui.createMainInterface(workshop)
 	controllers.themeSwitcher.createUI(workshop)
---	controllers.console.createConsole(workshop)
+	--controllers.console.createConsole(workshop)
 	controllers.property.createUI(workshop)
 	controllers.history.giveWorkshop(workshop)
 	

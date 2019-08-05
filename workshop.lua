@@ -733,7 +733,6 @@ engine.input:mouseScrolled(function( input )
 	local cameraPos = camera.position
 	cameraPos = cameraPos + (camera.rotation * (cameraKeyArray[enums.key.w] * input.movement.y * zoomStep))
 	camera.position = cameraPos	
-
 end)
 
 engine.input:mouseMoved(function( input )
@@ -746,30 +745,6 @@ engine.input:mouseMoved(function( input )
 		camera.rotation = camera.rotation * pitch
 		
 		--updatePosition()
-	end
-end)
-
-engine.input:keyPressed(function( inputObj )
-	if inputObj.systemHandled then return end
-
-	if cameraKeyArray[inputObj.key] and not cameraKeyEventLooping then
-		cameraKeyEventLooping = true
-		repeat
-			local cameraPos = camera.position
-
-			for key, vector in pairs(cameraKeyArray) do
-				-- check this key is pressed (still)
-				if engine.input:isKeyDown(key) then
-					cameraPos = cameraPos + (camera.rotation * vector * moveStep)
-				end
-			end
-
-			cameraKeyEventLooping = (cameraPos ~= camera.position)
-			camera.position = cameraPos	
-
-			wait(0.001)
-
-		until not cameraKeyEventLooping
 	end
 end)
 
@@ -836,9 +811,9 @@ local profile = 0
 local lastframes = 0
 local fps = 0
 
-engine.graphics:frameDrawn(function(events, frameNumber)	
+engine.graphics:frameDrawn(function(events, frameNumber)
 	local current = os.clock()
-	local timeSpent = current-profile
+	local timeSpent = current - profile
 	if timeSpent >= 1 then
 		fps = (frameNumber - lastframes)
 		profile = current
@@ -846,7 +821,7 @@ engine.graphics:frameDrawn(function(events, frameNumber)
 	end
 
 	txtDebug.text = "Lua Frame: " .. frameNumber .. " | Handling " .. events .. " events. Lua FPS: " .. fps
-
+	
 	local mouseHit = engine.physics:rayTestScreen( engine.input.mousePosition ) -- accepts vector2 or number,number
 
 	if mouseHit then 
