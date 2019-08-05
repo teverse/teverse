@@ -28,18 +28,19 @@ end
 local function addPlayer(client)
 	local playerGui = engine.construct("guiFrame", container, {
 		name 			 = client.name,
-		size 			 = guiCoord(1, -15, 0, 22),
+		size 			 = guiCoord(1, -5, 0, 22),
 		backgroundColour = colour(0.1, 0.1, 0.1),
-		backgroundAlpha  = 0.5
+		backgroundAlpha  = 0.1
 	})
 	
 	local label = engine.construct("guiTextBox", playerGui, {
-		name 		= "label",
-		size 		= guiCoord(1, -30, 1, 0),
-		position    = guiCoord(0, 30, 0, 0),
-		align 		= enums.align.middleLeft,
-		fontSize    = 18,
-		text 		= client.name
+		name 			= "label",
+		size 			= guiCoord(1, -30, 1, 0),
+		position    	= guiCoord(0, 30, 0, 0),
+		align 			= enums.align.middleLeft,
+		fontSize    	= 18,
+		text 			= client.name,
+		backgroundAlpha = 0
 	})
 
 	positionPlayers()

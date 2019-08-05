@@ -213,7 +213,7 @@ local function onToolActivated(toolId)
     local lastInsertPosition = vector3(0.1,12,04)
     local function placeBlock()
         if lastInsertPosition ~= placeholderBlock.position then
-            lastInsertPosition = placeholderBlock.position
+            lastInsertPosition = placeholderBlock.position:clone()
             local newBlock = placeholderBlock:clone()
             newBlock.workshopLocked = false
             newBlock.physics = true
@@ -233,7 +233,6 @@ local function onToolActivated(toolId)
     
     tool.data.mouseDownEvent = engine.input:mouseLeftPressed(function(input)
 		if input.systemHandled then return end 
-		
         placeBlock()
         local curTime = os.clock()
         mouseDown = curTime

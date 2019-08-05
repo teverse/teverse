@@ -33,6 +33,10 @@ local saveDocks = function()
 	pendingSave = false
 end
 
+local function sorter(a, b)
+	return a[1] < b[1]
+end
+
 controller.loadSettings = function()
 	local setting = controller.ui.workshop:getSettings("docks")
 	if setting then
@@ -54,7 +58,8 @@ controller.loadSettings = function()
 		controller.rightDock = {}
 		controller.dockDictionary = {}
 
-		table.sort(setting.bottomDock)
+		table.sort(setting.bottomDock, sorter)
+
 		for i,v in ipairs(setting.bottomDock) do
 			--print("look:", v)
 			if easyWay[v[2]] then
@@ -64,7 +69,7 @@ controller.loadSettings = function()
 			end
 		end
 
-		table.sort(setting.rightDock)
+		table.sort(setting.rightDock, sorter)
 		for i,v in ipairs(setting.rightDock) do
 			if easyWay[v[2]] then
 				controller.dockWindow(easyWay[v[2]], controller.rightDock)
@@ -225,10 +230,8 @@ controller.dockWindow = function(window, dock, pos)
 		end
 
 		for i,v in pairs(controller.bottomDock) do
-			engine.tween:begin(v, 0.1, {
-				size = guiCoord(scale*(1/#controller.bottomDock), 0, 0.2, 0),
-				position = guiCoord(scale*((i-1) * (1/#controller.bottomDock)), 0, 0.8, 0)
-			}, "inOutQuad")
+			v.size = guiCoord(scale*(1/#controller.bottomDock), 0, 0.2, 0)
+			v.position = guiCoord(scale*((i-1) * (1/#controller.bottomDock)), 0, 0.8, 0)
 		end
 	elseif dock == controller.rightDock then
 		controller.dockDictionary[window] = 1
@@ -251,10 +254,8 @@ controller.dockWindow = function(window, dock, pos)
 		end
 
 		for i,v in pairs(controller.rightDock) do
-			engine.tween:begin(v, 0.1, {
-				size = guiCoord(0.2, 0, 1/#controller.rightDock, i == 1 and -83 or 0),
-				position = guiCoord(0.8,0,(i-1) * (1/#controller.rightDock), i == 1 and 83 or 0)
-			}, "inOutQuad")
+			v.size = guiCoord(0.2, 0, 1/#controller.rightDock, i == 1 and -83 or 0)
+			v.position = guiCoord(0.8,0,(i-1) * (1/#controller.rightDock), i == 1 and 83 or 0)
 		end
 	end
 end
