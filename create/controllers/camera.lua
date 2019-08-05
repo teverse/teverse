@@ -55,6 +55,15 @@ engine.graphics:frameDrawn(function()
 			cameraController.camera.position = cameraController.camera.position + (cameraController.camera.rotation * (engine.input:isKeyDown(enums.key.leftShift) and vector / 4 or vector) * cameraController.moveStep)
 		end
 	end
+	
+	-- SELECTION SYSTEM REQUIRED
+	--[[
+	if inputObj.key == enums.key.f and #selectionController.selection>0 then
+		local mdn = vector3(median(selectionController.selection, "x"), median(selectionController.selection, "y"),median(selectionController.selection, "z") )
+		--camera.position = mdn + (camera.rotation * vector3(0,0,1) * 15)
+		--print(mdn)
+		engine.tween:begin(cameraController.camera, .2, {position = mdn + (cameraController.camera.rotation * vector3(0,0,1) * 15)}, "outQuad")
+	end]]
 end)
 
 return cameraController

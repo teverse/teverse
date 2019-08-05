@@ -707,7 +707,7 @@ generateProperties(txtProperty)
 --
 
 -- The amount the camera moves when you use the scrollwheel
-local zoomStep = 30
+local zoomStep = 3
 local rotateStep = -0.0045
 local moveStep = 0.5 -- how fast the camera moves
 
@@ -726,14 +726,6 @@ local cameraKeyArray = {
 	[enums.key.q] = vector3(0, -1, 0),
 	[enums.key.e] = vector3(0, 1, 0)
 }
-local cameraPressedKeyArray = {
-	[enums.key.w] = false,
-	[enums.key.s] = false,
-	[enums.key.a] = false,
-	[enums.key.d] = false,
-	[enums.key.q] = false,
-	[enums.key.e] = false
-}
 
 engine.input:mouseScrolled(function( input )
 	if input.systemHandled then return end
@@ -741,7 +733,6 @@ engine.input:mouseScrolled(function( input )
 	local cameraPos = camera.position
 	cameraPos = cameraPos + (camera.rotation * (cameraKeyArray[enums.key.w] * input.movement.y * zoomStep))
 	camera.position = cameraPos	
-
 end)
 
 engine.input:mouseMoved(function( input )
