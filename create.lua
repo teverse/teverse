@@ -2,7 +2,7 @@
 	create.lua
 	Copyright (c) 2019 teverse.com
 
-	This script is launched when the user loads create mode,
+	This script is ran when the user loads create mode,
 	it is given workshop level sandboxing permissions.
 
 	However, scripts required from this script will not inherit workshop apis.
