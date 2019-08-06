@@ -42,13 +42,30 @@ environmentController.createStarterMap = function()
 		shadows        = true
 	})	
 
-	engine.construct("block", workspace, {
+	local basePlate = engine.construct("block", workspace, {
 		name           = "basePlate",
 		colour         = colour(0.6, 0.6, 0.6),
 		size           = vector3(100, 1, 100),
 		position       = vector3(0, -1, 0),
 		workshopLocked = true
 	})
+
+	basePlate:on("collisionStarted", function (otherBlock, hitPos)
+		print("collision", hitPos)
+		local marker = engine.construct("block", workspace, {
+			physics = false,
+			doNotSerialise = true,
+			size = vector3(0.1,0.1,0.1),
+			colour = colour:random(),
+			position = hitPos
+		})
+		wait(.5)
+		marker:destroy()
+	end)
+
+	basePlate:on("collisionEnded", function (otherBlock)
+		print("Ended", otherBlock)
+	end)
 
 	engine.construct("block", workspace, {
 		name           = "redBlock",
