@@ -114,6 +114,7 @@ local function createHierarchyButton(object, guiParent)
     end
   end)
   
+  selectionController.applyContext(btn)
   return btn
 end
 

@@ -6,7 +6,19 @@ local selectionController = {
 	selectable = true,
 	clipboard = {},
 	selection = {},
-	boundingBoxListeners = {}
+	boundingBoxListeners = {},
+
+	boundingBox = engine.construct("block", nil, {
+		name = "_CreateMode_boundingBox",
+		wireframe = true,
+		castsShadows = false,
+		static = true,
+		physics = false, 
+		colour = colour(1, 0.8, 0.8),
+		opacity = 0,
+		size = vector3(0, 0, 0),
+		doNotSerialise = true
+	})
 
 }
 
@@ -19,20 +31,9 @@ local history 		  = require("tevgit:create/controllers/history.lua")
 
 local isCalculating = false
 
-selectionController.boundingBox = engine.construct("block", nil, {
-	name = "_CreateMode_boundingBox",
-	wireframe = true,
-	castsShadows = false,
-	static = true,
-	physics = false, 
-	colour = colour(1, 0.8, 0.8),
-	opacity = 0,
-	size = vector3(0, 0, 0),
-	doNotSerialise = true
-})
-
 function selectionController.copySelection()
 	selectionController.clipboard = selectionController.selection
+	print("Copied to clipboard!")
 end
 
 function selectionController.pasteSelection(keepPosition)
@@ -42,7 +43,7 @@ function selectionController.pasteSelection(keepPosition)
 	
 	for _, object in pairs(clipboard) do
 		if (object) then
-			if (helpers.startsWith(object.name, "_CreateMode_")) then 
+			if (not helpers.startsWith(object.name, "_CreateMode_")) then 
 				history.addPoint(object, "HISTORY_CREATED")
 				object.emissiveColour = colour()
 				local clone = object:clone()
@@ -67,6 +68,7 @@ function selectionController.pasteSelection(keepPosition)
 	end
 
 	selectionController.setSelection(selection)
+	print("Pasted selection", selection)
 	--[[for _,v in pairs(hotkeysController.clipboard) do
 		if v and v.name ~= "_CreateMode_Light_Placeholder" then
 			history.addPoint(v, "HISTORY_CREATED")
@@ -88,7 +90,7 @@ function selectionController.pasteSelection(keepPosition)
 			end
 		end
 	end
-	selectionController.setSelection(newItems)]]
+	selectionController.setSelection(newItems)]]	
 end
 
 function selectionController.deleteSelection()
@@ -298,15 +300,16 @@ hotkeys:bind({ name = "delete", key = enums.key.delete, action =selectionControl
 hotkeys:bind({ name = "deselect", key = enums.key.escape, action =selectionController.deselectSelection })
 
 -- @hotkey Focus selection
+local function focusSelection()
+	if (#selectionController.selection > 0) then
+		local mdn = vector3(helpers.median(selectionController.selection, "x"), helpers.median(selectionController.selection, "y"), helpers.median(selectionController.selection, "z") )
+		engine.tween:begin(workspace.camera, .2, { position = mdn + (workspace.camera.rotation * vector3(0,0,1) * 15) }, "outQuad")
+	end
+end
 hotkeys:bind({
     name = "focus on selection",
     key = enums.key.f,
-    action = function()
-        if #selectionController.selection > 0 then
-            local mdn = vector3(helpers.median(selectionController.selection, "x"), helpers.median(selectionController.selection, "y"), helpers.median(selectionController.selection, "z") )
-            engine.tween:begin(workspace.camera, .2, {position = mdn + (workspace.camera.rotation * vector3(0,0,1) * 15)}, "outQuad")
-        end
-    end
+    action = focusSelection
 })
 
 -- @hotkey Select all
@@ -324,5 +327,34 @@ hotkeys:bind({
         selectionController.setSelection(selection)
     end
 })
+
+-- @function applyContext
+-- Applies basic context menu functions to an object
+function selectionController.applyContext(object)
+	return contextMenu.create(object, {
+		copy = {
+			hotkey = "ctrl + c",
+			action = selectionController.copySelection
+		},
+		paste = {
+			hotkey = "ctrl + v",
+			action = selectionController.pasteSelection
+		},
+		duplicate = {
+			hotkey = "ctrl + d",
+			action = selectionController.duplicateSelection
+		},
+		delete = {
+			hotkey = "del",
+			action = selectionController.deleteSelection
+		},
+		focus = {
+			hotkey = "f",
+			action = focusSelection
+		}
+	})
+end
+
+selectionController.deselectSelection()
 
 return selectionController

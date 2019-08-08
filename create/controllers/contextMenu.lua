@@ -15,14 +15,20 @@ local function displayContextMenu(contextMenu)
 
     local pos = engine.input.mousePosition
     contextMenu.position = guiCoord(0, pos.x, 0, pos.y)
+    if (engine.input.mousePosition.y > engine.input.screenSize.y - contextMenu.size.offsetY) then
+        contextMenu.position = contextMenu.position + guiCoord(0, 0, 0, -contextMenu.size.offsetY)
+    end
+    if (engine.input.mousePosition.x > engine.input.screenSize.x - contextMenu.size.offsetX) then
+        contextMenu.position = contextMenu.position + guiCoord(0, -contextMenu.size.offsetX, 0, 0)
+    end
     contextMenu.parent = ui.workshop.interface
 
-    contextMenu:mouseUnfocused(function()
+    --[[contextMenu:mouseUnfocused(function()
         if (activeContextMenu == contextMenu) then
             activeContextMenu:destroy()
             activeContextMenu = nil
         end
-    end)
+    end)]]
 
     activeContextMenu = contextMenu 
 end
@@ -54,20 +60,27 @@ function createContextMenu(options)
         )
 
         if (data.hotkey) then
-            local text = ui.create(
+           local text = ui.create(
                 "guiTextBox", 
                 button, 
                 {
                     text = data.hotkey,
                     size = guiCoord(1, 0, 1, 0),
                     position = guiCoord(0, -30, 0, 0),
-                    align = enums.align.middleRight
+                    align = enums.align.middleRight,
+                    handleEvents = false
                 }, 
                 "secondaryText"
             )
         end
 
-        button:mouseLeftReleased(data.action)
+        button:mouseLeftReleased(function()
+            if (activeContextMenu == frame) then
+                activeContextMenu:destroy()
+                activeContextMenu = nil
+            end
+            data.action()
+        end)
         position = position + offset
         frame.size = frame.size + offset
     end
@@ -82,7 +95,7 @@ function contextMenuController.create(object, options)
     return listener
 end
 
---[[engine.input:mouseLeftReleased(function()
+engine.input:mouseLeftReleased(function()
     if (activeContextMenu) then
         local vec2 = engine.input.mousePosition
         local tpLeft = activeContextMenu.absolutePosition
@@ -92,6 +105,6 @@ end
             activeContextMenu = nil 
         end
     end
-end)]]
+end)
 
 return contextMenuController
