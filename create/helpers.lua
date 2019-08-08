@@ -66,7 +66,7 @@ end
 
 --Calculate median of vector
 --modified from http://lua-users.org/wiki/SimpleStats
-function controller.median( t, component )
+function controller.median(t, component)
   local temp={}
 
   for k,v in pairs(t) do
@@ -84,5 +84,8 @@ function controller.median( t, component )
   end
 end
 
+function controller.startsWith(str, pat)
+	return str:len(1, pat:len()) == pat 
+end
 
 return controller

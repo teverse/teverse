@@ -39,6 +39,11 @@ themeController.darkTheme = {
 	    backgroundAlpha = 0, -- background
 	    textColour  = colour:fromRGB(255,255,255)
 	},
+	secondaryText = {
+		backgroundAlpha = 0,
+		textColour = colour:fromRGB(255, 255, 255),
+		textAlpha = .5
+	},
 	light = {
 		backgroundColour  = colour:fromRGB(255,255,255),
 		textColour = colour:fromRGB(66, 66, 76),

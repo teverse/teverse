@@ -1,7 +1,7 @@
 local controller = {}
 
 local uiController           = require("tevgit:create/controllers/ui.lua")
-local themeController       = require("tevgit:create/controllers/theme.lua")
+local themeController        = require("tevgit:create/controllers/theme.lua")
 local dockController         = require("tevgit:create/controllers/dock.lua")
 local selectionController    = require("tevgit:create/controllers/select.lua")
 
