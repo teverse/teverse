@@ -7,33 +7,7 @@ local contextMenuController = {}
 
 local activeContextMenu
 
-local function displayContextMenu(contextMenu)
-    if (activeContextMenu) then 
-        activeContextMenu:destroy()
-        activeContextMenu = nil 
-    end
-
-    local pos = engine.input.mousePosition
-    contextMenu.position = guiCoord(0, pos.x, 0, pos.y)
-    if (engine.input.mousePosition.y > engine.input.screenSize.y - contextMenu.size.offsetY) then
-        contextMenu.position = contextMenu.position + guiCoord(0, 0, 0, -contextMenu.size.offsetY)
-    end
-    if (engine.input.mousePosition.x > engine.input.screenSize.x - contextMenu.size.offsetX) then
-        contextMenu.position = contextMenu.position + guiCoord(0, -contextMenu.size.offsetX, 0, 0)
-    end
-    contextMenu.parent = ui.workshop.interface
-
-    --[[contextMenu:mouseUnfocused(function()
-        if (activeContextMenu == contextMenu) then
-            activeContextMenu:destroy()
-            activeContextMenu = nil
-        end
-    end)]]
-
-    activeContextMenu = contextMenu 
-end
-
-function createContextMenu(options)
+function contextMenuController.create(options)
     local frame = ui.createFrame(
         ui.workshop.interface, 
         { 
@@ -88,9 +62,37 @@ function createContextMenu(options)
     return frame
 end
 
-function contextMenuController.create(object, options)
+function contextMenuController.display(contextMenu)
+    if (activeContextMenu) then 
+        activeContextMenu:destroy()
+        activeContextMenu = nil 
+    end
+
+    local pos = engine.input.mousePosition
+    contextMenu.position = guiCoord(0, pos.x, 0, pos.y)
+    if (engine.input.mousePosition.y > engine.input.screenSize.y - contextMenu.size.offsetY) then
+        contextMenu.position = contextMenu.position + guiCoord(0, 0, 0, -contextMenu.size.offsetY)
+    end
+    if (engine.input.mousePosition.x > engine.input.screenSize.x - contextMenu.size.offsetX) then
+        contextMenu.position = contextMenu.position + guiCoord(0, -contextMenu.size.offsetX, 0, 0)
+    end
+    contextMenu.parent = ui.workshop.interface
+
+    --[[contextMenu:mouseUnfocused(function()
+        if (activeContextMenu == contextMenu) then
+            activeContextMenu:destroy()
+            activeContextMenu = nil
+        end
+    end)]]
+
+    activeContextMenu = contextMenu 
+end
+
+function contextMenuController.bind(object, options)
     local listener = object:mouseRightReleased(function()
-        displayContextMenu(createContextMenu(options))
+        contextMenuController.display(
+            contextMenuController.create(options)
+        )
     end)
     return listener
 end

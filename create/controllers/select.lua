@@ -31,9 +31,18 @@ local history 		  = require("tevgit:create/controllers/history.lua")
 
 local isCalculating = false
 
+local function clearSelectedObjectsInClipboard()
+	for _, object in pairs(selectionController.selection) do
+		for index, object2 in pairs(selectionController.clipboard) do
+			if (object == object2) then
+				selectionController.clipboard[index] = nil
+			end
+		end
+	end
+end
+
 function selectionController.copySelection()
 	selectionController.clipboard = selectionController.selection
-	print("Copied to clipboard!")
 end
 
 function selectionController.pasteSelection(keepPosition)
@@ -42,6 +51,8 @@ function selectionController.pasteSelection(keepPosition)
 	local size, pos = selectionController.calculateBounding(clipboard)
 	
 	for _, object in pairs(clipboard) do
+		print(object, object == nil)
+
 		if (object) then
 			if (not helpers.startsWith(object.name, "_CreateMode_")) then 
 				history.addPoint(object, "HISTORY_CREATED")
@@ -95,6 +106,7 @@ end
 
 function selectionController.deleteSelection()
 	local objects = selectionController.selection
+	clearSelectedObjectsInClipboard()
 	selectionController.setSelection({})
 	for _, object in pairs(objects) do
 		if (object) then
@@ -297,7 +309,7 @@ hotkeys:bind({ name = "duplicate", priorKey = enums.key.leftCtrl, key = enums.ke
 
 -- @hotkeys Delete, deselect
 hotkeys:bind({ name = "delete", key = enums.key.delete, action =selectionController.deleteSelection })
-hotkeys:bind({ name = "deselect", key = enums.key.escape, action =selectionController.deselectSelection })
+hotkeys:bind({ name = "deselect", key = enums.key.escape, action = selectionController.deselectSelection })
 
 -- @hotkey Focus selection
 local function focusSelection()
@@ -328,33 +340,60 @@ hotkeys:bind({
     end
 })
 
--- @function applyContext
--- Applies basic context menu functions to an object
-function selectionController.applyContext(object)
-	return contextMenu.create(object, {
-		copy = {
+-- @section Context Menu
+function selectionController.getContextOptions()
+	local options = {}
+	if (#selectionController.selection > 0) then 
+		options.copy = {
 			hotkey = "ctrl + c",
 			action = selectionController.copySelection
-		},
-		paste = {
-			hotkey = "ctrl + v",
-			action = selectionController.pasteSelection
-		},
-		duplicate = {
-			hotkey = "ctrl + d",
-			action = selectionController.duplicateSelection
-		},
-		delete = {
+		}
+		options.delete = {
 			hotkey = "del",
 			action = selectionController.deleteSelection
-		},
-		focus = {
+		}
+		options.focus = {
 			hotkey = "f",
 			action = focusSelection
 		}
-	})
+	end
+	if (#selectionController.clipboard > 0) then
+		options.paste = {
+			hotkey = "ctrl + v",
+			action = selectionController.pasteSelection
+		}
+		options.duplicate = {
+			hotkey = "ctrl + d",
+			action = selectionController.duplicateSelection
+		}
+	end 
+	return options
+end 
+
+function selectionController.applyContext(object)
+	return contextMenu.bind(object, selectionController.getContextOptions())
 end
 
-selectionController.deselectSelection()
+local function getContext3D()
+	local contextOptions = {
+		["new block"] = {
+			action = function()
+				local rayTest = engine.physics:rayTestScreen(engine.input.mousePosition)
+				local block = engine.construct("block", workspace, { position = rayTest.hitPosition })
+				selectionController.setSelection({ block })
+			end
+		}
+	}	
+	for k, v in pairs(selectionController.getContextOptions()) do 
+		contextOptions[k] = v 
+	end
+	return contextMenu.create(contextOptions)
+end
+
+engine.input:mouseRightReleased(function(input)
+	if ((not input.systemHandled) and (engine.physics:rayTestScreen(engine.input.mousePosition).object)) then
+		contextMenu.display(getContext3D())
+	end
+end)
 
 return selectionController
