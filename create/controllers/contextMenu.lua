@@ -7,56 +7,75 @@ local contextMenuController = {}
 
 local activeContextMenu
 
-function contextMenuController.create(options)
-    local frame = ui.createFrame(
-        ui.workshop.interface, 
-        { 
-            size = guiCoord(0, 200, 0, 0),
-            zIndex = 2 
-        }
-    )
-   
+local function mouseOutOfBounds(tpLeft, btmRight)
+    local vec2 = engine.input.mousePosition
+    return (not (vec2.x > tpLeft.x and vec2.y > tpLeft.y and vec2.x < btmRight.x and vec2.y < btmRight.y))
+end
+
+function contextMenuController.create(options)  
+    local frame = engine.guiFrame()
+    frame.size = guiCoord(0, 200, 0, 0)
+    frame.cropChildren = false 
+    frame.zIndex = 2
+    ui.theme.add(frame, "main")
+
     local position = guiCoord(0, 15, 0, 10)
-    local offset = guiCoord(0, 0, 0, 40)
     local size = guiCoord(1, 0, 0, 20)
+    local offsetY = guiCoord(0, 0, 0, 40)
 
-    for key, data in pairs(options) do        
-        local button = ui.create(
-            "guiButton", 
-            frame, 
-            {
-                text = key,
-                size = size,
-                position = position,
-                align = enums.align.middleLeft
-            }, 
-            "primaryText"
-        )
+    for key, data in next, options do
+        local option = data.subOptions and engine.guiTextBox() or engine.guiButton()
+        option.position = position
+        option.size = size
+        option.align = enums.align.middleLeft
+        option.cropChildren = false 
+        option.text = key
+        ui.theme.add(option, "primaryText")
+        if (data.subOptions) then
+            local subframe = contextMenuController.create(data.subOptions)
+            ui.theme.add(subframe, "secondary")
+            subframe.position = guiCoord(1, -15, 0, -10)
+            subframe.visible = false 
+            subframe.parent = option
 
-        if (data.hotkey) then
-           local text = ui.create(
-                "guiTextBox", 
-                button, 
-                {
-                    text = data.hotkey,
-                    size = guiCoord(1, 0, 1, 0),
-                    position = guiCoord(0, -30, 0, 0),
-                    align = enums.align.middleRight,
-                    handleEvents = false
-                }, 
-                "secondaryText"
-            )
+            local isShowing = false
+            option:mouseFocused(function()
+                if (not isShowing) then
+                    isShowing = true 
+                    subframe.visible = true
+                    repeat wait() 
+                    until activeContextMenu == nil or (
+                        mouseOutOfBounds(subframe.absolutePosition, subframe.absolutePosition + subframe.absoluteSize) 
+                        and mouseOutOfBounds(option.absolutePosition, option.absolutePosition + option.absoluteSize)
+                    )
+                    if (activeContextMenu ~= nil) then
+                        isShowing = false
+                        subframe.visible = false
+                    end
+                end
+            end)
+        else
+            option:mouseLeftReleased(function()
+                if (activeContextMenu and (activeContextMenu == frame or frame:isDescendantOf(activeContextMenu))) then
+                    activeContextMenu:destroy()
+                    activeContextMenu = nil 
+                    data.action()
+                end
+            end)
         end
-
-        button:mouseLeftReleased(function()
-            if (activeContextMenu == frame) then
-                activeContextMenu:destroy()
-                activeContextMenu = nil
-            end
-            data.action()
-        end)
-        position = position + offset
-        frame.size = frame.size + offset
+        if (data.subOptions or data.hotkey) then
+            local subtext = engine.guiTextBox()
+            subtext.text = data.hotkey or ">"
+            subtext.size = guiCoord(1, 0, 1, 0)
+            subtext.position = guiCoord(0, -30, 0, 0)
+            subtext.handleEvents = false 
+            subtext.align = enums.align.middleRight
+            ui.theme.add(subtext, "secondaryText")
+            subtext.parent = option
+        end
+        frame.size = frame.size + offsetY
+        position = position + offsetY
+        option.parent = frame 
     end
 
     return frame
@@ -67,7 +86,6 @@ function contextMenuController.display(contextMenu)
         activeContextMenu:destroy()
         activeContextMenu = nil 
     end
-
     local pos = engine.input.mousePosition
     contextMenu.position = guiCoord(0, pos.x, 0, pos.y)
     if (engine.input.mousePosition.y > engine.input.screenSize.y - contextMenu.size.offsetY) then
@@ -77,14 +95,6 @@ function contextMenuController.display(contextMenu)
         contextMenu.position = contextMenu.position + guiCoord(0, -contextMenu.size.offsetX, 0, 0)
     end
     contextMenu.parent = ui.workshop.interface
-
-    --[[contextMenu:mouseUnfocused(function()
-        if (activeContextMenu == contextMenu) then
-            activeContextMenu:destroy()
-            activeContextMenu = nil
-        end
-    end)]]
-
     activeContextMenu = contextMenu 
 end
 
@@ -99,10 +109,9 @@ end
 
 engine.input:mouseLeftReleased(function()
     if (activeContextMenu) then
-        local vec2 = engine.input.mousePosition
         local tpLeft = activeContextMenu.absolutePosition
         local btmRight = tpLeft + activeContextMenu.absoluteSize
-        if (not (vec2.x > tpLeft.x and vec2.y > tpLeft.y and vec2.x < btmRight.x and vec2.y < btmRight.y)) then
+        if (mouseOutOfBounds(tpLeft, btmRight)) then
             activeContextMenu:destroy()
             activeContextMenu = nil 
         end

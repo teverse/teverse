@@ -49,10 +49,7 @@ function selectionController.pasteSelection(keepPosition)
 	local selection = {}
 	local clipboard = selectionController.clipboard
 	local size, pos = selectionController.calculateBounding(clipboard)
-	
 	for _, object in pairs(clipboard) do
-		print(object, object == nil)
-
 		if (object) then
 			if (not helpers.startsWith(object.name, "_CreateMode_")) then 
 				history.addPoint(object, "HISTORY_CREATED")
@@ -108,10 +105,15 @@ function selectionController.deleteSelection()
 	local objects = selectionController.selection
 	clearSelectedObjectsInClipboard()
 	selectionController.setSelection({})
-	for _, object in pairs(objects) do
-		if (object) then
-			history.addPoint(object, "HISTORY_DELETED")
-			object:destroy()
+	if(objects[1].parent:isA("folder")) then
+		history.addPoint(objects[1].parent, "HISTORY_DELETED")
+		objects[1].parent:destroy()
+	else
+		for _, object in pairs(objects) do
+			if (object) then
+				history.addPoint(object, "HISTORY_DELETED")
+				object:destroy()
+			end
 		end
 	end
 end
@@ -123,6 +125,27 @@ end
 
 function selectionController.deselectSelection()
 	selectionController.setSelection({})
+end
+
+function selectionController.groupSelection()
+	if (#selectionController.selection > 1) then
+		local selection = selectionController.selection
+		local folder = engine.folder("group")
+		folder.parent = workspace
+		for _, object in pairs(selection) do object.parent = folder end
+		propertyEditor.generateProperties(folder)
+	end
+end
+
+function selectionController.ungroupSelection()
+	if (#selectionController.selection > 1) then
+		local parent = selectionController.selection[1].parent
+		if (parent:isA("folder")) then
+			for _, object in pairs(parent.children) do object.parent = parent.parent  end
+			propertyEditor.generateProperties(selectionController.selection[1])
+			parent:destroy()
+		end
+	end
 end
 
 function selectionController.removeBoundingListener(block)
@@ -279,24 +302,31 @@ engine.input:mouseLeftReleased(function(input)
 
     	if doSelect then
 
-            if type(mouseHit.object) == "block" and mouseHit.object.name ~= "_CreateMode_Light_Placeholder" then
-        		mouseHit.object.emissiveColour = colour(0.025, 0.025, 0.15)
-            end
+			if (mouseHit.object.parent:isA("folder")) then
+				selectionController.setSelection(mouseHit.object.parent.children)
+				propertyEditor.generateProperties(mouseHit.object.parent)
+			else
+				if type(mouseHit.object) == "block" and mouseHit.object.name ~= "_CreateMode_Light_Placeholder" then
+					mouseHit.object.emissiveColour = colour(0.025, 0.025, 0.15)
+				end
+	
+				table.insert(selectionController.selection, mouseHit.object)
+				selectionController.addBoundingListener(mouseHit.object)
+				selectionController.calculateBoundingBox()
+	
+				if mouseHit and mouseHit.object.name == "_CreateMode_Light_Placeholder" then
+					if lights.lights[mouseHit.object] then
+						--ignore the block they pressed, they clicked a light
+						propertyEditor.generateProperties(lights.lights[mouseHit.object])
+						return
+					end
+				end
+	
+				propertyEditor.generateProperties(mouseHit.object)
+			end
 
-    		table.insert(selectionController.selection, mouseHit.object)
-    		selectionController.addBoundingListener(mouseHit.object)
-    		selectionController.calculateBoundingBox()
-
-            if mouseHit and mouseHit.object.name == "_CreateMode_Light_Placeholder" then
-                if lights.lights[mouseHit.object] then
-                    --ignore the block they pressed, they clicked a light
-                    propertyEditor.generateProperties(lights.lights[mouseHit.object])
-                    return
-                end
-            end
-
-			propertyEditor.generateProperties(mouseHit.object)
-    	end
+		end
+            
 
     end
 end)
@@ -307,9 +337,10 @@ hotkeys:bind({ name = "copy", priorKey = enums.key.leftCtrl, key = enums.key.c, 
 hotkeys:bind({ name = "paste", priorKey = enums.key.leftCtrl, key = enums.key.v, action =selectionController.pasteSelection })
 hotkeys:bind({ name = "duplicate", priorKey = enums.key.leftCtrl, key = enums.key.d, action =selectionController.duplicateSelection })
 
--- @hotkeys Delete, deselect
+-- @hotkeys Delete, deselect, group & TBA ungroup
 hotkeys:bind({ name = "delete", key = enums.key.delete, action =selectionController.deleteSelection })
 hotkeys:bind({ name = "deselect", key = enums.key.escape, action = selectionController.deselectSelection })
+hotkeys:bind({ name = "group", priorKey = enums.key.leftCtrl, key = enums.key.g, action =selectionController.groupSelection })
 
 -- @hotkey Focus selection
 local function focusSelection()
@@ -341,8 +372,37 @@ hotkeys:bind({
 })
 
 -- @section Context Menu
+local function newBlockWrapper(mesh)
+	return function()
+		local parent
+		if (#selectionController.selection > 0) then
+			local first = selectionController.selection[1]
+			parent = first 
+		else
+			parent = workspace
+		end
+		local mousePos = engine.input.mousePosition
+		local mouseHit = engine.physics:rayTestScreen(mousePos)
+		local block = engine.construct("block", parent, {
+			position = mouseHit.hitPosition,
+			mesh = mesh 
+		})
+	end
+end
+
 function selectionController.getContextOptions()
-	local options = {}
+	local options = {
+		new = {
+			subOptions = {
+				block = {
+					action = newBlockWrapper()
+				},
+				sphere = {
+					action = newBlockWrapper("primitive:sphere")
+				}
+			}
+		}
+	}
 	if (#selectionController.selection > 0) then 
 		options.copy = {
 			hotkey = "ctrl + c",
@@ -356,6 +416,18 @@ function selectionController.getContextOptions()
 			hotkey = "f",
 			action = focusSelection
 		}
+		if (#selectionController.selection > 1) then
+			if (selectionController.selection[1].parent:isA("folder")) then
+				options.ungroup = {
+					action = selectionController.ungroupSelection
+				}
+			else
+				options.group = {
+					hotkey = "ctrl + g",
+					action = selectionController.groupSelection
+				}
+			end
+		end
 	end
 	if (#selectionController.clipboard > 0) then
 		options.paste = {
@@ -374,25 +446,9 @@ function selectionController.applyContext(object)
 	return contextMenu.bind(object, selectionController.getContextOptions())
 end
 
-local function getContext3D()
-	local contextOptions = {
-		["new block"] = {
-			action = function()
-				local rayTest = engine.physics:rayTestScreen(engine.input.mousePosition)
-				local block = engine.construct("block", workspace, { position = rayTest.hitPosition })
-				selectionController.setSelection({ block })
-			end
-		}
-	}	
-	for k, v in pairs(selectionController.getContextOptions()) do 
-		contextOptions[k] = v 
-	end
-	return contextMenu.create(contextOptions)
-end
-
 engine.input:mouseRightReleased(function(input)
 	if ((not input.systemHandled) and (engine.physics:rayTestScreen(engine.input.mousePosition).object)) then
-		contextMenu.display(getContext3D())
+		contextMenu.display(contextMenu.create(selectionController.getContextOptions()))
 	end
 end)
 
