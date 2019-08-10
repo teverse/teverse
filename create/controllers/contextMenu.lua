@@ -55,7 +55,7 @@ function contextMenuController.create(options)
                 end
             end)
         else
-            option:mouseLeftReleased(function()
+            option:once("mouseLeftReleased", function()
                 if (activeContextMenu and (activeContextMenu == frame or frame:isDescendantOf(activeContextMenu))) then
                     activeContextMenu:destroy()
                     activeContextMenu = nil 

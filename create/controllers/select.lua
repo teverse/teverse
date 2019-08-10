@@ -374,12 +374,14 @@ hotkeys:bind({
 -- @section Context Menu
 local function newBlockWrapper(mesh)
 	return function()
+		print("called")
 		local mousePos = engine.input.mousePosition
 		local mouseHit = engine.physics:rayTestScreen(mousePos)
 		local block = engine.construct("block", workspace, {
 			position = mouseHit.hitPosition,
 			mesh = mesh 
 		})
+		print("new block")
 	end
 end
 
