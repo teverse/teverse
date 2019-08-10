@@ -374,16 +374,9 @@ hotkeys:bind({
 -- @section Context Menu
 local function newBlockWrapper(mesh)
 	return function()
-		local parent
-		if (#selectionController.selection > 0) then
-			local first = selectionController.selection[1]
-			parent = first 
-		else
-			parent = workspace
-		end
 		local mousePos = engine.input.mousePosition
 		local mouseHit = engine.physics:rayTestScreen(mousePos)
-		local block = engine.construct("block", parent, {
+		local block = engine.construct("block", workspace, {
 			position = mouseHit.hitPosition,
 			mesh = mesh 
 		})
