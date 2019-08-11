@@ -1,9 +1,10 @@
 local controller = {}
 
 local uiController           = require("tevgit:create/controllers/ui.lua")
-local themeController       = require("tevgit:create/controllers/theme.lua")
+local themeController        = require("tevgit:create/controllers/theme.lua")
 local dockController         = require("tevgit:create/controllers/dock.lua")
 local selectionController    = require("tevgit:create/controllers/select.lua")
+local propertyEditor         = require("tevgit:create/controllers/propertyEditor.lua")
 
 --dictionary of buttons to their corrosponding objects.
 local buttonToObject = {}
@@ -109,11 +110,17 @@ local function createHierarchyButton(object, guiParent)
       local currentTime = os.time()
       lastClick = currentTime
 
-      selectionController.setSelection({object})
+      if (object:isA("folder")) then
+        selectionController.setSelection(object.children)
+        propertyEditor.generateProperties(object)
+      else
+        selectionController.setSelection({object})
+      end
       updatePositions()
     end
   end)
   
+  selectionController.applyContext(btn)
   return btn
 end
 

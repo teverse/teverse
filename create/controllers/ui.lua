@@ -173,6 +173,7 @@ uiController.createMainInterface = function(workshop)
     toolsController.container = sideBar
     toolsController.workshop = workshop
     uiController.workshop = workshop
+    uiController.theme = themeController
     toolsController.ui = uiController
 
     toolsController.registerMenu("windowsTab", uiController.windowsTab)
