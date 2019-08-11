@@ -375,7 +375,7 @@ hotkeys:bind({
 local function newBlockWrapper(mesh)
 	return function()
 		local mousePos = engine.input.mousePosition
-		local mouseHit = engine.physics:rayTestScreen(mousePos)
+		local mouseHit = engine.physics:rayTestScreen(contextMenu.contextLastOpenedAt or mousePos)
 		local block = engine.construct("block", workspace, {
 			position = mouseHit.hitPosition,
 			mesh = mesh 
@@ -442,8 +442,9 @@ function selectionController.applyContext(object)
 	return contextMenu.bind(object, selectionController.getContextOptions())
 end
 
-engine.input:mouseRightReleased(function(input)
-	if ((not input.systemHandled) and (engine.physics:rayTestScreen(engine.input.mousePosition).object)) then
+engine.input:mouseRightPressed(function(input)
+	wait(0.10)
+	if ((not input.systemHandled) and (engine.physics:rayTestScreen(engine.input.mousePosition).object) and (not engine.input:isMouseButtonDown(enums.mouseButton.right))) then
 		contextMenu.display(contextMenu.create(selectionController.getContextOptions()))
 	end
 end)
