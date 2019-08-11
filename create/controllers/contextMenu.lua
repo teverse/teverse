@@ -1,18 +1,21 @@
 
 
 
+local controller = {
+
+    contextLastOpenedAt = nil,
+    activeContextMenu = nil
+
+}
+
 local ui = require("tevgit:create/controllers/ui.lua")
-
-local contextMenuController = {}
-
-local activeContextMenu
 
 local function mouseOutOfBounds(tpLeft, btmRight)
     local vec2 = engine.input.mousePosition
     return (not (vec2.x > tpLeft.x and vec2.y > tpLeft.y and vec2.x < btmRight.x and vec2.y < btmRight.y))
 end
 
-function contextMenuController.create(options)  
+function controller.create(options)  
     local frame = engine.guiFrame()
     frame.size = guiCoord(0, 200, 0, 0)
     frame.cropChildren = false 
@@ -32,7 +35,7 @@ function contextMenuController.create(options)
         option.text = key
         ui.theme.add(option, "primaryText")
         if (data.subOptions) then
-            local subframe = contextMenuController.create(data.subOptions)
+            local subframe = controller.create(data.subOptions)
             ui.theme.add(subframe, "secondary")
             subframe.position = guiCoord(1, -15, 0, -10)
             subframe.visible = false 
@@ -54,11 +57,11 @@ function contextMenuController.create(options)
 
                     subframe.visible = true
                     repeat wait() 
-                    until activeContextMenu == nil or (
+                    until controller.activeContextMenu == nil or (
                         mouseOutOfBounds(subframe.absolutePosition, subframe.absolutePosition + subframe.absoluteSize) 
                         and mouseOutOfBounds(option.absolutePosition, option.absolutePosition + option.absoluteSize)
                     )
-                    if (activeContextMenu ~= nil) then
+                    if (controller.activeContextMenu ~= nil) then
                         isShowing = false
                         subframe.visible = false
                     end
@@ -66,9 +69,9 @@ function contextMenuController.create(options)
             end)
         else
             option:mouseLeftReleased(function()
-                if (frame and activeContextMenu and (activeContextMenu == frame or frame:isDescendantOf(activeContextMenu))) then
-                    activeContextMenu:destroy()
-                    activeContextMenu = nil 
+                if (frame and controller.activeContextMenu and (controller.activeContextMenu == frame or frame:isDescendantOf(controller.activeContextMenu))) then
+                    controller.activeContextMenu:destroy()
+                    controller.activeContextMenu = nil 
                     data.action()
                 end
             end)
@@ -91,10 +94,10 @@ function contextMenuController.create(options)
     return frame
 end
 
-function contextMenuController.display(contextMenu)
-    if (activeContextMenu) then 
-        activeContextMenu:destroy()
-        activeContextMenu = nil 
+function controller.display(contextMenu)
+    if (controller.activeContextMenu) then 
+        controller.activeContextMenu:destroy()
+        controller.activeContextMenu = nil 
     end
     local pos = engine.input.mousePosition
     contextMenu.position = guiCoord(0, pos.x, 0, pos.y)
@@ -105,25 +108,26 @@ function contextMenuController.display(contextMenu)
         contextMenu.position = contextMenu.position + guiCoord(0, -contextMenu.size.offsetX, 0, 0)
     end
     contextMenu.parent = ui.workshop.interface
-    activeContextMenu = contextMenu 
+    contextLastOpenedAt = engine.input.mousePosition
+    controller.activeContextMenu = contextMenu 
 end
 
-function contextMenuController.bind(object, options)
+function controller.bind(object, options)
     local listener = object:mouseRightReleased(function()
-        contextMenuController.display(contextMenuController.create(options))
+        controller.display(controller.create(options))
     end)
     return listener
 end
 
 engine.input:mouseLeftReleased(function()
-    if (activeContextMenu) then
-        local tpLeft = activeContextMenu.absolutePosition
-        local btmRight = tpLeft + activeContextMenu.absoluteSize
+    if (controller.activeContextMenu) then
+        local tpLeft = controller.activeContextMenu.absolutePosition
+        local btmRight = tpLeft + controller.activeContextMenu.absoluteSize
         if (mouseOutOfBounds(tpLeft, btmRight)) then
-            activeContextMenu:destroy()
-            activeContextMenu = nil 
+            controller.activeContextMenu:destroy()
+            controller.activeContextMenu = nil 
         end
     end
 end)
 
-return contextMenuController
+return controller
