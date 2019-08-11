@@ -394,6 +394,12 @@ function selectionController.getContextOptions()
 				},
 				sphere = {
 					action = newBlockWrapper("primitive:sphere")
+				},
+				cone = {
+					action = newBlockWrapper("primitive:cone")
+				},
+				wedge = {
+					action = newBlockWrapper("primitive:wedge")
 				}
 			}
 		}

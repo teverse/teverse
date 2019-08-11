@@ -39,9 +39,19 @@ function contextMenuController.create(options)
             subframe.parent = option
 
             local isShowing = false
+            
             option:mouseFocused(function()
                 if (not isShowing) then
                     isShowing = true 
+                    
+                    subframe.position = guiCoord(1, -15, 0, -10)
+                    if (engine.input.mousePosition.y > engine.input.screenSize.y - subframe.size.offsetY) then
+                        subframe.position = subframe.position + guiCoord(0, 0, 0, -(subframe.size.offsetY - 40))
+                    end
+                    if (engine.input.mousePosition.x > engine.input.screenSize.x - frame.size.offsetX) then
+                        subframe.position = subframe.position + guiCoord(-1, -frame.size.offsetX, 0, 0)
+                    end
+
                     subframe.visible = true
                     repeat wait() 
                     until activeContextMenu == nil or (
@@ -55,8 +65,8 @@ function contextMenuController.create(options)
                 end
             end)
         else
-            option:once("mouseLeftReleased", function()
-                if (activeContextMenu and (activeContextMenu == frame or frame:isDescendantOf(activeContextMenu))) then
+            option:mouseLeftReleased(function()
+                if (frame and activeContextMenu and (activeContextMenu == frame or frame:isDescendantOf(activeContextMenu))) then
                     activeContextMenu:destroy()
                     activeContextMenu = nil 
                     data.action()
@@ -100,9 +110,7 @@ end
 
 function contextMenuController.bind(object, options)
     local listener = object:mouseRightReleased(function()
-        contextMenuController.display(
-            contextMenuController.create(options)
-        )
+        contextMenuController.display(contextMenuController.create(options))
     end)
     return listener
 end
