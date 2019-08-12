@@ -24,12 +24,13 @@ local function updateOutput()
 	end
 	local t = ""
 	for _,v in pairs(logs) do
-		t = t .. "[" .. os.date("%X", v[1]) .. "] " .. v[2]
+		t = t .. "[" .. os.date("%X", v[1]) .. "] " .. v[2] .. "\n"
 	end
-	serverOutput.text = t
+	serverOutput.text = t .. "\n[Server Output]"
 end
 
 engine.networking:bind( "serverOutput", function( serverTime, msg, type )
+	print("server output")
 	table.insert(logs, {serverTime, msg})
 	updateOutput()
 end)
