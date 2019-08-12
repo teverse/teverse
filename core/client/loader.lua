@@ -6,6 +6,7 @@
 --]]
 
 print("Loaded Client")
+require("tevgit:core/client/debug.lua")
 
 engine.networking:connected(function (serverId)
 	print("Connected")
