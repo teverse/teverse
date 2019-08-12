@@ -93,7 +93,7 @@ local function createHierarchyButton(object, guiParent)
         for _,child in pairs(object.children) do
           local btn = createHierarchyButton(child, btn)
         end
-        updatePositions()
+        controller.scrollView.canvasSize = guiCoord(1, 0, 0, updatePositions())
       else
         for _,v in pairs(btn.children) do
           if v.name ~= "icon" then
@@ -103,7 +103,7 @@ local function createHierarchyButton(object, guiParent)
             v:destroy()
           end
         end
-        updatePositions()
+        controller.scrollView.canvasSize = guiCoord(1, 0, 0, updatePositions())
       end
     else
       --single click
@@ -116,7 +116,7 @@ local function createHierarchyButton(object, guiParent)
       else
         selectionController.setSelection({object})
       end
-      updatePositions()
+      controller.scrollView.canvasSize = guiCoord(1, 0, 0, updatePositions())
     end
   end)
   
@@ -145,7 +145,7 @@ function controller.createUI(workshop)
   end)  
   
   createHierarchyButton(engine, controller.scrollView)
-  updatePositions()
+  controller.scrollView.canvasSize = guiCoord(1, 0, 0, updatePositions())
 end
 
 return controller
