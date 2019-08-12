@@ -439,12 +439,13 @@ function selectionController.getContextOptions()
 end 
 
 function selectionController.applyContext(object)
-	return contextMenu.bind(object, selectionController.getContextOptions())
+	--getContextOptions will be ran whenever we display a context menu for t his obj.
+	return contextMenu.bind(object, selectionController.getContextOptions)
 end
 
 engine.input:mouseRightPressed(function(input)
 	wait(0.10)
-	if ((not input.systemHandled) and (engine.physics:rayTestScreen(engine.input.mousePosition).object) and (not engine.input:isMouseButtonDown(enums.mouseButton.right))) then
+	if ((not input.systemHandled) and (engine.physics:rayTestScreen(engine.input.mousePosition)) and (not engine.input:isMouseButtonDown(enums.mouseButton.right))) then
 		contextMenu.display(contextMenu.create(selectionController.getContextOptions()))
 	end
 end)

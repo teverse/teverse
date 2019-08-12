@@ -55,12 +55,4 @@ return function(workshop)
 	controllers.ui.setLoading(false)
 	--wait(1)
 	--scriptEditor   = require("tevgit:create/scriptEditor/main.lua")
-
-	local block = engine.construct("block", workspace, {
-		name 		= "soundAndPhysicsExample",
-		position 	= vector3(10, 3, 0),
-		static 		= false,
-		mesh 		= "primitive:sphere",
-		colour 		= colour:random()
-	})
 end

@@ -114,7 +114,11 @@ end
 
 function controller.bind(object, options)
     local listener = object:mouseRightReleased(function()
-        controller.display(controller.create(options))
+        if type(options) == "function" then
+            controller.display(controller.create(options()))
+        else
+            controller.display(controller.create(options))
+        end
     end)
     return listener
 end
