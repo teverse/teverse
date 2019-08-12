@@ -5,6 +5,22 @@ local themeController        = require("tevgit:create/controllers/theme.lua")
 local dockController         = require("tevgit:create/controllers/dock.lua")
 local selectionController    = require("tevgit:create/controllers/select.lua")
 local propertyEditor         = require("tevgit:create/controllers/propertyEditor.lua")
+local contextMenu            = require("tevgit:create/controllers/contextMenu.lua")
+
+local luaFolderContextOptions = {
+  ["new scriptSource"] = {
+    action = function ()
+      if #selectionController.selection == 1 then
+        local folder = selectionController.selection[1]
+        if folder:isA("luaSharedFolder") or folder:isA("luaServerFolder") or folder:isA("luaClientFolder") then
+          local newSource = engine.scriptSource()
+          newSource.parent = folder
+          newSource.name = "newScriptSource"
+        end
+      end
+    end
+  }
+}
 
 --dictionary of buttons to their corrosponding objects.
 local buttonToObject = {}
@@ -83,6 +99,17 @@ local function createHierarchyButton(object, guiParent)
   
   local expanded = false  
   local lastClick = 0
+
+
+  btn:onSync("mouseRightPressed", function()
+    if (object:isA("folder")) then
+      selectionController.setSelection(object.children)
+      propertyEditor.generateProperties(object)
+    else
+      selectionController.setSelection({object})
+    end
+    controller.scrollView.canvasSize = guiCoord(1, 0, 0, updatePositions())
+  end)
   
   btn:mouseLeftReleased(function()
     if os.time() - lastClick < 0.35 then
@@ -91,7 +118,7 @@ local function createHierarchyButton(object, guiParent)
       expanded = not expanded
       if expanded then
         for _,child in pairs(object.children) do
-          local btn = createHierarchyButton(child, btn)
+          createHierarchyButton(child, btn)
         end
         controller.scrollView.canvasSize = guiCoord(1, 0, 0, updatePositions())
       else
@@ -119,8 +146,34 @@ local function createHierarchyButton(object, guiParent)
       controller.scrollView.canvasSize = guiCoord(1, 0, 0, updatePositions())
     end
   end)
+
+  local childAddedEvent = object:on("childAdded", function (child)
+    if expanded then
+      createHierarchyButton(child, btn)
+    end
+    controller.scrollView.canvasSize = guiCoord(1, 0, 0, updatePositions())
+  end)
+
+  local childRemovedEvent = object:on("childRemoved", function (child)
+    if expanded then
+      for button,obj in pairs(buttonToObject) do
+        if obj == child then
+          button:destroy()
+        end
+      end
+    end
+    controller.scrollView.canvasSize = guiCoord(1, 0, 0, updatePositions())
+  end)
+
+  btn:once("destroying", function ()
+    childAddedEvent:disconnect()
+  end)
   
-  selectionController.applyContext(btn)
+  if object:isA("luaSharedFolder") or object:isA("luaServerFolder") or object:isA("luaClientFolder") then
+    contextMenu.bind(btn, luaFolderContextOptions)
+  else
+    selectionController.applyContext(btn)
+  end
   return btn
 end
 
