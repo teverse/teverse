@@ -1,6 +1,3 @@
-
-
-
 local controller = {
 
     contextLastOpenedAt = nil,
@@ -72,8 +69,8 @@ function controller.create(options)
                 if (frame and controller.activeContextMenu and (controller.activeContextMenu == frame or frame:isDescendantOf(controller.activeContextMenu))) then
                     controller.activeContextMenu:destroy()
                     controller.activeContextMenu = nil 
-                    data.action()
                 end
+                data.action()
             end)
         end
         if (data.subOptions or data.hotkey) then

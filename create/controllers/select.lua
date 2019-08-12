@@ -383,6 +383,10 @@ local function newBlockWrapper(mesh)
 	end
 end
 
+local function newScript()
+	return require("tevgit:create/controllers/scriptController.lua").newScriptDialogue(selectionController.selection[1])
+end
+
 function selectionController.getContextOptions()
 	local options = {
 		new = {
@@ -395,6 +399,9 @@ function selectionController.getContextOptions()
 				},
 				wedge = {
 					action = newBlockWrapper("primitive:wedge")
+				},
+				script = {
+					action = newScript
 				}
 			}
 		}

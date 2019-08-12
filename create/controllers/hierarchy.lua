@@ -22,6 +22,16 @@ local luaFolderContextOptions = {
   }
 }
 
+local overridingIcons = {
+  scriptSource = "fa:s-file-code",
+  scriptContainer = "fa:s-microchip",
+  input = {"fa:s-keyboard", "fa:r-keyboard"},
+  debug = "fa:s-bug",
+  light = "fa:s-lightbulb",
+  block = "fa:s-cube",
+  camera = "fa:s-camera"
+}
+
 --dictionary of buttons to their corrosponding objects.
 local buttonToObject = {}
 
@@ -33,25 +43,44 @@ local function updatePositions(frame)
     y = 20
   end
 
-  for _,v in pairs(frame.children) do
-    if v.name ~= "icon" then
-      v.position = guiCoord(0, 10, 0, y)
-      y = y + updatePositions(v)
+  if frame.children then
+    for _,v in pairs(frame.children) do
+      if v.name ~= "icon" then
+        v.position = guiCoord(0, 10, 0, y)
+        y = y + updatePositions(v)
+      end
     end
   end
   
   if type(frame) == "guiTextBox" then
+
+    local regularIconWithChildren = "fa:s-folder"
+    local regularIconWithOutChildren = "fa:r-folder"
+    local expandedIcon = "fa:s-folder-open"
+
+    local icons = overridingIcons[buttonToObject[frame].className]
+    if icons then
+      if type(icons) == "string" then
+        regularIconWithChildren = icons
+        regularIconWithOutChildren = icons
+      else
+        regularIconWithChildren = icons[1]
+        regularIconWithOutChildren = icons[1]
+        expandedIcon = icons[2]
+      end
+    end
+
     if y == 20 then 
       -- no children
       if buttonToObject[frame] and buttonToObject[frame].children and #buttonToObject[frame].children > 0 then
         --object has children but is not expanded
-        frame.icon.texture = "fa:s-folder"
+        frame.icon.texture = regularIconWithChildren
         frame.icon.imageAlpha = 1
         frame.textAlpha = 1
         frame.fontFile = "OpenSans-SemiBold.ttf"
       else
         --object has no children
-        frame.icon.texture = "fa:r-folder"
+        frame.icon.texture = regularIconWithOutChildren
         frame.icon.imageAlpha = .2
         frame.textAlpha = .6
         frame.fontFile = "OpenSans-Regular.ttf"
@@ -61,7 +90,7 @@ local function updatePositions(frame)
       frame.textAlpha = 0.6
       frame.fontFile = "OpenSans-Regular.ttf"
       frame.icon.imageAlpha = 0.4
-      frame.icon.texture = "fa:s-folder-open"
+      frame.icon.texture = expandedIcon
     end
 
     if buttonToObject[frame] and selectionController.isSelected(buttonToObject[frame]) then
@@ -121,6 +150,9 @@ local function createHierarchyButton(object, guiParent)
           createHierarchyButton(child, btn)
         end
         controller.scrollView.canvasSize = guiCoord(1, 0, 0, updatePositions())
+        if object.className == "scriptSource" or object.className == "scriptContainer" then
+          require("tevgit:create/controllers/scriptController.lua").editScript(object)
+        end
       else
         for _,v in pairs(btn.children) do
           if v.name ~= "icon" then
@@ -137,12 +169,14 @@ local function createHierarchyButton(object, guiParent)
       local currentTime = os.time()
       lastClick = currentTime
 
+      
       if (object:isA("folder")) then
         selectionController.setSelection(object.children)
         propertyEditor.generateProperties(object)
       else
         selectionController.setSelection({object})
       end
+      
       controller.scrollView.canvasSize = guiCoord(1, 0, 0, updatePositions())
     end
   end)
@@ -154,10 +188,10 @@ local function createHierarchyButton(object, guiParent)
     controller.scrollView.canvasSize = guiCoord(1, 0, 0, updatePositions())
   end)
 
-  local childRemovedEvent = object:on("childRemoved", function (child)
+  local childRemovedEvent = object:onSync("childRemoved", function (child)
     if expanded then
       for button,obj in pairs(buttonToObject) do
-        if obj == child then
+        if obj == child and button.alive then
           button:destroy()
         end
       end

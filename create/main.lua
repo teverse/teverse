@@ -53,6 +53,9 @@ return function(workshop)
 	require("tevgit:create/controllers/createTabController.lua")
 	collectgarbage()
 	controllers.ui.setLoading(false)
+
+	require("tevgit:create/controllers/scriptController.lua")
+	require("tevgit:create/controllers/testing.lua")
 	--wait(1)
 	--scriptEditor   = require("tevgit:create/scriptEditor/main.lua")
 end

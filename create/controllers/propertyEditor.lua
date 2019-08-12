@@ -126,6 +126,7 @@ controller.updateHandlers = {
     gui.input.text = tostring(value)
   end,
   string = function (instance, gui, value)
+    print(gui, #gui.children)
     gui.input.text = value
   end,
   vector3 = function(instance, gui, value)
@@ -333,6 +334,26 @@ controller.createInput = {
 
 
     end
+
+    return container
+  end,
+
+  scriptSource = function(instance, property, value)
+    local container = controller.createInput.default(value, pType, readOnly)
+    local presetSelect = uiController.create("guiTextBox", container, {
+        size = guiCoord(1, -4, 0, 16),
+        position = guiCoord(0, 2, 0, 2),
+        borderRadius = 3,
+        text = "Edit Source",
+        fontSize = 16,
+        align = enums.align.middle,
+        backgroundAlpha = 0.75
+    }, "primary")
+    presetSelect:mouseLeftReleased(function ()
+      if instance[property] then
+        instance[property]:editExternal()
+      end
+    end)
 
     return container
   end,
@@ -809,7 +830,7 @@ function controller.generateProperties(instance)
     v:disconnect()
   end
   controller.eventHandlers = {}
-
+--controller.scrollView:destroyAllChildren()
     if instance then
         instanceEditing = instance
         controller.instanceEditing = instance
@@ -836,12 +857,12 @@ function controller.generateProperties(instance)
 
             if not readOnly and pType ~= "function" and v.property ~= "physics" and v.property ~= "doNotSerialise" and not controller.excludePropertyList[v.property] then
               propertiesCount = propertiesCount + 1
-              local container = controller.scrollView["_" .. v.property]
+              local container = controller.scrollView["_" .. v.property .. pType]
 
               if not container then
                 container = engine.construct("guiFrame", controller.scrollView,
                 {
-                  name = "_" .. v.property,
+                  name = "_" .. v.property .. pType,
                   backgroundAlpha = 0,
                   size = guiCoord(1, -10, 0, 20),
                   cropChildren = false

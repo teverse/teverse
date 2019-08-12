@@ -5,16 +5,31 @@
 local lexer = require("tevgit:create/scriptEditor/lexer.lua")
 local scriptEditor = {}
 scriptEditor.mainFrame = engine.construct("guiFrame", engine.interface, {
-					size=guiCoord(0.5, -30, 0.5, 0),
-					position=guiCoord(0.25, 30, 0.25, 0),
+					size=guiCoord(1, 0, 1, 0),
 					backgroundColour=colour:fromRGB(40, 42, 54),
 					handleEvents=false,
 					zIndex=1002
 })
 
+scriptEditor.colouredText = engine.construct("guiTextBox", scriptEditor.mainFrame, {
+	size=guiCoord(1,-35,1,-10),
+	position=guiCoord(0,30,0,5),
+	zIndex=1003,
+	align=enums.align.topLeft,
+	fontFile = "FiraMono-Regular.ttf",
+	fontSize=18,
+	multiline=true,
+	readOnly=true,
+	wrapped = true,
+	textAlpha=0.8,
+	handleEvents = false,
+	text = "",
+	backgroundAlpha = 0
+})
+
 scriptEditor.mainText = engine.construct("guiTextBox", scriptEditor.mainFrame, {
-	size=guiCoord(1,-10,1,-10),
-	position=guiCoord(0,5,0,5),
+	size=guiCoord(1,-35,1,-10),
+	position=guiCoord(0,30,0,5),
 	zIndex=1002,
 	align=enums.align.topLeft,
 	fontFile = "FiraMono-Regular.ttf",
@@ -26,13 +41,14 @@ scriptEditor.mainText = engine.construct("guiTextBox", scriptEditor.mainFrame, {
 	text = [[print("Hello Teverse!")]],
 	backgroundAlpha = 0
 })
+
 scriptEditor.colours = {
 	background = colour:fromRGB(40, 42, 54),
 	currentLine = colour:fromRGB(68, 71, 90),
 	selection = colour:fromRGB(68, 71, 90),
 	foreground = colour:fromRGB(248, 248, 242),
 	
-	comment=colour:fromRGB(30,30,70), 
+	comment=colour:fromRGB(88,88,88), 
 	string_start=colour:fromRGB(241,250,140), --YELLOW
 	string_end=colour:fromRGB(241,250,140),--yellow
 	string=colour:fromRGB(241,250,140),--yellow
@@ -54,8 +70,8 @@ scriptEditor.lex = function()
 	--scriptEditor.colouredText:setTextColour(scriptEditor.colours["default"])
 
 	--local curC = 0
-	local text = scriptEditor.mainText.text
-	scriptEditor.mainText.textColour = colour(0.5, 0.5, 0.5)
+	local text = scriptEditor.colouredText.text
+	scriptEditor.colouredText.textColour = colour(0.5, 0.5, 0.5)
 	--scriptEditor.colouredText.text = text
 	--wait()
 	--print(engine.lexer.lex, type(engine.lexer.lex))
@@ -63,16 +79,15 @@ scriptEditor.lex = function()
 	local lineStart =0
 	local lineText = ""
 
-	print(text:len())
 	--print(lexxed, type(lexxed))
 	for i, line in pairs(lexxed) do
 		local thisLine = 0
 		for t,v in pairs(line) do
 			v.posFirst = v.posFirst -1
 
-			scriptEditor.mainText:setTextColour(lineStart + v.posFirst, lineStart + v.posLast, scriptEditor.colours[v.type] and scriptEditor.colours[v.type] or colour(0.5,0.5,0.5))
-			print("'"..v.data.."'", lineStart + v.posFirst, lineStart + v.posLast, scriptEditor.colours[v.type] and scriptEditor.colours[v.type] or colour(0.5,0.5,0.5))
-		--	curC = curC + len
+			scriptEditor.colouredText:setTextColour(lineStart + v.posFirst, lineStart + v.posLast, scriptEditor.colours[v.type] and scriptEditor.colours[v.type] or colour(0.5,0.5,0.5))
+			
+			--	curC = curC + len
 			thisLine = v.posLast
 		end
 		lineStart = lineStart + thisLine + 1
@@ -82,29 +97,14 @@ scriptEditor.lex = function()
 	scriptEditor.leftText.text = lineText
 end
 
-scriptEditor.lastType = nil
-scriptEditor.lastText = ""
-scriptEditor.mainText:textInput(function (txt)
-	scriptEditor.lastText = txt
-	if scriptEditor.lastType == nil then
-		spawnThread(function ()
-			-- Code here...
-		repeat wait() until (os.clock() - scriptEditor.lastType) > 0.05
-			local text = scriptEditor.mainText.text
-
-		wait()
-
-			scriptEditor.lex()
-			scriptEditor.lastType = nil
-		end)
-	end
-
-	scriptEditor.lastType = os.clock()
+scriptEditor.mainText:changed(function (txt)
+	scriptEditor.colouredText.text = scriptEditor.mainText.text .. "\n"
+	scriptEditor.lex()
 end)
 
-scriptEditor.leftFrame = engine.construct("guiFrame", engine.interface, {
-					size=guiCoord(0, 30, 0.5, 0),
-					position=guiCoord(0.25, 0, 0.25, 0),
+scriptEditor.leftFrame = engine.construct("guiFrame", scriptEditor.mainFrame, {
+					size=guiCoord(0, 30, 1, 0),
+					position=guiCoord(0, 0, 0, 0),
 					backgroundColour=scriptEditor.colours.background,
 					handleEvents=false,
 					zIndex=1002
