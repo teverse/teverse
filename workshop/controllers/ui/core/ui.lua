@@ -2,8 +2,8 @@
 -- This script includes shorcuts for creating UIs.
 -- Any interface created here will be properly themed.
 
-local themer = require('tevgit:workshop/controllers/ui/core/themer.lua')
-local shared = require('tevgit:workshop/controllers/shared.lua')
+local themer = require("tevgit:workshop/controllers/ui/core/themer.lua")
+local shared = require("tevgit:workshop/controllers/shared.lua")
 
 local create = function(className, parent, properties, style)
     if not parent then 

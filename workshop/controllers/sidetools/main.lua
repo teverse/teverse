@@ -3,5 +3,5 @@
 -- This is required by the UI system and the array returned is used to generate the sidebar
 
 return {
-    handTool = require('tevgit:workshop/controllers/sidetools/hand.lua')
+    handTool = require("tevgit:workshop/controllers/sidetools/hand.lua")
 }
