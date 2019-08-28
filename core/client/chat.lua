@@ -23,7 +23,7 @@ local container = engine.construct("guiFrame", engine.interface, {
 })
 
 local messagesOutput = engine.construct("guiTextBox", container, {
-	size			= guiCoord(1, -8, 1, -34),
+	size			= guiCoord(1, -8, 1, -45),
 	position		= guiCoord(0, 4, 0, 2),
 	backgroundAlpha = 0,
 	handleEvents	= false,
@@ -34,7 +34,7 @@ local messagesOutput = engine.construct("guiTextBox", container, {
 
 local messageInputFrame = engine.construct("guiFrame", container, {
 	size			 = guiCoord(1, -30, 0, 24),
-	position		 = guiCoord(0, 15, 1, -30),
+	position		 = guiCoord(0, 15, 1, -39),
 	backgroundColour = colour(0.1, 0.1, 0.1),
 	fontSize         = 18,
 	handleEvents	 = false,

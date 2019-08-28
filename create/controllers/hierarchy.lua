@@ -1,9 +1,36 @@
 local controller = {}
 
 local uiController           = require("tevgit:create/controllers/ui.lua")
-local themeController       = require("tevgit:create/controllers/theme.lua")
+local themeController        = require("tevgit:create/controllers/theme.lua")
 local dockController         = require("tevgit:create/controllers/dock.lua")
 local selectionController    = require("tevgit:create/controllers/select.lua")
+local propertyEditor         = require("tevgit:create/controllers/propertyEditor.lua")
+local contextMenu            = require("tevgit:create/controllers/contextMenu.lua")
+
+local luaFolderContextOptions = {
+  ["new scriptSource"] = {
+    action = function ()
+      if #selectionController.selection == 1 then
+        local folder = selectionController.selection[1]
+        if folder:isA("luaSharedFolder") or folder:isA("luaServerFolder") or folder:isA("luaClientFolder") then
+          local newSource = engine.scriptSource()
+          newSource.parent = folder
+          newSource.name = "newScriptSource"
+        end
+      end
+    end
+  }
+}
+
+local overridingIcons = {
+  scriptSource = "fa:s-file-code",
+  scriptContainer = "fa:s-microchip",
+  input = {"fa:s-keyboard", "fa:r-keyboard"},
+  debug = "fa:s-bug",
+  light = "fa:s-lightbulb",
+  block = "fa:s-cube",
+  camera = "fa:s-camera"
+}
 
 --dictionary of buttons to their corrosponding objects.
 local buttonToObject = {}
@@ -16,25 +43,44 @@ local function updatePositions(frame)
     y = 20
   end
 
-  for _,v in pairs(frame.children) do
-    if v.name ~= "icon" then
-      v.position = guiCoord(0, 10, 0, y)
-      y = y + updatePositions(v)
+  if frame.children then
+    for _,v in pairs(frame.children) do
+      if v.name ~= "icon" then
+        v.position = guiCoord(0, 10, 0, y)
+        y = y + updatePositions(v)
+      end
     end
   end
   
   if type(frame) == "guiTextBox" then
+
+    local regularIconWithChildren = "fa:s-folder"
+    local regularIconWithOutChildren = "fa:r-folder"
+    local expandedIcon = "fa:s-folder-open"
+
+    local icons = overridingIcons[buttonToObject[frame].className]
+    if icons then
+      if type(icons) == "string" then
+        regularIconWithChildren = icons
+        regularIconWithOutChildren = icons
+      else
+        regularIconWithChildren = icons[1]
+        regularIconWithOutChildren = icons[1]
+        expandedIcon = icons[2]
+      end
+    end
+
     if y == 20 then 
       -- no children
       if buttonToObject[frame] and buttonToObject[frame].children and #buttonToObject[frame].children > 0 then
         --object has children but is not expanded
-        frame.icon.texture = "fa:s-folder"
+        frame.icon.texture = regularIconWithChildren
         frame.icon.imageAlpha = 1
         frame.textAlpha = 1
         frame.fontFile = "OpenSans-SemiBold.ttf"
       else
         --object has no children
-        frame.icon.texture = "fa:r-folder"
+        frame.icon.texture = regularIconWithOutChildren
         frame.icon.imageAlpha = .2
         frame.textAlpha = .6
         frame.fontFile = "OpenSans-Regular.ttf"
@@ -44,7 +90,7 @@ local function updatePositions(frame)
       frame.textAlpha = 0.6
       frame.fontFile = "OpenSans-Regular.ttf"
       frame.icon.imageAlpha = 0.4
-      frame.icon.texture = "fa:s-folder-open"
+      frame.icon.texture = expandedIcon
     end
 
     if buttonToObject[frame] and selectionController.isSelected(buttonToObject[frame]) then
@@ -82,6 +128,17 @@ local function createHierarchyButton(object, guiParent)
   
   local expanded = false  
   local lastClick = 0
+
+
+  btn:onSync("mouseRightPressed", function()
+    if (object:isA("folder")) then
+      selectionController.setSelection(object.children)
+      propertyEditor.generateProperties(object)
+    else
+      selectionController.setSelection({object})
+    end
+    controller.scrollView.canvasSize = guiCoord(1, 0, 0, updatePositions())
+  end)
   
   btn:mouseLeftReleased(function()
     if os.time() - lastClick < 0.35 then
@@ -90,9 +147,12 @@ local function createHierarchyButton(object, guiParent)
       expanded = not expanded
       if expanded then
         for _,child in pairs(object.children) do
-          local btn = createHierarchyButton(child, btn)
+          createHierarchyButton(child, btn)
         end
-        updatePositions()
+        controller.scrollView.canvasSize = guiCoord(1, 0, 0, updatePositions())
+        if object.className == "scriptSource" or object.className == "scriptContainer" then
+          require("tevgit:create/controllers/scriptController.lua").editScript(object)
+        end
       else
         for _,v in pairs(btn.children) do
           if v.name ~= "icon" then
@@ -102,18 +162,52 @@ local function createHierarchyButton(object, guiParent)
             v:destroy()
           end
         end
-        updatePositions()
+        controller.scrollView.canvasSize = guiCoord(1, 0, 0, updatePositions())
       end
     else
       --single click
       local currentTime = os.time()
       lastClick = currentTime
 
-      selectionController.setSelection({object})
-      updatePositions()
+      
+      if (object:isA("folder")) then
+        selectionController.setSelection(object.children)
+        propertyEditor.generateProperties(object)
+      else
+        selectionController.setSelection({object})
+      end
+      
+      controller.scrollView.canvasSize = guiCoord(1, 0, 0, updatePositions())
     end
   end)
+
+  local childAddedEvent = object:on("childAdded", function (child)
+    if expanded then
+      createHierarchyButton(child, btn)
+    end
+    controller.scrollView.canvasSize = guiCoord(1, 0, 0, updatePositions())
+  end)
+
+  local childRemovedEvent = object:onSync("childRemoved", function (child)
+    if expanded then
+      for button,obj in pairs(buttonToObject) do
+        if obj == child and button.alive then
+          button:destroy()
+        end
+      end
+    end
+    controller.scrollView.canvasSize = guiCoord(1, 0, 0, updatePositions())
+  end)
+
+  btn:once("destroying", function ()
+    childAddedEvent:disconnect()
+  end)
   
+  if object:isA("luaSharedFolder") or object:isA("luaServerFolder") or object:isA("luaClientFolder") then
+    contextMenu.bind(btn, luaFolderContextOptions)
+  else
+    selectionController.applyContext(btn)
+  end
   return btn
 end
 
@@ -138,7 +232,7 @@ function controller.createUI(workshop)
   end)  
   
   createHierarchyButton(engine, controller.scrollView)
-  updatePositions()
+  controller.scrollView.canvasSize = guiCoord(1, 0, 0, updatePositions())
 end
 
 return controller

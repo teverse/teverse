@@ -95,6 +95,7 @@ uiController.setLoading = function(loading, message)
 end
 
 uiController.createMainInterface = function(workshop)
+    uiController.workshop = workshop
     uiController.loadingFrame = uiController.create("guiFrame", workshop.interface, {
                                 name = "loadingFrame",
                                 size = guiCoord(1,0,1,0),
@@ -173,6 +174,7 @@ uiController.createMainInterface = function(workshop)
     toolsController.container = sideBar
     toolsController.workshop = workshop
     uiController.workshop = workshop
+    uiController.theme = themeController
     toolsController.ui = uiController
 
     toolsController.registerMenu("windowsTab", uiController.windowsTab)

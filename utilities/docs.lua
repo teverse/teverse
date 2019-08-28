@@ -5,28 +5,27 @@
 
 local docs = {}
 local function addDocs(class, d)
-    d.class = class
-    table.insert(docs, d)
+    docs[class] = d
 end
 
 local function property(desc)
-    if not desc then desc = "No description was set") end
+    if not desc then desc = "No description was set" end
     return { description = desc }
 end
 
 local function method(desc, params, returns)
-    if not desc then desc = "No description was set") end
+    if not desc then desc = "No description was set" end
     return { description = desc, parameters = params, returns = returns }
 end
 
 local function event(desc, params)
-    if not desc then desc = "No description was set") end
+    if not desc then desc = "No description was set" end
     return { description = desc, parameters = params}
 end
 
 --------------- Docs Begin ---------------
 
-addDocs(baseClass, {
+addDocs("baseClass", {
     description = "The superclass of all Teverse classes",
     properties  = {
         name                        = property("A none unique identifier"),
@@ -62,7 +61,7 @@ addDocs(baseClass, {
     }
 })
 
-addDocs(assets, {
+addDocs("assets", {
     description = "Assets is a property of engine and is the main container for some of the core components of a game. Assets is a singleton that can be accessed via engine.assets. Children cannot be added to this class.",
     properties  = {
         lua                         = property("This Lua folder contains the luaServerFolder, luaClientFolder and luaSharedFolder"),

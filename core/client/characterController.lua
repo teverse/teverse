@@ -8,8 +8,13 @@ print("loading chars")
 
 local controller = {}
 
+-- set to false for debugging purposes.
+local CLIENT_PREDICTION = true
+
 controller.character = nil -- server creates this
 controller.camera = require("tevgit:core/client/cameraController.lua")
+
+local forward = quaternion:setEuler(0, controller.camera.cameraRotation:getEuler().y, 0)
 
 local function setupCharacterLocally(client, char)
 	local nameTag = engine.construct("guiTextBox", engine.interface, {
@@ -37,7 +42,9 @@ end
 local function characterSpawnedHandler(newClientId)
 	if engine.networking.me.id == newClientId then
 		repeat wait() until workspace[engine.networking.me.id]
+
 		controller.character = workspace[engine.networking.me.id]
+
 		setupCharacterLocally(engine.networking.me, controller.character)
 	--	controller.character.physics=false
 		if controller.camera then
@@ -101,12 +108,22 @@ local updatePrediction = function()
 	for i, pressed in pairs(controller.keys) do
 		if pressed then
 			moved=true
-			totalForce = totalForce + controller.keyBindsDir[i]
+			totalForce = totalForce + (forward * controller.keyBindsDir[i])
 		end
 	end
 
-	if moved then
-		controller.character:applyForce(totalForce * 500)
+	if CLIENT_PREDICTION and moved then
+
+
+		--controller.character:applyImpulse(totalForce * 10)
+		local f = totalForce*10
+		f.y = controller.character.velocity.y
+		local lv = vector3(f.x, 0, f.z)
+		if lv ~= vector3(0,0,0) then
+			controller.character.rotation = quaternion:setLookRotation(lv)
+		end
+		controller.character.velocity = f
+
 	end
 
 	return moved
@@ -127,8 +144,10 @@ local function predictServerMovementOnClient(direction)
 	controller.keys[direction] = true
 	if not isPredicting then
 		isPredicting = true
-		engine.graphics:frameDrawn(function()
+		print("Predicting")
+		engine.graphics:onSync("frameDrawn",function()
 			if not updatePrediction() then
+				print("Ending prediction")
 				isPredicting =false
 				self:disconnect() -- no input from user.
 			end
@@ -138,8 +157,9 @@ end
 
 engine.input:keyPressed(function (inputObj)
 	if controller.keyBinds[inputObj.key] then
+		forward = quaternion:setEuler(0, controller.camera.cameraRotation:getEuler().y + math.rad(180), 0)
 		predictServerMovementOnClient(controller.keyBinds[inputObj.key])
-		engine.networking:toServer("characterSetInputStarted", controller.keyBinds[inputObj.key])
+		engine.networking:toServer("characterSetInputStarted", controller.keyBinds[inputObj.key], controller.camera.cameraRotation)
 	end
 end)
 

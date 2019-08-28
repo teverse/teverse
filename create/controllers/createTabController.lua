@@ -11,8 +11,13 @@ light:mouseLeftReleased(function ()
 	propertyController.generateProperties(l)
 end)
 
+local script = toolsController.createButton("createTab", "fa:s-microchip", "Script")
+script:mouseLeftReleased(function ()
+	require("tevgit:create/controllers/scriptController.lua").newScriptDialogue(workspace)
+end)
+
     -- temp:
     local graphicsSettings = toolsController.createButton("topBar", "fa:s-cogs", "Graphics")
     graphicsSettings:mouseLeftReleased(function ()
         propertyController.generateProperties(engine.graphics)
-    end)
+    end) 

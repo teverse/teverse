@@ -38,11 +38,12 @@ environmentController.createStarterMap = function()
 		name           = "mainLight",
 		position       = vector3(3, 4, 0),
 		type           = enums.lightType.directional,
-		rotation       = quaternion():setEuler(-0.2, 0.2, 0),
-		shadows        = true
+		rotation       = quaternion():setEuler(math.rad(-40), math.rad(25), 0),
+		shadows        = true,
+		power		   = 2
 	})	
 
-	engine.construct("block", workspace, {
+	local basePlate = engine.construct("block", workspace, {
 		name           = "basePlate",
 		colour         = colour(0.6, 0.6, 0.6),
 		size           = vector3(100, 1, 100),
@@ -94,8 +95,8 @@ environmentController.createStarterMap = function()
 end
 
 environmentController.setDefault = function()
-	engine.graphics.clearColour = colour:fromRGB(155, 155, 155)
-	engine.graphics.ambientColour = colour:fromRGB(166, 166, 166)
+	engine.graphics.clearColour = colour:fromRGB(56,56,66)
+	engine.graphics.ambientColour = colour:fromRGB(235, 235, 235)
 end
 
 return environmentController
