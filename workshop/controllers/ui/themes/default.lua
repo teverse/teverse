@@ -2,11 +2,11 @@
 
 return {
     primary             = {
-        backgroundColour = colour:fromRGB(99, 0, 238),
+        backgroundColour = colour:fromRGB(44, 47, 51),
         textColour = colour:fromRGB(255, 255, 255),
     },
     primaryVariant      = {
-        backgroundColour = colour:fromRGB(55, 0, 179),
+        backgroundColour = colour:fromRGB(55, 59, 64),
         textColour = colour:fromRGB(255, 255, 255),
     },
     primaryText         = {
@@ -15,11 +15,11 @@ return {
     },
         
     secondary           = {
-        backgroundColour = colour:fromRGB(3, 218, 198),
+        backgroundColour = colour:fromRGB(67, 92, 125),
         textColour = colour:fromRGB(0, 0, 0),
     },
     secondaryVariant    = {
-        backgroundColour = colour:fromRGB(1, 134, 135),
+        backgroundColour = colour:fromRGB(78, 107, 145),
         textColour = colour:fromRGB(0, 0, 0),
     },
     secondaryText       = {

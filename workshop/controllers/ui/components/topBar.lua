@@ -20,7 +20,13 @@ local topBar = ui.create("guiFrame", shared.workshop.interface, {
    size = guiCoord(1, 0, 0, 22)
 }, "primary")
 
-local currentX = 10
+local topBarSubMenu = ui.create("guiFrame", shared.workshop.interface, {
+   name = "topBarSubMenu",
+   size = guiCoord(1, 0, 0, 50),
+   position = guiCoord(0, 0, 0, 22)
+}, "primaryVariant")
+
+local currentX = 20
 for tabName, options in pairs(tabs) do
    local newTabBtn = ui.create("guiTextBox", topBar, {
       text     = tabName,

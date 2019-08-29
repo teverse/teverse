@@ -22,14 +22,23 @@ return {
         local container = create("guiFrame", parent, {
             size = size,
             position = position,
-            borderRadius = 4
+            borderRadius = 4,
+            cropChildren = false
         }, themer.types.background)
         
         local titleBar = create("guiFrame", container, {
             name = "titleBar",
-            size = guiCoord(1, 0, 0, 24)
+            position = guiCoord(0, 0, 0, -1),
+            size = guiCoord(1, 0, 0, 25),
+            borderRadius = 4
         }, themer.types.primary)
         
+        -- create this to hide radius on bottom of titlebar
+        create("guiFrame", titleBar, {
+            size = guiCoord(1, 0, 0, 3),
+            position = guiCoord(0, 0, 1, -3)
+        }, themer.types.primary)
+
         create("guiTextBox", titleBar, {
             name = "textBox",
             size = guiCoord(1, -12, 0, 20),
@@ -41,7 +50,8 @@ return {
             name = "content",
             backgroundAlpha = 0,
             size = guiCoord(1, -6, 1, -30),
-            position = guiCoord(0, 3, 0, 27)
+            position = guiCoord(0, 3, 0, 27),
+            cropChildren = false
         })
         
         return container

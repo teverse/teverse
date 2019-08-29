@@ -10,7 +10,8 @@ local window = ui.window(shared.workshop.interface,
 )
 
 local sideBar = ui.create("guiFrame", window.content, {
-   size = guiCoord(0.35, 0, 1, 0)
+   size = guiCoord(0.35, 3, 1, 6),
+   position = guiCoord(0, -3, 0, -3)
 }, "primaryVariant")
 
 
