@@ -27,12 +27,9 @@ local function addTab(tabName, tabFrame)
 		size = guiCoord(1, -12, 1, -6),
 		position = guiCoord(0, 6, 0, 3),
 		text = tabName,
+		handleEvents = false,
 		align = enums.align.middleLeft
 	}, "primaryText")
-
-	for _,v in pairs(tabs) do
-		v.visible = false
-	end
 
 	if #tabs > 0 then
 		tabFrame.visible = false
@@ -41,13 +38,14 @@ local function addTab(tabName, tabFrame)
 
 	tabBtn:mouseLeftPressed(function ()
 		for _,v in pairs(tabs) do
-			v.visible = false
+			v[1].visible = false
+			v[2].backgroundAlpha = 0
 		end
 		tabFrame.visible = true
 		tabBtn.backgroundAlpha = 1
 	end)
 
-	table.insert(tabs, tabFrame)
+	table.insert(tabs, {tabFrame, tabBtn})
 end
 
 local generalPage = ui.create("guiScrollView", window.content, {
@@ -65,3 +63,30 @@ local themePage = ui.create("guiScrollView", window.content, {
 require("tevgit:workshop/controllers/ui/components/themePreviewer.lua").parent = themePage
 
 addTab("Theme", themePage)
+
+local developmentPage = ui.create("guiScrollView", window.content, {
+   size = guiCoord(0.65, 0, 1, 0),
+   position = guiCoord(0.35, 0, 0, 0)
+}, "background")
+
+ui.create("guiTextBox", developmentPage, {
+	position = guiCoord(0, 15, 0, 15),
+	size = guiCoord(1, -30, 0, 20),
+	text = "This tab is mainly for developers of create mode."
+}, "backgroundText")
+
+local reloadBtn = ui.create("guiFrame", developmentPage, {
+	size = guiCoord(0, 200, 0, 30),
+	position = guiCoord(0, 15, 0, 50),
+	borderRadius = 3
+}, "primary")
+
+ui.create("guiTextBox", reloadBtn, {
+	size = guiCoord(1, -12, 1, -6),
+	position = guiCoord(0, 6, 0, 3),
+	text = "Reload Workshop",
+	handleEvents = false,
+	align = enums.align.middleLeft
+}, "primaryText")
+
+addTab("Development", developmentPage)
