@@ -19,10 +19,11 @@ return {
     create = create,
     
     window = function(parent, title, size, position, dockable, closable)
-        local container = engine.construct("guiFrame", parent, {
+        local container = create("guiFrame", parent, {
             size = size,
-            position = position
-        })
+            position = position,
+            borderRadius = 4
+        }, themer.types.background)
         
         local titleBar = create("guiFrame", container, {
             name = "titleBar",
@@ -36,11 +37,12 @@ return {
             text = title
         }, themer.types.primaryText)
         
-        local content = create("guiFrame", container, {
+        local content = engine.construct("guiFrame", container, {
             name = "content",
-            size = guiCoord(1, 0, 1, -24),
-            position = guiCoord(0, 0, 0, 24)
-        }, themer.types.background)
+            backgroundAlpha = 0,
+            size = guiCoord(1, -6, 1, -30),
+            position = guiCoord(0, 3, 0, 27)
+        })
         
         return container
     end
