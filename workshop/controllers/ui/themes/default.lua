@@ -37,7 +37,7 @@ return {
     },
         
     background          = {
-        backgroundColour = colour:fromRGB(255, 255, 255),
+        backgroundColour = colour:fromRGB(169, 170, 171),
         textColour = colour:fromRGB(0, 0, 0),
     },
     backgroundText      = {
