@@ -45,6 +45,14 @@ return {
             position = guiCoord(0, 6, 0, 2),
             text = title
         }, themer.types.primaryText)
+
+        if closable then
+            create("guiImage", titleBar, {
+                position = guiCoord(1, -22, 0, 3),
+                size = guiCoord(0, 19, 0, 19),
+                texture = "fa:s-window-close"
+            }, "primaryImage")
+        end
         
         local content = engine.construct("guiFrame", container, {
             name = "content",
