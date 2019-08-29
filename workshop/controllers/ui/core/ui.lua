@@ -9,7 +9,7 @@ local create = function(className, parent, properties, style)
     if not parent then 
         parent = shared.workshop.interface 
     end
-        
+
     local gui = engine.construct(className, parent, properties)
     themer.registerGui(gui, style and style or "default")
     return gui

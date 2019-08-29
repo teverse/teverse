@@ -11,6 +11,7 @@ return {
     },
     primaryText         = {
         textColour = colour:fromRGB(255, 255, 255),
+        backgroundAlpha = 0
     },
         
     secondary           = {
@@ -23,6 +24,7 @@ return {
     },
     secondaryText       = {
         textColour = colour:fromRGB(0, 0, 0),
+        backgroundAlpha = 0
     },
         
     error               = {
@@ -31,6 +33,7 @@ return {
     },
     errorText           = {
         textColour = colour:fromRGB(255, 255, 255),
+        backgroundAlpha = 0
     },
         
     background          = {
@@ -39,5 +42,6 @@ return {
     },
     backgroundText      = {
         textColour = colour:fromRGB(0, 0, 0),
+        backgroundAlpha = 0
     },
 }

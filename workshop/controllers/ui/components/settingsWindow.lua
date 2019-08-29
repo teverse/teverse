@@ -1,14 +1,25 @@
 local ui = require("tevgit:workshop/controllers/ui/core/ui.lua")
 local shared = require("tevgit:workshop/controllers/shared.lua")
 
-local window = ui.window(shared.workshop, 
+local window = ui.window(shared.workshop.interface, 
    "Settings", 
-   guiCoord(0, 400, 0, 300), --size
-   guiCoord(0.5, -200, 0.5, -150), --pos
+   guiCoord(0, 600, 0, 500), --size
+   guiCoord(0.5, -300, 0.5, -250), --pos
    false, --dockable
    true -- hidable
 )
 
-local sideBar = ui.create("guiFrame", window, {
+local sideBar = ui.create("guiFrame", window.content, {
    size = guiCoord(0.35, 0, 1, 0)
-}, "secondary")
+}, "primaryVariant")
+
+
+-- Debugging purposes only:
+local themePreview = require("tevgit:workshop/controllers/ui/components/themePreviewer.lua")
+
+local themePage = ui.create("guiScrollView", window.content, {
+   size = guiCoord(0.65, 0, 1, 0),
+   position = guiCoord(0.35, 0, 0, 0)
+}, "background")
+
+themePreview.parent = themePage

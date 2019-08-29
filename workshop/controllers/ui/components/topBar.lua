@@ -29,6 +29,6 @@ for tabName, options in pairs(tabs) do
    }, "primary")
    
    local txtDim = newTabBtn.textDimensions
-   newTabBtn.size = guiCoord(0, txtDim.x, 0, 20)
-   currentX = currentX + txtDim.x
+   newTabBtn.size = guiCoord(0, txtDim.x + 20, 0, 20)
+   currentX = currentX + txtDim.x + 30
 end
