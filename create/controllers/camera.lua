@@ -5,7 +5,7 @@ local cameraController = {}
 local selectionController = require("tevgit:create/controllers/select.lua")
 
 cameraController.zoomStep = 3
-cameraController.rotateStep = -0.003
+cameraController.rotateStep = 0.003
 cameraController.moveStep = 0.5 -- how fast the camera moves
 
 cameraController.camera = workspace.camera
@@ -16,8 +16,8 @@ cameraController.camera:lookAt(vector3(0,0,0))
 -- Camera key input values
 cameraController.cameraKeyEventLooping = false
 cameraController.cameraKeyArray = {
-	[enums.key.w] = vector3(0, 0, -1),
-	[enums.key.s] = vector3(0, 0, 1),
+	[enums.key.w] = vector3(0, 0, 1),
+	[enums.key.s] = vector3(0, 0, -1),
 	[enums.key.a] = vector3(-1, 0, 0),
 	[enums.key.d] = vector3(1, 0, 0),
 	[enums.key.q] = vector3(0, -1, 0),
@@ -78,5 +78,6 @@ engine.input:keyPressed(function( inputObj )
 		engine.tween:begin(cameraController.camera, .2, {position = mdn + (cameraController.camera.rotation * vector3(0,0,1) * 15)}, "outQuad")
 	end]]
 end)
+
 
 return cameraController

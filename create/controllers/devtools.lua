@@ -23,6 +23,12 @@ reloadButton:mouseLeftReleased(function ()
 end)
 
 
+local reloadShadersButton = toolsController.createButton("devTab", "fa:s-sync", "Shaders")
+reloadShadersButton:mouseLeftReleased(function ()
+	uiController.workshop:reloadShaders()    
+end)
+
+
 local gcWindow = uiController.createWindow(uiController.workshop.interface, guiCoord(0.5, -150, 0, 300), guiCoord(0, 300, 0, 93), "GC", true) --undockable window
 gcWindow.visible = false
 gcWindow.zIndex = 2000

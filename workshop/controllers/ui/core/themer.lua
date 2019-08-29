@@ -4,6 +4,21 @@
 local currentTheme = require("tevgit:workshop/controllers/ui/themes/default.lua")
 local registeredGuis = {}
 
+local function themeriseGui(gui)
+    local styleName = registeredGuis[gui]
+
+    local style = currentTheme[styleName]
+    if not style then 
+        style = {} 
+    end
+
+    for property, value in pairs(style) do
+        if gui[property] and gui[property] ~= value then
+            gui[property] = value
+        end
+    end
+end
+
 return {
     types = {
         primary             = "primary",
@@ -21,20 +36,7 @@ return {
         backgroundText      = "backgroundText",        
     },
     
-    themeriseGui = function(gui)
-	    local styleName = registeredGuis[gui]
-	
-	    local style = currentTheme[styleName]
-	    if not style then 
-		    style = {} 
-	    end
-
-		for property, value in pairs(style) do
-			if gui[property] and gui[property] ~= value then
-				gui[property] = value
-			end
-		end
-	end,
+    themeriseGui = themeriseGui,
     
     registerGui = function(gui, style)
         registeredGuis[gui] = style

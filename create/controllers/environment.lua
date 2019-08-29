@@ -36,8 +36,8 @@ environmentController.createStarterMap = function()
 	print("creating starter map")
 	local mainLight = engine.construct("light", workspace, {
 		name           = "mainLight",
-		position       = vector3(3, 4, 0),
-		type           = enums.lightType.directional,
+		position       = vector3(3, 2, 0),
+		type           = enums.lightType.point,
 		rotation       = quaternion():setEuler(math.rad(-40), math.rad(25), 0),
 		shadows        = true,
 		power		   = 2
@@ -64,7 +64,7 @@ environmentController.createStarterMap = function()
 		size           = vector3(1, 1, 1),
 		position       = vector3(1, 0, 0),
 		mesh		   = "primitive:wedge",
-		rotation       = quaternion:setEuler(0, math.rad(90), 0)
+		rotation       = quaternion:setEuler(0, math.rad(-90), 0)
 	})	
 
 	local block = engine.construct("block", workspace, {

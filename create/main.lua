@@ -58,4 +58,6 @@ return function(workshop)
 	require("tevgit:create/controllers/testing.lua")
 	--wait(1)
 	--scriptEditor   = require("tevgit:create/scriptEditor/main.lua")
+
+	engine.sounds:play("tevurl:sound/sample.ogg")
 end
