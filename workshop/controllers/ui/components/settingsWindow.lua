@@ -76,17 +76,41 @@ ui.create("guiTextBox", developmentPage, {
 }, "backgroundText")
 
 local reloadBtn = ui.create("guiFrame", developmentPage, {
-	size = guiCoord(0, 200, 0, 30),
+	size = guiCoord(0, 150, 0, 30),
 	position = guiCoord(0, 15, 0, 50),
 	borderRadius = 3
 }, "primary")
+
+reloadBtn:mouseLeftPressed(function ()
+	shared.workshop:reloadCreate()
+end)
 
 ui.create("guiTextBox", reloadBtn, {
 	size = guiCoord(1, -12, 1, -6),
 	position = guiCoord(0, 6, 0, 3),
 	text = "Reload Workshop",
 	handleEvents = false,
-	align = enums.align.middleLeft
+	align = enums.align.middle
 }, "primaryText")
+
+local reloadShadersBtn = ui.create("guiFrame", developmentPage, {
+	size = guiCoord(0, 150, 0, 30),
+	position = guiCoord(0, 175, 0, 50),
+	borderRadius = 3
+}, "secondary")
+
+reloadShadersBtn:mouseLeftPressed(function ()
+	shared.workshop:reloadShaders()
+end)
+
+ui.create("guiTextBox", reloadShadersBtn, {
+	size = guiCoord(1, -12, 1, -6),
+	position = guiCoord(0, 6, 0, 3),
+	text = "Reload Shaders",
+	handleEvents = false,
+	align = enums.align.middle
+}, "secondaryText")
+
+
 
 addTab("Development", developmentPage)
