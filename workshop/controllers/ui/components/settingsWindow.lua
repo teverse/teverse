@@ -3,8 +3,8 @@ local shared = require("tevgit:workshop/controllers/shared.lua")
 
 local window = ui.window(shared.workshop.interface, 
    "Settings", 
-   guiCoord(0, 600, 0, 500), --size
-   guiCoord(0.5, -300, 0.5, -250), --pos
+   guiCoord(0, 620, 0, 500), --size
+   guiCoord(0.5, -310, 0.5, -250), --pos
    false, --dockable
    true -- hidable
 )
@@ -20,7 +20,8 @@ local function addTab(tabName, tabFrame)
 	local tabBtn = ui.create("guiFrame", sideBar, {
 		size = guiCoord(1, -30, 0, 30),
 		position = guiCoord(0, 15, 0, 15 + (#tabs * 40)),
-		borderRadius = 3
+		borderRadius = 3,
+		hoverCursor = "fa:s-hand-pointer"
 	}, "primary")
 
 	ui.create("guiTextBox", tabBtn, {
@@ -75,42 +76,25 @@ ui.create("guiTextBox", developmentPage, {
 	text = "This tab is mainly for developers of create mode."
 }, "backgroundText")
 
-local reloadBtn = ui.create("guiFrame", developmentPage, {
-	size = guiCoord(0, 150, 0, 30),
-	position = guiCoord(0, 15, 0, 50),
-	borderRadius = 3
-}, "primary")
 
-reloadBtn:mouseLeftPressed(function ()
+local createReload = ui.button(developmentPage, "Reload Workshop", guiCoord(0, 150, 0, 30), guiCoord(0, 15, 0, 50))
+createReload:mouseLeftPressed(function ()
 	shared.workshop:reloadCreate()
 end)
 
-ui.create("guiTextBox", reloadBtn, {
-	size = guiCoord(1, -12, 1, -6),
-	position = guiCoord(0, 6, 0, 3),
-	text = "Reload Workshop",
-	handleEvents = false,
-	align = enums.align.middle
-}, "primaryText")
-
-local reloadShadersBtn = ui.create("guiFrame", developmentPage, {
-	size = guiCoord(0, 150, 0, 30),
-	position = guiCoord(0, 175, 0, 50),
-	borderRadius = 3
-}, "secondary")
-
-reloadShadersBtn:mouseLeftPressed(function ()
+local shaderReload = ui.button(developmentPage, "Reload Shaders", guiCoord(0, 140, 0, 30), guiCoord(0, 175, 0, 50), "secondary")
+shaderReload:mouseLeftPressed(function ()
 	shared.workshop:reloadShaders()
 end)
 
-ui.create("guiTextBox", reloadShadersBtn, {
-	size = guiCoord(1, -12, 1, -6),
-	position = guiCoord(0, 6, 0, 3),
-	text = "Reload Shaders",
-	handleEvents = false,
-	align = enums.align.middle
-}, "secondaryText")
-
-
+local physicsDebugEnabled = false
+local physicsAABBs = ui.button(developmentPage, "Enable Physics AABBs", guiCoord(0, 190, 0, 30), guiCoord(0, 15, 0, 90), "secondary")
+physicsAABBs:mouseLeftPressed(function ()
+	physicsDebugEnabled = not physicsDebugEnabled
+	shared.workshop:setPhysicsDebug(physicsDebugEnabled)
+	physicsAABBs.label.text = physicsDebugEnabled and "Disable Physics AABBs" or "Enable Physics AABBs"
+end)
 
 addTab("Development", developmentPage)
+
+return window

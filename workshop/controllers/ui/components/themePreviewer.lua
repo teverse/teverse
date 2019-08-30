@@ -1,4 +1,5 @@
--- Shows the range of colours of the current frame
+-- Returns a frame with the different theme colours
+-- Useful for overviewing a theme?
 
 local ui = require("tevgit:workshop/controllers/ui/core/ui.lua")
 local shared = require("tevgit:workshop/controllers/shared.lua")
@@ -17,7 +18,7 @@ ui.create("guiTextBox", container, {
 ui.create("guiTextBox", container, {
    size = guiCoord(0.25, -10, 0.5, -10),
    position = guiCoord(0.25, 5, 0, 5),
-   text = "Primary Variant"
+   text = "Primary\nVariant"
 }, "primaryVariant")
 
 ui.create("guiTextBox", container, {
@@ -29,7 +30,7 @@ ui.create("guiTextBox", container, {
 ui.create("guiTextBox", container, {
    size = guiCoord(0.25, -10, 0.5, -10),
    position = guiCoord(0.75, 5, 0, 5),
-   text = "Secondary Variant"
+   text = "Secondary\nVariant"
 }, "secondaryVariant")
 
 ui.create("guiTextBox", container, {

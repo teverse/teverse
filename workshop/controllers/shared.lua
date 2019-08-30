@@ -3,5 +3,7 @@
 
 return {
     -- Storing workshop is important because sandbox access is restricted.
-    workshop = nil
+    workshop = nil,
+    controllers = {},
+    windows = {}
 }
