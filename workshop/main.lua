@@ -55,7 +55,7 @@ return function( workshop )
     -- Setup the 3D world
     shared.controllers.env:setupEnvironment()
     shared.controllers.env:createDefaultMap()
-    shared.controllers.env:createPBRDebugSpheres()
+    --shared.controllers.env:createPBRDebugSpheres()
 
     if loadingScreen then
     	loadingScreen:destroy()

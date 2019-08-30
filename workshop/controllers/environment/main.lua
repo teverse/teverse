@@ -6,7 +6,7 @@ return {
 			name           = "mainLight",
 			position       = vector3(3, 2, 0),
 			type           = enums.lightType.directional,
-			rotation       = quaternion():setEuler(math.rad(-40), math.rad(25), 0),
+			rotation       = quaternion():setEuler(math.rad(66), 0, 0),
 		})	
 
 		local basePlate = engine.construct("block", workspace, {
