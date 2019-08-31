@@ -95,6 +95,14 @@ physicsAABBs:mouseLeftPressed(function ()
 	physicsAABBs.label.text = physicsDebugEnabled and "Disable Physics AABBs" or "Enable Physics AABBs"
 end)
 
+local runScriptBtn = ui.button(developmentPage, "Run Lua >", guiCoord(0, 130, 0, 30), guiCoord(0, 15, 0, 130), "secondary")
+ui.create("guiTextBox", developmentPage, {
+	size = guiCoord(1, -150, 0, 60)
+}, "secondaryAlternative")
+runScriptBtn:mouseLeftPressed(function ()
+	
+end)
+
 addTab("Development", developmentPage)
 
 return window

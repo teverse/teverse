@@ -41,4 +41,4 @@
 
 --engine.workshop:setTevGit('C:/Users/YOURNAME/Desktop/teverse/')
 
-require("tevgit:create/main.lua")(engine.workshop)
+require("tevgit:workshop/main.lua")(engine.workshop)
