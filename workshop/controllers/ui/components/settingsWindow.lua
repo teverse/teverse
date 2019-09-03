@@ -96,11 +96,17 @@ physicsAABBs:mouseLeftPressed(function ()
 end)
 
 local runScriptBtn = ui.button(developmentPage, "Run Lua >", guiCoord(0, 130, 0, 30), guiCoord(0, 15, 0, 130), "secondary")
-ui.create("guiTextBox", developmentPage, {
-	size = guiCoord(1, -150, 0, 60)
-}, "secondaryAlternative")
+
+local runScriptInput = ui.create("guiTextBox", developmentPage, {
+	size = guiCoord(1, -165, 0, 60),
+	position = guiCoord(0, 155, 0, 130),
+	readOnly = false,
+	fontSize = 16
+}, "secondaryVariant")
+
 runScriptBtn:mouseLeftPressed(function ()
-	
+	shared.workshop:loadstring(runScriptInput.text)
+	runScriptInput.text = ""
 end)
 
 addTab("Development", developmentPage)
