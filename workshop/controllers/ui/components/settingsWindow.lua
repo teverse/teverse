@@ -105,7 +105,7 @@ local runScriptInput = ui.create("guiTextBox", developmentPage, {
 }, "secondaryVariant")
 
 runScriptBtn:mouseLeftPressed(function ()
-	shared.workshop:loadstring(runScriptInput.text)
+	shared.workshop:loadString(runScriptInput.text)
 	runScriptInput.text = ""
 end)
 
