@@ -38,6 +38,7 @@ return {
 			colour         = colour(0, 0, 1),
 			size           = vector3(1, 1, 1),
 			position       = vector3(0.5, 1, 0),
+			wireframe=true,
 			mesh  		   = "primitive:sphere"
 		})	
 	end,

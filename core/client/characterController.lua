@@ -40,6 +40,8 @@ local function setupCharacterLocally(client, char)
 end
 
 local function characterSpawnedHandler(newClientId)
+	repeat wait() until engine.networking.me -- we shouldnt need to do this
+		
 	if engine.networking.me.id == newClientId then
 		repeat wait() until workspace[engine.networking.me.id]
 

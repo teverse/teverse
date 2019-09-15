@@ -61,4 +61,6 @@ return function( workshop )
     	loadingScreen:destroy()
     	loadingScreen = nil
     end
+
+    print("Loaded")
 end
