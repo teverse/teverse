@@ -30,7 +30,6 @@ local function updateOutput()
 end
 
 engine.networking:bind( "serverOutput", function( serverTime, msg, type )
-	print("server output")
 	table.insert(logs, {serverTime, msg})
 	updateOutput()
 end)

@@ -7,7 +7,7 @@
 require("tevgit:core/server/debug.lua")
 
 local chat = require("tevgit:core/server/chat.lua")
-local char = require("tevgit:core/server/characterController.lua")
+--local char = require("tevgit:core/server/characterController.lua")
 
 -- Purely for testing purposes only:
 --[[

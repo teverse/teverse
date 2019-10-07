@@ -12,6 +12,6 @@ engine.networking:connected(function (serverId)
 	print("Connected")
 	require("tevgit:core/client/chat.lua")
 	require("tevgit:core/client/playerList.lua")
-	local characterController = require("tevgit:core/client/characterController.lua")
+	--local characterController = require("tevgit:core/client/characterController.lua")
 end)
 

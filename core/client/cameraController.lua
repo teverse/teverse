@@ -34,7 +34,7 @@ engine.input:on("mouseRightPressed", function ()
 			mouseLocation = engine.input.mousePosition
 
 			local euler = controller.cameraRotation:getEuler()
-			euler = euler + vector3(math.rad(moved.y), math.rad(moved.x), 0)
+			euler = euler - vector3(math.rad(moved.y), math.rad(moved.x), 0)
 			euler.x = math.clamp(euler.x, math.rad(300), math.rad(359))
 
 			controller.cameraRotation = quaternion:setEuler(euler)

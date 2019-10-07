@@ -25,7 +25,7 @@ local function setupCharacterLocally(client, char)
 		textColour 		= colour(1, 1, 1),
 		backgroundAlpha = 0,
 		fontSize 		= 16,
-		fontFile 		= "OpenSans-SemiBold.ttf"
+		fontFile 		= "local:moskBold.ttf"
 	})
 
 	workspace.camera:onSync("changed", function()
@@ -41,10 +41,11 @@ end
 
 local function characterSpawnedHandler(newClientId)
 	repeat wait() until engine.networking.me -- we shouldnt need to do this
-		
+	print("spawning")
 	if engine.networking.me.id == newClientId then
+		print("waiting")
 		repeat wait() until workspace[engine.networking.me.id]
-
+		print("got char")
 		controller.character = workspace[engine.networking.me.id]
 
 		setupCharacterLocally(engine.networking.me, controller.character)
@@ -90,8 +91,8 @@ controller.keyBinds = {
 controller.keyBindsDir = {
 	vector3(0,0,1), --w
 	vector3(0,0,-1), --s
-	vector3(1,0,0), --a
-	vector3(-1,0,0) -- d
+	vector3(-1,0,0), --a
+	vector3(1,0,0) -- d
 }
 
 controller.keys = {
@@ -122,7 +123,8 @@ local updatePrediction = function()
 		f.y = controller.character.velocity.y
 		local lv = vector3(f.x, 0, f.z)
 		if lv ~= vector3(0,0,0) then
-			controller.character.rotation = quaternion:setLookRotation(lv)
+			print(lv)
+			controller.character.rotation = quaternion:setLookRotation(lv:normal())
 		end
 		controller.character.velocity = f
 

@@ -11,6 +11,7 @@ controller.characters = {}
 controller.chat = nil
 
 update = function(client, cameraDirection)
+	if not client or not controller.characters[client] then warn('error at char controller') end
 	local totalForce = vector3()
 	local moved = false
 	for i, pressed in pairs(controller.characters[client].keys) do
@@ -26,7 +27,7 @@ update = function(client, cameraDirection)
 		f.y = controller.characters[client].character.velocity.y
 		local lv = vector3(f.x, 0, f.z)
 		if lv ~= vector3(0,0,0) then
-			controller.characters[client].character.rotation = quaternion:setLookRotation(lv)
+			--controller.characters[client].character.rotation = quaternion:setLookRotation(lv)
 		end
 		controller.characters[client].character.velocity = f
 	end
@@ -89,8 +90,8 @@ end)
 controller.keyBinds = {
 	vector3( 0,  0,  1), --w
 	vector3( 0,  0, -1), --s
-	vector3( 1,  0,  0), --a
-	vector3(-1,  0,  0) -- d
+	vector3(-1,  0,  0), --a
+	vector3( 1,  0,  0) -- d
 }
 
 engine.networking:bind( "characterSetInputStarted", function( client, direction, cameraDirection )
@@ -109,6 +110,7 @@ engine.networking:bind( "characterSetInputStarted", function( client, direction,
 	if not controller.characters[client].updating then
 		controller.characters[client].updating = true
 		engine.graphics:frameDrawn(function()
+			if not client.alive then return self:disconnect() end
 			if not update(client, cameraDirection) then
 				controller.characters[client].updating =false
 				self:disconnect() -- no input from user.
