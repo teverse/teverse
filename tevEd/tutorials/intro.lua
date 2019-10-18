@@ -6,7 +6,7 @@ return {
 	difficulty 		= 1,
 
 	tutorial		= {
-		"Welcome to tutorial.",
+		"Example Tutorial, This isn’t a real tutorial!",
 		{"This string is shown to the user", "This message is shown on the sampe page when the user hits next."},
 		{	
 			"Teverse uses Lua, lets test some sample code before getting started...",

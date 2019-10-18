@@ -101,11 +101,12 @@ local runScriptInput = ui.create("guiTextBox", developmentPage, {
 	size = guiCoord(1, -165, 0, 60),
 	position = guiCoord(0, 155, 0, 130),
 	readOnly = false,
+	wrap = true,
 	fontSize = 16
 }, "secondaryVariant")
 
 runScriptBtn:mouseLeftPressed(function ()
-	shared.workshop:loadString(runScriptInput.text)
+	print(shared.workshop:loadString(runScriptInput.text))
 	runScriptInput.text = ""
 end)
 
