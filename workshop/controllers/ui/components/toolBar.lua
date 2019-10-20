@@ -12,6 +12,10 @@ local toolBar = ui.create("guiFrame", shared.workshop.interface, {
 
 local currentY = 2
 for toolName, options in pairs(tools) do
+
+	-- options is the table returned by the tool's module.
+	-- e.g. workshop/controllers/sidetools/hand.lua
+
    local newTabBtn = ui.create("guiTextBox", topBar, {
       text     = toolName,
       position = guiCoord(0, 2, 0, currentY),
