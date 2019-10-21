@@ -65,9 +65,11 @@ local boundingEvent
 -- calculates angle ABC
 -- returns in radians
 local function calculateAngleBetween3Points(a, b, c)
-	local v1 = a - b
-	local v2 = c - b
-	return math.acos(v1:normal():dot(v2:normal()))
+	if not a or not b or not c then
+		return 0 -- Return zero
+	end
+	-- Assuming that a,b,c are non-nil values
+	return math.acos((a-b):normal():dot((c-b):normal()))
 end
 
 local function calculateCircleAngle(hitbox, pos)
