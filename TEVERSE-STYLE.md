@@ -115,7 +115,8 @@ local foo = { 1, 2 }
 foo[#foo + 1]  = 3
 ```
 
-
+### Related Resources
+http://lua-users.org/wiki/LuaStyleGuide
 
 
 
