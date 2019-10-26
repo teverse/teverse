@@ -62,5 +62,5 @@ return function( workshop )
     	loadingScreen = nil
     end
 
-    print("Loaded")
+    print("Workshop Loaded")
 end
