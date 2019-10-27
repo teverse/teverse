@@ -3,9 +3,18 @@
 -- Tool Constants:
 local toolName = "Hand"
 local toolDesc = ""
+local toolIcon = "fa:s-hand-spock"
 
 return {
     name = toolName,
-    icon = "fa:s-hand-spock",
-    desc = toolDesc
+    icon = toolIcon,
+    desc = toolDesc,
+
+    activate = function()
+    	print("tool activated")
+    end,
+
+    deactivate = function ()
+    	print("tool deactivated")
+    end
 }   

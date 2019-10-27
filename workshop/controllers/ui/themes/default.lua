@@ -31,7 +31,7 @@ return {
         backgroundAlpha = 0
     },
     secondaryImage        = {
-        imageColour = colour:fromRGB(255, 255, 255),
+        imageColour = colour:fromRGB(215, 215, 215),
         backgroundAlpha = 0
     },
         

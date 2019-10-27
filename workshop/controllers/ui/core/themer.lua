@@ -37,7 +37,7 @@ return {
     },
     
     themeriseGui = themeriseGui,
-    
+
     registerGui = function(gui, style)
         registeredGuis[gui] = style
         themeriseGui(gui)
