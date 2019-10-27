@@ -23,5 +23,15 @@ for toolName, options in pairs(tools) do
       hoverCursor = "fa:s-hand-pointer"
    }, "primary")
    
+   if options.icon then
+      newTabBtn.text = ""
+      ui.create("guiImage", newTabBtn, {
+         size = guiCoord(0.9, 0, 0.9, 0),
+         position = guiCoord(0.05, 0, 0.05, 0),
+         texture = options.icon,
+         handleEvents = false
+      }, "primary")
+   end
+
    currentY = currentY + 26
 end

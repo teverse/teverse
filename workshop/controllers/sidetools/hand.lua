@@ -6,5 +6,6 @@ local toolDesc = ""
 
 return {
     name = toolName,
+    icon = "fa:s-hand-spock",
     desc = toolDesc
 }   
