@@ -9,11 +9,11 @@ local window = ui.window(shared.workshop.interface,
    true -- hidable
 )
 
-local runScriptBtn = ui.button(window.content, "Run", guiCoord(0, 50, 0, 30), guiCoord(0, 10, 0, 7), "primary")
+local runScriptBtn = ui.button(window.content, "Run", guiCoord(0, 50, 0, 30), guiCoord(0, 5, 0, 7), "primary")
 
 local runScriptInput = ui.create("guiTextBox", window.content, {
-	size = guiCoord(1, -80, 0, 30),
-	position = guiCoord(0, 70, 0, 7),
+	size = guiCoord(1, -65, 0, 30),
+	position = guiCoord(0, 65, 0, 7),
 	readOnly = false,
 	wrap = true,
 	fontSize = 16
