@@ -20,6 +20,17 @@ local tabs = {
    }
 }
 
+if not shared.workshop.hasLocalTevGit or shared.workshop:hasLocalTevGit() then
+  tabs["Development"] = {
+    {"Reload", "fa:s-sync-alt", function()
+        shared.workshop:reloadCreate()
+    end},
+    {"Run Lua", "", function()
+        shared.windows.runLua.visible = not shared.windows.runLua.visible
+    end}
+  }
+end
+
 local topBar = ui.create("guiFrame", shared.workshop.interface, {
    name = "topBar",
    size = guiCoord(1, 0, 0, 22)
@@ -42,7 +53,7 @@ for tabName, options in pairs(tabs) do
       align    = enums.align.middle,
       hoverCursor = "fa:s-hand-pointer"
    }, "primaryVariant")
-   
+
    local newSubMenu = engine.construct("guiFrame", topBarSubMenu, {
       size = guiCoord(1, 0, 1, 0),
       backgroundAlpha = 0
