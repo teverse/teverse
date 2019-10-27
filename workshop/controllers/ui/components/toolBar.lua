@@ -12,7 +12,7 @@ local toolBar = ui.create("guiFrame", shared.workshop.interface, {
 
 local activeTool = nil
 
-local currentY = 2
+local currentY = 4
 for toolName, options in pairs(tools) do
 
 	-- options is the table returned by the tool's module.
@@ -20,7 +20,7 @@ for toolName, options in pairs(tools) do
 
    local newTabBtn = ui.create("guiTextBox", toolBar, {
       text     = toolName,
-      position = guiCoord(0, 2, 0, currentY),
+      position = guiCoord(0, 4, 0, currentY),
       size     = guiCoord(0, 24, 0, 24),
       hoverCursor = "fa:s-hand-pointer"
    }, "primary")
@@ -54,5 +54,7 @@ for toolName, options in pairs(tools) do
       end
    end)
 
-   currentY = currentY + 26
+   currentY = currentY + 28
 end
+
+toolBar.size = guiCoord(0, 32, 0, currentY)
