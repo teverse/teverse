@@ -100,7 +100,8 @@ local runScriptBtn = ui.button(developmentPage, "Run Lua", guiCoord(0, 190, 0, 3
 runScriptBtn:mouseLeftPressed(function ()
 	shared.windows.runLua.visible = not shared.windows.runLua.visible
 end)
-
-addTab("Development", developmentPage)
+if not shared.workshop.hasLocalTevGit or shared.workshop:hasLocalTevGit() then
+  addTab("Development", developmentPage)
+end
 
 return window
