@@ -25,7 +25,7 @@ if not shared.workshop.hasLocalTevGit or shared.workshop:hasLocalTevGit() then
     {"Reload", "fa:s-sync-alt", function()
         shared.workshop:reloadCreate()
     end},
-    {"Run Lua", "", function()
+    {"Run Lua", "fa:s-chevron-right", function()
         shared.windows.runLua.visible = not shared.windows.runLua.visible
     end}
   }
