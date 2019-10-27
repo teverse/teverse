@@ -61,7 +61,6 @@ for tabName, options in pairs(tabs) do
    xpos = 12
    for i,v in pairs(options) do
      if v[1] == "Seperator" then
-       print("Seperator")
        local seperator = ui.create("guiFrame", newSubMenu, {
          size = guiCoord(0, 2, 0.6, 0),
          position = guiCoord(0, xpos, 0.2, 0)
