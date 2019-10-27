@@ -6,6 +6,20 @@ local shared = require("tevgit:workshop/controllers/shared.lua")
 local controller = {}
 controller.currentContextMenu = nil
 
+engine.input:mouseLeftReleased(function ()
+	if controller.currentContextMenu then
+		local focusedGui = engine.input.mouseFocusedGui
+		-- The mouse was clicked...
+		-- If there is no gui in focus, 
+		-- or if the focused gui is not the context menu
+		-- ... we remove the context menu
+		if not focusedGui or (focusedGui ~= controller.currentContextMenu and not focusedGui:isDescendantOf(controller.currentContextMenu)) then
+			controller.currentContextMenu:destroy()
+			controller.currentContextMenu = nil
+		end
+	end
+end)
+
 -- Merely to demonstate the different options possible or to test the context menu helper.
 controller.exampleOptions = {
 	{name = "Option 1", callback = function() print("callback") end},
@@ -50,6 +64,13 @@ controller.generateMenu = function(options, position)
 			textAlpha = 0.6
 		}, "primaryText")
 
+		if options.callback then
+			btn:mouseLeftReleased(function ()
+				options.callback()
+				menu:destroy()
+				controller.currentContextMenu = nil
+			end)
+		end
 
 		-- Improves accessibility
 		btn:mouseFocused(function ()
