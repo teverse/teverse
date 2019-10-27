@@ -14,6 +14,11 @@ local sideBar = ui.create("guiFrame", window.content, {
    position = guiCoord(0, -3, 0, -3)
 }, "primaryVariant")
 
+local contextMenu = require("tevgit:workshop/controllers/ui/core/contextMenu.lua")
+sideBar:mouseRightReleased(function ()
+    contextMenu.generateMenu(contextMenu.exampleOptions)
+end)
+
 local tabs = {}
 
 local function addTab(tabName, tabFrame)
