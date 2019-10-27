@@ -3,12 +3,15 @@ local shared = require("tevgit:workshop/controllers/shared.lua")
 
 local tabs = {
    ["File"] = {
-      {"Open", "fa:s-question-circle", function()
-            -- callback
-            
+      {"Open", "fa:s-folder-open", function()
+         shared.workshop:openFileDialogue()
       end},
-      {"Save", "fa:s-question-circle"},
-      {"Save As", "fa:s-question-circle"},
+      {"Save", "fa:s-save", function()
+         shared.workshop:saveGame()
+      end},
+      {"Save As", "fa:r-save", function()
+         shared.workshop:saveGameAsDialogue()
+      end},
    },
    ["Windows"] = {
       {"Settings", "fa:s-cog", function ()
@@ -16,6 +19,17 @@ local tabs = {
       end}
    }
 }
+
+if not shared.workshop.hasLocalTevGit or shared.workshop:hasLocalTevGit() then
+  tabs["Development"] = {
+    {"Reload", "fa:s-sync-alt", function()
+        shared.workshop:reloadCreate()
+    end},
+    {"Run Lua", "", function()
+        shared.windows.runLua.visible = not shared.windows.runLua.visible
+    end}
+  }
+end
 
 local topBar = ui.create("guiFrame", shared.workshop.interface, {
    name = "topBar",
@@ -39,7 +53,7 @@ for tabName, options in pairs(tabs) do
       align    = enums.align.middle,
       hoverCursor = "fa:s-hand-pointer"
    }, "primaryVariant")
-   
+
    local newSubMenu = engine.construct("guiFrame", topBarSubMenu, {
       size = guiCoord(1, 0, 1, 0),
       backgroundAlpha = 0

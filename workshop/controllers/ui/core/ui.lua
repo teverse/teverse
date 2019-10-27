@@ -13,6 +13,7 @@ local create = function(className, parent, properties, style)
 
     local gui = engine.construct(className, parent, properties)
     themer.registerGui(gui, style and style or "default")
+
     return gui
 end
 

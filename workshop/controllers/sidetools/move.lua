@@ -1,9 +1,9 @@
 -- Copyright 2019 Teverse.com
 
 -- Tool Constants:
-local toolName = "Hand"
+local toolName = "Move"
 local toolDesc = ""
-local toolIcon = "fa:s-hand-pointer"
+local toolIcon = "fa:s-arrows-alt"
 
 return {
     name = toolName,

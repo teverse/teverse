@@ -1,8 +1,6 @@
 --[[
 	
-	NEEDS REFACTORING,
-	STOLEN STRAIGHT FROM CREATE MODE.
-
+	work in progress
 ]]
 
 
