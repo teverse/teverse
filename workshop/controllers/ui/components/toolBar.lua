@@ -16,7 +16,7 @@ for toolName, options in pairs(tools) do
 	-- options is the table returned by the tool's module.
 	-- e.g. workshop/controllers/sidetools/hand.lua
 
-   local newTabBtn = ui.create("guiTextBox", topBar, {
+   local newTabBtn = ui.create("guiTextBox", toolBar, {
       text     = toolName,
       position = guiCoord(0, 2, 0, currentY),
       size     = guiCoord(0, 24, 0, 24),
