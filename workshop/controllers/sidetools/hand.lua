@@ -5,6 +5,8 @@ local toolName = "Hand"
 local toolDesc = ""
 local toolIcon = "fa:s-hand-pointer"
 
+local clickEvent = nil
+
 return {
     name = toolName,
     icon = toolIcon,

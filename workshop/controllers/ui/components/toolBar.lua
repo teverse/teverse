@@ -6,8 +6,10 @@ local tools = require("tevgit:workshop/controllers/sidetools/main.lua")
 
 local toolBar = ui.create("guiFrame", shared.workshop.interface, {
    name = "toolBar",
-   size = guiCoord(0, 28, 0, 100),
-   position = guiCoord(0, 8, 0, 80)
+   size = guiCoord(0, 32, 0, 100),
+   position = guiCoord(0, 8, 0, 80),
+   backgroundAlpha = 0.8,
+   borderRadius = 4
 }, "primary")
 
 local activeTool = nil
@@ -21,7 +23,7 @@ for toolName, options in pairs(tools) do
    local newTabBtn = ui.create("guiTextBox", toolBar, {
       text     = toolName,
       position = guiCoord(0, 5, 0, currentY),
-      size     = guiCoord(0, 18, 0, 18),
+      size     = guiCoord(0, 22, 0, 22),
       hoverCursor = "fa:s-hand-pointer"
    }, "primaryText")
 
@@ -54,7 +56,7 @@ for toolName, options in pairs(tools) do
       end
    end)
 
-   currentY = currentY + 28
+   currentY = currentY + 32
 end
 
-toolBar.size = guiCoord(0, 28, 0, currentY - 5)
+toolBar.size = guiCoord(0, 32, 0, currentY - 5)

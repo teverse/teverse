@@ -12,3 +12,5 @@ shared.windows.settings.visible = false -- Dont show the window on start, thats 
 
 shared.windows.runLua = require("tevgit:workshop/controllers/ui/components/runLua.lua")
 shared.windows.runLua.visible = false
+
+shared.windows.propertyEditor = require("tevgit:workshop/controllers/ui/components/propertyEditor/window.lua").window
