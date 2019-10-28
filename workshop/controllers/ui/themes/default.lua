@@ -44,9 +44,22 @@ return {
         backgroundAlpha = 0
     },
     errorImage        = {
-        imageColour = colour:fromRGB(255, 255, 255),
+        imageColour = colour:fromRGB(176, 100, 132),
         backgroundAlpha = 0
     },
+
+    success               = {
+        backgroundColour = colour:fromRGB(0, 176, 32),
+        textColour = colour:fromRGB(255, 255, 255),
+    },
+    successText           = {
+        textColour = colour:fromRGB(255, 255, 255),
+        backgroundAlpha = 0
+    },
+    successImage        = {
+        imageColour = colour:fromRGB(100, 176, 132),
+        backgroundAlpha = 0
+    },    
         
     background          = {
         backgroundColour = colour:fromRGB(169, 170, 171),

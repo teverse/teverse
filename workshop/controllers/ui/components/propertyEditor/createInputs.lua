@@ -15,8 +15,8 @@ createInputs = {
     return ui.create("guiFrame", nil, {
       backgroundAlpha = 0.25,
       name = "inputContainer",
-      size = guiCoord(0.5, 0, 0, 20),
-      position = guiCoord(0.5,0,0,0),
+      size = guiCoord(0.4, 0, 0, 20),
+      position = guiCoord(0.6,0,0,0),
       cropChildren = false
     }, "secondary")
   end,
@@ -41,18 +41,17 @@ createInputs = {
 
   boolean = function(instance, property, value)
     local container = createInputs.default(value, pType, readOnly)
-    local x = ui.create("guiButton", container, {
+    container.backgroundAlpha = 0
+    local x = ui.create("guiImage", container, {
       name = "input",
-      size = guiCoord(0, 18, 1, -2),
-      position = guiCoord(0, 2, 0, 1),
-      text = "",
-      backgroundAlpha = 0.75,
-      align = enums.align.middle
-    }, "light")
+      size = guiCoord(0, 20, 0, 20),
+      position = guiCoord(0, 0, 0, 0),
+      texture = "fa:s-toggle-on"
+    }, "successImage")
 
     x:mouseLeftReleased(function ()
-      x.selected = not x.selected
-      x.text = x.selected and "X" or " " -- temporary
+      x.texture = x.selected and "fa:s-toggle-on" or "fa:s-toggle-off"
+      themer.registerGui(x, x.selected and "successImage" or "errorImage")
       parseInputs[type(value)](property, container)
     end)
 
@@ -361,7 +360,7 @@ createInputs = {
       textAlpha = 0.6,
       text = "X",
       align = enums.align.topLeft
-    }, "mainText")
+    }, "backgroundText")
     
     local x = ui.create("guiTextBox", container, {
       backgroundAlpha = 0.25,
@@ -380,7 +379,7 @@ createInputs = {
     yLabel.text = "Y"
     yLabel.parent = container
     yLabel.position = guiCoord(0, -10, 1/3, 1)
-    themer.registerGui(yLabel, "mainText")
+    themer.registerGui(yLabel, "backgroundText")
 
     local y = x:clone()
     y.name = "y"
@@ -393,7 +392,7 @@ createInputs = {
     zLabel.text = "Z"
     zLabel.parent = container
     zLabel.position = guiCoord(0, -10, 2/3, 1)
-    themer.registerGui(yLabel, "mainText")
+    themer.registerGui(yLabel, "backgroundText")
 
     local z = x:clone()
     z.name = "z"
@@ -423,7 +422,7 @@ createInputs = {
       textAlpha = 0.6,
       text = "X",
       align = enums.align.topLeft
-    }, "mainText")
+    }, "backgroundText")
 
     local x = ui.create("guiTextBox", container, {
       backgroundAlpha = 0.25,
@@ -442,7 +441,7 @@ createInputs = {
     yLabel.text = "Y"
     yLabel.parent = container
     yLabel.position = guiCoord(0, -10, 1/2, 2)
-    themer.registerGui(yLabel, "mainText")
+    themer.registerGui(yLabel, "backgroundText")
 
     local y = x:clone()
     y.name = "y"
@@ -473,7 +472,7 @@ createInputs = {
       textAlpha = 0.6,
       text = "X",
       align = enums.align.topLeft
-    }, "mainText")
+    }, "backgroundText")
 
     local x = ui.create("guiTextBox", container, {
       backgroundAlpha = 0.25,
@@ -492,7 +491,7 @@ createInputs = {
     yLabel.text = "Y"
     yLabel.parent = container
     yLabel.position = guiCoord(0, -10, 1/3, 1)
-    themer.registerGui(yLabel, "mainText")
+    themer.registerGui(yLabel, "backgroundText")
 
     local y = x:clone()
     y.name = "y"
@@ -505,7 +504,7 @@ createInputs = {
     zLabel.text = "Z"
     zLabel.parent = container
     zLabel.position = guiCoord(0, -10, 2/3, 1)
-    themer.registerGui(zLabel, "mainText")
+    themer.registerGui(zLabel, "backgroundText")
 
     local z = x:clone()
     z.name = "z"
@@ -518,7 +517,7 @@ createInputs = {
     wLabel.text = "W"
     wLabel.parent = container
     wLabel.position = guiCoord(0, -12, 3/4, 2)
-    themer.registerGui(wLabel, "mainText")
+    themer.registerGui(wLabel, "backgroundText")
 
     local w = x:clone()
     w.name = "w"
@@ -592,7 +591,7 @@ createInputs = {
       textAlpha = 0.6,
       text = "R",
       align = enums.align.topLeft
-    }, "mainText")
+    }, "backgroundText")
 
     local x = ui.create("guiTextBox", container, {
       backgroundAlpha = 0.25,
@@ -611,7 +610,7 @@ createInputs = {
     gLabel.text = "G"
     gLabel.parent = container
     gLabel.position = guiCoord(0, -10, 1/3, 1)
-    themer.registerGui(gLabel, "mainText")
+    themer.registerGui(gLabel, "backgroundText")
 
     local g = x:clone()
     g.name = "g"
@@ -624,7 +623,7 @@ createInputs = {
     bLabel.text = "B"
     bLabel.parent = container
     bLabel.position = guiCoord(0, -10, 2/3, 1)
-    themer.registerGui(bLabel, "mainText")
+    themer.registerGui(bLabel, "backgroundText")
 
     local b = x:clone()
     b.name = "b"

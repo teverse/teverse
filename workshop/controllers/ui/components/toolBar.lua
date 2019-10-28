@@ -36,7 +36,8 @@ for toolName, options in pairs(tools) do
          size = guiCoord(1, 0, 1, 0),
          position = guiCoord(0, 0, 0., 0),
          texture = options.icon,
-         handleEvents = false
+         handleEvents = false,
+         imageAlpha = 0.75
       }, "secondaryImage")
    end
 
@@ -44,14 +45,14 @@ for toolName, options in pairs(tools) do
       if activeTool ~= toolName then
          if activeTool then
             tools[activeTool].deactivate()
-            themer.registerGui(tools[activeTool].gui.icon, "secondaryImage")
+            tools[activeTool].gui.icon.imageAlpha = 0.75
          end
          tools[toolName].activate()
-         themer.registerGui(tools[toolName].gui.icon, "primaryImage")
+         tools[toolName].gui.icon.imageAlpha = 1
          activeTool = toolName
       else
          tools[activeTool].deactivate()
-         themer.registerGui(tools[activeTool].gui.icon, "secondaryImage")
+         tools[activeTool].gui.icon.imageAlpha = 0.75
          activeTool = nil
       end
    end)
