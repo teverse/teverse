@@ -1,5 +1,5 @@
 --[[
-	
+
 	work in progress
 ]]
 
@@ -24,8 +24,8 @@ controller.beginWindowDrag = function(window, dontDock)
 
 	window.zIndex = 99
 	window.borderAlpha = 1
-	window.borderWidth = 10
-	window.borderColour = colour(1,.2,.2)
+	window.borderWidth = 0
+	--window.borderColour = colour(1,.2,.2)
 
 	-- offset used for dragging
 	local offset = window.absolutePosition - engine.input.mousePosition
@@ -42,7 +42,7 @@ controller.beginWindowDrag = function(window, dontDock)
 		if not dontDock then
 			if engine.input.mousePosition.y >= engine.input.screenSize.y * 0.75 and
 				engine.input.mousePosition.x < engine.input.screenSize.x * 0.75 then
-				
+
 				-- bottom dock
 			elseif engine.input.mousePosition.x >= engine.input.screenSize.x * 0.75 then
 				-- right dock

@@ -2,7 +2,7 @@ local ui = require("tevgit:workshop/controllers/ui/core/ui.lua")
 local shared = require("tevgit:workshop/controllers/shared.lua")
 
 local tabs = {
-   ["File"] = {
+   ["Main"] = {
       {"Open", "fa:s-folder-open", function()
          shared.workshop:openFileDialogue()
       end},
@@ -12,10 +12,9 @@ local tabs = {
       {"Save As", "fa:r-save", function()
          shared.workshop:saveGameAsDialogue()
       end},
-   },
-   ["Windows"] = {
+      {"Seperator"},
       {"Settings", "fa:s-cog", function ()
-         shared.windows.settings.visible = not shared.windows.settings.visible
+        shared.windows.settings.visible = not shared.windows.settings.visible
       end}
    }
 }
@@ -25,7 +24,7 @@ if not shared.workshop.hasLocalTevGit or shared.workshop:hasLocalTevGit() then
     {"Reload", "fa:s-sync-alt", function()
         shared.workshop:reloadCreate()
     end},
-    {"Run Lua", "", function()
+    {"Run Lua", "fa:s-chevron-right", function()
         shared.windows.runLua.visible = not shared.windows.runLua.visible
     end}
   }
@@ -59,32 +58,43 @@ for tabName, options in pairs(tabs) do
       backgroundAlpha = 0
    })
 
+   xpos = 12
    for i,v in pairs(options) do
-      local newOption = ui.create("guiFrame", newSubMenu, {
-         size = guiCoord(0, 46, 0, 46),
-         position = guiCoord(0, 12 + ((i-1) * 52), 0, 2),
-         hoverCursor = "fa:s-hand-pointer"
-      }, "primaryVariant")
+     if v[1] == "Seperator" then
+       local seperator = ui.create("guiFrame", newSubMenu, {
+         size = guiCoord(0, 2, 0.6, 0),
+         position = guiCoord(0, xpos, 0.2, 0)
+       }, "primary")
+       xpos = xpos + 12
+     else
+        local newOption = ui.create("guiFrame", newSubMenu, {
+           size = guiCoord(0, 46, 0, 46),
+           position = guiCoord(0, xpos, 0, 2),
+           hoverCursor = "fa:s-hand-pointer"
+        }, "primaryVariant")
 
-      if type(v[3]) == "function" then
-         newOption:mouseLeftPressed(v[3])
-      end
+        if type(v[3]) == "function" then
+           newOption:mouseLeftPressed(v[3])
+        end
 
-      ui.create("guiImage", newOption, {
-         size = guiCoord(0, 20, 0, 20),
-         position = guiCoord(0, 13, 0, 6),
-         texture = v[2],
-         handleEvents = false
-      }, "primaryImage")
+        ui.create("guiImage", newOption, {
+           size = guiCoord(0, 20, 0, 20),
+           position = guiCoord(0, 13, 0, 6),
+           texture = v[2],
+           handleEvents = false
+        }, "primaryImage")
 
-      ui.create("guiTextBox", newOption, {
-         size = guiCoord(1, 0, 0, 16),
-         position = guiCoord(0, 0, 0, 30),
-         text = v[1],
-         handleEvents = false,
-         align = enums.align.middle,
-         fontSize = 15
-      }, "primaryText")
+        ui.create("guiTextBox", newOption, {
+           size = guiCoord(1, 0, 0, 16),
+           position = guiCoord(0, 0, 0, 30),
+           text = v[1],
+           handleEvents = false,
+           align = enums.align.middle,
+           fontSize = 15
+        }, "primaryText")
+
+        xpos = xpos + 52
+    end
    end
 
    newTabBtn:mouseLeftPressed(function ()

@@ -5,4 +5,6 @@
 return {
     handTool = require("tevgit:workshop/controllers/sidetools/hand.lua"),
     moveTool = require("tevgit:workshop/controllers/sidetools/move.lua"),
+    scaleTool = require("tevgit:workshop/controllers/sidetools/scale.lua"),
+    rotateTool = require("tevgit:workshop/controllers/sidetools/rotate.lua"),
 }
