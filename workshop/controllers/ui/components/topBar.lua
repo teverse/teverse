@@ -13,6 +13,9 @@ local tabs = {
          shared.workshop:saveGameAsDialogue()
       end},
       {"Seperator"},
+      {"Properties", "fa:s-clipboard-list", function ()
+        shared.windows.propertyEditor.visible = not shared.windows.propertyEditor.visible
+      end},
       {"Settings", "fa:s-cog", function ()
         shared.windows.settings.visible = not shared.windows.settings.visible
       end}
@@ -68,7 +71,7 @@ for tabName, options in pairs(tabs) do
        xpos = xpos + 12
      else
         local newOption = ui.create("guiFrame", newSubMenu, {
-           size = guiCoord(0, 46, 0, 46),
+           size = guiCoord(0, 56, 0, 46),
            position = guiCoord(0, xpos, 0, 2),
            hoverCursor = "fa:s-hand-pointer"
         }, "primaryVariant")
@@ -79,7 +82,7 @@ for tabName, options in pairs(tabs) do
 
         ui.create("guiImage", newOption, {
            size = guiCoord(0, 20, 0, 20),
-           position = guiCoord(0, 13, 0, 6),
+           position = guiCoord(0, 18, 0, 6),
            texture = v[2],
            handleEvents = false
         }, "primaryImage")
@@ -93,7 +96,7 @@ for tabName, options in pairs(tabs) do
            fontSize = 15
         }, "primaryText")
 
-        xpos = xpos + 52
+        xpos = xpos + 62
     end
    end
 
