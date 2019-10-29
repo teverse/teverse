@@ -1,3 +1,5 @@
+local selection = require("tevgit:workshop/controllers/core/selection.lua")
+
 return {
 	camera = require("tevgit:workshop/controllers/environment/camera.lua"),
 
@@ -41,6 +43,8 @@ return {
 			wireframe=true,
 			mesh  		   = "primitive:sphere"
 		})	
+		print("setseleciton")
+		selection.setSelection(block)
 	end,
 
 	setupEnvironment = function ()

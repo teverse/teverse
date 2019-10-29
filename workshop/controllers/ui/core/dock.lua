@@ -48,7 +48,6 @@ controller.beginWindowDrag = function(window, dontDock)
 				-- right dock
 			else
 				-- no dock
-				helpers.outline.visible = false
 			end
 		end
 
