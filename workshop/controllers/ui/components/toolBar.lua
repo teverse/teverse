@@ -5,7 +5,7 @@ local shared = require("tevgit:workshop/controllers/shared.lua")
 local tools = require("tevgit:workshop/controllers/sidetools/main.lua")
 
 local toolBar = ui.create("guiFrame", shared.workshop.interface, {
-   name = "toolBar",
+   name = "_toolBar",
    size = guiCoord(0, 32, 0, 100),
    position = guiCoord(0, 8, 0, 80),
    backgroundAlpha = 0.8,
