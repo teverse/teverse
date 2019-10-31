@@ -17,7 +17,40 @@ local create = function(className, parent, properties, style)
     return gui
 end
 
+local activeTooltip = nil
+
 return {
+    tooltip = function ( gui, text, delay )
+        if gui:isA("guiBase") then
+            if not delay then delay = 0.4 end
+            return gui:on("mouseFocused", function ()
+                local tooltip = create("guiTextBox", shared.workshop.interface, {
+                    position = guiCoord(0, engine.input.mousePosition.x + 16, 0, engine.input.mousePosition.y),
+                    text = text,
+                    fontSize = 16,
+                    align = enums.align.middle,
+                    borderRadius = 3,
+                    borderAlpha = 0.25,
+                    zIndex = 5000,
+                    handleEvents = false,
+                    visible = false
+                }, "primaryVariant")
+
+                local textDimensions = tooltip.textDimensions
+                tooltip.size = guiCoord(0, textDimensions.x + 10, 0, textDimensions.y + 4)
+
+                gui:once("mouseUnfocused", function()
+                    tooltip:destroy()
+                end)
+
+                wait(delay) 
+                if tooltip and tooltip.alive then
+                    tooltip.visible = true
+                end
+            end)
+        end
+    end,
+
     create = create,
 
     button = function(parent, text, size, position, theme)

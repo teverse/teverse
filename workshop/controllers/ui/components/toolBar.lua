@@ -38,8 +38,10 @@ for toolName, options in pairs(tools) do
          texture = options.icon,
          handleEvents = false,
          imageAlpha = 0.75
-      }, "secondaryImage")
+      }, "primaryImage")
    end
+
+   ui.tooltip(newTabBtn, toolName)
 
    newTabBtn:mouseLeftPressed(function ()
       if activeTool ~= toolName then
