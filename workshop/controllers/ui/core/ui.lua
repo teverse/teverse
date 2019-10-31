@@ -50,6 +50,12 @@ return {
             position = position,
             cropChildren = false
         }, themer.types.background)
+
+        container:on("changed", function (property, value)
+            if property == "visible" and not value then
+                dock.undock(container) -- just in case
+            end
+        end)
         
         local titleBar = create("guiFrame", container, {
             name = "titleBar",

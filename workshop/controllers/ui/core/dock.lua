@@ -192,6 +192,17 @@ controller.loadDockSettings = function()
 	end
 end
 
+controller.undock = function (window)
+	local dock = isInDock(window)
+	if dock then
+		window.parent = dock.parent
+		orderDock(dock)
+
+		if windowDetails[window] then
+			window.size = windowDetails[window].size
+		end
+	end
+end
 
 -- Invoked by a 3rd party script when user begins dragging window.
 controller.beginWindowDrag = function(window, dontDock)
@@ -208,11 +219,7 @@ controller.beginWindowDrag = function(window, dontDock)
 	local offset = window.absolutePosition - engine.input.mousePosition
 
 	-- undock window
-	local dock = isInDock(window)
-	if dock then
-		window.parent = dock.parent
-		orderDock(dock)
-	end
+	controller.undock(window)
 
 	local previewer = engine.construct("guiFrame", shared.workshop.interface, {
 		handleEvents = false,
