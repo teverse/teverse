@@ -12,6 +12,10 @@ end
 
 -- Used to sort objects by ZIndex.
 -- This script uses the object's ZIndex to control the order in the dock
+function numSorter(a,b)
+	return a < b
+end
+
 function zSorter(a,b)
 	return a.zIndex < b.zIndex
 end
@@ -63,6 +67,7 @@ controller.setupDocks = function ()
 		})
 	}
 end
+
 controller.setupDocks()
 
 -- Store info about a window,
@@ -72,7 +77,8 @@ local windowDetails = {}
 -- Ran whenever a dock's contents is changed
 local function dockCallback(dock, isPreviewing)
 	if dock.name == "_dockLeft" then
-		shared.workshop.interface["_toolBar"].position = (#dock.children > 0 or isPreviewing) and guiCoord(0, 208, 0, 80) or guiCoord(0, 8, 0, 80)
+		print(#dock.children)
+		shared.workshop.interface["_toolBar"].position = (#dock.children > 0 or isPreviewing) and guiCoord(0, 258, 0, 80) or guiCoord(0, 8, 0, 80)
 	end
 end
 
@@ -150,27 +156,40 @@ controller.saveDockSettings = function()
 	end
 end
 
+-- used if docks haven't been saved before:
+local defaultSettings = {
+	["_dockRight"] = {
+		["Hierarchy"] = 0,
+		["Properties"] = 1
+	}
+}
+
 controller.loadDockSettings = function()
 	-- Load Dock from settings
 	local settings = shared.workshop:getSettings("workshopDocks")
-	if settings then
-		for _,v in pairs(shared.workshop.interface) do print(v.name) end
-		for dockName, windows in pairs(settings) do
-			local dock = shared.workshop.interface:hasChild(dockName)
-			if dock then
-				for windowName, zIndex in pairs(windows) do
-					local win = shared.workshop.interface:hasChild(windowName)
-					if win then
-						win.zindex = zIndex
-						win.parent = dock
+	if not settings then
+		settings = defaultSettings
+	end
+
+	for dockName, windows in pairs(settings) do
+		local dock = shared.workshop.interface:hasChild(dockName)
+		if dock then
+			for windowName, zIndex in pairs(windows) do
+				local win = shared.workshop.interface:hasChild(windowName)
+				if win then
+					if not windowDetails[win] then
+						windowDetails[win] = {zIndex = win.zIndex, size = win.size}
 					end
+
+					win.zIndex = zIndex
+					win.parent = dock
 				end
 			end
 		end
+	end
 
-		for _,v in pairs(controller.docks) do
-			orderDock(v)
-		end
+	for _,v in pairs(controller.docks) do
+		orderDock(v)
 	end
 end
 
