@@ -20,7 +20,6 @@ local function draw()
 
     local yPos = 0
     for i = latestAction, 0, -1 do
-        print(i)
         local action = actions[i]
         if action then
             ui.create("guiTextBox", window.content, {

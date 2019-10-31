@@ -54,7 +54,6 @@ function toolsController.registerButton(name, gui)
         menu.currentX = menu.currentX + guiSize.x + 5
     else
         menu.currentY = menu.currentY + guiSize.y
-        print( menu.currentY )
     end
 end
 

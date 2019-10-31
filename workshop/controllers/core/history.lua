@@ -45,6 +45,15 @@ local function changedListener(property, value, oldValue)
     end
 end
 
+local function destroyingListener()
+    local changedObject = self.object
+    if not changes[changedObject] then
+        changes[changedObject] = {}
+    end 
+    
+    changes[changedObject]["_destroyed"] = true
+end
+
 local function count(dictionary)
     local i = 0
     for _,v in pairs(dictionary) do i = i + 1 end
@@ -65,9 +74,11 @@ local function beginAction( object, name )
     if type(object) == "table" then
         for _,v in pairs(object) do
             table.insert(eventListeners, v:onSync("changed", changedListener))
+            table.insert(eventListeners, v:onSync("destroying", destroyingListener))
         end
     else
         table.insert(eventListeners, object:onSync("changed", changedListener))
+        table.insert(eventListeners, object:onSync("destroying", destroyingListener))
     end
 end
 
@@ -88,7 +99,7 @@ local function endAction()
     actions[pointer] = {actionName, changes}
     changes = {}
 
-    print("Objects Changed: ", count(actions[pointer]))
+    print("Objects Changed: ", count(actions[pointer][2]))
 
     actionInProgress = false
 
