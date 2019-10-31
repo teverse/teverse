@@ -77,7 +77,6 @@ local windowDetails = {}
 -- Ran whenever a dock's contents is changed
 local function dockCallback(dock, isPreviewing)
 	if dock.name == "_dockLeft" then
-		print(#dock.children)
 		shared.workshop.interface["_toolBar"].position = (#dock.children > 0 or isPreviewing) and guiCoord(0, 258, 0, 80) or guiCoord(0, 8, 0, 80)
 	end
 end
