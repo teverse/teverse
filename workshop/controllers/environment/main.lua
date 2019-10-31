@@ -1,4 +1,5 @@
 local selection = require("tevgit:workshop/controllers/core/selection.lua")
+local shared = require("tevgit:workshop/controllers/shared.lua")
 
 return {
 	camera = require("tevgit:workshop/controllers/environment/camera.lua"),
@@ -40,11 +41,8 @@ return {
 			colour         = colour(0, 0, 1),
 			size           = vector3(1, 1, 1),
 			position       = vector3(0.5, 1, 0),
-			wireframe=true,
 			mesh  		   = "primitive:sphere"
 		})	
-		print("setseleciton")
-		selection.setSelection(block)
 	end,
 
 	setupEnvironment = function ()
