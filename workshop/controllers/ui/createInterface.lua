@@ -14,3 +14,5 @@ shared.windows.runLua = require("tevgit:workshop/controllers/ui/components/runLu
 shared.windows.runLua.visible = false
 
 shared.windows.propertyEditor = require("tevgit:workshop/controllers/ui/components/propertyEditor/window.lua").window
+
+require("tevgit:workshop/controllers/ui/core/dock.lua").loadDockSettings()
