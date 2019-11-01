@@ -35,6 +35,7 @@ addDocs("baseClass", {
     },
     
     methods     = {
+        getDescendants              = method("Returns a table of all descended objects", nil, {"table"})
         destroy                     = method("Locks the object before removing it from the hierarchy. Children will also be destroyed."),
         destroyAllChildren          = method("Invokes the destroy method on each child of this instance."),
         isContainer                 = method("", nil, {
@@ -46,26 +47,98 @@ addDocs("baseClass", {
                                       }, {
                                         "boolean"
                                       }),
-        hasChild                    = method(),
-        isDescendantoF              = method(),
+        hasChild                    = method("Returns true if this object has a child with the name given", {
+                                        name = "string"
+                                    }, { "boolean" }),
+        isDescendantOf              = method("Returns true if this object is a descendant of the ancestor object given", {
+                                        ancestor = "baseClass"
+                                    }, {"boolean"}),
+        getFullName                 = method("Returns a string including ancestor names", nil, {"string"}),
+        clone                       = method("Creates and returns a copy of this object", nil, {"variant"})
     },
     
     events      = {
         changed                     = event("Fired when a property changes", {
                                         propertyName = "string",
-                                        newValue     = "variant"
+                                        newValue     = "variant",
+                                        oldValue     = "variant"
                                       }),
-        childAdded                  = event(),
-        childRemoved                = event(),
-        destroying                  = event(),
+        childAdded                  = event("Fired when a child is added", {
+                                        child = "baseClass"
+                                    }),
+        childRemoved                = event("Fired when a child is removed", {
+                                        child = "baseClass"
+                                    }),
+        destroying                  = event("Fired just before an object is destroyed."),
     }
 })
 
-addDocs("assets", {
-    description = "Assets is a property of engine and is the main container for some of the core components of a game. Assets is a singleton that can be accessed via engine.assets. Children cannot be added to this class.",
+addDocs("audioEmitter", {
+    description = "",
     properties  = {
-        lua                         = property("This Lua folder contains the luaServerFolder, luaClientFolder and luaSharedFolder"),
+        position = property("Location of the sound in 3D space"),
+        audioFile = property("The file that teverse will use to load sound, using [[resource locators]]."),
     },
+    methods = {
+        play = method("play the loaded audio file")
+    }
+})
+
+addDocs("block", {
+    description = "",
+    properties  = {
+        linearFactor = property("Restricts the linear movement in the physics engine. A value of (1,1,1) allows the object to move in all directions whereas (0,1,0) means the object can only move up and down on the y axis."),
+        doNotSerialise = property("The built in game serialiser will not serialise objects with this set as true."),
+        workshopLocked = property("Solely used in workshop"),
+        meshScale = property("This is the value Teverse has had to scale the loaded mesh down in order to fit it in a 1x1x1 bounding box"),
+        position = property("Location of the object in 3D space"),
+        mesh = property("The file that teverse will use to load a 3d model, using [[resource locators]]."),
+        physics = property("When true, things like raycasting may not work correctly for this object"),
+        static = property("When true, this object will not move as it will become unaffected by forces including gravity."),
+        opacity = property("A value of 1 indicates this object is not transparent.")
+    },
+    
+    methods = {
+        applyImpulseAtPosition = method("Applies an impulse force at a relative position to this object", {
+            impulse = "vector3",
+            position = "vector3"
+        }),
+        applyImpulse = method("Applies an impulse force to this object", {
+            impulse = "vector3",
+        }),
+        applyForceAtPosition = method("Applies a force at a relative position to this object", {
+            force = "vector3",
+            position = "vector3"
+        }),
+        applyForce = method("Applies a force to this object", {
+            force = "vector3",
+        }),
+        applyTorque = method("Applies a force to this object", {
+            torque = "vector3",
+        }),
+        applyTorqueImpulse = method("Applies a force to this object", {
+            torqueImpulse = "vector3",
+        }),
+        lookAt = method("Changes the objects rotation so that it is looking towards the provided position.", {
+            position = "vector3",
+        })
+    }
+})
+
+
+addDocs("camera", {
+    description = "",
+    properties  = {
+    
+    },
+    methods = {
+        worldToScreen = method("Converts a 3d cooridinate into screenspace. Returns a bool indicating if the point is infront of the camera, returns a vector2 with the screenspace coordinates,", {
+            position = "vector3"
+        }, {"boolean", "vector2", "number"}),
+        lookAt = method("Changes the objects rotation so that it is looking towards the provided position.", {
+            position = "vector3",
+        })
+    }
 })
 
 return docs
