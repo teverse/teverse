@@ -25,7 +25,7 @@ local tabs = {
    }
 }
 
-if not shared.workshop.hasLocalTevGit or shared.workshop:hasLocalTevGit() then
+if shared.developerMode then
   tabs["Development"] = {
     {"Reload", "fa:s-sync-alt", function()
         shared.workshop:reloadCreate()

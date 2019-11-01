@@ -142,5 +142,82 @@ return {
         })
         
         return container
+    end,
+
+    -- Creates a full screen prompt
+    -- Prevents user from doing anything until they acknowledge the prompt
+    -- if callback is nil, the function yields until the user continues
+    -- if callback is a function, it is ran when the user continues
+    prompt = function ( message, callback )
+        local content = create("guiFrame", shared.workshop.interface, {
+            name = "_prompt",
+            backgroundAlpha = 0.9,
+            backgroundColour = colour:black(),
+            size = guiCoord(1, 0, 1, 0),
+            position = guiCoord(0, 0, 0, 0),
+            zIndex = 5000
+        }, "background")
+
+        if shared.developerMode then
+            content.handleEvents = false
+            create("guiTextBox", content, {
+                name = "disclaimer",
+                size = guiCoord(1, 0, 0, 14),
+                position = guiCoord(0, 0, 1, -14),
+                text = "Developer mode is enabled, this prompt has not captured your mouse input, bg opacity is also decreased.",
+                handleEvents = false,
+                align = enums.align.middle,
+                fontSize = 14
+            }, "backgroundText")
+
+            content.backgroundAlpha = 0.75
+        end
+
+        local container = create("guiFrame", content, {
+            size = guiCoord(0.4, 0, 0.4, 0),
+            position = guiCoord(0.3, 0, 0.3, 0),
+            cropChildren = false,
+            borderRadius = 5,
+            handleEvents = false
+        }, themer.types.primary)
+
+        local text = create("guiTextBox", container, {
+            name = "disclaimer",
+            size = guiCoord(1, -20, 1, -20),
+            position = guiCoord(0, 10, 0, 10),
+            text = message,
+            handleEvents = false,
+            align = enums.align.middle,
+            fontSize = 21
+        }, "primaryText")
+
+        local textDimensions = text.textDimensions
+        container.size = guiCoord(0, textDimensions.x + 20, 0, textDimensions.y + 20)
+        container.position = guiCoord(0.5, -(textDimensions.x + 20)/2, 0.5, -(textDimensions.y + 20)/2)
+    
+        local continue = create("guiTextBox", content, {
+            size = guiCoord(0, textDimensions.x + 20, 0, 40),
+            position = guiCoord(0.5, -(textDimensions.x + 20)/2, 0.5, (textDimensions.y/2 + 5)),
+            cropChildren = false,
+            zIndex = 2,
+            text = "Continue",
+            align = enums.align.middle,
+            fontFile = "OpenSans-Bold.ttf"
+        }, themer.types.primaryVariant)
+
+        if not callback then
+            local acknowledged = false
+            continue:once("mouseLeftPressed", function() acknowledged = true end)
+            repeat wait() until acknowledged
+            content:destroy()
+            return true
+        else
+            continue:once("mouseLeftPressed", function() 
+                if type(callback) == "function" then
+                    callback()
+                end
+                content:destroy()
+            end)
+        end
     end
 }

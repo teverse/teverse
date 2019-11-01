@@ -15,6 +15,7 @@ return function( workshop )
 	-- Load this now, we need it to make the reload button
 	local shared = require("tevgit:workshop/controllers/shared.lua")
 	shared.workshop = workshop
+	shared.developerMode = not shared.workshop.hasLocalTevGit or shared.workshop:hasLocalTevGit()
 
 	local loadingScreen;
 	do
@@ -32,7 +33,7 @@ return function( workshop )
 			text = "Downloading the latest workshop...\nThis takes longer than a moment during beta."
 		})
 
-		if not shared.workshop.hasLocalTevGit or shared.workshop:hasLocalTevGit() then
+		if shared.developerMode then
 			local emergencyReload = engine.construct("guiTextBox", loadingScreen, {
 				text = "Emergency Reload",
 				size = guiCoord(0, 200, 0, 30),

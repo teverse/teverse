@@ -21,3 +21,7 @@ shared.windows.history = require("tevgit:workshop/controllers/ui/components/hist
 shared.windows.history.visible = false
 
 require("tevgit:workshop/controllers/ui/core/dock.lua").loadDockSettings()
+
+if not shared.developerMode then
+    ui.prompt("This is community driven software\nIt does not resemble the final product in anyway.", true)
+end
