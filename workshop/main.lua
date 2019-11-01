@@ -84,5 +84,7 @@ return function( workshop )
     	loadingScreen = nil
     end
 
-    print("Workshop Loaded. ", #engine.workspace.children)
+	print("Workshop Loaded. ", #engine.workspace.children)
+	wait(10)
+	print("yield over")
 end

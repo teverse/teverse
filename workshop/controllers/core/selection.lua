@@ -8,6 +8,7 @@ controller.callbacks = {}
 
 controller.fireCallbacks = function ()
 	for _,v in pairs(controller.callbacks) do
+		print("firing")
 		v()
 	end
 end
@@ -22,12 +23,21 @@ controller.setSelection = function(obj)
 end
 
 controller.addSelection = function(obj)
+	print("test test")
 	if type(obj) == "table" then
 		for _,v in pairs(obj) do
-			table.insert(controller.selection, v)
+			if v.isA and v:isA("baseClass") then
+				table.insert(controller.selection, v)
+			else
+				warn("selecting unknown object")
+			end
 		end
 	else
-		table.insert(controller.selection, obj)
+		if obj.isA and obj:isA("baseClass") then
+			table.insert(controller.selection, obj)
+		else
+			warn("selecting unknown object")
+		end
 	end
 	controller.fireCallbacks()
 end
@@ -38,6 +48,10 @@ controller.isSelected = function(obj)
 			return true
 		end
 	end
+end
+
+controller.hasSelection = function()
+	return #controller.selection > 0
 end
 
 return controller
