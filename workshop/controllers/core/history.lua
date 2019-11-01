@@ -177,15 +177,21 @@ local function redo()
     end
 end
 
-engine.input:on("keyPressed", function (inputObj)
-    if engine.input:isKeyDown(enums.key.leftCtrl) then
-        if inputObj.key == enums.key.z then
-            undo()
-        elseif inputObj.key == enums.key.y then
-            redo()
-        end
-    end
-end)
+local hotkeys = require("tevgit:workshop/controllers/core/hotkeys.lua")
+
+hotkeys:bind({
+    name = "undo",
+    priorKey = enums.key.leftCtrl,
+    key = enums.key.z,
+    action = undo
+})
+
+hotkeys:bind({
+    name = "redo",
+    priorKey = enums.key.leftCtrl,
+    key = enums.key.y,
+    action = redo
+})
 
 return {
     beginAction = beginAction,
