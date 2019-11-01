@@ -1,0 +1,1373 @@
+{
+    "_generatedVersion": "DEBUG_BUILD 0.7.1",
+    "_generatedAt": "01/11/2019 21:46:56",
+    "classes": [
+        {
+            "methods": {
+                "reloadShaders": []
+            },
+            "derivedFrom": "baseClass",
+            "events": {
+                "frameDrawn": []
+            },
+            "subclasses": [],
+            "class": "graphics",
+            "properties": {
+                "ambientColour": {
+                    "defaultType": "colour",
+                    "writable": "colour"
+                },
+                "className": {
+                    "defaultType": "string",
+                    "writable": false
+                },
+                "name": {
+                    "defaultType": "string",
+                    "writable": false
+                },
+                "clearColour": {
+                    "defaultType": "colour",
+                    "writable": "colour"
+                }
+            }
+        },
+        {
+            "methods": {
+                "decode": [],
+                "encodeWithTypes": [],
+                "encode": []
+            },
+            "derivedFrom": "baseClass",
+            "events": [],
+            "subclasses": [],
+            "class": "json",
+            "properties": {
+                "name": {
+                    "defaultType": "string",
+                    "writable": "string"
+                },
+                "className": {
+                    "defaultType": "string",
+                    "writable": false
+                }
+            }
+        },
+        {
+            "methods": {
+                "toServer": [],
+                "bind": [],
+                "toAllClients": [],
+                "toClient": []
+            },
+            "derivedFrom": "baseClass",
+            "events": {
+                "connected": [],
+                "pingUpdate": [],
+                "disconnected": []
+            },
+            "subclasses": [],
+            "class": "networking",
+            "properties": {
+                "className": {
+                    "defaultType": "string",
+                    "writable": false
+                },
+                "ping": {
+                    "defaultType": "number",
+                    "writable": false
+                },
+                "connectionStatus": {
+                    "defaultType": "number",
+                    "writable": false
+                },
+                "me": {
+                    "defaultType": "boolean",
+                    "writable": false
+                },
+                "name": {
+                    "defaultType": "string",
+                    "writable": false
+                },
+                "serverId": {
+                    "defaultType": "string",
+                    "writable": false
+                }
+            }
+        },
+        {
+            "methods": [],
+            "derivedFrom": "baseClass",
+            "events": [],
+            "subclasses": [],
+            "class": "client",
+            "properties": {
+                "className": {
+                    "defaultType": "string",
+                    "writable": false
+                },
+                "id": {
+                    "defaultType": "string",
+                    "writable": false
+                }
+            }
+        },
+        {
+            "methods": {
+                "getClientFromId": []
+            },
+            "derivedFrom": "baseClass",
+            "events": {
+                "clientDisconnected": [],
+                "clientConnected": []
+            },
+            "subclasses": [],
+            "class": "clients",
+            "properties": {
+                "name": {
+                    "defaultType": "string",
+                    "writable": false
+                },
+                "className": {
+                    "defaultType": "string",
+                    "writable": false
+                }
+            }
+        },
+        {
+            "methods": {
+                "rayTestScreenAllHits": [],
+                "resume": [],
+                "rayTestAllHits": [],
+                "pause": [],
+                "rayTestClosest": [],
+                "rayTestScreen": []
+            },
+            "derivedFrom": "baseClass",
+            "events": [],
+            "subclasses": [],
+            "class": "physics",
+            "properties": {
+                "className": {
+                    "defaultType": "string",
+                    "writable": false
+                },
+                "name": {
+                    "defaultType": "string",
+                    "writable": false
+                },
+                "running": {
+                    "defaultType": "boolean",
+                    "writable": false
+                }
+            }
+        },
+        {
+            "methods": {
+                "locals": [],
+                "getfenv": [],
+                "upvalues": []
+            },
+            "derivedFrom": "baseClass",
+            "events": {
+                "output": []
+            },
+            "subclasses": [],
+            "class": "debug",
+            "properties": {
+                "name": {
+                    "defaultType": "string",
+                    "writable": false
+                },
+                "className": {
+                    "defaultType": "string",
+                    "writable": false
+                }
+            }
+        },
+        {
+            "methods": {
+                "urlEncode": [],
+                "post": [],
+                "urlDecode": [],
+                "get": []
+            },
+            "derivedFrom": "baseClass",
+            "events": [],
+            "subclasses": [],
+            "class": "http",
+            "properties": {
+                "name": {
+                    "defaultType": "string",
+                    "writable": false
+                },
+                "className": {
+                    "defaultType": "string",
+                    "writable": false
+                }
+            }
+        },
+        {
+            "methods": {
+                "isKeyDown": [],
+                "isMouseButtonDown": []
+            },
+            "derivedFrom": "baseClass",
+            "events": {
+                "mouseLeftPressed": [],
+                "keyReleased": [],
+                "keyPressed": [],
+                "mouseMiddleReleased": [],
+                "mouseMiddlePressed": [],
+                "mouseScrolled": [],
+                "mouseRightReleased": [],
+                "mouseMoved": [],
+                "mouseRightPressed": [],
+                "mouseLeftReleased": []
+            },
+            "subclasses": [],
+            "class": "input",
+            "properties": {
+                "screenSize": {
+                    "defaultType": "vector2",
+                    "writable": false
+                },
+                "mousePosition": {
+                    "defaultType": "vector2",
+                    "writable": false
+                },
+                "className": {
+                    "defaultType": "string",
+                    "writable": false
+                },
+                "mouseFocusedGui": {
+                    "defaultType": "boolean",
+                    "writable": false
+                },
+                "name": {
+                    "defaultType": "string",
+                    "writable": false
+                },
+                "cursorTexture": {
+                    "defaultType": "string",
+                    "writable": "string"
+                }
+            }
+        },
+        {
+            "methods": [],
+            "derivedFrom": "baseClass",
+            "events": [],
+            "subclasses": [],
+            "class": "folder",
+            "properties": {
+                "className": {
+                    "defaultType": "string",
+                    "writable": false
+                }
+            }
+        },
+        {
+            "methods": [],
+            "derivedFrom": "baseClass",
+            "events": [],
+            "subclasses": [],
+            "class": "assetsFolder",
+            "properties": {
+                "name": {
+                    "defaultType": "string",
+                    "writable": false
+                },
+                "className": {
+                    "defaultType": "string",
+                    "writable": false
+                }
+            }
+        },
+        {
+            "methods": [],
+            "derivedFrom": "baseClass",
+            "events": [],
+            "subclasses": [],
+            "class": "luaFolder",
+            "properties": {
+                "name": {
+                    "defaultType": "string",
+                    "writable": false
+                },
+                "className": {
+                    "defaultType": "string",
+                    "writable": false
+                }
+            }
+        },
+        {
+            "methods": {
+                "editExternal": []
+            },
+            "derivedFrom": "baseClass",
+            "events": [],
+            "subclasses": [],
+            "class": "scriptSource",
+            "properties": {
+                "containers": {
+                    "defaultType": "table",
+                    "writable": false
+                },
+                "className": {
+                    "defaultType": "string",
+                    "writable": false
+                },
+                "source": {
+                    "defaultType": "string",
+                    "writable": "string"
+                },
+                "id": {
+                    "defaultType": "number",
+                    "writable": false
+                }
+            }
+        },
+        {
+            "methods": [],
+            "derivedFrom": "baseClass",
+            "events": [],
+            "subclasses": [],
+            "class": "scriptContainer",
+            "properties": {
+                "autoRun": {
+                    "defaultType": "boolean",
+                    "writable": "boolean"
+                },
+                "scriptType": {
+                    "defaultType": "number",
+                    "writable": "number"
+                },
+                "source": {
+                    "defaultType": "boolean",
+                    "writable": "scriptSource"
+                },
+                "className": {
+                    "defaultType": "string",
+                    "writable": false
+                }
+            }
+        },
+        {
+            "methods": [],
+            "derivedFrom": "baseClass",
+            "events": [],
+            "subclasses": [],
+            "class": "luaClientFolder",
+            "properties": {
+                "name": {
+                    "defaultType": "string",
+                    "writable": false
+                },
+                "className": {
+                    "defaultType": "string",
+                    "writable": false
+                }
+            }
+        },
+        {
+            "methods": [],
+            "derivedFrom": "baseClass",
+            "events": [],
+            "subclasses": [],
+            "class": "luaServerFolder",
+            "properties": {
+                "name": {
+                    "defaultType": "string",
+                    "writable": false
+                },
+                "className": {
+                    "defaultType": "string",
+                    "writable": false
+                }
+            }
+        },
+        {
+            "methods": [],
+            "derivedFrom": "baseClass",
+            "events": [],
+            "subclasses": [],
+            "class": "luaSharedFolder",
+            "properties": {
+                "name": {
+                    "defaultType": "string",
+                    "writable": false
+                },
+                "className": {
+                    "defaultType": "string",
+                    "writable": false
+                }
+            }
+        },
+        {
+            "methods": {
+                "applyImpulseAtPosition": [],
+                "applyImpulse": [],
+                "applyForce": [],
+                "applyTorque": [],
+                "applyForceAtPosition": [],
+                "lookAt": [],
+                "applyTorqueImpulse": []
+            },
+            "derivedFrom": "baseClass",
+            "events": {
+                "mouseLeftPressed": [],
+                "collisionStarted": [],
+                "mouseLeftReleased": [],
+                "mouseRightPressed": [],
+                "mouseRightReleased": [],
+                "collisionEnded": [],
+                "mouseMiddleReleased": [],
+                "mouseMiddlePressed": []
+            },
+            "subclasses": [],
+            "class": "block",
+            "properties": {
+                "velocity": {
+                    "defaultType": "vector3",
+                    "writable": "vector3"
+                },
+                "rotation": {
+                    "defaultType": "quaternion",
+                    "writable": "quaternion"
+                },
+                "emissiveColour": {
+                    "defaultType": "colour",
+                    "writable": "colour"
+                },
+                "linearFactor": {
+                    "defaultType": "vector3",
+                    "writable": "vector3"
+                },
+                "doNotSerialise": {
+                    "defaultType": "boolean",
+                    "writable": "boolean"
+                },
+                "friction": {
+                    "defaultType": "number",
+                    "writable": "number"
+                },
+                "mesh": {
+                    "defaultType": "string",
+                    "writable": "string"
+                },
+                "renderQueue": {
+                    "defaultType": "number",
+                    "writable": "number"
+                },
+                "restitution": {
+                    "defaultType": "number",
+                    "writable": "number"
+                },
+                "spinningFriction": {
+                    "defaultType": "number",
+                    "writable": "number"
+                },
+                "workshopLocked": {
+                    "defaultType": "boolean",
+                    "writable": "boolean"
+                },
+                "size": {
+                    "defaultType": "vector3",
+                    "writable": "vector3"
+                },
+                "meshScale": {
+                    "defaultType": "vector3",
+                    "writable": false
+                },
+                "roughness": {
+                    "defaultType": "number",
+                    "writable": "number"
+                },
+                "linearDamping": {
+                    "defaultType": "number",
+                    "writable": "number"
+                },
+                "position": {
+                    "defaultType": "vector3",
+                    "writable": "vector3"
+                },
+                "networkedId": {
+                    "defaultType": "number",
+                    "writable": false
+                },
+                "physics": {
+                    "defaultType": "boolean",
+                    "writable": "boolean"
+                },
+                "angularFactor": {
+                    "defaultType": "vector3",
+                    "writable": "vector3"
+                },
+                "metalness": {
+                    "defaultType": "number",
+                    "writable": "number"
+                },
+                "static": {
+                    "defaultType": "boolean",
+                    "writable": "boolean"
+                },
+                "rollingFriction": {
+                    "defaultType": "number",
+                    "writable": "number"
+                },
+                "className": {
+                    "defaultType": "string",
+                    "writable": false
+                },
+                "colour": {
+                    "defaultType": "colour",
+                    "writable": "colour"
+                },
+                "castsShadows": {
+                    "defaultType": "boolean",
+                    "writable": "boolean"
+                },
+                "angularDamping": {
+                    "defaultType": "number",
+                    "writable": "number"
+                },
+                "wireframe": {
+                    "defaultType": "boolean",
+                    "writable": "boolean"
+                },
+                "angularVelocity": {
+                    "defaultType": "vector3",
+                    "writable": "vector3"
+                },
+                "opacity": {
+                    "defaultType": "number",
+                    "writable": "number"
+                }
+            }
+        },
+        {
+            "methods": [],
+            "derivedFrom": "baseClass",
+            "events": [],
+            "subclasses": [],
+            "class": "workspace",
+            "properties": {
+                "name": {
+                    "defaultType": "string",
+                    "writable": false
+                },
+                "className": {
+                    "defaultType": "string",
+                    "writable": false
+                }
+            }
+        },
+        {
+            "methods": {
+                "worldToScreen": [],
+                "lookAt": []
+            },
+            "derivedFrom": "baseClass",
+            "events": [],
+            "subclasses": [],
+            "class": "camera",
+            "properties": {
+                "fov": {
+                    "defaultType": "number",
+                    "writable": "number"
+                },
+                "position": {
+                    "defaultType": "vector3",
+                    "writable": "vector3"
+                },
+                "className": {
+                    "defaultType": "string",
+                    "writable": false
+                },
+                "name": {
+                    "defaultType": "string",
+                    "writable": false
+                },
+                "rotation": {
+                    "defaultType": "quaternion",
+                    "writable": "quaternion"
+                }
+            }
+        },
+        {
+            "methods": {
+                "lookAt": []
+            },
+            "derivedFrom": "baseClass",
+            "events": [],
+            "subclasses": [],
+            "class": "light",
+            "properties": {
+                "rotation": {
+                    "defaultType": "quaternion",
+                    "writable": "quaternion"
+                },
+                "position": {
+                    "defaultType": "vector3",
+                    "writable": "vector3"
+                },
+                "power": {
+                    "defaultType": "number",
+                    "writable": "number"
+                },
+                "specularColour": {
+                    "defaultType": "colour",
+                    "writable": "colour"
+                },
+                "radius": {
+                    "defaultType": "number",
+                    "writable": "number"
+                },
+                "shadowFarClip": {
+                    "defaultType": "number",
+                    "writable": "number"
+                },
+                "lumThreshold": {
+                    "defaultType": "number",
+                    "writable": "number"
+                },
+                "className": {
+                    "defaultType": "string",
+                    "writable": false
+                },
+                "shadows": {
+                    "defaultType": "boolean",
+                    "writable": "boolean"
+                },
+                "type": {
+                    "defaultType": "number",
+                    "writable": "number"
+                },
+                "falloff": {
+                    "defaultType": "number",
+                    "writable": "number"
+                },
+                "diffuseColour": {
+                    "defaultType": "colour",
+                    "writable": "colour"
+                },
+                "shadowFarDistance": {
+                    "defaultType": "number",
+                    "writable": "number"
+                },
+                "shadowNearClip": {
+                    "defaultType": "number",
+                    "writable": "number"
+                }
+            }
+        },
+        {
+            "methods": {
+                "lookAt": []
+            },
+            "derivedFrom": "baseClass",
+            "events": [],
+            "subclasses": [],
+            "class": "grid",
+            "properties": {
+                "step": {
+                    "defaultType": "number",
+                    "writable": "number"
+                },
+                "rotation": {
+                    "defaultType": "quaternion",
+                    "writable": "quaternion"
+                },
+                "position": {
+                    "defaultType": "vector3",
+                    "writable": "vector3"
+                },
+                "colour": {
+                    "defaultType": "colour",
+                    "writable": "colour"
+                },
+                "className": {
+                    "defaultType": "string",
+                    "writable": false
+                },
+                "size": {
+                    "defaultType": "number",
+                    "writable": "number"
+                }
+            }
+        },
+        {
+            "methods": {
+                "play": []
+            },
+            "derivedFrom": "baseClass",
+            "events": [],
+            "subclasses": [],
+            "class": "audioEmitter",
+            "properties": {
+                "className": {
+                    "defaultType": "string",
+                    "writable": false
+                },
+                "position": {
+                    "defaultType": "vector3",
+                    "writable": "vector3"
+                },
+                "pitch": {
+                    "defaultType": "number",
+                    "writable": "number"
+                },
+                "audioFile": {
+                    "defaultType": "string",
+                    "writable": "string"
+                },
+                "gain": {
+                    "defaultType": "number",
+                    "writable": "number"
+                },
+                "loop": {
+                    "defaultType": "boolean",
+                    "writable": "boolean"
+                }
+            }
+        },
+        {
+            "methods": {
+                "play": []
+            },
+            "derivedFrom": "baseClass",
+            "events": [],
+            "subclasses": [],
+            "class": "sounds",
+            "properties": {
+                "name": {
+                    "defaultType": "string",
+                    "writable": false
+                },
+                "className": {
+                    "defaultType": "string",
+                    "writable": false
+                }
+            }
+        },
+        {
+            "methods": [],
+            "derivedFrom": "guiBase",
+            "events": [],
+            "subclasses": [],
+            "class": "guiFrame",
+            "properties": {
+                "className": {
+                    "defaultType": "string",
+                    "writable": false
+                }
+            }
+        },
+        {
+            "methods": [],
+            "derivedFrom": "guiBase",
+            "events": [],
+            "subclasses": [],
+            "class": "guiFrameMultiColour",
+            "properties": {
+                "topLeftColour": {
+                    "defaultType": "colour",
+                    "writable": "colour"
+                },
+                "topRightColour": {
+                    "defaultType": "colour",
+                    "writable": "colour"
+                },
+                "topRightAlpha": {
+                    "defaultType": "number",
+                    "writable": "number"
+                },
+                "bottomLeftColour": {
+                    "defaultType": "colour",
+                    "writable": "colour"
+                },
+                "className": {
+                    "defaultType": "string",
+                    "writable": false
+                },
+                "bottomLeftAlpha": {
+                    "defaultType": "number",
+                    "writable": "number"
+                },
+                "topLeftAlpha": {
+                    "defaultType": "number",
+                    "writable": "number"
+                },
+                "bottomRightColour": {
+                    "defaultType": "colour",
+                    "writable": "colour"
+                },
+                "bottomRightAlpha": {
+                    "defaultType": "number",
+                    "writable": "number"
+                }
+            }
+        },
+        {
+            "methods": [],
+            "derivedFrom": "guiBase",
+            "events": [],
+            "subclasses": [],
+            "class": "guiScrollView",
+            "properties": {
+                "viewOffset": {
+                    "defaultType": "vector2",
+                    "writable": "vector2"
+                },
+                "scrollBarColour": {
+                    "defaultType": "colour",
+                    "writable": "colour"
+                },
+                "canvasSize": {
+                    "defaultType": "guiCoord",
+                    "writable": "guiCoord"
+                },
+                "className": {
+                    "defaultType": "string",
+                    "writable": false
+                },
+                "scrollBarWidth": {
+                    "defaultType": "number",
+                    "writable": "number"
+                }
+            }
+        },
+        {
+            "methods": [],
+            "derivedFrom": "guiBase",
+            "events": [],
+            "subclasses": [],
+            "class": "interface",
+            "properties": {
+                "className": {
+                    "defaultType": "string",
+                    "writable": false
+                }
+            }
+        },
+        {
+            "methods": {
+                "setAsPasswordInput": [],
+                "focus": [],
+                "setTextColour": [],
+                "setText": []
+            },
+            "derivedFrom": "guiTextBase",
+            "events": {
+                "textInput": []
+            },
+            "subclasses": [],
+            "class": "guiTextBox",
+            "properties": {
+                "readOnly": {
+                    "defaultType": "boolean",
+                    "writable": "boolean"
+                },
+                "multiline": {
+                    "defaultType": "boolean",
+                    "writable": "boolean"
+                },
+                "className": {
+                    "defaultType": "string",
+                    "writable": false
+                }
+            }
+        },
+        {
+            "methods": [],
+            "derivedFrom": "guiTextBase",
+            "events": [],
+            "subclasses": [],
+            "class": "guiButton",
+            "properties": {
+                "className": {
+                    "defaultType": "string",
+                    "writable": false
+                },
+                "hoverCursor": {
+                    "defaultType": "string",
+                    "writable": "string"
+                },
+                "selected": {
+                    "defaultType": "boolean",
+                    "writable": "boolean"
+                }
+            }
+        },
+        {
+            "methods": [],
+            "derivedFrom": "guiBase",
+            "events": [],
+            "subclasses": [
+                "guiTextBox",
+                "guiButton"
+            ],
+            "class": "guiTextBase",
+            "properties": {
+                "fontSize": {
+                    "defaultType": "number",
+                    "writable": "number"
+                },
+                "className": {
+                    "defaultType": "string",
+                    "writable": false
+                },
+                "align": {
+                    "defaultType": "number",
+                    "writable": "number"
+                },
+                "textColour": {
+                    "defaultType": "colour",
+                    "writable": "colour"
+                },
+                "wrap": {
+                    "defaultType": "boolean",
+                    "writable": "boolean"
+                },
+                "textAlpha": {
+                    "defaultType": "number",
+                    "writable": "number"
+                },
+                "fontFile": {
+                    "defaultType": "string",
+                    "writable": "string"
+                },
+                "text": {
+                    "defaultType": "string",
+                    "writable": "string"
+                }
+            }
+        },
+        {
+            "methods": [],
+            "derivedFrom": "guiBase",
+            "events": [],
+            "subclasses": [],
+            "class": "guiImage",
+            "properties": {
+                "imageAlpha": {
+                    "defaultType": "number",
+                    "writable": "number"
+                },
+                "className": {
+                    "defaultType": "string",
+                    "writable": false
+                },
+                "uvB": {
+                    "defaultType": "vector2",
+                    "writable": "vector2"
+                },
+                "imageColour": {
+                    "defaultType": "colour",
+                    "writable": "colour"
+                },
+                "uvA": {
+                    "defaultType": "vector2",
+                    "writable": "vector2"
+                },
+                "texture": {
+                    "defaultType": "string",
+                    "writable": "string"
+                }
+            }
+        },
+        {
+            "methods": {
+                "bindSizeBreakpoint": []
+            },
+            "derivedFrom": "baseClass",
+            "events": {
+                "keyUnfocused": [],
+                "mouseFocused": [],
+                "keyReleased": [],
+                "mouseRightDragged": [],
+                "mouseLeftDragged": [],
+                "keyFocused": [],
+                "mouseMiddleReleased": [],
+                "mouseMiddlePressed": [],
+                "mouseMiddleDragged": [],
+                "mouseScrolled": [],
+                "mouseRightReleased": [],
+                "keyPressed": [],
+                "mouseRightPressed": [],
+                "mouseLeftReleased": [],
+                "mouseUnfocused": [],
+                "mouseLeftPressed": []
+            },
+            "subclasses": [
+                "guiFrame",
+                "guiFrameMultiColour",
+                "guiScrollView",
+                "interface",
+                "guiTextBase",
+                "guiImage"
+            ],
+            "class": "guiBase",
+            "properties": {
+                "zIndex": {
+                    "defaultType": "number",
+                    "writable": "number"
+                },
+                "rotation": {
+                    "defaultType": "number",
+                    "writable": "number"
+                },
+                "borderWidth": {
+                    "defaultType": "number",
+                    "writable": "number"
+                },
+                "visible": {
+                    "defaultType": "boolean",
+                    "writable": "boolean"
+                },
+                "cropChildren": {
+                    "defaultType": "boolean",
+                    "writable": "boolean"
+                },
+                "handleEvents": {
+                    "defaultType": "boolean",
+                    "writable": "boolean"
+                },
+                "borderAlpha": {
+                    "defaultType": "number",
+                    "writable": "number"
+                },
+                "className": {
+                    "defaultType": "string",
+                    "writable": false
+                },
+                "borderColour": {
+                    "defaultType": "colour",
+                    "writable": "colour"
+                },
+                "hoverCursor": {
+                    "defaultType": "string",
+                    "writable": "string"
+                },
+                "size": {
+                    "defaultType": "guiCoord",
+                    "writable": "guiCoord"
+                },
+                "backgroundColour": {
+                    "defaultType": "colour",
+                    "writable": "colour"
+                },
+                "backgroundAlpha": {
+                    "defaultType": "number",
+                    "writable": "number"
+                },
+                "borderRadius": {
+                    "defaultType": "number",
+                    "writable": "number"
+                },
+                "position": {
+                    "defaultType": "guiCoord",
+                    "writable": "guiCoord"
+                }
+            }
+        },
+        {
+            "methods": {
+                "begin": [],
+                "create": []
+            },
+            "derivedFrom": "baseClass",
+            "events": [],
+            "subclasses": [],
+            "class": "tween",
+            "properties": {
+                "license": {
+                    "defaultType": "string",
+                    "writable": false
+                },
+                "className": {
+                    "defaultType": "string",
+                    "writable": false
+                },
+                "name": {
+                    "defaultType": "string",
+                    "writable": "string"
+                }
+            }
+        },
+        {
+            "methods": {
+                "joinGame": [],
+                "hasLocalTevGit": [],
+                "getMembersOfInstance": [],
+                "setTevGit": [],
+                "openFileDialogue": [],
+                "setSettings": [],
+                "setSoundDebug": [],
+                "reloadCreate": [],
+                "newGame": [],
+                "remoteTestServer": [],
+                "clearGame": [],
+                "apiDump": [],
+                "saveGameAsDialogue": [],
+                "reloadShaders": [],
+                "getEventsOfObject": [],
+                "saveGame": [],
+                "loadString": [],
+                "getMembersOfObject": [],
+                "publishDialogue": [],
+                "setPhysicsDebug": [],
+                "getSettings": []
+            },
+            "derivedFrom": "baseClass",
+            "events": {
+                "published": []
+            },
+            "subclasses": [],
+            "class": "workshop",
+            "properties": {
+                "className": {
+                    "defaultType": "string",
+                    "writable": false
+                },
+                "interface": {
+                    "defaultType": "interface",
+                    "writable": false
+                },
+                "gameCloudId": {
+                    "defaultType": "string",
+                    "writable": false
+                },
+                "name": {
+                    "defaultType": "string",
+                    "writable": false
+                },
+                "gameFilePath": {
+                    "defaultType": "string",
+                    "writable": false
+                }
+            }
+        },
+        {
+            "methods": {
+                "getDescendants": [],
+                "isContainer": {
+                    "desc": "",
+                    "returns": [
+                        "boolean"
+                    ]
+                },
+                "isA": {
+                    "desc": "Returns true if this object is derived from the className given.",
+                    "returns": [
+                        "boolean"
+                    ],
+                    "parameters": {
+                        "className": "string"
+                    }
+                },
+                "destroy": {
+                    "desc": "Locks the object before removing it from the hierarchy. Children will also be destroyed."
+                },
+                "getFullName": [],
+                "constructor": [],
+                "destroyAllChildren": {
+                    "desc": "Invokes the destroy method on each child of this instance."
+                },
+                "hasChild": {
+                    "desc": "No description was set"
+                },
+                "isDescendantOf": [],
+                "describe": [],
+                "clone": {
+                    "desc": "No description was set"
+                }
+            },
+            "events": {
+                "changed": {
+                    "desc": "Fired when a property changes",
+                    "parameters": {
+                        "propertyName": "string",
+                        "newValue": "variant"
+                    }
+                },
+                "childAdded": {
+                    "desc": "No description was set"
+                },
+                "childRemoved": {
+                    "desc": "No description was set"
+                },
+                "destroying": {
+                    "desc": "No description was set"
+                }
+            },
+            "subclasses": [
+                "graphics",
+                "json",
+                "networking",
+                "client",
+                "clients",
+                "physics",
+                "debug",
+                "http",
+                "input",
+                "folder",
+                "assetsFolder",
+                "luaFolder",
+                "scriptSource",
+                "scriptContainer",
+                "luaClientFolder",
+                "luaServerFolder",
+                "luaSharedFolder",
+                "block",
+                "workspace",
+                "camera",
+                "light",
+                "grid",
+                "audioEmitter",
+                "sounds",
+                "guiBase",
+                "tween",
+                "workshop",
+                "engine"
+            ],
+            "class": "baseClass",
+            "properties": {
+                "name": {
+                    "desc": "A none unique identifier",
+                    "defaultType": "string",
+                    "writable": "string"
+                },
+                "className": {
+                    "desc": "The name of the object's class",
+                    "defaultType": "string",
+                    "writable": false
+                }
+            }
+        },
+        {
+            "methods": {
+                "isAuthenticated": [],
+                "construct": []
+            },
+            "derivedFrom": "baseClass",
+            "events": [],
+            "subclasses": [],
+            "class": "engine",
+            "properties": {
+                "input": {
+                    "defaultType": "input",
+                    "writable": false
+                },
+                "guiImage": {
+                    "defaultType": "guiImage",
+                    "writable": false
+                },
+                "audioEmitter": {
+                    "defaultType": "audioEmitter",
+                    "writable": false
+                },
+                "guiFrameMultiColour": {
+                    "defaultType": "guiFrameMultiColour",
+                    "writable": false
+                },
+                "scriptSource": {
+                    "defaultType": "scriptSource",
+                    "writable": false
+                },
+                "sounds": {
+                    "defaultType": "sounds",
+                    "writable": false
+                },
+                "guiScrollView": {
+                    "defaultType": "guiScrollView",
+                    "writable": false
+                },
+                "block": {
+                    "defaultType": "block",
+                    "writable": false
+                },
+                "http": {
+                    "defaultType": "http",
+                    "writable": false
+                },
+                "workspace": {
+                    "defaultType": "workspace",
+                    "writable": false
+                },
+                "platform": {
+                    "defaultType": "string",
+                    "writable": false
+                },
+                "tween": {
+                    "defaultType": "tween",
+                    "writable": false
+                },
+                "guiFrame": {
+                    "defaultType": "guiFrame",
+                    "writable": false
+                },
+                "scriptContainer": {
+                    "defaultType": "scriptContainer",
+                    "writable": false
+                },
+                "assets": {
+                    "defaultType": "assetsFolder",
+                    "writable": false
+                },
+                "networking": {
+                    "defaultType": "networking",
+                    "writable": false
+                },
+                "physics": {
+                    "defaultType": "physics",
+                    "writable": false
+                },
+                "graphics": {
+                    "defaultType": "graphics",
+                    "writable": false
+                },
+                "guiTextBox": {
+                    "defaultType": "guiTextBox",
+                    "writable": false
+                },
+                "json": {
+                    "defaultType": "json",
+                    "writable": false
+                },
+                "debug": {
+                    "defaultType": "debug",
+                    "writable": false
+                },
+                "className": {
+                    "defaultType": "string",
+                    "writable": false
+                },
+                "light": {
+                    "defaultType": "light",
+                    "writable": false
+                },
+                "grid": {
+                    "defaultType": "grid",
+                    "writable": false
+                },
+                "interface": {
+                    "defaultType": "interface",
+                    "writable": false
+                },
+                "guiButton": {
+                    "defaultType": "guiButton",
+                    "writable": false
+                },
+                "name": {
+                    "defaultType": "string",
+                    "writable": false
+                },
+                "folder": {
+                    "defaultType": "folder",
+                    "writable": false
+                }
+            }
+        }
+    ]
+}
