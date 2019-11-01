@@ -28,6 +28,9 @@ local callback = nil
 
 -- Used to track changes during an action
 local changes = {}
+local destroyedObjects = {}
+local newObjects = {}
+
 local eventListeners = {}
 local actionName = ""
 -- oldValue added to changed event from "POTATO 0.7.0"
@@ -51,7 +54,25 @@ local function destroyingListener()
         changes[changedObject] = {}
     end 
     
-    changes[changedObject]["_destroyed"] = true
+    -- Object is being destroyed, let's save a copy of all their writable properties so the user can undo this action
+    local members = workshop:getMembersOfObject( changedObject )
+    local toStore = {}
+    for _, prop in pairs(members) do
+        local val = object[prop.property]
+        local pType = type(val)
+
+        if prop.writable and pType ~= "function" then
+            -- We can save it and re-construct it
+            toStore[prop.property] = val
+        end
+    end
+    toStore["parent"] = changedObject.parent
+
+    table.insert(destroyedObjects, toStore)
+end
+
+local function ChildAddedListener(child)
+    table.insert(newObjects, child)
 end
 
 local function count(dictionary)
@@ -69,16 +90,21 @@ end
 -- you need to call endAction after completing your changes to the objects
 local function beginAction( object, name )
     assert(not actionInProgress, "please use endAction before starting another")
+
+    actions[pointer+1] = nil
+
     actionInProgress = true
     actionName = name or ""
     if type(object) == "table" then
         for _,v in pairs(object) do
             table.insert(eventListeners, v:onSync("changed", changedListener))
             table.insert(eventListeners, v:onSync("destroying", destroyingListener))
+            table.insert(eventListeners, v:onSync("childAdded", ChildAddedListener))
         end
     else
         table.insert(eventListeners, object:onSync("changed", changedListener))
         table.insert(eventListeners, object:onSync("destroying", destroyingListener))
+        table.insert(eventListeners, object:onSync("childAdded", ChildAddedListener))
     end
 end
 
@@ -93,13 +119,13 @@ local function endAction()
 
     pointer = pointer + 1
     if pointer >= limit then
-        pointer = 0 -- wrap back around to the beginning of the table
+        actions[pointer - limit] = nil
     end
 
-    actions[pointer] = {actionName, changes}
+    actions[pointer] = {os.time(), actionName, changes, destroyedObjects, newObjects}
     changes = {}
-
-    print("Objects Changed: ", count(actions[pointer][2]))
+    destroyedObjects = {}
+    newObjects = {}
 
     actionInProgress = false
 
@@ -107,6 +133,59 @@ local function endAction()
         callback()
     end
 end
+
+local function undo()
+    if actions[pointer] ~= nil then
+        for object, properties in pairs(actions[pointer][3]) do 
+            if object and object.alive then
+                for property, values in pairs(properties) do
+                    --values[1] = original value
+                    --values[2] = changed value
+                    object[property] = values[1]
+                end
+            else
+                warn("need to put logic here")
+            end
+        end
+
+        pointer = pointer - 1
+
+        if type(callback) == "function" then
+            callback()
+        end
+    else
+        print("nothing to undo")
+    end
+end
+
+local function redo()
+    if actions[pointer + 1] ~= nil then
+        pointer = pointer + 1
+        for object, properties in pairs(actions[pointer][3]) do 
+            for property, values in pairs(properties) do
+                --values[1] = original value
+                --values[2] = changed value
+                object[property] = values[2]
+            end
+        end
+
+        if type(callback) == "function" then
+            callback()
+        end
+    else
+        print("nothing to redo")
+    end
+end
+
+engine.input:on("keyPressed", function (inputObj)
+    if engine.input:isKeyDown(enums.key.leftCtrl) then
+        if inputObj.key == enums.key.z then
+            undo()
+        elseif inputObj.key == enums.key.y then
+            redo()
+        end
+    end
+end)
 
 return {
     beginAction = beginAction,
@@ -119,6 +198,9 @@ return {
     setCallback = function (cb)
         callback = cb
     end,
+    
+    undo = undo,
+    redo = redo,
 
     count = count
 }

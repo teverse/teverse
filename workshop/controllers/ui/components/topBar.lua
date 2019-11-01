@@ -18,6 +18,9 @@ local tabs = {
       end},
       {"Settings", "fa:s-cog", function ()
         shared.windows.settings.visible = not shared.windows.settings.visible
+      end},
+      {"History", "fa:s-history", function ()
+        shared.windows.history.visible = not shared.windows.history.visible
       end}
    }
 }

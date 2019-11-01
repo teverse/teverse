@@ -16,6 +16,8 @@ shared.windows.runLua.visible = false
 shared.windows.propertyEditor = require("tevgit:workshop/controllers/ui/components/propertyEditor/window.lua").window
 
 shared.windows.hierarchy = require("tevgit:workshop/controllers/ui/components/hierarchy.lua").window
+
 shared.windows.history = require("tevgit:workshop/controllers/ui/components/historyUi.lua")
+shared.windows.history.visible = false
 
 require("tevgit:workshop/controllers/ui/core/dock.lua").loadDockSettings()

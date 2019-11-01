@@ -43,14 +43,6 @@ return {
 			position       = vector3(0.5, 1, 0),
 			mesh  		   = "primitive:sphere"
 		})	
-
-		shared.controllers.history.beginAction(block, "testAction")
-
-		block.colour = colour:random()
-		block.size = vector3(2,2,2)
-		block:destroy()
-
-		shared.controllers.history.endAction()
 	end,
 
 	setupEnvironment = function ()
