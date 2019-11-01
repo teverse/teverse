@@ -177,16 +177,16 @@ local function redo()
     end
 end
 
-local hotkeys = require("tevgit:workshop/controllers/core/hotkeys.lua")
+local keybinder = require("tevgit:workshop/controllers/core/keybinder.lua")
 
-hotkeys:bind({
+keybinder:bind({
     name = "undo",
     priorKey = enums.key.leftCtrl,
     key = enums.key.z,
     action = undo
 })
 
-hotkeys:bind({
+keybinder:bind({
     name = "redo",
     priorKey = enums.key.leftCtrl,
     key = enums.key.y,
