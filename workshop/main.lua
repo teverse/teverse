@@ -85,6 +85,4 @@ return function( workshop )
     end
 
 	print("Workshop Loaded. ", #engine.workspace.children)
-	wait(10)
-	print("yield over")
 end

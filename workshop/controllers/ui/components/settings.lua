@@ -65,43 +65,53 @@ require("tevgit:workshop/controllers/ui/components/themePreviewer.lua").parent =
 
 addTab("Theme", themePage)
 
-local developmentPage = ui.create("guiScrollView", window.content, {
-   size = guiCoord(0.65, 0, 1, 0),
-   position = guiCoord(0.35, 0, 0, 0)
-}, "background")
-
-ui.create("guiTextBox", developmentPage, {
-	position = guiCoord(0, 15, 0, 15),
-	size = guiCoord(1, -30, 0, 20),
-	text = "This tab is mainly for developers of the workshop."
-}, "backgroundText")
-
-
-local createReload = ui.button(developmentPage, "Reload Workshop", guiCoord(0, 190, 0, 30), guiCoord(0, 15, 0, 50))
-createReload:mouseLeftPressed(function ()
-	shared.workshop:reloadCreate()
-end)
-
-local shaderReload = ui.button(developmentPage, "Reload Shaders", guiCoord(0, 190, 0, 30), guiCoord(0, 15, 0, 90), "secondary")
-shaderReload:mouseLeftPressed(function ()
-	shared.workshop:reloadShaders()
-end)
-
-local physicsDebugEnabled = false
-local physicsAABBs = ui.button(developmentPage, "Enable Physics AABBs", guiCoord(0, 190, 0, 30), guiCoord(0, 15, 0, 130), "secondary")
-physicsAABBs:mouseLeftPressed(function ()
-	physicsDebugEnabled = not physicsDebugEnabled
-	shared.workshop:setPhysicsDebug(physicsDebugEnabled)
-	physicsAABBs.label.text = physicsDebugEnabled and "Disable Physics AABBs" or "Enable Physics AABBs"
-end)
-
-local runScriptBtn = ui.button(developmentPage, "Run Lua", guiCoord(0, 190, 0, 30), guiCoord(0, 15, 0, 170), "secondary")
-
-runScriptBtn:mouseLeftPressed(function ()
-	shared.windows.runLua.visible = not shared.windows.runLua.visible
-end)
 if shared.developerMode then
-  addTab("Development", developmentPage)
+	local developmentPage = ui.create("guiScrollView", window.content, {
+	size = guiCoord(0.65, 0, 1, 0),
+	position = guiCoord(0.35, 0, 0, 0)
+	}, "background")
+
+	ui.create("guiTextBox", developmentPage, {
+		position = guiCoord(0, 15, 0, 15),
+		size = guiCoord(1, -30, 0, 20),
+		text = "This tab is mainly for developers of the workshop."
+	}, "backgroundText")
+
+
+	local createReload = ui.button(developmentPage, "Reload Workshop", guiCoord(0, 190, 0, 30), guiCoord(0, 15, 0, 50))
+	createReload:mouseLeftPressed(function ()
+		shared.workshop:reloadCreate()
+	end)
+
+	local shaderReload = ui.button(developmentPage, "Reload Shaders", guiCoord(0, 190, 0, 30), guiCoord(0, 15, 0, 90), "secondary")
+	shaderReload:mouseLeftPressed(function ()
+		shared.workshop:reloadShaders()
+	end)
+
+	local physicsDebugEnabled = false
+	local physicsAABBs = ui.button(developmentPage, "Enable Physics AABBs", guiCoord(0, 190, 0, 30), guiCoord(0, 15, 0, 130), "secondary")
+	physicsAABBs:mouseLeftPressed(function ()
+		physicsDebugEnabled = not physicsDebugEnabled
+		shared.workshop:setPhysicsDebug(physicsDebugEnabled)
+		physicsAABBs.label.text = physicsDebugEnabled and "Disable Physics AABBs" or "Enable Physics AABBs"
+	end)
+
+	local runScriptBtn = ui.button(developmentPage, "Run Lua", guiCoord(0, 190, 0, 30), guiCoord(0, 15, 0, 170), "secondary")
+
+	runScriptBtn:mouseLeftPressed(function ()
+		shared.windows.runLua.visible = not shared.windows.runLua.visible
+	end)
+
+	local printDump = ui.button(developmentPage, "Print Dump", guiCoord(0, 190, 0, 30), guiCoord(0, 15, 0, 210), "secondary")
+	printDump:mouseLeftPressed(function()
+		local dump = shared.workshop:apiDump()
+		print(engine.json:encode(dump))
+	end)
+
+  	addTab("Development", developmentPage)
+
+  --local dump = globalWorkshop:apiDump()
+	--print(globalEngine.json:encode(dump))
 end
 
 return window
