@@ -8,7 +8,6 @@ controller.callbacks = {}
 
 controller.fireCallbacks = function ()
 	for _,v in pairs(controller.callbacks) do
-		print("firing")
 		v()
 	end
 end
@@ -23,7 +22,6 @@ controller.setSelection = function(obj)
 end
 
 controller.addSelection = function(obj)
-	print("test test")
 	if type(obj) == "table" then
 		for _,v in pairs(obj) do
 			if v.isA and v:isA("baseClass") then

@@ -44,10 +44,8 @@ function controller.generateProperties()
     for i, v in pairs(controller.eventHandlers) do v:disconnect() end
 
     controller.eventHandlers = {}
-    print(#selection.selection)
     if #selection.selection > 0 then
         local firstObject = selection.selection[1]
-		print("type " , type(firstObject))
         local members = shared.workshop:getMembersOfObject(firstObject)
 
         table.sort(members, alphabeticalSorter)
