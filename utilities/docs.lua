@@ -35,7 +35,7 @@ addDocs("baseClass", {
     },
     
     methods     = {
-        getDescendants              = method("Returns a table of all descended objects", nil, {"table"})
+        getDescendants              = method("Returns a table of all descended objects", nil, {"table"}),
         destroy                     = method("Locks the object before removing it from the hierarchy. Children will also be destroyed."),
         destroyAllChildren          = method("Invokes the destroy method on each child of this instance."),
         isContainer                 = method("", nil, {
