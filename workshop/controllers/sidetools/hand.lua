@@ -6,6 +6,7 @@ local toolDesc = ""
 local toolIcon = "fa:s-hand-pointer"
 
 local selection = require("tevgit:workshop/controllers/core/selection.lua")
+local history = require("tevgit:workshop/controllers/core/history.lua")
 
 local clickEvent = nil
 
@@ -42,6 +43,9 @@ return {
                         for _,v in pairs(selection.selection) do
                             offsets[v] = v.position - centre
                         end
+                        
+                        -- tell history to monitor changes we make to selected items 
+                        history.beginAction(selection.selection, "Hand tool drag")
 
                         while engine.input:isMouseButtonDown(enums.mouseButton.left) do
                             -- fire a ray, exclude selected items.
@@ -56,8 +60,9 @@ return {
                             end
                             wait()
                         end
+                        
+                        history.endAction()
 
-                        print("Centre:", centre, "MouseOffset:", mouseOffset)
                     else
                         -- user clicked an unselected object, let's select it
                         if engine.input:isKeyDown(enums.key.leftShift) then
