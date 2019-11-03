@@ -3,7 +3,8 @@
 local cameraController = {
 	zoomStep   = 3,
 	rotateStep = 0.003,
-	moveStep   = 0.5 
+	moveStep   = 0.5,
+	slow       = 0.3
 }
 
 cameraController.camera = workspace.camera
@@ -56,7 +57,7 @@ engine.input:keyPressed(function( inputObj )
 			for key, vector in pairs(cameraController.cameraKeyArray) do
 				-- check this key is pressed (still)
 				if engine.input:isKeyDown(key) then
-					cameraPos = cameraPos + (cameraController.camera.rotation * vector * cameraController.moveStep)
+					cameraPos = cameraPos + (cameraController.camera.rotation * vector * cameraController.moveStep) * (engine.input:isKeyDown(enums.key.leftShift) and cameraController.slow or 1)
 				end
 			end
 
