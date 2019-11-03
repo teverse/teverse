@@ -16,16 +16,12 @@ local tabs = {
       {"Properties", "fa:s-clipboard-list", function ()
         shared.windows.propertyEditor.visible = not shared.windows.propertyEditor.visible
       end},
-      {"Hierarchy", "fa:s-align-left", function ()
-        shared.windows.hierarchy.visible = not shared.windows.hierarchy.visible
-      end},
-      {"History", "fa:s-history", function ()
-        shared.windows.history.visible = not shared.windows.history.visible
-      end},
-      {"Seperator"},
       {"Settings", "fa:s-cog", function ()
         shared.windows.settings.visible = not shared.windows.settings.visible
       end},
+      {"History", "fa:s-history", function ()
+        shared.windows.history.visible = not shared.windows.history.visible
+      end}
    }
 }
 

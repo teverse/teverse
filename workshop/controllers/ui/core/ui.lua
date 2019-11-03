@@ -7,8 +7,8 @@ local dock = require("tevgit:workshop/controllers/ui/core/dock.lua")
 local shared = require("tevgit:workshop/controllers/shared.lua")
 
 local create = function(className, parent, properties, style)
-    if not parent then
-        parent = shared.workshop.interface
+    if not parent then 
+        parent = shared.workshop.interface 
     end
 
     local gui = engine.construct(className, parent, properties)
@@ -43,7 +43,7 @@ return {
                     tooltip:destroy()
                 end)
 
-                wait(delay)
+                wait(delay) 
                 if tooltip and tooltip.alive then
                     tooltip.visible = true
                 end
@@ -73,7 +73,7 @@ return {
 
         return btn
     end,
-
+    
     -- if closable is true OR a function, a close button will appear in the title bar.
     -- when clicked, if closable is a function, it is fired after hiding the window.
     window = function(parent, title, size, position, dockable, closable)
@@ -81,10 +81,7 @@ return {
             size = size,
             name = title,
             position = position,
-            cropChildren = false,
-            borderColour = colour:fromRGB(55, 59, 64),
-            borderWidth = 2,
-            borderAlpha = 1,
+            cropChildren = false
         }, themer.types.background)
 
         container:on("changed", function (property, value)
@@ -92,7 +89,7 @@ return {
                 dock.undock(container) -- just in case
             end
         end)
-
+        
         local titleBar = create("guiFrame", container, {
             name = "titleBar",
             position = guiCoord(0, 0, 0, -4),
@@ -104,7 +101,7 @@ return {
         titleBar:mouseLeftPressed(function ()
             dock.beginWindowDrag(container, not dockable)
         end)
-
+        
         -- create this to hide radius on bottom of titlebar
         create("guiFrame", titleBar, {
             size = guiCoord(1, 0, 0, 3),
@@ -135,15 +132,15 @@ return {
                 end
             end)
         end
-
+        
         local content = engine.construct("guiFrame", container, {
             name = "content",
             backgroundAlpha = 0,
             size = guiCoord(1, -12, 1, -27),
             position = guiCoord(0, 3, 0, 24),
-            cropChildren = false,
+            cropChildren = false
         })
-
+        
         return container
     end,
 
@@ -197,7 +194,7 @@ return {
         local textDimensions = text.textDimensions
         container.size = guiCoord(0, textDimensions.x + 20, 0, textDimensions.y + 20)
         container.position = guiCoord(0.5, -(textDimensions.x + 20)/2, 0.5, -(textDimensions.y + 20)/2)
-
+    
         local continue = create("guiTextBox", content, {
             size = guiCoord(0, textDimensions.x + 20, 0, 40),
             position = guiCoord(0.5, -(textDimensions.x + 20)/2, 0.5, (textDimensions.y/2 + 5)),
@@ -215,7 +212,7 @@ return {
             content:destroy()
             return true
         else
-            continue:once("mouseLeftPressed", function()
+            continue:once("mouseLeftPressed", function() 
                 if type(callback) == "function" then
                     callback()
                 end
