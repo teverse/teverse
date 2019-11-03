@@ -45,8 +45,8 @@ for toolName, options in pairs(tools) do
 
    local newTabBtn = ui.create("guiTextBox", toolBar, {
       text     = toolName,
-      position = guiCoord(0, 5, 0, currentY),
-      size     = guiCoord(0, 22, 0, 22),
+      position = guiCoord(0, 4, 0, currentY),
+      size     = guiCoord(0, 24, 0, 24),
       hoverCursor = "fa:s-hand-pointer"
    }, "primaryText")
 
