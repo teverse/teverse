@@ -46,7 +46,7 @@ return function( workshop )
 			})
 
 			emergencyReload:mouseLeftPressed(function()
-	        shared.workshop:reloadCreate()
+				shared.workshop:reloadCreate()
 			end)
 		end
 
@@ -68,7 +68,7 @@ return function( workshop )
 
 	-- Okay now we can load remote files whilst the user is looking at a loading screen.
 	shared.controllers.env = require("tevgit:workshop/controllers/environment/main.lua")
-
+	
     shared.controllers.history = require("tevgit:workshop/controllers/core/history.lua")
 
     -- Create the Teverse interface
@@ -84,5 +84,5 @@ return function( workshop )
     	loadingScreen = nil
     end
 
-	--print("Workshop Loaded. ", #engine.workspace.children) Lets not spam the console
+	print("Workshop Loaded. ", #engine.workspace.children)
 end

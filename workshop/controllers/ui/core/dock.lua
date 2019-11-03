@@ -3,10 +3,10 @@ local themer = require("tevgit:workshop/controllers/ui/core/themer.lua")
 local controller = {}
 
 function roundToMultiple(number, multiple)
-	if multiple == 0 then
-		return number
+	if multiple == 0 then 
+		return number 
 	end
-
+	
 	return ((number % multiple) > multiple/2) and number + multiple - number%multiple or number - number%multiple
 end
 
@@ -39,35 +39,31 @@ controller.setupDocks = function ()
 	controller.docks = {
 		engine.construct("guiFrame", shared.workshop.interface, {
 			name = "_dockTop",
-			size = guiCoord(1, -500, 0, 250 - 76),
-			position = guiCoord(250, 0, 0, 76),
+			size = guiCoord(1, -500, 0, 250 - 72),
+			position = guiCoord(250, 0, 0, 72),
 			backgroundAlpha = 0,
-			handleEvents = false,
-			cropChildren = false,
+			handleEvents = false
 		}),
 		engine.construct("guiFrame", shared.workshop.interface, {
 			name = "_dockLeft",
-			size = guiCoord(0, 250, 1, -76),
-			position = guiCoord(0, 0, 0, 76),
+			size = guiCoord(0, 250, 1, -72),
+			position = guiCoord(0, 0, 0, 72),
 			backgroundAlpha = 0,
-			handleEvents = false,
-			cropChildren = false,
+			handleEvents = false
 		}),
 		engine.construct("guiFrame", shared.workshop.interface, {
 			name = "_dockBottom",
 			size = guiCoord(1, -500, 0, 250),
 			position = guiCoord(0, 250, 1, -250),
 			backgroundAlpha = 0,
-			handleEvents = false,
-			cropChildren = false,
+			handleEvents = false
 		}),
 		engine.construct("guiFrame", shared.workshop.interface, {
 			name = "_dockRight",
-			size = guiCoord(0, 250, 1, -76),
-			position = guiCoord(1, -250, 0, 76),
+			size = guiCoord(0, 250, 1, -72),
+			position = guiCoord(1, -250, 0, 72),
 			backgroundAlpha = 0,
-			handleEvents = false,
-			cropChildren = false,
+			handleEvents = false
 		})
 	}
 end
@@ -246,11 +242,11 @@ controller.beginWindowDrag = function(window, dontDock)
 		if not dontDock then
 			for _,dock in pairs(controller.docks) do
 				-- the user's cursor is in this dock.
-				if mPos.x > dock.absolutePosition.x and
-				 mPos.x < dock.absolutePosition.x + dock.absoluteSize.x and
-				 mPos.y > dock.absolutePosition.y and
-				 mPos.y < dock.absolutePosition.y + dock.absoluteSize.y then
-
+				if mPos.x > dock.absolutePosition.x and 
+				 mPos.x < dock.absolutePosition.x + dock.absoluteSize.x and 
+				 mPos.y > dock.absolutePosition.y and 
+				 mPos.y < dock.absolutePosition.y + dock.absoluteSize.y then 
+					
 					local perWindow = 1 / (#dock.children + 1)
 					local perWindowSize = perWindow * dock.absoluteSize
 					local isVertical = dock.absoluteSize.y > dock.absoluteSize.x
