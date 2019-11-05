@@ -116,22 +116,25 @@ local function endAction()
         v:disconnect()
     end
     eventListeners = {}
+    
+    -- if nothing changed dont create an action
+    if count(changes) > 0 or #destroyedObjects > 0 or #newObjects > 0 then
+        pointer = pointer + 1
+        if pointer >= limit then
+            actions[pointer - limit] = nil
+        end
 
-    pointer = pointer + 1
-    if pointer >= limit then
-        actions[pointer - limit] = nil
+        actions[pointer] = {os.time(), actionName, changes, destroyedObjects, newObjects}
+        changes = {}
+        destroyedObjects = {}
+        newObjects = {}
+
+        if type(callback) == "function" then
+            callback()
+        end
     end
-
-    actions[pointer] = {os.time(), actionName, changes, destroyedObjects, newObjects}
-    changes = {}
-    destroyedObjects = {}
-    newObjects = {}
-
+    
     actionInProgress = false
-
-    if type(callback) == "function" then
-        callback()
-    end
 end
 
 local function undo()

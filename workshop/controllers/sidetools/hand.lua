@@ -6,6 +6,7 @@ local toolDesc = ""
 local toolIcon = "fa:s-hand-pointer"
 
 local selection = require("tevgit:workshop/controllers/core/selection.lua")
+local history = require("tevgit:workshop/controllers/core/history.lua")
 
 local clickEvent = nil
 
@@ -42,6 +43,9 @@ return {
                         for _,v in pairs(selection.selection) do
                             offsets[v] = v.position - centre
                         end
+                        
+                        -- tell history to monitor changes we make to selected items 
+                        history.beginAction(selection.selection, "Hand tool drag")
 
                         local grid = engine.construct("grid", workspace, {
                             step = 0.5,
@@ -63,8 +67,13 @@ return {
                             end
                             wait()
                         end
+                        
+                        history.endAction()
 
+<<<<<<< HEAD
                         grid:destroy()
+=======
+>>>>>>> c66a2e37d62e0559b2de121f2b6ee4cfe8702c0f
                     else
                         -- user clicked an unselected object, let's select it
                         if engine.input:isKeyDown(enums.key.leftShift) then
