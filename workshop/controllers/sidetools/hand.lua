@@ -70,10 +70,7 @@ return {
                         
                         history.endAction()
 
-<<<<<<< HEAD
                         grid:destroy()
-=======
->>>>>>> c66a2e37d62e0559b2de121f2b6ee4cfe8702c0f
                     else
                         -- user clicked an unselected object, let's select it
                         if engine.input:isKeyDown(enums.key.leftShift) then
