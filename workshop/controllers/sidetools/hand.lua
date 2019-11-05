@@ -43,21 +43,28 @@ return {
                             offsets[v] = v.position - centre
                         end
 
+                        local grid = engine.construct("grid", workspace, {
+                            step = 0.5,
+                            colour = colour(1,0,0),
+                            size = 10
+                        })
+
                         while engine.input:isMouseButtonDown(enums.mouseButton.left) do
                             -- fire a ray, exclude selected items.
                             local hits, didExclude = engine.physics:rayTestScreenAllHits(engine.input.mousePosition, selection.selection)
                             if (#hits > 0) then
                                 local newCentre = hits[1].hitPosition + mouseOffset
+                                grid.position = newCentre
                                 for _,v in pairs(selection.selection) do
                                     if offsets[v] then
-                                        v.position = offsets[v] + newCentre
+                                        v.position = newCentre - offsets[v]
                                     end
                                 end
                             end
                             wait()
                         end
 
-                        print("Centre:", centre, "MouseOffset:", mouseOffset)
+                        grid:destroy()
                     else
                         -- user clicked an unselected object, let's select it
                         if engine.input:isKeyDown(enums.key.leftShift) then

@@ -43,6 +43,33 @@ return {
 			position       = vector3(0.5, 1, 0),
 			mesh  		   = "primitive:sphere"
 		})	
+
+		-- this debug code needs to be moved elsewhere
+
+		-- block:on("collisionStarted", function (collidingWith, hit, normal)
+		-- 	local b = engine.construct("block", workspace, {
+		-- 		position = hit,
+		-- 		physics = false,
+		-- 		size = vector3(0.1, 0.1, 0.1),
+		-- 		mesh  		   = "primitive:sphere"
+		-- 	})
+		-- 	wait(1)
+		-- 	b:destroy()
+		-- end)
+
+		-- spawnThread(function ( ... )
+		-- 	while wait() do
+		-- 		local mouseHit = engine.physics:rayTestScreen( engine.input.mousePosition )
+		-- 		if mouseHit then
+		-- 			local b = engine.construct("block", workspace, {
+		-- 				position = mouseHit.hitPosition,
+		-- 				physics = false,
+		-- 				size = vector3(0.1, 0.1, 0.1),
+		-- 				mesh  		   = "primitive:sphere"
+		-- 			})
+		-- 		end
+		-- 	end
+		-- end)
 	end,
 
 	setupEnvironment = function ()
