@@ -3,7 +3,7 @@
 -- and engine.workshop is passed to the function returned.
 -- e.g. require('tevgit:workshop/main.lua')(engine.workshop)
 
-return function( workshop )
+local function beginLoad(workshop)
 	--[[
 		Teverse currently downloads tevgit files from the github repo when requested by the client.
 		This is quite slow, so there's a delay between EACH require when the user doesn't have a local tevgit.
@@ -46,7 +46,7 @@ return function( workshop )
 			})
 
 			emergencyReload:mouseLeftPressed(function()
-	        shared.workshop:reloadCreate()
+	        	shared.workshop:reloadCreate()
 			end)
 		end
 
@@ -85,4 +85,47 @@ return function( workshop )
     end
 
 	--print("Workshop Loaded. ", #engine.workspace.children) Lets not spam the console
+end
+
+return function( workshop )
+	local success, message = pcall(beginLoad, workshop)
+
+	if not success then
+		workshop.interface:destroyAllChildren()
+
+		local errorScreen = engine.construct("guiFrame", workshop.interface, {
+			size = guiCoord(1, 0, 1, 0),
+			backgroundColour = colour:fromRGB(237, 204, 202),
+			zIndex = 10000
+		})
+
+		engine.construct("guiTextBox", errorScreen, {
+			size = guiCoord(0.8, 0, 0.8, 0),
+			position = guiCoord(0.1, 0, 0.1, 0),
+			textColour = colour:fromRGB(99, 14, 9),
+			align = enums.align.topLeft,
+			backgroundAlpha = 0,
+			text = "Error loading Workshop\nIf this isn't your fault, please take a screenshot and report this as a bug.\n\n" .. message,
+			wrap = true
+		})
+
+		-- delay showing this button for 1.5 seconds
+		-- prevent spam reloads
+
+		wait(1.5)
+
+		engine.construct("guiTextBox", errorScreen, {
+			text = "Reload",
+			size = guiCoord(0, 100, 0, 30),
+			position = guiCoord(1, -110, 1, -40),
+			backgroundColour = colour:fromRGB(117, 9, 2),
+			textColour = colour:fromRGB(255, 255, 255),
+			borderRadius = 3,
+			hoverCursor = "fa:s-hand-pointer",
+			align = enums.align.middle,
+			backgroundAlpha = 0.25
+		}):mouseLeftPressed(function()
+			workshop:reloadCreate()
+		end)
+	end
 end

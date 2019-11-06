@@ -1,13 +1,15 @@
 -- these functions are responsible for updating the property editor gui
 -- when the selection’s members are updated by 3rd party source 
 
+local themer = require("tevgit:workshop/controllers/ui/core/themer.lua")
+
 return {
   block = function (instance, gui, value)
 
   end,
   boolean = function (instance, gui, value)
-    gui.input.selected = value
-    gui.input.text = gui.input.selected and "X" or " " -- temporary
+    gui.input.texture = value and "fa:s-toggle-on" or "fa:s-toggle-off"
+    themer.registerGui(gui.input, value and "successImage" or "errorImage")
   end,
   number = function (instance, gui, value)
     gui.input.text = tostring(value)

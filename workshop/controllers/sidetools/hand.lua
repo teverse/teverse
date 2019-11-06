@@ -49,8 +49,9 @@ return {
 
                         local grid = engine.construct("grid", workspace, {
                             step = 0.5,
-                            colour = colour(1,0,0),
-                            size = 10
+                            colour = colour(0.1, 0, 0.1),
+                            size = 10,
+                            rotation = quaternion:setEuler(math.rad(90), 0, 0)
                         })
 
                         while engine.input:isMouseButtonDown(enums.mouseButton.left) do
@@ -58,12 +59,14 @@ return {
                             local hits, didExclude = engine.physics:rayTestScreenAllHits(engine.input.mousePosition, selection.selection)
                             if (#hits > 0) then
                                 local newCentre = hits[1].hitPosition + mouseOffset
-                                grid.position = newCentre
+                                local avgPos = vector3(0,0,0)
                                 for _,v in pairs(selection.selection) do
                                     if offsets[v] then
                                         v.position = newCentre - offsets[v]
+                                        avgPos = avgPos + v.position
                                     end
                                 end
+                                grid.position = avgPos / #selection.selection
                             end
                             wait()
                         end

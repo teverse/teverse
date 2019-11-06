@@ -66,6 +66,7 @@ function controller.generateProperties()
 
                 local container = engine.construct("guiFrame",
                                                    controller.scrollView, {
+                    name = "_" .. v.property,
                     backgroundAlpha = 0,
                     size = guiCoord(1, -10, 0, 20),
                     position = guiCoord(0, 0, 0, y),
@@ -95,10 +96,12 @@ function controller.generateProperties()
                 container.zIndex = inputGui.zIndex
                 inputGui.parent = container
 
-                if parseInputs[pType] then
-                    parseInputs[pType](firstObject, container.inputContainer,
+                if parseUpdates[pType] then
+                    parseUpdates[pType](firstObject, container.inputContainer,
                                        value)
                 end
+
+
 
                 container.position = guiCoord(0, 5, 0, y)
 
@@ -112,10 +115,10 @@ function controller.generateProperties()
         table.insert(controller.eventHandlers,
 			firstObject:changed(
 				function(prop, val)
-				if parseInputs[type(val)] then
+				if parseUpdates[type(val)] then
 					local container = controller.scrollView["_" .. prop]
 					if container then
-						parseInputs[type(val)](firstObject, container.inputContainer, val)
+						parseUpdates[type(val)](firstObject, container.inputContainer, val)
 					end
 				end
 			end)

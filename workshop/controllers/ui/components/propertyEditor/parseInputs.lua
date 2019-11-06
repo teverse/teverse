@@ -4,13 +4,15 @@
 local selection = require("tevgit:workshop/controllers/core/selection.lua")
 
 local function callbackInput(property, value)
-	pcall(function ()
+	local success, message = pcall(function ()
 		for _,v in pairs(selection.selection) do
-    		if v[property] then
+			if v[property] ~= nil then
     			v[property] = value
     		end
 		end
 	end)
+
+	if not success then print(message) end
 end
 
 return {
@@ -19,7 +21,7 @@ return {
 	end,
 
 	boolean = function (property, gui)
-		callbackInput(property, gui.input.selected == true)
+		callbackInput(property, gui.input.texture == "fa:s-toggle-on")
 	end,
 	
 	number = function (property, gui)

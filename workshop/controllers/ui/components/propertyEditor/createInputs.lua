@@ -50,8 +50,9 @@ createInputs = {
     }, "successImage")
 
     x:mouseLeftReleased(function ()
-      x.texture = x.selected and "fa:s-toggle-on" or "fa:s-toggle-off"
-      themer.registerGui(x, x.selected and "successImage" or "errorImage")
+      value = not value
+      x.texture = value and "fa:s-toggle-on" or "fa:s-toggle-off"
+      themer.registerGui(x, value and "successImage" or "errorImage")
       parseInputs[type(value)](property, container)
     end)
 
