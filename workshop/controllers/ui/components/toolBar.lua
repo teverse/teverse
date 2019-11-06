@@ -7,10 +7,18 @@ local keybinder = require("tevgit:workshop/controllers/core/keybinder.lua")
 
 -- main gui dock that is on left of the screen
 -- it is moved by the dock controller IF windows are docked to the left side of the screen
-local toolBar = ui.create("guiFrame", shared.workshop.interface, {
+
+local toolDock = engine.construct("guiFrame", shared.workshop.interface, {
+   name = "_toolBar",
+   cropChildren = false,
+   backgroundAlpha = 0,
+   position = guiCoord(0, 8, 0, 80),
+})
+
+local toolBar = ui.create("guiFrame", toolDock, {
    name = "_toolBar",
    size = guiCoord(0, 32, 0, 100),
-   position = guiCoord(0, 8, 0, 80),
+   position = guiCoord(0, 0, 0, 0),
    backgroundAlpha = 0.8,
    borderRadius = 4
 }, "primary")
