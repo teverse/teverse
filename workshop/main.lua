@@ -95,18 +95,20 @@ return function( workshop )
 
 		local errorScreen = engine.construct("guiFrame", workshop.interface, {
 			size = guiCoord(1, 0, 1, 0),
-			backgroundColour = colour:fromRGB(237, 204, 202),
+			backgroundColour = colour:fromRGB(0, 0, 128),
 			zIndex = 10000
 		})
 
 		engine.construct("guiTextBox", errorScreen, {
 			size = guiCoord(0.8, 0, 0.8, 0),
 			position = guiCoord(0.1, 0, 0.1, 0),
-			textColour = colour:fromRGB(99, 14, 9),
+			textColour = colour:fromRGB(255, 255, 0),
 			align = enums.align.topLeft,
 			backgroundAlpha = 0,
 			text = "Error loading Workshop\nIf this isn't your fault, please take a screenshot and report this as a bug.\n\n" .. message,
-			wrap = true
+			wrap = true,
+			fontSize = 16,
+			fontFile = "tevurl:fonts/PxPlus_AmstradPC1512-2y.ttf"
 		})
 
 		-- delay showing this button for 1.5 seconds
@@ -115,17 +117,23 @@ return function( workshop )
 		wait(1.5)
 
 		engine.construct("guiTextBox", errorScreen, {
-			text = "Reload",
-			size = guiCoord(0, 100, 0, 30),
-			position = guiCoord(1, -110, 1, -40),
-			backgroundColour = colour:fromRGB(117, 9, 2),
-			textColour = colour:fromRGB(255, 255, 255),
-			borderRadius = 3,
+			text = "RELOAD",
+			size = guiCoord(0, 80, 0, 30),
+			position = guiCoord(.5, -40, 1, -60),
+			backgroundColour = colour:fromRGB(255, 255, 0),
+			textColour = colour:fromRGB(0, 0, 128),
 			hoverCursor = "fa:s-hand-pointer",
 			align = enums.align.middle,
-			backgroundAlpha = 0.25
+			fontFile = "tevurl:fonts/PxPlus_AmstradPC1512-2y.ttf"
 		}):mouseLeftPressed(function()
 			workshop:reloadCreate()
 		end)
+
+		engine.input:on("keyPressed", function(inputObj)
+			if inputObj.key == enums.key["return"] then
+				workshop:reloadCreate()
+			end
+		end)
+
 	end
 end

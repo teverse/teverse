@@ -15,7 +15,6 @@ return {
     gui.input.text = tostring(value)
   end,
   string = function (instance, gui, value)
-    print(gui, #gui.children)
     gui.input.text = value
   end,
   vector3 = function(instance, gui, value)

@@ -6,6 +6,7 @@ local ui = require("tevgit:workshop/controllers/ui/core/ui.lua")
 
 require("tevgit:workshop/controllers/ui/components/topBar.lua")
 require("tevgit:workshop/controllers/ui/components/toolBar.lua")
+require("tevgit:workshop/controllers/ui/components/inserter.lua")
 
 shared.windows.settings = require("tevgit:workshop/controllers/ui/components/settings.lua")
 shared.windows.settings.visible = false -- Dont show the window on start, thats annoying
