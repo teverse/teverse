@@ -44,7 +44,9 @@ end
 local currentY = 5
 local toolIndex = 0
 for toolName, options in pairs(tools) do
-
+  if toolName == seperator then
+    print("Seperator")
+  else
    -- used to assign a number keybind to each tool
    toolIndex = toolIndex + 1
 
@@ -59,7 +61,7 @@ for toolName, options in pairs(tools) do
    }, "primaryText")
 
    tools[toolName].gui = newTabBtn
-   
+
    if options.icon then
       newTabBtn.text = ""
       ui.create("guiImage", newTabBtn, {
@@ -90,6 +92,8 @@ for toolName, options in pairs(tools) do
    end)
 
    currentY = currentY + 32
+ end
 end
 
+shared.toolbarY = currentY
 toolBar.size = guiCoord(0, 32, 0, currentY - 5)

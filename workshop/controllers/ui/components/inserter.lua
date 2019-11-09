@@ -5,10 +5,11 @@ local history = shared.controllers.history
 
 local window = ui.create("guiFrame", shared.workshop.interface["_toolBar"], {
     size = guiCoord(0, 32, 0, 100),
-    position = guiCoord(0, 40, 0, 0),
     backgroundAlpha = 0.8,
     borderRadius = 4
 }, "primary")
+
+window.position = guiCoord(0,0,0,shared.toolbarY + 2)
 
 local function insert(mesh)
     if not mesh then
@@ -16,7 +17,7 @@ local function insert(mesh)
     end
 
     local insertPos = vector3(0, 0, 0)
-    
+
     local hit = engine.physics:rayTestScreen(engine.input.screenSize/2) -- what's in the centre of the screen?
     if hit then
         local hitDist = (shared.controllers.env.camera.camera.position - hit.hitPosition):length()
@@ -70,7 +71,7 @@ for _, options in pairs(adders) do
       size     = guiCoord(0, 24, 0, 24),
       hoverCursor = "fa:s-hand-pointer"
    }, "primaryText")
-   
+
    if options.icon then
       newTabBtn.text = ""
       ui.create("guiImage", newTabBtn, {
