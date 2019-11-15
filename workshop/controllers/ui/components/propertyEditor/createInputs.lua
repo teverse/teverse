@@ -647,18 +647,18 @@ createInputs = {
       borderRadius = 2,
     })
 
-    col:mouseLeftReleased(function ()
-      controller.colourPicker.window.visible  = not controller.colourPicker.window.visible 
-      if controller.colourPicker.window.visible and instanceEditing and instanceEditing[property] then
-        controller.colourPicker.setColour(instanceEditing[property])
-        controller.colourPicker.setCallback(function (c)
-          x.text = tostring(c.r)
-          g.text = tostring(c.g)
-          b.text = tostring(c.b)
-          parseInputs[type(value)](property, container)
-        end)
-      end
-    end)
+    -- col:mouseLeftReleased(function ()
+    --   controller.colourPicker.window.visible  = not controller.colourPicker.window.visible 
+    --   if controller.colourPicker.window.visible and instanceEditing and instanceEditing[property] then
+    --     controller.colourPicker.setColour(instanceEditing[property])
+    --     controller.colourPicker.setCallback(function (c)
+    --       x.text = tostring(c.r)
+    --       g.text = tostring(c.g)
+    --       b.text = tostring(c.b)
+    --       parseInputs[type(value)](property, container)
+    --     end)
+    --   end
+    -- end)
 
     return container
   end,

@@ -33,7 +33,7 @@ return {
 			size           = vector3(1, 1, 1),
 			position       = vector3(1, 0, 0),
 			mesh		   = "primitive:wedge",
-			rotation       = quaternion:setEuler(0, math.rad(-90), 0)
+			rotation       = quaternion:setEuler(0, math.rad(90), 0)
 		})	
 
 		local block = engine.construct("block", workspace, {
@@ -43,55 +43,6 @@ return {
 			position       = vector3(0.5, 1, 0),
 			mesh  		   = "primitive:sphere"
 		})	
-
-		-- this debug code needs to be moved elsewhere
-		--[[
-		local compoundGroup = engine.construct("compoundGroup", workspace, {
-			name = "testCompoundGroup"
-		})
-
-		local testA = engine.construct("block", compoundGroup, {
-			colour         = colour(1, 0, 0),
-			size           = vector3(1, 1, 1),
-			position       = vector3(0, 10, 1)
-		})	
-
-		local testB = engine.construct("block", compoundGroup, {
-			colour         = colour(0, 1, 0),
-			size           = vector3(1, 1, 1),
-			position       = vector3(0, 11, 0)
-		})	
-
-		local testC = engine.construct("block", compoundGroup, {
-			colour         = colour(0, 0, 1),
-			size           = vector3(1, 1, 1),
-			position       = vector3(1, 12, 0)
-		})	
-		--]]
-		-- block:on("collisionStarted", function (collidingWith, hit, normal)
-		-- 	local b = engine.construct("block", workspace, {
-		-- 		position = hit,
-		-- 		physics = false,
-		-- 		size = vector3(0.1, 0.1, 0.1),
-		-- 		mesh  		   = "primitive:sphere"
-		-- 	})
-		-- 	wait(1)
-		-- 	b:destroy()
-		-- end)
-
-		-- spawnThread(function ( ... )
-		-- 	while wait() do
-		-- 		local mouseHit = engine.physics:rayTestScreen( engine.input.mousePosition )
-		-- 		if mouseHit then
-		-- 			local b = engine.construct("block", workspace, {
-		-- 				position = mouseHit.hitPosition,
-		-- 				physics = false,
-		-- 				size = vector3(0.1, 0.1, 0.1),
-		-- 				mesh  		   = "primitive:sphere"
-		-- 			})
-		-- 		end
-		-- 	end
-		-- end)
 	end,
 
 	setupEnvironment = function ()
