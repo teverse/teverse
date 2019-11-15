@@ -30,7 +30,7 @@ local function runCourse(courseName, targetObjective)
     -- ...
 ```
 ## Documentation
-To promote readability, understanding and maintainability of shared code, documentation is necessary for for all methods.
+To promote readability, understanding and maintainability of shared code, documentation is necessary for all methods.
 
 #### Good
 ``` lua
