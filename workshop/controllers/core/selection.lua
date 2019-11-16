@@ -64,17 +64,19 @@ end
 local boundingEvents = {}
 
 local function boundUpdate() 
+	if not boundingBox or not boundingBox.alive then return end
+
 	--inefficient, is called for each change
 	local bounds = aabb()
 
-	if #controller.selection > 0 then
+	if #controller.selection > 0 and controller.selection[1].position then
 		bounds.min = controller.selection[1].position
 		bounds.max = controller.selection[1].position
-	end
 
-	for _,v in pairs(controller.selection) do
-		bounds:expand(v.position + (v.size/2))
-		bounds:expand(v.position - (v.size/2))
+		for _,v in pairs(controller.selection) do
+			bounds:expand(v.position + (v.size/2))
+			bounds:expand(v.position - (v.size/2))
+		end
 	end
 
 	boundingBox.position = bounds:getCentre()
@@ -86,18 +88,20 @@ controller.registerCallback(function()
 		v:disconnect()
 	end
 	boundingEvents = {}
+	
+	if not boundingBox or not boundingBox.alive then return end
 
 	local bounds = aabb()
 
-	if #controller.selection > 0 then
+	if #controller.selection > 0 and controller.selection[1].position then
 		bounds.min = controller.selection[1].position
 		bounds.max = controller.selection[1].position
-	end
 
-	for _,v in pairs(controller.selection) do
-		bounds:expand(v.position + (v.size/2))
-		bounds:expand(v.position - (v.size/2))
-		table.insert(boundingEvents, v:changed(boundUpdate))
+		for _,v in pairs(controller.selection) do
+			bounds:expand(v.position + (v.size/2))
+			bounds:expand(v.position - (v.size/2))
+			table.insert(boundingEvents, v:changed(boundUpdate))
+		end
 	end
 
 	boundingBox.position = bounds:getCentre()
