@@ -88,4 +88,14 @@ controller.generateMenu = function(options, position)
 	menu.size = guiCoord(0, 160, 0, yPos)
 end
 
+controller.bind = function(object, options)
+	if not object.mouseRightReleased then
+		return warn("Could not hook onto mouse event?!")
+	end
+
+	object:on("mouseRightReleased", function()
+		controller.generateMenu(options)
+	end)
+end
+
 return controller

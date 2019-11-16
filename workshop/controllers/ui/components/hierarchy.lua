@@ -2,6 +2,7 @@ local controller = {}
 
 local shared = require("tevgit:workshop/controllers/shared.lua")
 local selection = require("tevgit:workshop/controllers/core/selection.lua")
+local context = require("tevgit:workshop/controllers/ui/core/contextMenu.lua")
 local ui = require("tevgit:workshop/controllers/ui/core/ui.lua")
 
 -- store icons for each class type
@@ -189,7 +190,7 @@ local function createHierarchyButton(object, guiParent)
 
     if object:isA("luaSharedFolder") or object:isA("luaServerFolder") or
         object:isA("luaClientFolder") then
-        contextMenu.bind(btn, luaFolderContextOptions)
+        context.bind(btn, context.exampleOptions)
     else
         -- selectionController.applyContext(btn)
     end

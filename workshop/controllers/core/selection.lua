@@ -115,14 +115,16 @@ controller.registerCallback(function()
 
 	local bounds = aabb()
 
-	if #controller.selection > 0 and controller.selection[1].position then
+	if #controller.selection > 0 and type(controller.selection[1].position) == "vector3" then
 		bounds.min = controller.selection[1].position
 		bounds.max = controller.selection[1].position
 
 		for _,v in pairs(controller.selection) do
-			bounds:expand(v.position + (v.size/2))
-			bounds:expand(v.position - (v.size/2))
-			table.insert(boundingEvents, v:changed(boundUpdate))
+			if type(v.position) == "vector3" then
+				bounds:expand(v.position + (v.size/2))
+				bounds:expand(v.position - (v.size/2))
+				table.insert(boundingEvents, v:changed(boundUpdate))
+			end
 		end
 	end
 
