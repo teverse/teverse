@@ -2,6 +2,15 @@
 
 local controller = {}
 
+local boundingBox = engine.construct("block", workspace, {
+	name = "_bounding",
+	wireframe = true,
+	static = true,
+	physics = false,
+	workshopLocked = true,
+	position = vector3(0, -100, 0)
+})
+
 controller.selection = {}
 
 controller.callbacks = {}
@@ -51,5 +60,64 @@ end
 controller.hasSelection = function()
 	return #controller.selection > 0
 end
+
+local boundingEvents = {}
+
+local function boundUpdate() 
+	--inefficient, is called for each change
+	local bounds = aabb()
+
+	if #controller.selection > 0 then
+		bounds.min = controller.selection[1].position
+		bounds.max = controller.selection[1].position
+	end
+
+	for _,v in pairs(controller.selection) do
+		bounds:expand(v.position + (v.size/2))
+		bounds:expand(v.position - (v.size/2))
+	end
+
+	boundingBox.position = bounds:getCentre()
+	boundingBox.size = bounds.max - bounds.min
+end
+
+controller.registerCallback(function()
+	for _,v in pairs(boundingEvents) do
+		v:disconnect()
+	end
+	boundingEvents = {}
+
+	local bounds = aabb()
+
+	if #controller.selection > 0 then
+		bounds.min = controller.selection[1].position
+		bounds.max = controller.selection[1].position
+	end
+
+	for _,v in pairs(controller.selection) do
+		bounds:expand(v.position + (v.size/2))
+		bounds:expand(v.position - (v.size/2))
+		table.insert(boundingEvents, v:changed(boundUpdate))
+	end
+
+	boundingBox.position = bounds:getCentre()
+	boundingBox.size = bounds.max - bounds.min
+end)
+
+
+local keybinder = require("tevgit:workshop/controllers/core/keybinder.lua")
+local history = require("tevgit:workshop/controllers/core/history.lua")
+
+keybinder:bind({
+    name = "delete",
+    key = enums.key.delete,
+	action = function()
+		history.beginAction(controller.selection, "Delete")
+		for _,v in pairs(controller.selection) do
+			v:destroy()
+		end
+		history.endAction()
+	end
+})
 
 return controller

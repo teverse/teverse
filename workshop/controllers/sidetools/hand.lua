@@ -22,7 +22,7 @@ return {
             if not inputObj.systemHandled then
                 -- This is not a gui event, let's continue.
                 local hit = engine.physics:rayTestScreen(engine.input.mousePosition)
-                if hit then
+                if hit and not hit.object.workshopLocked then
                     -- user has clicked a object in 3d space.
                     if selection.isSelected(hit.object) then
                         -- user clicked a selected object,
@@ -30,9 +30,17 @@ return {
 
                         -- calculate the 'centre' of the selection
                         local bounds = aabb()
-                        for _,v in pairs(selection.selection) do
-                            bounds:expand(v.position)
+
+                        if #selection.selection > 0 then
+                            bounds.min = selection.selection[1].position
+                            bounds.max = selection.selection[1].position
                         end
+
+                        for _,v in pairs(selection.selection) do
+                            bounds:expand(v.position + (v.size/2))
+                            bounds:expand(v.position - (v.size/2))
+                        end
+
                         local centre = bounds:getCentre()
 
                         -- calculate the mouse's offset from the centre
@@ -58,11 +66,11 @@ return {
                             -- fire a ray, exclude selected items.
                             local hits, didExclude = engine.physics:rayTestScreenAllHits(engine.input.mousePosition, selection.selection)
                             if (#hits > 0) then
-                                local newCentre = hits[1].hitPosition + mouseOffset
+                                local newCentre = hits[1].hitPosition - mouseOffset
                                 local avgPos = vector3(0,0,0)
                                 for _,v in pairs(selection.selection) do
                                     if offsets[v] then
-                                        v.position = newCentre - offsets[v]
+                                        v.position = newCentre + offsets[v]
                                         avgPos = avgPos + v.position
                                     end
                                 end
@@ -84,6 +92,8 @@ return {
                             selection.setSelection(hit.object)
                         end
                     end
+                else
+                    selection.setSelection({})
                 end
             end
         end)
