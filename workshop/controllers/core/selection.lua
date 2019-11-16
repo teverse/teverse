@@ -12,6 +12,7 @@ local boundingBox = engine.construct("block", workspace, {
 })
 
 controller.selection = {}
+controller.destroyingListeners = {}
 
 controller.callbacks = {}
 
@@ -27,7 +28,26 @@ end
 
 controller.setSelection = function(obj)
 	controller.selection = {}
+
+	for _,v in pairs(controller.destroyingListeners) do
+		v:disconnect()
+	end
+	controller.destroyingListeners = {}
+
 	controller.addSelection(obj)
+end
+
+local function destroyListener()
+	for i,v in pairs(controller.selection) do
+		if v == self.object then
+			table.remove(controller.selection, i)
+			break
+		end
+	end
+
+	controller.destroyingListeners[self.object] = nil
+
+	self:disconnect()
 end
 
 controller.addSelection = function(obj)
@@ -35,6 +55,7 @@ controller.addSelection = function(obj)
 		for _,v in pairs(obj) do
 			if v.isA and v:isA("baseClass") then
 				table.insert(controller.selection, v)
+				controller.destroyingListeners[v] = v:once("destroying", destroyListener)
 			else
 				warn("selecting unknown object")
 			end
@@ -42,6 +63,7 @@ controller.addSelection = function(obj)
 	else
 		if obj.isA and obj:isA("baseClass") then
 			table.insert(controller.selection, obj)
+			controller.destroyingListeners[obj] = obj:once("destroying", destroyListener)
 		else
 			warn("selecting unknown object")
 		end
@@ -88,7 +110,7 @@ controller.registerCallback(function()
 		v:disconnect()
 	end
 	boundingEvents = {}
-	
+
 	if not boundingBox or not boundingBox.alive then return end
 
 	local bounds = aabb()
