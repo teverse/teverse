@@ -374,6 +374,7 @@
                             "className": "luaSharedFolder"
                         }
                     ],
+                    "disableDefaultLoaders": true,
                     "className": "luaFolder",
                     "name": "lua"
                 }
