@@ -1,0 +1,392 @@
+{
+    "className": "engine",
+    "version": "Debug 0.10.0",
+    "gameCloudId": "",
+    "children": [
+        {
+            "name": "sounds",
+            "className": "sounds"
+        },
+        {
+            "ambientColour": [
+                0.92156863212585,
+                0.92156863212585,
+                0.92156863212585
+            ],
+            "className": "graphics",
+            "name": "graphics",
+            "clearColour": [
+                0.21960784494877,
+                0.21960784494877,
+                0.258823543787
+            ]
+        },
+        {
+            "children": [
+                {
+                    "fov": 80,
+                    "position": [
+                        11,
+                        5,
+                        10
+                    ],
+                    "className": "camera",
+                    "name": "camera",
+                    "rotation": [
+                        -0.065341390669346,
+                        0.90250700712204,
+                        -0.1477076113224,
+                        -0.39924192428589
+                    ]
+                },
+                {
+                    "rotation": [
+                        0.54463905096054,
+                        0,
+                        0,
+                        0.83867055177689
+                    ],
+                    "position": [
+                        3,
+                        2,
+                        0
+                    ],
+                    "power": 1,
+                    "specularColour": [
+                        1,
+                        1,
+                        1
+                    ],
+                    "shadowNearClip": 0.2,
+                    "radius": 11,
+                    "shadowFarClip": 1000,
+                    "lumThreshold": 0.01,
+                    "className": "light",
+                    "type": 0,
+                    "shadows": false,
+                    "falloff": 1,
+                    "diffuseColour": [
+                        1,
+                        1,
+                        1
+                    ],
+                    "name": "mainLight",
+                    "shadowFarDistance": 500
+                },
+                {
+                    "velocity": [
+                        0,
+                        0,
+                        0
+                    ],
+                    "rotation": [
+                        0,
+                        0,
+                        0,
+                        1
+                    ],
+                    "emissiveColour": [
+                        0,
+                        0,
+                        0
+                    ],
+                    "linearFactor": [
+                        1,
+                        1,
+                        1
+                    ],
+                    "friction": 0.5,
+                    "mesh": "primitive:cube",
+                    "restitution": 0,
+                    "spinningFriction": 0,
+                    "workshopLocked": true,
+                    "colour": [
+                        0.60000002384186,
+                        0.60000002384186,
+                        0.60000002384186
+                    ],
+                    "name": "basePlate",
+                    "roughness": 0,
+                    "size": [
+                        100,
+                        1,
+                        100
+                    ],
+                    "position": [
+                        0,
+                        -1,
+                        0
+                    ],
+                    "renderQueue": 0,
+                    "physics": true,
+                    "angularFactor": [
+                        1,
+                        1,
+                        1
+                    ],
+                    "metalness": 0,
+                    "static": true,
+                    "rollingFriction": 0,
+                    "className": "block",
+                    "linearDamping": 0,
+                    "castsShadows": false,
+                    "angularDamping": 0,
+                    "wireframe": false,
+                    "angularVelocity": [
+                        0,
+                        0,
+                        0
+                    ],
+                    "opacity": 1
+                },
+                {
+                    "velocity": [
+                        0,
+                        0,
+                        0
+                    ],
+                    "rotation": [
+                        0,
+                        0,
+                        0,
+                        1
+                    ],
+                    "emissiveColour": [
+                        0,
+                        0,
+                        0
+                    ],
+                    "linearFactor": [
+                        1,
+                        1,
+                        1
+                    ],
+                    "friction": 0.5,
+                    "mesh": "primitive:cube",
+                    "restitution": 0,
+                    "spinningFriction": 0,
+                    "workshopLocked": false,
+                    "colour": [
+                        1,
+                        0,
+                        0
+                    ],
+                    "name": "redBlock",
+                    "roughness": 0,
+                    "size": [
+                        1,
+                        1,
+                        1
+                    ],
+                    "position": [
+                        0,
+                        0,
+                        0
+                    ],
+                    "renderQueue": 0,
+                    "physics": true,
+                    "angularFactor": [
+                        1,
+                        1,
+                        1
+                    ],
+                    "metalness": 0,
+                    "static": true,
+                    "rollingFriction": 0,
+                    "className": "block",
+                    "linearDamping": 0,
+                    "castsShadows": false,
+                    "angularDamping": 0,
+                    "wireframe": false,
+                    "angularVelocity": [
+                        0,
+                        0,
+                        0
+                    ],
+                    "opacity": 1
+                },
+                {
+                    "velocity": [
+                        0,
+                        0,
+                        0
+                    ],
+                    "rotation": [
+                        0,
+                        0.70710676908493,
+                        0,
+                        0.70710676908493
+                    ],
+                    "emissiveColour": [
+                        0,
+                        0,
+                        0
+                    ],
+                    "linearFactor": [
+                        1,
+                        1,
+                        1
+                    ],
+                    "friction": 0.5,
+                    "mesh": "primitive:wedge",
+                    "restitution": 0,
+                    "spinningFriction": 0,
+                    "workshopLocked": false,
+                    "colour": [
+                        0,
+                        1,
+                        0
+                    ],
+                    "name": "greenBlock",
+                    "roughness": 0,
+                    "size": [
+                        1,
+                        1,
+                        1
+                    ],
+                    "position": [
+                        1,
+                        0,
+                        0
+                    ],
+                    "renderQueue": 0,
+                    "physics": true,
+                    "angularFactor": [
+                        1,
+                        1,
+                        1
+                    ],
+                    "metalness": 0,
+                    "static": true,
+                    "rollingFriction": 0,
+                    "className": "block",
+                    "linearDamping": 0,
+                    "castsShadows": false,
+                    "angularDamping": 0,
+                    "wireframe": false,
+                    "angularVelocity": [
+                        0,
+                        0,
+                        0
+                    ],
+                    "opacity": 1
+                },
+                {
+                    "velocity": [
+                        0,
+                        0,
+                        0
+                    ],
+                    "rotation": [
+                        0,
+                        0,
+                        0,
+                        1
+                    ],
+                    "emissiveColour": [
+                        0,
+                        0,
+                        0
+                    ],
+                    "linearFactor": [
+                        1,
+                        1,
+                        1
+                    ],
+                    "friction": 0.5,
+                    "mesh": "primitive:sphere",
+                    "restitution": 0,
+                    "spinningFriction": 0,
+                    "workshopLocked": false,
+                    "colour": [
+                        0,
+                        0,
+                        1
+                    ],
+                    "name": "blueBlock",
+                    "roughness": 0,
+                    "size": [
+                        1,
+                        1,
+                        1
+                    ],
+                    "position": [
+                        0.5,
+                        1,
+                        0
+                    ],
+                    "renderQueue": 0,
+                    "physics": true,
+                    "angularFactor": [
+                        1,
+                        1,
+                        1
+                    ],
+                    "metalness": 0,
+                    "static": true,
+                    "rollingFriction": 0,
+                    "className": "block",
+                    "linearDamping": 0,
+                    "castsShadows": false,
+                    "angularDamping": 0,
+                    "wireframe": false,
+                    "angularVelocity": [
+                        0,
+                        0,
+                        0
+                    ],
+                    "opacity": 1
+                }
+            ],
+            "className": "workspace",
+            "name": "workspace"
+        },
+        {
+            "children": [
+                {
+                    "children": [
+                        {
+                            "children": [
+                                {
+                                    "autoRun": true,
+                                    "className": "script",
+                                    "source": "require('tevgit:demos/multiplayer/client.lua')",
+                                    "name": "clientLoader"
+                                }
+                            ],
+                            "name": "client",
+                            "className": "luaClientFolder"
+                        },
+                        {
+                            "children": [
+                                {
+                                    "autoRun": true,
+                                    "className": "script",
+                                    "source": "require('tevgit:demos/multiplayer/server.lua')",
+                                    "name": "serverLoader"
+                                }
+                            ],
+                            "className": "luaServerFolder",
+                            "name": "server"
+                        },
+                        {
+                            "name": "shared",
+                            "className": "luaSharedFolder"
+                        }
+                    ],
+                    "className": "luaFolder",
+                    "name": "lua"
+                }
+            ],
+            "className": "assetsFolder",
+            "name": "assets"
+        },
+        {
+            "name": "interface",
+            "className": "interface"
+        }
+    ],
+    "savedBy": "Jay",
+    "name": "teverse",
+    "signature": "unsigned"
+}

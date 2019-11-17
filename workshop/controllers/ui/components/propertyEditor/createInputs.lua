@@ -189,26 +189,6 @@ createInputs = {
     return container
   end,
 
-  scriptSource = function(instance, property, value)
-    local container = createInputs.default(value, pType, readOnly)
-    local presetSelect = ui.create("guiTextBox", container, {
-        size = guiCoord(1, -4, 0, 16),
-        position = guiCoord(0, 2, 0, 2),
-        borderRadius = 3,
-        text = "Edit Source",
-        fontSize = 16,
-        align = enums.align.middle,
-        backgroundAlpha = 0.75
-    }, "primary")
-    presetSelect:mouseLeftReleased(function ()
-      if instance[property] then
-        instance[property]:editExternal()
-      end
-    end)
-
-    return container
-  end,
-
   string = function(instance, property, value)
     local container = createInputs.default(value, pType, readOnly)
 
@@ -216,13 +196,15 @@ createInputs = {
       backgroundAlpha = 0.25,
       readOnly = false,
       multiline = false,
+      wrapped = true,
       fontSize = 18,
       name = "input",
       size = guiCoord(1, -4, 0, 18),
       position = guiCoord(0, 2, 0, 1),
       text = "text input",
       align = enums.align.middleLeft,
-      zIndex = 2
+      zIndex = 2,
+      cropChildren = true
     }, "primary")
 
     x:textInput(function ()

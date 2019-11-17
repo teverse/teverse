@@ -8,6 +8,7 @@ local boundingBox = engine.construct("block", workspace, {
 	static = true,
 	physics = false,
 	workshopLocked = true,
+	doNotSerialise = true,
 	position = vector3(0, -100, 0)
 })
 

@@ -9,13 +9,12 @@ local ui = require("tevgit:workshop/controllers/ui/core/ui.lua")
 --  use a table of two icons, 
 --   [1] will be unexpanded and [2] will be used when the obj is expanded.
 local overridingIcons = {
-    scriptSource = "fa:s-file-code",
-    scriptContainer = "fa:s-microchip",
+    script = "fa:s-file-code",
     input = {"fa:s-keyboard", "fa:r-keyboard"},
     debug = "fa:s-bug",
     light = "fa:s-lightbulb",
     block = "fa:s-cube",
-    camera = "fa:s-camera"
+    camera = "fa:s-camera",
 }
 
 -- dictionary of buttons to their corrosponding objects.
@@ -68,7 +67,7 @@ local function updatePositions(frame)
             else
                 -- object has no children
                 frame.icon.texture = regularIconWithOutChildren
-                frame.icon.imageAlpha = .2
+                frame.icon.imageAlpha = 0.5
                 frame.textAlpha = .6
                 frame.fontFile = "local:OpenSans-Regular.ttf"
             end
@@ -76,7 +75,7 @@ local function updatePositions(frame)
             -- object is expanded
             frame.textAlpha = 0.6
             frame.fontFile = "local:OpenSans-Regular.ttf"
-            frame.icon.imageAlpha = 0.4
+            frame.icon.imageAlpha = 0.75
             frame.icon.texture = expandedIcon
         end
 
@@ -188,8 +187,9 @@ local function createHierarchyButton(object, guiParent)
 
     btn:once("destroying", function() childAddedEvent:disconnect() end)
 
-    if object:isA("luaSharedFolder") or object:isA("luaServerFolder") or
-        object:isA("luaClientFolder") then
+    if object:isA("luaSharedFolder") 
+       or object:isA("luaServerFolder")
+       or object:isA("luaClientFolder") then
         context.bind(btn, {
             {name = "Add Script", callback = function() engine.construct("script", object) end}
         })
@@ -200,10 +200,10 @@ local function createHierarchyButton(object, guiParent)
 end
 
 controller.window = ui.window(shared.workshop.interface, "Hierarchy",
-                              guiCoord(0, 260, 0, 400), -- size
-guiCoord(1, -260, 0.75, -25), -- pos
-true, -- dockable
-true -- hidable
+    guiCoord(0, 260, 0, 400), -- size
+    guiCoord(1, -260, 0.75, -25), -- pos
+    true, -- dockable
+    true -- hidable
 )
 controller.window.visible = true
 

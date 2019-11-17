@@ -37,7 +37,8 @@ local function alphabeticalSorter(a, b) return a.property < b.property end
 
 local excludePropertyList = {
     physics = true, -- letting user changes this will break raycasts
-    doNotSerialise = true
+    doNotSerialise = true,
+    source = true
 }
 
 function controller.generateProperties()
