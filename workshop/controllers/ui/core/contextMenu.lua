@@ -64,9 +64,9 @@ controller.generateMenu = function(options, position)
 			textAlpha = 0.6
 		}, "primaryText")
 
-		if options.callback then
+		if option.callback then
 			btn:mouseLeftReleased(function ()
-				options.callback()
+				option.callback()
 				menu:destroy()
 				controller.currentContextMenu = nil
 			end)

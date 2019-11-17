@@ -64,18 +64,18 @@ local function updatePositions(frame)
                 frame.icon.texture = regularIconWithChildren
                 frame.icon.imageAlpha = 1
                 frame.textAlpha = 1
-                frame.fontFile = "OpenSans-SemiBold.ttf"
+                frame.fontFile = "local:OpenSans-SemiBold.ttf"
             else
                 -- object has no children
                 frame.icon.texture = regularIconWithOutChildren
                 frame.icon.imageAlpha = .2
                 frame.textAlpha = .6
-                frame.fontFile = "OpenSans-Regular.ttf"
+                frame.fontFile = "local:OpenSans-Regular.ttf"
             end
         else
             -- object is expanded
             frame.textAlpha = 0.6
-            frame.fontFile = "OpenSans-Regular.ttf"
+            frame.fontFile = "local:OpenSans-Regular.ttf"
             frame.icon.imageAlpha = 0.4
             frame.icon.texture = expandedIcon
         end
@@ -137,8 +137,8 @@ local function createHierarchyButton(object, guiParent)
                 end
                 controller.scrollView.canvasSize =
                     guiCoord(1, 0, 0, updatePositions())
-                if object.className == "scriptSource" or object.className ==
-                    "scriptContainer" then
+                if object.className == "script" then
+                    object:editExternal()
                     -- require("tevgit:create/controllers/scriptController.lua").editScript(object)
                 end
             else
@@ -190,7 +190,9 @@ local function createHierarchyButton(object, guiParent)
 
     if object:isA("luaSharedFolder") or object:isA("luaServerFolder") or
         object:isA("luaClientFolder") then
-        context.bind(btn, context.exampleOptions)
+        context.bind(btn, {
+            {name = "Add Script", callback = function() engine.construct("script", object) end}
+        })
     else
         -- selectionController.applyContext(btn)
     end

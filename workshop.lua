@@ -106,8 +106,8 @@ end
 -- UI
 --
 
-local normalFontName = "OpenSans-Regular"
-local boldFontName = "OpenSans-Bold"
+local normalFontName = "local:OpenSans-Regular"
+local boldFontName = "local:OpenSans-Bold"
 
 local themeColourWindow = colour:fromRGB(61, 66, 71)
 local themeColourWindowText = colour(1, 1, 1)

@@ -32,7 +32,7 @@ controller.newScriptDialogue = function(parent)
 		position		= guiCoord(0, 5, 0, 10),
 		text 			= "Choose a source for your new scriptContainer\nunder " .. (parent and parent.name or "?"),
 		fontSize		= 20,
-		fontFile		= "OpenSans-Bold.ttf",
+		fontFile		= "local:OpenSans-Bold.ttf",
 		align			= enums.align.middle,
 		backgroundAlpha = 0
 	}, "light")

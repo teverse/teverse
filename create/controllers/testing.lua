@@ -34,7 +34,7 @@ remoteTest:mouseLeftReleased(function ()
 		position		= guiCoord(0, 5, 0, 5),
 		text 			= "Launching remote server...",
 		fontSize		= 20,
-		fontFile		= "OpenSans-Bold.ttf",
+		fontFile		= "local:OpenSans-Bold.ttf",
 		align			= enums.align.middle,
 		backgroundAlpha = 0
 	}, "light")

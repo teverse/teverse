@@ -205,7 +205,7 @@ return {
             zIndex = 2,
             text = "Continue",
             align = enums.align.middle,
-            fontFile = "OpenSans-Bold.ttf"
+            fontFile = "local:OpenSans-Bold.ttf"
         }, themer.types.primaryVariant)
 
         if not callback then

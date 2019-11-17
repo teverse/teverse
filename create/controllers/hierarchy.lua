@@ -77,18 +77,18 @@ local function updatePositions(frame)
         frame.icon.texture = regularIconWithChildren
         frame.icon.imageAlpha = 1
         frame.textAlpha = 1
-        frame.fontFile = "OpenSans-SemiBold.ttf"
+        frame.fontFile = "local:OpenSans-SemiBold.ttf"
       else
         --object has no children
         frame.icon.texture = regularIconWithOutChildren
         frame.icon.imageAlpha = .2
         frame.textAlpha = .6
-        frame.fontFile = "OpenSans-Regular.ttf"
+        frame.fontFile = "local:OpenSans-Regular.ttf"
       end
     else
       -- object is expanded
       frame.textAlpha = 0.6
-      frame.fontFile = "OpenSans-Regular.ttf"
+      frame.fontFile = "local:OpenSans-Regular.ttf"
       frame.icon.imageAlpha = 0.4
       frame.icon.texture = expandedIcon
     end
