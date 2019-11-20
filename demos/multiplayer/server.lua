@@ -60,13 +60,13 @@ engine.networking:bind( "mineBlock", function( client, x, y, z )
 
         if not isSpaceUsed(x, y - 1, z) then
             fillSpace(x, y - 1, z)
-        else if not isSpaceUsed(x - 1, y, z) then
+        elseif not isSpaceUsed(x - 1, y, z) then
             fillSpace(x - 1, y, z)
-        else if not isSpaceUsed(x + 1, y, z) then
+        elseif not isSpaceUsed(x + 1, y, z) then
             fillSpace(x + 1, y, z)
-        else if not isSpaceUsed(x, y, z - 1) then
+        elseif not isSpaceUsed(x, y, z - 1) then
             fillSpace(x, y, z - 1)
-        else if not isSpaceUsed(x, y, z + 1) then
+        elsesif not isSpaceUsed(x, y, z + 1) then
             fillSpace(x, y, z + 1)
         end
 	end
