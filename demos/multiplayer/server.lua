@@ -41,7 +41,9 @@ local function fillSpace(x, y, z)
 end
 
 local function isSpaceUsed(x, y, z)
-    if not minable[x] or not minable[x][y] or not minable[x][y][z] then
+    if y > 0 then
+        return true
+    elseif not minable[x] or not minable[x][y] or not minable[x][y][z] then
         return false
     else
         return true
@@ -64,13 +66,25 @@ engine.networking:bind( "mineBlock", function( client, x, y, z )
 
         if not isSpaceUsed(x, y - 1, z) then
             fillSpace(x, y - 1, z)
-        elseif not isSpaceUsed(x - 1, y, z) then
+        end
+
+        if not isSpaceUsed(x, y + 1, z) then
+            fillSpace(x, y + 1, z)
+        end
+
+        if not isSpaceUsed(x - 1, y, z) then
             fillSpace(x - 1, y, z)
-        elseif not isSpaceUsed(x + 1, y, z) then
+        end
+
+        if not isSpaceUsed(x + 1, y, z) then
             fillSpace(x + 1, y, z)
-        elseif not isSpaceUsed(x, y, z - 1) then
+        end
+
+        if not isSpaceUsed(x, y, z - 1) then
             fillSpace(x, y, z - 1)
-        elseif not isSpaceUsed(x, y, z + 1) then
+        end
+        
+        if not isSpaceUsed(x, y, z + 1) then
             fillSpace(x, y, z + 1)
         end
 	end
