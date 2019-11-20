@@ -7,8 +7,8 @@ require("tevgit:core/client/debug.lua")
 require("tevgit:core/client/chat.lua")
 require("tevgit:core/client/playerList.lua")
 
-workspace.camera.position = vector3(0, 15, -10)
-workspace.camera:lookAt(vector3(0, 0, 0))
+--workspace.camera.position = vector3(0, 15, -10)
+--workspace.camera:lookAt(vector3(0, 0, 0))
 
 workspace:childAdded(function(c)
     if c.className == "block" then
