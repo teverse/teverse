@@ -6,7 +6,11 @@ print("Hello Server!")
 require("tevgit:core/server/debug.lua")
 require("tevgit:core/server/chat.lua")
 
-workspace:destroyAllChildren()
+for _,v in pairs(workspace.children) do
+    if v.className == "block" then
+        v:destroy()
+    end
+end
 
 local minable = {}
 
