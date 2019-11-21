@@ -6,11 +6,26 @@ print("Hello Server!")
 require("tevgit:core/server/debug.lua")
 require("tevgit:core/server/chat.lua")
 
-for _,v in pairs(workspace.children) do
-    if v.className == "block" then
-        v:destroy()
-    end
-end
+workspace:destroyAllChildren()
+
+local mainLight = engine.construct("light", workspace, {
+    name           = "mainLight",
+    position       = vector3(3, 2, 0),
+    type           = enums.lightType.directional,
+    rotation       = quaternion():setEuler(math.rad(66), 0, 0),
+    diffuseColour  = colour:white(),
+    specularColour = colour:white()
+})
+
+engine.construct("block", workspace, {
+    name           = "base",
+    position       = vector3(-72, 0, 0),
+    size           = vector3(100, 1, 100),
+    type           = enums.lightType.directional,
+    rotation       = quaternion():setEuler(math.rad(66), 0, 0),
+    diffuseColour  = colour:white(),
+    specularColour = colour:white()
+})
 
 local minable = {}
 
@@ -83,7 +98,7 @@ engine.networking:bind( "mineBlock", function( client, x, y, z )
         if not isSpaceUsed(x, y, z - 1) then
             fillSpace(x, y, z - 1)
         end
-        
+
         if not isSpaceUsed(x, y, z + 1) then
             fillSpace(x, y, z + 1)
         end
