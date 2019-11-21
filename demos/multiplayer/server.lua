@@ -68,7 +68,11 @@ local function fillSpace(x, y, z)
         static      = true
     })
 
-    setSpaceUsed(x, y, z, block)
+    -- If we dont set the space as used, it will not be mineable...
+    -- Use this to our advantage to set a boundary
+    if x < 10 and x > -10 and y > -10 and z > -10 and z < 10 then
+        setSpaceUsed(x, y, z, block)
+    end
 
     return block
 end
