@@ -20,13 +20,13 @@ end
 return {
     create = create,
 
-    button = function(parent, text, size, position, theme)
+    button = function(parent, text, size, position, alignment, fontsize, theme)
         if not theme then theme = "primary" end
         local btn = create("guiFrame", parent, {
             size = size,
             position = position,
             borderRadius = 3,
-            hoverCursor = "fa:s-hand-pointer"
+            hoverCursor = "fa:s-hand-pointer",
         }, theme)
 
         create("guiTextBox", btn, {
@@ -36,6 +36,29 @@ return {
             text = text,
             handleEvents = false,
             align = enums.align.middle,
+        }, theme .. "Text")
+
+        return btn
+    end,
+
+    -- Prevent backward breaks in older code
+    customButton = function(parent, text, size, position, alignment, fontsize, theme)
+        if not theme then theme = "primary" end
+        local btn = create("guiFrame", parent, {
+            size = size,
+            position = position,
+            borderRadius = 3,
+            hoverCursor = "fa:s-hand-pointer",
+        }, theme)
+
+        create("guiTextBox", btn, {
+            name = "label",
+            size = guiCoord(1, -12, 1, -6),
+            position = guiCoord(0, 6, 0, 3),
+            text = text,
+            handleEvents = false,
+            align = alignment,
+            fontSize = fontsize,
         }, theme .. "Text")
 
         return btn

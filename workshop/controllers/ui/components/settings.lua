@@ -61,7 +61,7 @@ local themePage = ui.create("guiScrollView", window.content, {
    position = guiCoord(0.35, 0, 0, 0)
 }, "background")
 
-require("tevgit:workshop/controllers/ui/components/themePreviewer.lua").parent = themePage
+require("tevgit:workshop/controllers/ui/components/themeEditor.lua").parent = themePage
 
 addTab("Theme", themePage)
 
