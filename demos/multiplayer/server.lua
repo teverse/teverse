@@ -21,10 +21,28 @@ engine.construct("block", workspace, {
     name           = "base",
     position       = vector3(-72, 0, 0),
     size           = vector3(100, 1, 100),
-    type           = enums.lightType.directional,
-    rotation       = quaternion():setEuler(math.rad(66), 0, 0),
-    diffuseColour  = colour:white(),
-    specularColour = colour:white()
+    colour         = colour:fromRGB(75, 163, 57)
+})
+
+engine.construct("block", workspace, {
+    name           = "base",
+    position       = vector3(72, 0, 0),
+    size           = vector3(100, 1, 100),
+    colour         = colour:fromRGB(75, 163, 57)
+})
+
+engine.construct("block", workspace, {
+    name           = "base",
+    position       = vector3(0, 0, 72),
+    size           = vector3(100, 1, 100),
+    colour         = colour:fromRGB(75, 163, 57)
+})
+
+engine.construct("block", workspace, {
+    name           = "base",
+    position       = vector3(0, 0, -72),
+    size           = vector3(100, 1, 100),
+    colour         = colour:fromRGB(75, 163, 57)
 })
 
 local minable = {}
