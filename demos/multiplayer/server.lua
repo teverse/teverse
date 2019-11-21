@@ -13,8 +13,8 @@ local mainLight = engine.construct("light", workspace, {
     position       = vector3(3, 2, 0),
     type           = enums.lightType.directional,
     rotation       = quaternion():setEuler(math.rad(66), 0, 0),
-    diffuseColour  = colour:white(),
-    specularColour = colour:white()
+    diffuseColour  = colour(10, 10, 10),
+    specularColour = colour(10, 10, 10)
 })
 
 engine.construct("block", workspace, {
@@ -26,21 +26,21 @@ engine.construct("block", workspace, {
 
 engine.construct("block", workspace, {
     name           = "base",
-    position       = vector3(72, 0, 0),
+    position       = vector3(72, 2, 0),
     size           = vector3(100, 1, 100),
     colour         = colour:fromRGB(75, 163, 57)
 })
 
 engine.construct("block", workspace, {
     name           = "base",
-    position       = vector3(0, 0, 72),
+    position       = vector3(0, 2, 72),
     size           = vector3(100, 1, 100),
     colour         = colour:fromRGB(75, 163, 57)
 })
 
 engine.construct("block", workspace, {
     name           = "base",
-    position       = vector3(0, 0, -72),
+    position       = vector3(0, 2, -72),
     size           = vector3(100, 1, 100),
     colour         = colour:fromRGB(75, 163, 57)
 })
@@ -70,8 +70,11 @@ local function fillSpace(x, y, z)
 
     -- If we dont set the space as used, it will not be mineable...
     -- Use this to our advantage to set a boundary
-    if x < 10 and x > -10 and y > -10 and z > -10 and z < 10 then
+    if x < 20 and x > -20 and y > -20 and z > -20 and z < 20 then
         setSpaceUsed(x, y, z, block)
+    else
+        -- this block is not minable, let's make it look different?
+        block.colour = colour:fromRGB(156, 149, 143)
     end
 
     return block
