@@ -129,3 +129,5 @@ engine.networking:bind( "mineBlock", function( client, x, y, z )
         end
 	end
 end)
+
+print("all loaded")
