@@ -13,12 +13,7 @@ workspace.camera:lookAt(vector3(0, 0, 0))
 -- Stealing camera from workshop
 require("tevgit:workshop/controllers/environment/camera.lua")
 
-engine.construct("block", workspace, {
-    position = vector3(0, 20, 0),
-    static = false
-})
-
-workspace:childAdded(function(c)
+local function registerBlock(c)
     if c.className == "block" then
         c:once("mouseLeftPressed", function ()
             if c.size == vector3(4, 4, 4) then
@@ -27,4 +22,7 @@ workspace:childAdded(function(c)
             end
         end)
     end
-end)
+end
+
+workspace:childAdded(registerBlock)
+for _,v in pairs(workspace.children) do registerBlock(v) end
