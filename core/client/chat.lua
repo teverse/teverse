@@ -18,12 +18,12 @@ local container = engine.construct("guiFrame", engine.interface, {
 	position		 = guiCoord(0, 0, 1, -295),
 	backgroundColour = colour(0.1, 0.1, 0.1),
 	handleEvents	 = false,
-	backgroundAlpha  = 0.1,
+	backgroundAlpha  = 0,
 	zIndex			 = 1001
 })
 
 local messagesOutput = engine.construct("guiTextBox", container, {
-	size			= guiCoord(1, -8, 1, -45),
+	size			= guiCoord(1, -8, 1, -35),
 	position		= guiCoord(0, 4, 0, 2),
 	backgroundAlpha = 0,
 	handleEvents	= false,
@@ -34,13 +34,12 @@ local messagesOutput = engine.construct("guiTextBox", container, {
 })
 
 local messageInputFrame = engine.construct("guiFrame", container, {
-	size			 = guiCoord(1, -30, 0, 24),
-	position		 = guiCoord(0, 15, 1, -39),
+	size			 = guiCoord(1, 0, 0, 24),
+	position		 = guiCoord(0, 0, 1, -24),
 	backgroundColour = colour(0.1, 0.1, 0.1),
 	fontSize         = 18,
 	handleEvents	 = false,
-	backgroundAlpha  = 0.4,
-	borderRadius	 = 2,
+	backgroundAlpha  = 0.3,
 	zIndex			 = 1001
 })
 

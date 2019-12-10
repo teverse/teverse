@@ -1,6 +1,6 @@
 local container = engine.construct("guiFrame", engine.interface, {
 	size			 = guiCoord(0,400,0,295),
-	position		 = guiCoord(0, 350, 1, -295),
+	position		 = guiCoord(1, -400, 1, -295),
 	backgroundColour = colour(0.1, 0.1, 0.1),
 	handleEvents	 = false,
 	backgroundAlpha  = 0.1,
@@ -12,6 +12,7 @@ local serverOutput = engine.construct("guiTextBox", container, {
 	position		= guiCoord(0, 4, 0, 2),
 	backgroundAlpha = 0,
 	handleEvents	= false,
+	wrap 			= true,
 	align 			= enums.align.bottomLeft,
 	fontSize 		= 15,
 	text			= "[Server Output]"
