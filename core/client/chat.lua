@@ -84,7 +84,7 @@ engine.networking.clients:clientConnected(function (client)
 	addMessage(client.name .. " has joined.")
 end)
 
-engine.networking.clients:clientDisconnected(function (client)
+engine.networking.clients:onSync("clientDisconnected", function (client)
 	addMessage(client.name .. " has disconnected.")
 end)
 

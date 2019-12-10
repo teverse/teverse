@@ -52,7 +52,7 @@ end
 
 engine.networking.clients:clientConnected(addPlayer)
 
-engine.networking.clients:clientDisconnected(function (client)
+engine.networking.clients:onSync("clientDisconnected", function (client)
 	if container:hasChild(client.name) then
 		container[client.name]:destroy()
 		container[client.name] = nil
