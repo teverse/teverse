@@ -27,6 +27,7 @@ local messagesOutput = engine.construct("guiTextBox", container, {
 	position		= guiCoord(0, 4, 0, 2),
 	backgroundAlpha = 0,
 	handleEvents	= false,
+	wrap 			= true,
 	align 			= enums.align.bottomLeft,
 	fontSize 		= 21,
 	text			= ""
