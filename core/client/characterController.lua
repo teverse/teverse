@@ -41,7 +41,7 @@ end
 
 local function characterSpawnedHandler(newClientId)
 	repeat wait() until engine.networking.me -- we shouldnt need to do this
-	print("spawning")
+	print("spawning", newClientId, engine.networking.me.id)
 	if engine.networking.me.id == newClientId then
 		print("waiting")
 		repeat wait() until workspace[engine.networking.me.id]

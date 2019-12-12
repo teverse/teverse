@@ -35,7 +35,7 @@ update = function(client, cameraDirection)
 	return moved
 end
 
-engine.networking.clients:clientConnected(function (client)
+function onConnection(client)
 	wait(1)
 	print("spawning", client.id)
 	local char = engine.construct("block", workspace, {
@@ -78,7 +78,13 @@ engine.networking.clients:clientConnected(function (client)
 	end)
 	
 	controller.characters[client] = { updating=false, character = char, keys = {false,false,false,false}, speed = controller.defaultSpeed }
-end)
+end
+
+for _,v in pairs(engine.networking.clients.children) do
+	onConnection(v)
+end
+
+engine.networking.clients:clientConnected(onConnection)
 
 engine.networking.clients:clientDisconnected(function (client)	wait(1)
 	if controller.characters[client] then
