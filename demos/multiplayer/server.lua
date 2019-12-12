@@ -64,7 +64,7 @@ local function fillSpace(x, y, z)
         name        = "minable",
         position    = vector3(x * 4, y * 4, z * 4),
         size        = vector3(4, 4, 4),
-        colour      = colour:random(),
+        colour      = colour:fromRGB(math.random(55, 85), math.random(40, 60), 5),
         static      = true
     })
 
@@ -129,3 +129,5 @@ engine.networking:bind( "mineBlock", function( client, x, y, z )
         end
 	end
 end)
+
+print("server loaded")
