@@ -6,12 +6,10 @@ print("Hello Client!")
 require("tevgit:core/client/debug.lua")
 require("tevgit:core/client/chat.lua")
 require("tevgit:core/client/playerList.lua")
+require("tevgit:core/client/characterController.lua")
 
 workspace.camera.position = vector3(0, 15, -10)
 workspace.camera:lookAt(vector3(0, 0, 0))
-
--- Stealing camera from workshop
-require("tevgit:workshop/controllers/environment/camera.lua")
 
 local function registerBlock(c)
     if c.className == "block" then
