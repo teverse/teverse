@@ -49,7 +49,10 @@ local tabs = {
                textAlpha = 1
             }, "inOutQuad")
 
-            shared.workshop:remoteTestServer()
+            if not shared.workshop:remoteTestServer() then
+                content:destroy()
+                ui.prompt("Please save this game before testing.")
+            end
          end
       end},
    }

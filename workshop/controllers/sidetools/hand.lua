@@ -68,12 +68,27 @@ return {
                             if (#hits > 0) then
                                 local newCentre = hits[1].hitPosition - mouseOffset
                                 local avgPos = vector3(0,0,0)
+                                local minY = hits[1].hitPosition.y
                                 for _,v in pairs(selection.selection) do
                                     if offsets[v] then
                                         v.position = newCentre + offsets[v]
+                                        minY = math.min(minY, v.position.y - (v.size.y/2))
                                         avgPos = avgPos + v.position
                                     end
                                 end
+                                
+                                -- If the lowest object is less than the mouse's position
+                                if minY < hits[1].hitPosition.y then
+                                    local offsetBy = vector3(0, hits[1].hitPosition.y - minY, 0)
+                                    
+                                    -- increase height of each selected object so they're above the hovered position.
+                                    for _,v in pairs(selection.selection) do
+                                        if offsets[v] then
+                                            v.position = v.position + offsetBy
+                                        end
+                                    end
+                                end
+                                
                                 grid.position = avgPos / #selection.selection
                             end
                             wait()
