@@ -26,6 +26,32 @@ local tabs = {
       {"Settings", "fa:s-cog", function ()
         shared.windows.settings.visible = not shared.windows.settings.visible
       end},
+      {"Test", "fa:s-satellite-dish", function ()
+         if not shared.workshop.gameFilePath or shared.workshop.gameFilePath == "" then
+            ui.prompt("Please save this game before testing.")
+         else
+
+            local content = engine.construct("guiTextBox", shared.workshop.interface, {
+               name = "_loadingTest",
+               backgroundAlpha = 0,
+               textAlpha = 0,
+               backgroundColour = colour:black(),
+               size = guiCoord(1, 0, 1, 0),
+               position = guiCoord(0, 0, 0, 0),
+               zIndex = 5000,
+               fontSize = 24,
+               align = enums.align.middle,
+               text = "Uploading to Remote Testing Server\nServer: London"
+           })
+
+            engine.tween:begin(content, 1, {
+               backgroundAlpha = 0.95,
+               textAlpha = 1
+            }, "inOutQuad")
+
+            shared.workshop:remoteTestServer()
+         end
+      end},
    }
 }
 
