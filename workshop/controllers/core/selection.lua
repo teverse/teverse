@@ -54,7 +54,7 @@ end
 controller.addSelection = function(obj)
 	if type(obj) == "table" then
 		for _,v in pairs(obj) do
-			if v.isA and v:isA("baseClass") then
+			if v.isA and v:isA("baseClass") and not v.workshopLocked then
 				table.insert(controller.selection, v)
 				controller.destroyingListeners[v] = v:once("destroying", destroyListener)
 			else
@@ -97,8 +97,9 @@ local function boundUpdate()
 		bounds.max = controller.selection[1].position
 
 		for _,v in pairs(controller.selection) do
-			bounds:expand(v.position + (v.size/2))
-			bounds:expand(v.position - (v.size/2))
+			local size = v.size or vector3(0,0,0)
+			bounds:expand(v.position + (size/2))
+			bounds:expand(v.position - (size/2))
 		end
 	end
 
@@ -146,6 +147,44 @@ keybinder:bind({
 			v:destroy()
 		end
 		history.endAction()
+	end
+})
+
+keybinder:bind({
+    name = "select all",
+	key = enums.key.a,
+	priorKey = enums.key.leftCtrl,
+	action = function()
+		local children = workspace.children
+		for i,v in pairs(children) do
+			if v:isA("camera") then
+				table.remove(children, i)
+			end
+		end
+		controller.setSelection(children)
+	end
+})
+
+keybinder:bind({
+    name = "focus",
+    key = enums.key.f,
+	action = function()
+		-- calculate the 'centre' of the selection
+		local bounds = aabb()
+
+		if #controller.selection > 0 then
+			bounds.min = controller.selection[1].position
+			bounds.max = controller.selection[1].position
+		end
+
+		for _,v in pairs(controller.selection) do
+			bounds:expand(v.position + (v.size/2))
+			bounds:expand(v.position - (v.size/2))
+		end
+
+		local centre = bounds:getCentre()
+
+		workspace.camera:lookAt(centre)
 	end
 })
 

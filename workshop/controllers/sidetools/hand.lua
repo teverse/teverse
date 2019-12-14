@@ -7,8 +7,11 @@ local toolIcon = "fa:s-hand-pointer"
 
 local selection = require("tevgit:workshop/controllers/core/selection.lua")
 local history = require("tevgit:workshop/controllers/core/history.lua")
+local ui = require("tevgit:workshop/controllers/ui/core/ui.lua")
+local shared = require("tevgit:workshop/controllers/shared.lua")
 
 local clickEvent = nil
+local settingsGui = nil
 
 return {
     name = toolName,
@@ -16,6 +19,39 @@ return {
     desc = toolDesc,
 
     activate = function()
+
+        settingsGui = ui.create("guiFrame", shared.workshop.interface["_toolBar"], {
+            size = guiCoord(0, 120, 0, 28),
+            position = guiCoord(0, 80, 0, 0),
+            backgroundAlpha = 0.8,
+            borderRadius = 4
+        }, "primary")
+
+        ui.create("guiTextBox", settingsGui, {
+            size = guiCoord(0.6, 0, 0, 18),
+            position = guiCoord(0, 5, 0, 5),
+            text = "Grid Step",
+            fontSize = 18,
+            textAlpha = 0.8 
+        }, "primaryText")
+
+        local gridStep = 0.25
+
+        local gridStepInput = ui.create("guiTextBox", settingsGui, {
+            size = guiCoord(0.4, -6, 0, 18),
+            position = guiCoord(0.6, 3, 0, 5),
+            text = tostring(gridStep),
+            fontSize = 18,
+            textAlpha = 0.8,
+            borderRadius = 4,
+            align = enums.align.middle,
+            readOnly = false
+        }, "primaryVariant")
+
+        gridStepInput:on("changed", function()
+            gridStep = tonumber(gridStepInput.text) or 0 
+        end)
+
         -- Set the event listener to a variable so we can disconnect this handler
         -- when the tool is deactivated
         clickEvent = engine.input:mouseLeftPressed(function ( inputObj )
@@ -37,8 +73,9 @@ return {
                         end
 
                         for _,v in pairs(selection.selection) do
-                            bounds:expand(v.position + (v.size/2))
-                            bounds:expand(v.position - (v.size/2))
+                            local size = v.size or vector3(0,0,0)
+                            bounds:expand(v.position + (size/2))
+                            bounds:expand(v.position - (size/2))
                         end
 
                         local centre = bounds:getCentre()
@@ -67,12 +104,16 @@ return {
                             local hits, didExclude = engine.physics:rayTestScreenAllHits(engine.input.mousePosition, selection.selection)
                             if (#hits > 0) then
                                 local newCentre = hits[1].hitPosition - mouseOffset
+                                if gridStep ~= 0 then
+                                    newCentre = shared.roundVector3(newCentre, gridStep)
+                                end
                                 local avgPos = vector3(0,0,0)
                                 local minY = hits[1].hitPosition.y
                                 for _,v in pairs(selection.selection) do
                                     if offsets[v] then
                                         v.position = newCentre + offsets[v]
-                                        minY = math.min(minY, v.position.y - (v.size.y/2))
+                                        local size = v.size or vector3(0,0,0)
+                                        minY = math.min(minY, v.position.y - (size.y/2))
                                         avgPos = avgPos + v.position
                                     end
                                 end
@@ -115,6 +156,11 @@ return {
     end,
 
     deactivate = function ()
+        if settingsGui then
+            settingsGui:destroy()
+            settingsGui = nil
+        end
+
         if clickEvent then
            clickEvent:disconnect()
            clickEvent = nil 
