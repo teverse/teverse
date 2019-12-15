@@ -11,6 +11,7 @@ local ui = require("tevgit:workshop/controllers/ui/core/ui.lua")
 local shared = require("tevgit:workshop/controllers/shared.lua")
 
 local clickEvent = nil
+local keyEvent = nil
 local settingsGui = nil
 
 return {
@@ -52,6 +53,21 @@ return {
             gridStep = tonumber(gridStepInput.text) or 0 
         end)
 
+        local offsets = {}
+        local rotateBy = 0
+        keyEvent = engine.input:keyPressed(function( inputObj )
+            if inputObj.key == enums.key.r then
+                rotateBy = rotateBy - 45
+                local targetRot = quaternion:setEuler(0,math.rad(rotateBy),0)
+                for _,v in pairs(selection.selection) do
+                    if offsets[v] then
+                        v.rotation = offsets[v][2] * targetRot
+                        --offsets[v][1] = 
+                    end
+                end
+            end
+        end)
+
         -- Set the event listener to a variable so we can disconnect this handler
         -- when the tool is deactivated
         clickEvent = engine.input:mouseLeftPressed(function ( inputObj )
@@ -84,9 +100,13 @@ return {
                         local mouseOffset = hit.hitPosition - centre
 
                         -- calculate every selected item's offset from the centre
-                        local offsets = {}
+                        offsets = {}
+                        rotateBy = 0
                         for _,v in pairs(selection.selection) do
-                            offsets[v] = v.position - centre
+                            --offsets[v] = v.position - centre
+                            local relative = quaternion(0, 0, 0, 1) * v.rotation;	
+						    local positionOffset = (relative*quaternion()):inverse() * (v.position - centre) 
+						    offsets[v] = {positionOffset, relative}
                         end
                         
                         -- tell history to monitor changes we make to selected items 
@@ -111,7 +131,9 @@ return {
                                 local minY = hits[1].hitPosition.y
                                 for _,v in pairs(selection.selection) do
                                     if offsets[v] then
-                                        v.position = newCentre + offsets[v]
+                                        v.position = newCentre + offsets[v][1]
+
+                                        -- Calculate the lowest point in the selection:
                                         local size = v.size or vector3(0,0,0)
                                         minY = math.min(minY, v.position.y - (size.y/2))
                                         avgPos = avgPos + v.position
@@ -159,6 +181,11 @@ return {
         if settingsGui then
             settingsGui:destroy()
             settingsGui = nil
+        end
+
+        if keyEvent then
+            keyEvent:disconnect()
+            keyEvent = nil
         end
 
         if clickEvent then
