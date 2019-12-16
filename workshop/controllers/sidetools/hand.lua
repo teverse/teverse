@@ -13,6 +13,7 @@ local shared = require("tevgit:workshop/controllers/shared.lua")
 local clickEvent = nil
 local keyEvent = nil
 local settingsGui = nil
+local isDragging = false
 
 return {
     name = toolName,
@@ -54,15 +55,13 @@ return {
         end)
 
         local offsets = {}
-        local rotateBy = 0
         keyEvent = engine.input:keyPressed(function( inputObj )
-            if inputObj.key == enums.key.r then
-                rotateBy = rotateBy - 45
-                local targetRot = quaternion:setEuler(0,math.rad(rotateBy),0)
+            if inputObj.key == enums.key.r and isDragging then
+                local targetRot = quaternion:setEuler(0,math.rad(-45),0)
                 for _,v in pairs(selection.selection) do
                     if offsets[v] then
-                        v.rotation = offsets[v][2] * targetRot
-                        --offsets[v][1] = 
+                        offsets[v][2] = offsets[v][2] * targetRot
+                        v.rotation = offsets[v][2]
                     end
                 end
             end
@@ -101,11 +100,10 @@ return {
 
                         -- calculate every selected item's offset from the centre
                         offsets = {}
-                        rotateBy = 0
                         for _,v in pairs(selection.selection) do
                             --offsets[v] = v.position - centre
                             local relative = quaternion(0, 0, 0, 1) * v.rotation;	
-						    local positionOffset = (relative*quaternion()):inverse() * (v.position - centre) 
+						    local positionOffset = (relative*quaternion(0, 0, 0, 1)):inverse() * (v.position - centre) 
 						    offsets[v] = {positionOffset, relative}
                         end
                         
@@ -119,6 +117,8 @@ return {
                             rotation = quaternion:setEuler(math.rad(90), 0, 0)
                         })
 
+                        isDragging = true
+
                         while engine.input:isMouseButtonDown(enums.mouseButton.left) do
                             -- fire a ray, exclude selected items.
                             local hits, didExclude = engine.physics:rayTestScreenAllHits(engine.input.mousePosition, selection.selection)
@@ -131,7 +131,7 @@ return {
                                 local minY = hits[1].hitPosition.y
                                 for _,v in pairs(selection.selection) do
                                     if offsets[v] then
-                                        v.position = newCentre + offsets[v][1]
+                                        v.position = newCentre + (offsets[v][2] * offsets[v][1])
 
                                         -- Calculate the lowest point in the selection:
                                         local size = v.size or vector3(0,0,0)
@@ -157,6 +157,8 @@ return {
                             wait()
                         end
                         
+                        isDragging = false
+
                         history.endAction()
 
                         grid:destroy()

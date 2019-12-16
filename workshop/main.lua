@@ -69,7 +69,9 @@ local function beginLoad(workshop)
 	-- Okay now we can load remote files whilst the user is looking at a loading screen.
 	shared.controllers.env = require("tevgit:workshop/controllers/environment/main.lua")
 
-    shared.controllers.history = require("tevgit:workshop/controllers/core/history.lua")
+	shared.controllers.history = require("tevgit:workshop/controllers/core/history.lua")
+	
+    shared.controllers.clipboard = require("tevgit:workshop/controllers/core/clipboard.lua")
 
     -- Create the Teverse interface
     require("tevgit:workshop/controllers/ui/createInterface.lua")
