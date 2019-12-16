@@ -50,7 +50,7 @@ local function draw()
             ui.create("guiTextBox", window.content, {
                 size = guiCoord(1, 0, 0, 18),
                 position = guiCoord(0, 0, 0, yPos),
-                text = string.format("[ %s ] %s (change: %i, add: %i, rem: %i)", formattedDate, actionName, history.count(action[3]), history.count(action[4]), history.count(action[5]))
+                text = string.format("[ %s ] %s (change: %i, add: %i, rem: %i)", formattedDate, actionName, history.count(action[3]), #action[4], #action[5])
             }, "backgroundText")
 
             yPos = yPos + 20

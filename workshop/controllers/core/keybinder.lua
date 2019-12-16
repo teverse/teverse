@@ -34,7 +34,12 @@ function hotkeysController:handle(inputObject)
 					end 
 				end 
 			end 
-		else 
+		end
+	end
+	
+	-- bad: seperate pass because we prioritise prior key commands.
+	for key, data in pairs(self.bindings) do
+		if (data.action) then
 			if (inputObject.key == key) then
 				data.action()
 				return

@@ -53,12 +53,11 @@ local function destroyingListener()
     if not changes[changedObject] then
         changes[changedObject] = {}
     end 
-    
     -- Object is being destroyed, let's save a copy of all their writable properties so the user can undo this action
-    local members = workshop:getMembersOfObject( changedObject )
+    local members = shared.workshop:getMembersOfObject( changedObject )
     local toStore = {}
     for _, prop in pairs(members) do
-        local val = object[prop.property]
+        local val = changedObject[prop.property]
         local pType = type(val)
 
         if prop.writable and pType ~= "function" then
@@ -66,7 +65,9 @@ local function destroyingListener()
             toStore[prop.property] = val
         end
     end
+
     toStore["parent"] = changedObject.parent
+    toStore["className"] = changedObject.className
 
     table.insert(destroyedObjects, toStore)
 end
@@ -98,13 +99,13 @@ local function beginAction( object, name )
     if type(object) == "table" then
         for _,v in pairs(object) do
             table.insert(eventListeners, v:onSync("changed", changedListener))
-            table.insert(eventListeners, v:onSync("destroying", destroyingListener))
             table.insert(eventListeners, v:onSync("childAdded", ChildAddedListener))
+            table.insert(eventListeners, v:onSync("destroying", destroyingListener))
         end
     else
         table.insert(eventListeners, object:onSync("changed", changedListener))
-        table.insert(eventListeners, object:onSync("destroying", destroyingListener))
         table.insert(eventListeners, object:onSync("childAdded", ChildAddedListener))
+        table.insert(eventListeners, object:onSync("destroying", destroyingListener))
     end
 end
 
@@ -139,6 +140,15 @@ end
 
 local function undo()
     if actions[pointer] ~= nil then
+
+        -- destroyed objects (restore)
+        for _, properties in pairs(actions[pointer][4]) do 
+            local obj = engine[properties["className"]]()
+            for property, value in pairs(properties) do
+                obj[property] = value
+            end
+        end
+
         for object, properties in pairs(actions[pointer][3]) do 
             if object and object.alive then
                 for property, values in pairs(properties) do
@@ -147,7 +157,8 @@ local function undo()
                     object[property] = values[1]
                 end
             else
-                warn("need to put logic here")
+                for k,v in pairs(properties) do print(k,v) end
+                warn("There was a change recorded, but we couldn't find the object.")
             end
         end
 
@@ -165,10 +176,14 @@ local function redo()
     if actions[pointer + 1] ~= nil then
         pointer = pointer + 1
         for object, properties in pairs(actions[pointer][3]) do 
-            for property, values in pairs(properties) do
-                --values[1] = original value
-                --values[2] = changed value
-                object[property] = values[2]
+            if object and object.alive then
+                for property, values in pairs(properties) do
+                    --values[1] = original value
+                    --values[2] = changed value
+                    object[property] = values[2]
+                end
+            else
+                warn("There was a change recorded, but we couldn't find the object.")
             end
         end
 
