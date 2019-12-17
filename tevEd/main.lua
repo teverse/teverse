@@ -62,7 +62,7 @@ local function runTutorial(module)
 	
 	local instructions = engine.construct("guiFrame", body, {
 		size			= guiCoord(1/4, 0, 1, 0),
-		backgroundColour= colour:white(),
+		backgroundColour=colour:fromRGB(37, 37, 44),
 	})
 
 	local code = engine.construct("guiFrame", body, {
@@ -96,7 +96,7 @@ local function runTutorial(module)
 				fontFile	  	= "local:OpenSans-Regular.ttf",
 				fontSize 		= 20,
 				text 			= page,
-				textColour 		= colour:black(),
+				textColour 		= colour:white(),
 				handleEvents 	= false
 			})
 
@@ -132,7 +132,7 @@ local function runTutorial(module)
 						fontFile	  	= "local:OpenSans-Regular.ttf",
 						fontSize 		= 20,
 						text 			= v,
-						textColour 		= colour:black(),
+						textColour 		= colour:white(),
 						handleEvents 	= false
 					})
 
@@ -187,7 +187,7 @@ local function runTutorial(module)
 							fontFile	  	= "tevurl:font/OpenSans-Italic.ttf",
 							fontSize 		= 20,
 							text 			= v.text,
-							textColour 		= colour:black(),
+							textColour 		= colour:white(),
 							handleEvents 	= false
 						})
 
