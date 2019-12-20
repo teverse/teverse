@@ -4,7 +4,7 @@ local cameraController = {
 	zoomStep   = 3,
 	rotateStep = 0.003,
 	moveStep   = 0.5,
-	slow       = 0.3
+	slow       = 0.1
 }
 
 cameraController.camera = workspace.camera

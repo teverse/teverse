@@ -97,9 +97,7 @@ local function boundUpdate()
 		bounds.max = controller.selection[1].position
 
 		for _,v in pairs(controller.selection) do
-			local size = v.size or vector3(0,0,0)
-			bounds:expand(v.position + (size/2))
-			bounds:expand(v.position - (size/2))
+			bounds:expand(v) -- new in 0.13.2
 		end
 	end
 
