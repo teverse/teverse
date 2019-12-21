@@ -32,15 +32,9 @@ return {
 			colour         = colour(0, 1, 0),
 			size           = vector3(1, 1, 1),
 			position       = vector3(1, 0, 0),
-			mesh		   = "tevurl:3d/Samba.glb", --"primitive:wedge",
+			mesh		   = "primitive:wedge",
 			rotation       = quaternion:setEuler(0, math.rad(90), 0)
-		}):on("changed", function(p, v)
-			if p == "meshScale" then
-				self.object.size = v/50
-				self.object.position = vector3(0, (self.object.size.y/2) - 0.5, 2)
-				self.disconnect()
-			end
-		end)
+		})
 
 
 		local block = engine.construct("block", workspace, {
