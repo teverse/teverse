@@ -105,6 +105,7 @@ local function boundUpdate()
 	boundingBox.size = bounds.max - bounds.min
 end
 
+-- on selection changed
 controller.registerCallback(function()
 	for _,v in pairs(boundingEvents) do
 		v:disconnect()
@@ -121,8 +122,7 @@ controller.registerCallback(function()
 
 		for _,v in pairs(controller.selection) do
 			if type(v.position) == "vector3" and type(v.size) == "vector3" then
-				bounds:expand(v.position + (v.size/2))
-				bounds:expand(v.position - (v.size/2))
+				bounds:expand(v)
 				table.insert(boundingEvents, v:changed(boundUpdate))
 			end
 		end
