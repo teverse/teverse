@@ -152,7 +152,7 @@ return {
                                     end
                                 end
                                 
-                                grid.position = avgPos / #selection.selection
+                                grid.position = (avgPos / #selection.selection) + vector3(0, 0.1, 0)
                             end
                             wait()
                         end

@@ -186,4 +186,6 @@ keybinder:bind({
 	end
 })
 
+controller.box = boundingBox
+
 return controller
