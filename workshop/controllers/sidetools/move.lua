@@ -124,7 +124,7 @@ return {
                     local gridVisual = engine.construct("grid", workspace, {
                         step = gridStep,
                         colour = colour(0.1, 0, 0.1),
-                        size = 15,
+                        size = 25,
                         rotation = quaternion:setEuler(math.rad(90), 0, 0)
                     })
 
@@ -173,9 +173,11 @@ return {
                                     end
                                 end
 
-                                for _,v in pairs(selection.selection) do
-                                    if type(v.position) == "vector3" then
-                                        v.position = v.position + translateBy
+                                if didMove then
+                                    for _,v in pairs(selection.selection) do
+                                        if type(v.position) == "vector3" then
+                                            v.position = v.position + translateBy
+                                        end
                                     end
                                 end
                             end
