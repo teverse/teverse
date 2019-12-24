@@ -121,6 +121,13 @@ return {
                 handle:mouseLeftPressed(function()
                     gridGuideline.size = vector3(300, 0.1, 300)
 
+                    local gridVisual = engine.construct("grid", workspace, {
+                        step = gridStep,
+                        colour = colour(0.1, 0, 0.1),
+                        size = 15,
+                        rotation = quaternion:setEuler(math.rad(90), 0, 0)
+                    })
+
                     local last = nil
 
                     while engine.input:isMouseButtonDown(enums.mouseButton.left) do
@@ -133,8 +140,13 @@ return {
                         pos2[axis] = 0
 
                         local lookAt = gridGuideline.rotation:setLookRotation( pos1 - pos2 )
-                        gridGuideline.rotation =  lookAt  * quaternion():setEuler(math.rad(90),0,0)
+                        gridGuideline.rotation =  lookAt * quaternion():setEuler(math.rad(90),0,0)
                         gridGuideline.position = selection.box.position
+
+                        if axis == "y" then
+                            gridVisual.rotation = quaternion:setLookRotation( pos1 - pos2 ) * quaternion():setEuler(math.rad(180),0,0)
+                        end
+                        gridVisual.position = selection.box.position
 
                         local mouseHits = engine.physics:rayTestScreenAllHits( engine.input.mousePosition )
                         local mouseHit = nil
@@ -176,6 +188,7 @@ return {
                         wait()
                     end
 
+                    gridVisual:destroy()
                     gridGuideline.size = vector3(0, 0, 0)
                 end)
 
