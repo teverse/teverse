@@ -37,6 +37,14 @@ end
 
 local axes = {"x", "y", "z"}
 
+local debugBlock = engine.construct("block", nil, {
+    name            = "_CreateMode_",
+    castsShadows    = false,
+    doNotSerialise  = true,
+    size            = vector3(0.1, 0.1, 0.1),
+    workshopLocked  = true
+})
+
 return {
     name = toolName,
     icon = toolIcon,
@@ -134,8 +142,6 @@ return {
                     })
 
                     local last = nil
-                    local lastDist = nil
-                    local dist = nil
 
                     while engine.input:isMouseButtonDown(enums.mouseButton.left) do
                         -- Position and rotate the invisible guideline to face the camera.
@@ -168,31 +174,39 @@ return {
                         ::skip_loop::
 
                         if mouseHit and mouseHit.object == gridGuideline then
-                            dist = (selection.box.position - mouseHit.hitPosition):length()
-
-                            local target = mouseHit.hitPosition - selection.box.position
-                            
+                            local target = mouseHit.hitPosition
+                            local dist = selection.box.position[axis] - target[axis]
                             local didMove = true
                             if last ~= nil then
                                 local translateBy = vector3(0, 0, 0)
-                                translateBy[axis] = target[axis] - last
+                                translateBy[axis] = math.abs(dist) - math.abs(last)
+           
+                                local offsetBy = vector3(0, 0, 0)
+                                offsetBy[axis] = dist - last
 
                                 if gridStep ~= 0 then
                                     translateBy = shared.roundVector3(translateBy, gridStep)
+                                    offsetBy = shared.roundVector3(offsetBy, gridStep)
                                     if translateBy[axis] == 0 then
                                         didMove = false
                                     end
                                 end
 
                                 if didMove then
+                                    --print(dist, translateBy)
                                     for _,v in pairs(selection.selection) do
                                         if type(v.position) == "vector3" and type(v.size) == "vector3" then
-                                            v.position = v.position + (translateBy / 2)
-                                            translateBy[axis] = math.abs(translateBy[axis])
-                                            if lastDist > dist then
-                                                translateBy[axis] = -translateBy[axis]
-                                            end
                                             local scaleBy = (v.rotation * translateBy)
+                                            scaleBy = vector3(math.abs(scaleBy.x), math.abs(scaleBy.y), math.abs(scaleBy.z)):normal()
+                                            if scaleBy.x < 0.01 then
+                                                scaleBy.x = 0
+                                            end
+                                           
+                                            if translateBy[axis] < 0 then 
+                                                scaleBy = -scaleBy
+                                            end
+                                            
+                                            v.position = v.position - (offsetBy / 2)
                                             v.size = v.size + scaleBy
                                         end
                                     end
@@ -200,8 +214,7 @@ return {
                             end
 
                             if didMove then
-                                last = target[axis]
-                                lastDist = dist
+                                last = dist
                             end
                         end
 
