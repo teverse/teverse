@@ -125,12 +125,6 @@ return {
                     workshopLocked  = true
                 })
 
-                if (axis == "x" and i == -1) or 
-                    (axis == "y" and i == 1) or
-                    (axis == "z" and i == 1) then
-                    handle.mesh = "primitive:sphere"
-                end
-
                 handle:mouseLeftPressed(function()
                     gridGuideline.size = vector3(300, 0.1, 300)
 
@@ -172,7 +166,7 @@ return {
                             end
                         end
                         ::skip_loop::
-                        
+
                         if mouseHit and mouseHit.object == gridGuideline then
                             local target = mouseHit.hitPosition
                             local dist = selection.box.position[axis] - target[axis]
