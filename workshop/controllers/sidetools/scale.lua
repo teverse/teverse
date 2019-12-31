@@ -172,7 +172,7 @@ return {
                             end
                         end
                         ::skip_loop::
-
+                        
                         if mouseHit and mouseHit.object == gridGuideline then
                             local target = mouseHit.hitPosition
                             local dist = selection.box.position[axis] - target[axis]
