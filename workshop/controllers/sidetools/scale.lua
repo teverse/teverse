@@ -186,20 +186,27 @@ return {
                                     end
                                 end
 
+                                print(translateBy, offsetBy)
+
                                 if didMove then
                                     --print(dist, translateBy)
                                     for _,v in pairs(selection.selection) do
                                         if type(v.position) == "vector3" and type(v.size) == "vector3" then
                                             local scaleBy = (v.rotation * translateBy)
-                                            scaleBy = vector3(math.abs(scaleBy.x), math.abs(scaleBy.y), math.abs(scaleBy.z)):normal()
+                                            scaleBy = vector3(math.abs(scaleBy.x), math.abs(scaleBy.y), math.abs(scaleBy.z))
                                             if scaleBy.x < 0.01 then
                                                 scaleBy.x = 0
+                                            end
+                                            if scaleBy.y < 0.01 then
+                                                scaleBy.y = 0
+                                            end
+                                            if scaleBy.z < 0.01 then
+                                                scaleBy.z = 0
                                             end
                                            
                                             if translateBy[axis] < 0 then 
                                                 scaleBy = -scaleBy
                                             end
-                                            
                                             v.position = v.position - (offsetBy / 2)
                                             v.size = v.size + scaleBy
                                         end
