@@ -1,5 +1,5 @@
 --[[
-    Copyright 2019 Teverse
+    Copyright 2020 Teverse
     @File core/server/characterController.lua
     @Author(s) Jay
 --]]

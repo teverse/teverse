@@ -1,5 +1,5 @@
 --[[
-    Copyright 2019 Teverse
+    Copyright 2020 Teverse
     @File core/server/loader.lua
     @Author(s) Jay
     @Description Loads all open sourced components of the server.

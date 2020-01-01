@@ -1,4 +1,4 @@
--- Copyright 2019 Teverse.com
+-- Copyright 2020 Teverse.com
 -- Used to share variables between scripts
 
 -- shamelessly stolen from http://lua-users.org/wiki/SimpleRound

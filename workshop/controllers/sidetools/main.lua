@@ -1,4 +1,4 @@
--- Copyright 2019 Teverse.com
+-- Copyright 2020 Teverse.com
 -- This script is responsible for loading in the other sidetools
 -- This is required by the UI system and the array returned is used to generate the sidebar
 

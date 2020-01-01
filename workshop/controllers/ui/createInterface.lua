@@ -1,4 +1,4 @@
--- Copyright 2019 Teverse.com
+-- Copyright 2020 Teverse.com
 -- Responsible for creating the workshop interface
 
 local shared = require("tevgit:workshop/controllers/shared.lua")

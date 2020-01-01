@@ -5,7 +5,7 @@ This repo contains open source components produced for Teverse.
 
 # Copyright
 
-Copyright (c) 2019 teverse.com
+Copyright (c) 2020 teverse.com
 
 # Acknowledgements
 - sound/click.ogg sourced from http://soundbible.com/1705-Click2.html
