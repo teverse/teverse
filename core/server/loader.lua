@@ -10,7 +10,7 @@ local chat = require("tevgit:core/server/chat.lua")
 --wait(20)
 --require("tevgit:core/server/physicsTest.lua")
 
-local char = require("tevgit:core/server/characterController.lua")
+--local char = require("tevgit:core/server/characterController.lua")
 
 -- Purely for testing purposes only:
 --[[
