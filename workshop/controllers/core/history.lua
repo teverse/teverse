@@ -33,8 +33,17 @@ local newObjects = {}
 
 local eventListeners = {}
 local actionName = ""
+
+local changedListener, ChildAddedListener, destroyingListener;
+
+local function registerEvents(object)
+    table.insert(eventListeners, object:onSync("changed", changedListener))
+    table.insert(eventListeners, object:onSync("childAdded", ChildAddedListener))
+    table.insert(eventListeners, object:onSync("destroying", destroyingListener))
+end
+
 -- oldValue added to changed event from "POTATO 0.7.0"
-local function changedListener(property, value, oldValue)
+changedListener = function (property, value, oldValue)
     local changedObject = self.object
     if not changes[changedObject] then
         changes[changedObject] = {}
@@ -48,7 +57,7 @@ local function changedListener(property, value, oldValue)
     end
 end
 
-local function destroyingListener()
+destroyingListener = function()
     local changedObject = self.object
     if not changes[changedObject] then
         changes[changedObject] = {}
@@ -68,12 +77,35 @@ local function destroyingListener()
 
     toStore["parent"] = changedObject.parent
     toStore["className"] = changedObject.className
+    toStore["_ref"] = changedObject
 
     table.insert(destroyedObjects, toStore)
 end
 
-local function ChildAddedListener(child)
-    table.insert(newObjects, child)
+ChildAddedListener = function(child)
+    local changedObject = child
+    if not changes[changedObject] then
+        changes[changedObject] = {}
+    end 
+    -- Object is being destroyed, let's save a copy of all their writable properties so the user can undo this action
+    local members = shared.workshop:getMembersOfObject( changedObject )
+    local toStore = {}
+    for _, prop in pairs(members) do
+        local val = changedObject[prop.property]
+        local pType = type(val)
+
+        if prop.writable and pType ~= "function" then
+            -- We can save it and re-construct it
+            toStore[prop.property] = val
+        end
+    end
+
+    toStore["parent"] = changedObject.parent
+    toStore["className"] = changedObject.className
+    toStore["_ref"] = changedObject
+    registerEvents(changedObject)
+
+    table.insert(newObjects, toStore)
 end
 
 local function count(dictionary)
@@ -98,14 +130,10 @@ local function beginAction( object, name )
     actionName = name or ""
     if type(object) == "table" then
         for _,v in pairs(object) do
-            table.insert(eventListeners, v:onSync("changed", changedListener))
-            table.insert(eventListeners, v:onSync("childAdded", ChildAddedListener))
-            table.insert(eventListeners, v:onSync("destroying", destroyingListener))
+            registerEvents(v)
         end
     else
-        table.insert(eventListeners, object:onSync("changed", changedListener))
-        table.insert(eventListeners, object:onSync("childAdded", ChildAddedListener))
-        table.insert(eventListeners, object:onSync("destroying", destroyingListener))
+        registerEvents(object)
     end
 end
 
@@ -119,7 +147,7 @@ local function endAction()
     eventListeners = {}
     
     -- if nothing changed dont create an action
-    if count(changes) > 0 or #destroyedObjects > 0 or #newObjects > 0 then
+    if count(changes) > 0 or count(destroyedObjects) > 0 or count(newObjects) > 0 then
         pointer = pointer + 1
         if pointer >= limit then
             actions[pointer - limit] = nil
@@ -136,6 +164,20 @@ local function endAction()
     end
     
     actionInProgress = false
+end 
+
+local function updateReferences(old, new)
+    for p, a in pairs(actions) do
+        local newTbl = {}
+        for ref, props in pairs(a[3]) do
+            if ref ~= old then
+                newTbl[ref] = props
+            else
+                newTbl[new] = props
+            end
+        end
+        a[3] = newTbl
+    end
 end
 
 local function undo()
@@ -146,6 +188,16 @@ local function undo()
             local obj = engine[properties["className"]]()
             for property, value in pairs(properties) do
                 obj[property] = value
+            end
+            local oldRef = properties["_ref"]
+            properties["_ref"] = obj
+            updateReferences(oldRef, obj)
+        end
+
+        -- created objects (destroy)
+        for _,properties in pairs(actions[pointer][5]) do 
+            if properties["_ref"].alive then
+                properties["_ref"]:destroy()
             end
         end
 
@@ -175,6 +227,25 @@ end
 local function redo()
     if actions[pointer + 1] ~= nil then
         pointer = pointer + 1
+
+        -- destroyed objects (destroy)
+        for _, properties in pairs(actions[pointer][4]) do 
+            if properties["_ref"].alive then
+                properties["_ref"]:destroy()
+            end
+        end
+
+        -- created objects (create)
+        for _,properties in pairs(actions[pointer][5]) do 
+            local obj = engine[properties["className"]]()
+            for property, value in pairs(properties) do
+                obj[property] = value
+            end
+            local oldRef = properties["_ref"]
+            properties["_ref"] = obj
+            updateReferences(oldRef, obj)
+        end
+
         for object, properties in pairs(actions[pointer][3]) do 
             if object and object.alive then
                 for property, values in pairs(properties) do
@@ -201,7 +272,13 @@ keybinder:bind({
     name = "undo",
     priorKey = enums.key.leftCtrl,
     key = enums.key.z,
-    action = undo
+    action = function ()
+        if not engine.input:isKeyDown(enums.key.leftShift) then
+            undo()
+        else
+            redo()
+        end
+    end
 })
 
 keybinder:bind({
