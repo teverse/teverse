@@ -136,6 +136,8 @@ return {
 
                     local last = nil
 
+                    history.beginAction(selection.selection, "Move tool drag")
+
                     while engine.input:isMouseButtonDown(enums.mouseButton.left) do
                         -- Position and rotate the invisible guideline to face the camera.
                         -- We use this guideline to raycast with
@@ -195,6 +197,8 @@ return {
 
                         wait()
                     end
+
+                    history.endAction()
 
                     gridVisual:destroy()
                     gridGuideline.size = vector3(0, 0, 0)
