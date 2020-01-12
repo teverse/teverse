@@ -17,6 +17,10 @@ return {
     roundVector3 = function(v, mult)
         return vector3(round(v.x, mult), round(v.y, mult), round(v.z, mult))
     end,
+    roundDp = function (num, numDecimalPlaces)
+        local mult = 10^(numDecimalPlaces or 0)
+        return math.floor(num * mult + 0.5) / mult
+    end,
 
     -- this is set when workshop is set
     -- using the haslocaltevgit api

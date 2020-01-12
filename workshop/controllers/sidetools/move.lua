@@ -22,6 +22,8 @@ local function updateHandles()
             for _,v in pairs(handles) do
                 v[1].size = vector3(0,0,0)
                 v[1].opacity = 0
+                v[1].line.positionA = vector3(0, 0, 0)
+                v[1].line.positionB = vector3(0, 0, 0)
             end
         else
             for _,v in pairs(handles) do
@@ -30,6 +32,8 @@ local function updateHandles()
                 v[1].rotation = v[1].rotation * quaternion():setEuler(math.rad(90), 0, 0)
                 v[1].size = vector3(0.2, 0.4, 0.2)
                 v[1].opacity = 1
+                v[1].line.positionA = v[1].position
+                v[1].line.positionB = selection.box.position
             end
         end
     end
@@ -117,6 +121,8 @@ return {
                     workshopLocked  = true,
                     mesh            = "primitive:cone"
                 })
+
+                engine.construct("line", handle, {name = "line", colour = handle.colour})
 
                 handle:mouseLeftPressed(function()
                     gridGuideline.size = vector3(300, 0.1, 300)
