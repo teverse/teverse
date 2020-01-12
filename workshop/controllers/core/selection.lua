@@ -123,7 +123,7 @@ controller.registerCallback(function()
 		bounds.max = controller.selection[1].position
 
 		for _,v in pairs(controller.selection) do
-			if type(v.position) == "vector3" and type(v.size) == "vector3" the
+			if type(v.position) == "vector3" and type(v.size) == "vector3" then
 				if type(v) == "block" then
 					bounds:expand(v)
 				end
