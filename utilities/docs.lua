@@ -38,10 +38,9 @@ addDocs("baseClass", {
         getDescendants              = method("Returns a table of all descended objects", nil, {"table"}),
         destroy                     = method("Locks the object before removing it from the hierarchy. Children will also be destroyed."),
         destroyAllChildren          = method("Invokes the destroy method on each child of this instance."),
-        isContainer                 = method("", nil, {
+        isContainer                 = method("Returns true if this object can contain other objects.", nil, {
                                         "boolean"
                                      }),
-        clone                       = method(),
         isA                         = method("Returns true if this object is derived from the className given.", {
                                         className = "string"
                                       }, {
@@ -54,7 +53,8 @@ addDocs("baseClass", {
                                         ancestor = "baseClass"
                                     }, {"boolean"}),
         getFullName                 = method("Returns a string including ancestor names", nil, {"string"}),
-        clone                       = method("Creates and returns a copy of this object", nil, {"variant"})
+        clone                       = method("Creates and returns a copy of this object", nil, {"variant"}),
+        describe                    = method("", nil, {"string"})
     },
     
     events      = {
@@ -64,10 +64,10 @@ addDocs("baseClass", {
                                         oldValue     = "variant"
                                       }),
         childAdded                  = event("Fired when a child is added", {
-                                        child = "baseClass"
+                                        child = "variant"
                                     }),
         childRemoved                = event("Fired when a child is removed", {
-                                        child = "baseClass"
+                                        child = "variant"
                                     }),
         destroying                  = event("Fired just before an object is destroyed."),
     }
@@ -125,7 +125,6 @@ addDocs("block", {
     }
 })
 
-
 addDocs("camera", {
     description = "",
     properties  = {
@@ -138,6 +137,19 @@ addDocs("camera", {
         lookAt = method("Changes the objects rotation so that it is looking towards the provided position.", {
             position = "vector3",
         })
+    }
+})
+
+addDocs("guiBase", {
+    description = "",
+    properties  = {
+    
+    },
+    methods = {
+        bindSizeBreakpoint = method("", {
+            breakpoint = "enums.sizeBreakpoint",
+            properties = "table"
+        }),
     }
 })
 

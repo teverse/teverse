@@ -1,4 +1,4 @@
--- Copyright 2019 teverse.com
+-- Copyright 2020 teverse.com
 
 local cameraController = {
 	zoomStep   = 3,

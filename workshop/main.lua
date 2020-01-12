@@ -1,4 +1,4 @@
--- Copyright 2019 Teverse
+-- Copyright 2020 Teverse
 -- This script is required when workshop is loaded,
 -- and engine.workshop is passed to the function returned.
 -- e.g. require('tevgit:workshop/main.lua')(engine.workshop)

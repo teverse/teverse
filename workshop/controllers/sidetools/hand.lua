@@ -1,4 +1,4 @@
--- Copyright 2019 Teverse.com
+-- Copyright 2020 Teverse.com
 
 -- Tool Constants:
 local toolName = "Hand"
@@ -111,9 +111,9 @@ return {
                         history.beginAction(selection.selection, "Hand tool drag")
 
                         local grid = engine.construct("grid", workspace, {
-                            step = 0.5,
+                            step = gridStep,
                             colour = colour(0.1, 0, 0.1),
-                            size = 10,
+                            size = 12,
                             rotation = quaternion:setEuler(math.rad(90), 0, 0)
                         })
 
@@ -152,7 +152,7 @@ return {
                                     end
                                 end
                                 
-                                grid.position = avgPos / #selection.selection
+                                grid.position = (avgPos / #selection.selection) + vector3(0, 0.1, 0)
                             end
                             wait()
                         end

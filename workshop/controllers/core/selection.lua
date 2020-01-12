@@ -97,7 +97,9 @@ local function boundUpdate()
 		bounds.max = controller.selection[1].position
 
 		for _,v in pairs(controller.selection) do
-			bounds:expand(v) -- new in 0.13.2
+			if type(v) == "block" then
+				bounds:expand(v) -- new in 0.13.2
+			end
 		end
 	end
 
@@ -121,8 +123,10 @@ controller.registerCallback(function()
 		bounds.max = controller.selection[1].position
 
 		for _,v in pairs(controller.selection) do
-			if type(v.position) == "vector3" and type(v.size) == "vector3" then
-				bounds:expand(v)
+			if type(v.position) == "vector3" and type(v.size) == "vector3" the
+				if type(v) == "block" then
+					bounds:expand(v)
+				end
 				table.insert(boundingEvents, v:changed(boundUpdate))
 			end
 		end
@@ -185,5 +189,7 @@ keybinder:bind({
 		workspace.camera:lookAt(centre)
 	end
 })
+
+controller.box = boundingBox
 
 return controller

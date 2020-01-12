@@ -1,4 +1,4 @@
--- Copyright (c) 2019 teverse.com
+-- Copyright (c) 2020 teverse.com
 
 local hotkeysController = {
 	bindings = {}

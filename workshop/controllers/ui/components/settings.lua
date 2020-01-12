@@ -107,6 +107,18 @@ if shared.developerMode then
 		local dump = shared.workshop:apiDump()
 		print(engine.json:encode(dump))
 	end)
+	
+	local physicsEnabled = engine.physics.running
+	local physicsToggle= ui.button(developmentPage, physicsEnabled and "Stop Simulating Physics" or "Simulate Physics", guiCoord(0, 190, 0, 30), guiCoord(0, 15, 0, 250), "secondary")
+	physicsToggle:mouseLeftPressed(function ()
+		physicsEnabled = not physicsEnabled
+		if physicsEnabled then
+			engine.physics:resume()
+		else
+			engine.physics:pause()
+		end
+		physicsToggle.label.text = physicsEnabled and "Stop Simulating Physics" or "Simulate Physics"
+	end)
 
   	addTab("Development", developmentPage)
 

@@ -26,6 +26,7 @@ local toolBar = ui.create("guiFrame", toolDock, {
 local activeTool = nil
 
 local function toggleTool(toolName)
+   --engine.sounds:play("tevurl:sound/click.ogg") -- too much?
    if activeTool ~= toolName then
       if activeTool then
          tools[activeTool].deactivate()

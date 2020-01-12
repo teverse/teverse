@@ -152,7 +152,7 @@ local function createHierarchyButton(object, guiParent)
                 controller.scrollView.canvasSize =
                     guiCoord(1, 0, 0, updatePositions())
             end
-        else
+        elseif object.name ~= "_bounding" then
             -- single click
             local currentTime = os.time()
             lastClick = currentTime

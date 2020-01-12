@@ -1,4 +1,4 @@
--- Copyright 2019 Teverse.com
+-- Copyright 2020 Teverse.com
 -- Responsible for managing the aesthetics of different UI elements
 
 local currentTheme = require("tevgit:workshop/controllers/ui/themes/default.lua")

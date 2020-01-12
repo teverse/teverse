@@ -1,6 +1,6 @@
 --[[
 	create.lua
-	Copyright (c) 2019 teverse.com
+	Copyright (c) 2020 teverse.com
 
 	This script is ran when the user loads create mode,
 	it is given workshop level sandboxing permissions.

@@ -1,5 +1,5 @@
 --[[
-    Copyright 2019 Teverse
+    Copyright 2020 Teverse
     @File core/client/playerList.lua
     @Author(s) Jay
 --]]
