@@ -52,7 +52,7 @@ return {
 	colour = function(property, gui)
 		local r,g,b = tonumber(gui.r.text),tonumber(gui.g.text),tonumber(gui.b.text)
 		if r and g and b then
-			callbackInput(property, colour(r,g,b))
+			callbackInput(property, colour:fromRGB(r,g,b))
 		end
 	end,
 	
