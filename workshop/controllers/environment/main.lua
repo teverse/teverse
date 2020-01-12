@@ -32,7 +32,7 @@ return {
 			colour         = colour(0, 1, 0),
 			size           = vector3(1, 1, 1),
 			position       = vector3(1, 0, 0),
-			mesh		   = "tevurl:3d/Samba.glb", --"primitive:wedge",
+			mesh	       = "primitive:wedge",
 			rotation       = quaternion:setEuler(0, math.rad(90), 0)
 		})
 
