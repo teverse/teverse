@@ -86,6 +86,8 @@ local function beginLoad(workshop)
     	loadingScreen = nil
     end
 
+	local colourPicker = require("tevgit:workshop/controllers/ui/components/colourPicker.lua")
+
 	--print("Workshop Loaded. ", #engine.workspace.children) Lets not spam the console
 end
 

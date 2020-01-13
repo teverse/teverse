@@ -4,6 +4,7 @@ local modulePrefix = "tevgit:workshop/controllers/ui/components/propertyEditor/"
 
 local ui = require("tevgit:workshop/controllers/ui/core/ui.lua")
 local themer = require("tevgit:workshop/controllers/ui/core/themer.lua")
+local colourPicker = require("tevgit:workshop/controllers/ui/components/colourPicker.lua")
 
 local parseInputs = require(modulePrefix .. "parseInputs.lua")
 local meshShortcuts = require(modulePrefix .. "meshShortcuts.lua")
@@ -629,18 +630,11 @@ createInputs = {
       borderRadius = 2,
     })
 
-    -- col:mouseLeftReleased(function ()
-    --   controller.colourPicker.window.visible  = not controller.colourPicker.window.visible 
-    --   if controller.colourPicker.window.visible and instanceEditing and instanceEditing[property] then
-    --     controller.colourPicker.setColour(instanceEditing[property])
-    --     controller.colourPicker.setCallback(function (c)
-    --       x.text = tostring(c.r)
-    --       g.text = tostring(c.g)
-    --       b.text = tostring(c.b)
-    --       parseInputs[type(value)](property, container)
-    --     end)
-    --   end
-    -- end)
+    col:mouseLeftReleased(function ()
+      colourPicker.prompt(value, function(c)
+        instance[property] = c
+      end)
+    end)
 
     return container
   end,

@@ -27,9 +27,9 @@ return {
     gui.y.text = string.format("%.3f", value.y)
   end,
   colour = function(instance, gui, value)
-    gui.r.text = string.format("%.5f", value.r)
-    gui.g.text = string.format("%.5f", value.g)
-    gui.b.text = string.format("%.5f", value.b)
+    gui.r.text = string.format("%.0f", value.r * 255)
+    gui.g.text = string.format("%.0f", value.g * 255)
+    gui.b.text = string.format("%.0f", value.b * 255)
     gui.col.backgroundColour = value
   end,
   quaternion = function(instance, gui, value)
