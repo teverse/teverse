@@ -76,7 +76,7 @@ function controller.generateProperties()
 
                 local label = ui.create("guiTextBox", container, {
                     name = "label",
-                    size = guiCoord(0.6, -15, 1, 0),
+                    size = guiCoord(0.55, -15, 1, 0),
                     position = guiCoord(0, 0, 0, 0),
                     fontSize = 18,
                     text = v.property,

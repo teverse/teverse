@@ -95,7 +95,7 @@ return {
                 doNotSerialise=true,
                 size = vector3(.4, 0.1, .4),
                 colour = colour(axis == 1 and 1 or 0, axis == 2 and 1 or 0, axis == 3 and 1 or 0),
-                emissiveColour = colour(axis == 1 and 0.5 or 0, axis == 2 and 0.5 or 0, axis == 3 and 0.5 or 0),
+                --emissiveColour = colour(axis == 1 and 0.5 or 0, axis == 2 and 0.5 or 0, axis == 3 and 0.5 or 0),
                 workshopLocked = true,
                 mesh = "tevurl:3d/arrowCurved.glb"
             })

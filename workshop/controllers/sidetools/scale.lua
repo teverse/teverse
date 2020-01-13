@@ -125,7 +125,7 @@ return {
                     doNotSerialise  = true,
                     size            = vector3(0.1, 0.1, 0.1),
                     colour          = colour(axisNumber == 1 and 1 or 0, axisNumber == 2 and 1 or 0, axisNumber == 3 and 1 or 0),
-                    emissiveColour  = colour(axisNumber == 1 and 1 or 0, axisNumber == 2 and 1 or 0, axisNumber == 3 and 1 or 0), 
+                    --emissiveColour  = colour(axisNumber == 1 and 1 or 0, axisNumber == 2 and 1 or 0, axisNumber == 3 and 1 or 0), 
                     workshopLocked  = true
                 })
 

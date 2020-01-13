@@ -16,8 +16,8 @@ createInputs = {
     return ui.create("guiFrame", nil, {
       backgroundAlpha = 0.25,
       name = "inputContainer",
-      size = guiCoord(0.4, 0, 0, 20),
-      position = guiCoord(0.6,0,0,0),
+      size = guiCoord(0.45, 0, 0, 20),
+      position = guiCoord(0.55,0,0,0),
       cropChildren = false
     }, "secondary")
   end,
@@ -219,7 +219,7 @@ createInputs = {
     if property == "mesh" then
       container.zIndex = 30 -- important because child elements need to be rendered above other properties!
       container.size = container.size + guiCoord(0,0,0,20)
-
+      x.fontSize = 14
 
       local presetSelect = ui.create("guiTextBox", container, {
           size = guiCoord(1, -4, 0, 16),

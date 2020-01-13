@@ -63,8 +63,8 @@ controller.setupDocks = function ()
 		}),
 		engine.construct("guiFrame", shared.workshop.interface, {
 			name = "_dockRight",
-			size = guiCoord(0, 250, 1, -76),
-			position = guiCoord(1, -250, 0, 76),
+			size = guiCoord(0, 265, 1, -76),
+			position = guiCoord(1, -265, 0, 76),
 			backgroundAlpha = 0,
 			handleEvents = false,
 			cropChildren = false,
