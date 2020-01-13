@@ -121,7 +121,7 @@ local rInput = ui.create("guiTextBox", window.content, {
     multiline = false,
     fontSize = 18,
     name = "r",
-    size = guiCoord(1, -230, 0,16),
+    size = guiCoord(1, -220, 0,16),
     position = guiCoord(0, 220, 0, 5),
     text = "1",
     align = enums.align.middle
@@ -167,8 +167,8 @@ HEX.position = guiCoord(0, 220, 0, 56)
 --  themeController.add(b, "primary")
 
 local preview = engine.construct("guiFrame", window.content, {
-    position = guiCoord(0, 200, 0, 73),
-    size = guiCoord(1, -210, 0, 16)
+    position = guiCoord(0, 220, 0, 73),
+    size = guiCoord(1, -220, 0, 16)
 })
 
 local function handler()
@@ -210,7 +210,7 @@ hueBar:mouseLeftPressed(function ()
 
             local selectedColour = startColour:lerp(colour(1,1,1), 1-x)
             selectedColour = selectedColour:lerp(colour(0,0,0), y)
-            preview.backgroundColour = selectedColou
+            preview.backgroundColour = selectedColour
 
             rInput.text = tostring(math.floor(selectedColour.r*255))
             g.text = tostring(math.floor(selectedColour.g*255))
