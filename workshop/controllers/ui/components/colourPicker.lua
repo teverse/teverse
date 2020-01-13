@@ -23,6 +23,7 @@ local window = ui.window(shared.workshop.interface,
                                         guiCoord(0.5, -150, 0.5, -93), 
                                         false,
                                         true)
+window.zIndex = 10
 window.visible = false
 local callback = nil
 
@@ -205,8 +206,8 @@ hueBar:mouseLeftPressed(function ()
             colourPickerGradient.topRightColour = startColour
             colourPickerGradient.bottomRightColour = startColour
 
-            local x = (marker.position.offsetX-2)/colourPickerGradient.absoluteSize.x
-            local y = (marker.position.offsetY+2)/colourPickerGradient.absoluteSize.y
+            local x = (marker.position.offsetX)/colourPickerGradient.absoluteSize.x
+            local y = (marker.position.offsetY)/colourPickerGradient.absoluteSize.y
 
             local selectedColour = startColour:lerp(colour(1,1,1), 1-x)
             selectedColour = selectedColour:lerp(colour(0,0,0), y)
@@ -229,7 +230,7 @@ end)
 colourPickerGradient:mouseLeftPressed(function ()
     while engine.input:isMouseButtonDown(enums.mouseButton.left) do
         local pos = engine.input.mousePosition - colourPickerGradient.absolutePosition
-        marker.position = guiCoord(0, pos.x+2, 0, pos.y-2)
+        marker.position = guiCoord(0, pos.x-2, 0, pos.y-2)
 
         local x = pos.x/colourPickerGradient.absoluteSize.x
         local y = pos.y/colourPickerGradient.absoluteSize.y

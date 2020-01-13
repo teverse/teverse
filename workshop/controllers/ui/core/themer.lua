@@ -53,6 +53,10 @@ return {
     	for gui,v in pairs(registeredGuis) do
     		themeriseGui(gui)
     	end
+    end,
+
+    getTheme = function()
+        return currentTheme
     end
     
 }
