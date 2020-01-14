@@ -45,7 +45,7 @@ return {
     gui.col.backgroundColour = value
   end,
   quaternion = function(instance, gui, value)
-    if engine.input.keyFocusedGui == gui.x or engine.input.keyFocusedGui == gui.y or engine.input.keyFocusedGui == gui.z or engine.input.keyFocusedGui == gui.w then return end
+    if engine.input.keyFocusedGui == gui.x or engine.input.keyFocusedGui == gui.y or engine.input.keyFocusedGui == gui.z then return end
 
     local euler = value:getEuler()
     gui.x.text = string.format("%.3f", math.deg(euler.x))

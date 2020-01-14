@@ -9,6 +9,7 @@ local selection = require("tevgit:workshop/controllers/core/selection.lua")
 local history = require("tevgit:workshop/controllers/core/history.lua")
 local ui = require("tevgit:workshop/controllers/ui/core/ui.lua")
 local shared = require("tevgit:workshop/controllers/shared.lua")
+local lightManager = require("tevgit:workshop/controllers/core/lightManager.lua")
 
 local clickEvent = nil
 local keyEvent = nil
@@ -73,7 +74,11 @@ return {
             if not inputObj.systemHandled then
                 -- This is not a gui event, let's continue.
                 local hit = engine.physics:rayTestScreen(engine.input.mousePosition)
-                if hit and not hit.object.workshopLocked then
+                if hit and (not hit.object.workshopLocked or lightManager.lights[hit.object]) then
+                    if lightManager.lights[hit.object] then
+                        hit.object = lightManager.lights[hit.object]
+                    end
+                    
                     -- user has clicked a object in 3d space.
                     if selection.isSelected(hit.object) then
                         -- user clicked a selected object,

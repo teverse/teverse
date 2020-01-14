@@ -98,7 +98,12 @@ local function boundUpdate()
 
 		for _,v in pairs(controller.selection) do
 			if type(v) == "block" then
-				bounds:expand(v) -- new in 0.13.2
+				bounds:expand(v)
+			elseif type(v) == "light" then
+				bounds:expand(v.position - vector3(0.25, 0.25, 0.25))
+				bounds:expand(v.position + vector3(0.25, 0.25, 0.25))
+			elseif type(v.position) == "vector3" then
+				bounds:expand(v.position)
 			end
 		end
 	end
@@ -123,9 +128,14 @@ controller.registerCallback(function()
 		bounds.max = controller.selection[1].position
 
 		for _,v in pairs(controller.selection) do
-			if type(v.position) == "vector3" and type(v.size) == "vector3" then
+			if type(v.position) == "vector3" then
 				if type(v) == "block" then
 					bounds:expand(v)
+				elseif type(v) == "light" then
+					bounds:expand(v.position - vector3(0.25, 0.25, 0.25))
+					bounds:expand(v.position + vector3(0.25, 0.25, 0.25))
+				elseif type(v.position) == "vector3" then
+					bounds:expand(v.position)
 				end
 				table.insert(boundingEvents, v:changed(boundUpdate))
 			end
@@ -180,8 +190,9 @@ keybinder:bind({
 		end
 
 		for _,v in pairs(controller.selection) do
-			bounds:expand(v.position + (v.size/2))
-			bounds:expand(v.position - (v.size/2))
+			local size = v.size and v.size or vector3(0.1, 0.1, 0.1)
+			bounds:expand(v.position + (size/2))
+			bounds:expand(v.position - (size/2))
 		end
 
 		local centre = bounds:getCentre()
