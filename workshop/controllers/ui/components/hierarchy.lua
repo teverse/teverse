@@ -132,7 +132,9 @@ local function createHierarchyButton(object, guiParent)
             expanded = not expanded
             if expanded then
                 for _, child in pairs(object.children) do
-                    createHierarchyButton(child, btn)
+                    if child.name ~= "_CreateMode_" then
+                        createHierarchyButton(child, btn)
+                    end
                 end
                 controller.scrollView.canvasSize =
                     guiCoord(1, 0, 0, updatePositions())
