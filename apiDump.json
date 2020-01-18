@@ -1724,87 +1724,108 @@
         "properties": {
             "input": {
                 "defaultType": "input",
-                "writable": false
+                "writable": false,
+                "desc": "A readonly property"
             },
             "guiImage": {
                 "defaultType": "guiImage",
-                "writable": false
+                "writable": false,
+                "desc": "The default constructor for guiImage"
             },
             "audioEmitter": {
                 "defaultType": "audioEmitter",
-                "writable": false
+                "writable": false,
+                "desc": "The default constructor for audioEmitter"
             },
             "guiFrameMultiColour": {
                 "defaultType": "guiFrameMultiColour",
-                "writable": false
+                "writable": false,
+                "desc": "The default constructor for guiFrameMultiColour"
             },
             "compoundGroup": {
                 "defaultType": "compoundGroup",
-                "writable": false
+                "writable": false,
+                "desc": "The default constructor for compoundGroup"
             },
             "sounds": {
                 "defaultType": "sounds",
-                "writable": false
+                "writable": false,
+                "desc": "A singleton used for playing global sounds."
             },
             "guiButton": {
                 "defaultType": "guiButton",
-                "writable": false
+                "writable": false,
+                "desc": "The default constructor for guiButton"
             },
             "block": {
                 "defaultType": "block",
-                "writable": false
+                "writable": false,
+                "desc": "The default constructor for block"
             },
             "graphics": {
                 "defaultType": "graphics",
-                "writable": false
+                "writable": false,
+                "desc": "A singleton for graphics"
             },
             "guiScrollView": {
                 "defaultType": "guiScrollView",
-                "writable": false
+                "writable": false,
+                "desc": "The default constructor for guiScrollView"
             },
             "platform": {
                 "defaultType": "string",
-                "writable": false
+                "writable": false,
+                "desc": "the current platform running Teverse"
             },
             "guiFrame": {
                 "defaultType": "guiFrame",
-                "writable": false
+                "writable": false,
+                "desc": "The default constructor for guiFrame"
             },
             "script": {
                 "defaultType": "script",
-                "writable": false
+                "writable": false,
+                "desc": "The default constructor for script"
             },
             "folder": {
                 "defaultType": "folder",
-                "writable": false
+                "writable": false,
+                "desc": "The default constructor for folder"
             },
             "assets": {
                 "defaultType": "assetsFolder",
-                "writable": false
+                "writable": false,
+                "desc": "The assets singleton"
             },
             "networking": {
                 "defaultType": "networking",
-                "writable": false
+                "writable": false,
+                "desc": "The networking singleto"
             },
             "physics": {
                 "defaultType": "physics",
-                "writable": false
+                "writable": false,
+                "desc": "The physics singleton"
             },
             "debug": {
                 "defaultType": "debug",
-                "writable": false
+                "writable": false,
+                "desc": "The debug singleton"
             },
             "guiTextBox": {
                 "defaultType": "guiTextBox",
-                "writable": false
+                "writable": false,
+                "desc": "The default constructor for guiTextBox"
             },
             "json": {
                 "defaultType": "json",
-                "writable": false
+                "writable": false,
+                "desc": "The JSON singleton"
             },
             "workspace": {
                 "defaultType": "workspace",
-                "writable": false
+                "writable": false,
+                "desc": "The workspace singleton"
             },
             "className": {
                 "defaultType": "string",
@@ -1812,19 +1833,23 @@
             },
             "light": {
                 "defaultType": "light",
-                "writable": false
+                "writable": false,
+                "desc": "The default constructor for light"
             },
             "grid": {
                 "defaultType": "grid",
-                "writable": false
+                "writable": false,
+                "desc": "The default constructor for grid"
             },
             "interface": {
                 "defaultType": "interface",
-                "writable": false
+                "writable": false,
+                "desc": "The default interface singleto"
             },
             "tween": {
                 "defaultType": "tween",
-                "writable": false
+                "writable": false,
+                "desc": "The tween singleton"
             },
             "name": {
                 "defaultType": "string",
@@ -1832,7 +1857,8 @@
             },
             "line": {
                 "defaultType": "line",
-                "writable": false
+                "writable": false,
+                "desc": "The default constructor for line"
             }
         }
     }
