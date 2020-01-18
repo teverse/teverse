@@ -128,11 +128,11 @@
             "events": {
                 "connected": {
                     "desc": "undefined",
-                    "parameters": []
+                    "parameters": {}
                 },
                 "pingUpdate": {
                     "desc": "undefined",
-                    "parameters": []
+                    "parameters": {}
                 },
                 "disconnected": {
                     "desc": "undefined",
@@ -752,35 +752,35 @@
             "events": {
                 "mouseLeftPressed": {
                     "desc": "undefined",
-                    "parameters": []
+                    "parameters": {}
                 },
                 "collisionStarted": {
                     "desc": "undefined",
-                    "parameters": []
+                    "parameters": {}
                 },
                 "mouseLeftReleased": {
                     "desc": "undefined",
-                    "parameters": []
+                    "parameters": {}
                 },
                 "mouseRightPressed": {
                     "desc": "undefined",
-                    "parameters": []
+                    "parameters": {}
                 },
                 "mouseRightReleased": {
                     "desc": "undefined",
-                    "parameters": []
+                    "parameters": {}
                 },
                 "collisionEnded": {
                     "desc": "undefined",
-                    "parameters": []
+                    "parameters": {}
                 },
                 "mouseMiddleReleased": {
                     "desc": "undefined",
-                    "parameters": []
+                    "parameters": {}
                 },
                 "mouseMiddlePressed": {
                     "desc": "undefined",
-                    "parameters": []
+                    "parameters": {}
                 }
             },
             "subclasses": [],
@@ -1022,35 +1022,35 @@
             "events": {
                 "mouseLeftPressed": {
                     "desc": "undefined",
-                    "parameters": []
+                    "parameters": {}
                 },
                 "collisionStarted": {
                     "desc": "undefined",
-                    "parameters": []
+                    "parameters": {}
                 },
                 "mouseLeftReleased": {
                     "desc": "undefined",
-                    "parameters": []
+                    "parameters": {}
                 },
                 "mouseRightPressed": {
                     "desc": "undefined",
-                    "parameters": []
+                    "parameters": {}
                 },
                 "mouseRightReleased": {
                     "desc": "undefined",
-                    "parameters": []
+                    "parameters": {}
                 },
                 "collisionEnded": {
                     "desc": "undefined",
-                    "parameters": []
+                    "parameters": {}
                 },
                 "mouseMiddleReleased": {
                     "desc": "undefined",
-                    "parameters": []
+                    "parameters": {}
                 },
                 "mouseMiddlePressed": {
                     "desc": "undefined",
-                    "parameters": []
+                    "parameters": {}
                 }
             },
             "subclasses": [],
@@ -1479,7 +1479,7 @@
             "events": {
                 "textInput": {
                     "desc": "undefined",
-                    "parameters": []
+                    "parameters": {}
                 }
             },
             "subclasses": [],
@@ -1631,67 +1631,67 @@
             "events": {
                 "keyUnfocused": {
                     "desc": "undefined",
-                    "parameters": []
+                    "parameters": {}
                 },
                 "mouseFocused": {
                     "desc": "undefined",
-                    "parameters": []
+                    "parameters": {}
                 },
                 "keyReleased": {
                     "desc": "undefined",
-                    "parameters": []
+                    "parameters": {}
                 },
                 "mouseRightDragged": {
                     "desc": "undefined",
-                    "parameters": []
+                    "parameters": {}
                 },
                 "mouseLeftDragged": {
                     "desc": "undefined",
-                    "parameters": []
+                    "parameters": {}
                 },
                 "keyFocused": {
                     "desc": "undefined",
-                    "parameters": []
+                    "parameters": {}
                 },
                 "mouseMiddleReleased": {
                     "desc": "undefined",
-                    "parameters": []
+                    "parameters": {}
                 },
                 "mouseMiddlePressed": {
                     "desc": "undefined",
-                    "parameters": []
+                    "parameters": {}
                 },
                 "mouseMiddleDragged": {
                     "desc": "undefined",
-                    "parameters": []
+                    "parameters": {}
                 },
                 "mouseScrolled": {
                     "desc": "undefined",
-                    "parameters": []
+                    "parameters": {}
                 },
                 "mouseRightReleased": {
                     "desc": "undefined",
-                    "parameters": []
+                    "parameters": {}
                 },
                 "keyPressed": {
                     "desc": "undefined",
-                    "parameters": []
+                    "parameters": {}
                 },
                 "mouseRightPressed": {
                     "desc": "undefined",
-                    "parameters": []
+                    "parameters": {}
                 },
                 "mouseLeftReleased": {
                     "desc": "undefined",
-                    "parameters": []
+                    "parameters": {}
                 },
                 "mouseUnfocused": {
                     "desc": "undefined",
-                    "parameters": []
+                    "parameters": {}
                 },
                 "mouseLeftPressed": {
                     "desc": "undefined",
-                    "parameters": []
+                    "parameters": {}
                 }
             },
             "subclasses": [
@@ -1891,7 +1891,7 @@
             "events": {
                 "published": {
                     "desc": "undefined",
-                    "parameters": []
+                    "parameters": {}
                 }
             },
             "subclasses": [],
@@ -2016,7 +2016,7 @@
                 },
                 "destroying": {
                     "desc": "Fired just before an object is destroyed.",
-                    "parameters": []
+                    "parameters": {}
                 }
             },
             "subclasses": [
