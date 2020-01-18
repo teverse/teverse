@@ -64,7 +64,7 @@
             }
         },
         "derivedFrom": "baseClass",
-        "events": [],
+        "events": {},
         "subclasses": [],
         "class": "json",
         "properties": {
@@ -157,9 +157,9 @@
         }
     },
     {
-        "methods": [],
+        "methods": {},
         "derivedFrom": "baseClass",
-        "events": [],
+        "events": {},
         "subclasses": [],
         "class": "client",
         "properties": {
@@ -272,7 +272,7 @@
             }
         },
         "derivedFrom": "baseClass",
-        "events": [],
+        "events": {},
         "subclasses": [],
         "class": "physics",
         "properties": {
@@ -379,7 +379,7 @@
             }
         },
         "derivedFrom": "baseClass",
-        "events": [],
+        "events": {},
         "subclasses": [],
         "class": "http",
         "properties": {
@@ -511,9 +511,9 @@
         }
     },
     {
-        "methods": [],
+        "methods": {},
         "derivedFrom": "baseClass",
-        "events": [],
+        "events": {},
         "subclasses": [],
         "class": "folder",
         "properties": {
@@ -524,9 +524,9 @@
         }
     },
     {
-        "methods": [],
+        "methods": {},
         "derivedFrom": "baseClass",
-        "events": [],
+        "events": {},
         "subclasses": [],
         "class": "assetsFolder",
         "properties": {
@@ -541,9 +541,9 @@
         }
     },
     {
-        "methods": [],
+        "methods": {},
         "derivedFrom": "baseClass",
-        "events": [],
+        "events": {},
         "subclasses": [],
         "class": "luaFolder",
         "properties": {
@@ -572,7 +572,7 @@
             }
         },
         "derivedFrom": "baseClass",
-        "events": [],
+        "events": {},
         "subclasses": [],
         "class": "script",
         "properties": {
@@ -602,9 +602,9 @@
         }
     },
     {
-        "methods": [],
+        "methods": {},
         "derivedFrom": "baseClass",
-        "events": [],
+        "events": {},
         "subclasses": [],
         "class": "luaClientFolder",
         "properties": {
@@ -619,9 +619,9 @@
         }
     },
     {
-        "methods": [],
+        "methods": {},
         "derivedFrom": "baseClass",
-        "events": [],
+        "events": {},
         "subclasses": [],
         "class": "luaServerFolder",
         "properties": {
@@ -636,9 +636,9 @@
         }
     },
     {
-        "methods": [],
+        "methods": {},
         "derivedFrom": "baseClass",
-        "events": [],
+        "events": {},
         "subclasses": [],
         "class": "luaSharedFolder",
         "properties": {
@@ -841,9 +841,9 @@
         }
     },
     {
-        "methods": [],
+        "methods": {},
         "derivedFrom": "baseClass",
-        "events": [],
+        "events": {},
         "subclasses": [],
         "class": "workspace",
         "properties": {
@@ -879,7 +879,7 @@
             }
         },
         "derivedFrom": "baseClass",
-        "events": [],
+        "events": {},
         "subclasses": [],
         "class": "camera",
         "properties": {
@@ -987,7 +987,7 @@
             "lookAt": {}
         },
         "derivedFrom": "baseClass",
-        "events": [],
+        "events": {},
         "subclasses": [],
         "class": "light",
         "properties": {
@@ -1054,7 +1054,7 @@
             "lookAt": {}
         },
         "derivedFrom": "baseClass",
-        "events": [],
+        "events": {},
         "subclasses": [],
         "class": "grid",
         "properties": {
@@ -1085,9 +1085,9 @@
         }
     },
     {
-        "methods": [],
+        "methods": {},
         "derivedFrom": "baseClass",
-        "events": [],
+        "events": {},
         "subclasses": [],
         "class": "line",
         "properties": {
@@ -1116,7 +1116,7 @@
             }
         },
         "derivedFrom": "baseClass",
-        "events": [],
+        "events": {},
         "subclasses": [],
         "class": "audioEmitter",
         "properties": {
@@ -1153,7 +1153,7 @@
             "play": {}
         },
         "derivedFrom": "baseClass",
-        "events": [],
+        "events": {},
         "subclasses": [],
         "class": "sounds",
         "properties": {
@@ -1168,9 +1168,9 @@
         }
     },
     {
-        "methods": [],
+        "methods": {},
         "derivedFrom": "guiBase",
-        "events": [],
+        "events": {},
         "subclasses": [],
         "class": "guiFrame",
         "properties": {
@@ -1181,9 +1181,9 @@
         }
     },
     {
-        "methods": [],
+        "methods": {},
         "derivedFrom": "guiBase",
-        "events": [],
+        "events": {},
         "subclasses": [],
         "class": "guiFrameMultiColour",
         "properties": {
@@ -1226,9 +1226,9 @@
         }
     },
     {
-        "methods": [],
+        "methods": {},
         "derivedFrom": "guiBase",
-        "events": [],
+        "events": {},
         "subclasses": [],
         "class": "guiScrollView",
         "properties": {
@@ -1255,9 +1255,9 @@
         }
     },
     {
-        "methods": [],
+        "methods": {},
         "derivedFrom": "guiBase",
-        "events": [],
+        "events": {},
         "subclasses": [],
         "class": "interface",
         "properties": {
@@ -1296,9 +1296,9 @@
         }
     },
     {
-        "methods": [],
+        "methods": {},
         "derivedFrom": "guiTextBase",
-        "events": [],
+        "events": {},
         "subclasses": [],
         "class": "guiButton",
         "properties": {
@@ -1317,9 +1317,9 @@
         }
     },
     {
-        "methods": [],
+        "methods": {},
         "derivedFrom": "guiBase",
-        "events": [],
+        "events": {},
         "subclasses": [
             "guiTextBox",
             "guiButton"
@@ -1361,9 +1361,9 @@
         }
     },
     {
-        "methods": [],
+        "methods": {},
         "derivedFrom": "guiBase",
-        "events": [],
+        "events": {},
         "subclasses": [],
         "class": "guiImage",
         "properties": {
@@ -1500,7 +1500,7 @@
             "create": {}
         },
         "derivedFrom": "baseClass",
-        "events": [],
+        "events": {},
         "subclasses": [],
         "class": "tween",
         "properties": {
@@ -1718,7 +1718,7 @@
             "isAuthenticated": {}
         },
         "derivedFrom": "baseClass",
-        "events": [],
+        "events": {},
         "subclasses": [],
         "class": "engine",
         "properties": {
