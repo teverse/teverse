@@ -1,18 +1,25 @@
 [
     {
         "methods": {
-            "reloadShaders": []
+            "reloadShaders": {
+                "desc": "Reloads the shaders of the scene and recompiles if possible."
+            }
         },
         "derivedFrom": "baseClass",
         "events": {
-            "frameDrawn": []
+            "frameDrawn": {
+                "parameters": {
+                    "timeSinceLast": "number"
+                }
+            }
         },
         "subclasses": [],
         "class": "graphics",
         "properties": {
             "ambientColour": {
                 "defaultType": "colour",
-                "writable": "colour"
+                "writable": "colour",
+                "desc": "How bright the scene is"
             },
             "className": {
                 "defaultType": "string",
@@ -24,18 +31,40 @@
             },
             "clearColour": {
                 "defaultType": "colour",
-                "writable": "colour"
+                "writable": "colour",
+                "desc": "The background colour of the scene"
             }
         }
     },
     {
         "methods": {
-            "decode": [],
-            "encodeWithTypes": [],
-            "encode": []
+            "decode": {
+                "returns": [
+                    "table"
+                ],
+                "parameters": {
+                    "json": "string"
+                }
+            },
+            "encodeWithTypes": {
+                "returns": [
+                    "string"
+                ],
+                "parameters": {
+                    "table": "table"
+                }
+            },
+            "encode": {
+                "returns": [
+                    "stripe"
+                ],
+                "parameters": {
+                    "table": "table"
+                }
+            }
         },
         "derivedFrom": "baseClass",
-        "events": [],
+        "events": {},
         "subclasses": [],
         "class": "json",
         "properties": {
@@ -51,16 +80,48 @@
     },
     {
         "methods": {
-            "toServer": [],
-            "bind": [],
-            "toAllClients": [],
-            "toClient": []
+            "toServer": {
+                "parameters": {
+                    "eventName": "string",
+                    "...": "..."
+                },
+                "desc": "Sends a message to the connected server"
+            },
+            "bind": {
+                "parameters": {
+                    "eventName": "string",
+                    "callback": "function"
+                },
+                "desc": "binds the provide callback to the eventname. Returns a table with a disconnect method.",
+                "returns": [
+                    "table"
+                ]
+            },
+            "toAllClients": {
+                "parameters": {
+                    "eventName": "string",
+                    "...": "..."
+                },
+                "desc": "Broadcasts a message to all connected clients (server only)"
+            },
+            "toClient": {
+                "desc": "Broadcasts a message to the connected client (server only)",
+                "parameters": {
+                    "client": "client",
+                    "eventName": "string",
+                    "...": "..."
+                }
+            }
         },
         "derivedFrom": "baseClass",
         "events": {
-            "connected": [],
-            "pingUpdate": [],
-            "disconnected": []
+            "connected": {},
+            "pingUpdate": {},
+            "disconnected": {
+                "parameters": {
+                    "ping": "number"
+                }
+            }
         },
         "subclasses": [],
         "class": "networking",
@@ -71,15 +132,18 @@
             },
             "ping": {
                 "defaultType": "number",
-                "writable": false
+                "writable": false,
+                "desc": "The last ping result"
             },
             "connectionStatus": {
                 "defaultType": "number",
-                "writable": false
+                "writable": false,
+                "desc": "Current status of the connection"
             },
             "me": {
                 "defaultType": "boolean",
-                "writable": false
+                "writable": false,
+                "desc": "false if not connected, once connected this is set to the current user object"
             },
             "name": {
                 "defaultType": "string",
@@ -87,14 +151,15 @@
             },
             "serverId": {
                 "defaultType": "string",
-                "writable": false
+                "writable": false,
+                "desc": "the id of the connected server"
             }
         }
     },
     {
-        "methods": [],
+        "methods": {},
         "derivedFrom": "baseClass",
-        "events": [],
+        "events": {},
         "subclasses": [],
         "class": "client",
         "properties": {
@@ -104,18 +169,34 @@
             },
             "id": {
                 "defaultType": "string",
-                "writable": false
+                "writable": false,
+                "desc": "the client's unique identifer"
             }
         }
     },
     {
         "methods": {
-            "getClientFromId": []
+            "getClientFromId": {
+                "returns": [
+                    "client"
+                ],
+                "parameters": {
+                    "id": "string"
+                }
+            }
         },
         "derivedFrom": "baseClass",
         "events": {
-            "clientDisconnected": [],
-            "clientConnected": []
+            "clientDisconnected": {
+                "parameters": {
+                    "client": "client"
+                }
+            },
+            "clientConnected": {
+                "parameters": {
+                    "client": "client"
+                }
+            }
         },
         "subclasses": [],
         "class": "clients",
@@ -132,22 +213,73 @@
     },
     {
         "methods": {
-            "getContacts": [],
-            "resume": [],
-            "rayTestScreenAllHits": [],
-            "rayTestAllHits": [],
-            "pause": [],
-            "rayTestClosest": [],
-            "rayTestScreen": []
+            "getContacts": {
+                "parameters": {
+                    "block": "block"
+                },
+                "returns": [
+                    "nil"
+                ],
+                "desc": "unimplemented"
+            },
+            "resume": {
+                "desc": "resumes physics and sets running to true"
+            },
+            "rayTestScreenAllHits": {
+                "returns": [
+                    "table"
+                ],
+                "parameters": {
+                    "x": "number",
+                    "y": "number",
+                    "exclusion": "table"
+                },
+                "desc": "runs a ray test query with our physics engine from the absolute coordinates x,y"
+            },
+            "rayTestAllHits": {
+                "returns": [
+                    "table"
+                ],
+                "parameters": {
+                    "start": "vector3",
+                    "end": "vector3",
+                    "exclusion": "table"
+                },
+                "desc": "runs a ray test query with our physics engine between the start and end points provided"
+            },
+            "pause": {
+                "desc": "stops the physics engine and sets running to false"
+            },
+            "rayTestClosest": {
+                "returns": [
+                    "table"
+                ],
+                "parameters": {
+                    "start": "vector3",
+                    "end": "vector3"
+                },
+                "desc": "runs a ray test query with our physics engine between the start and end points provided"
+            },
+            "rayTestScreen": {
+                "parameters": {
+                    "x": "number",
+                    "y": "number"
+                },
+                "returns": [
+                    "table"
+                ],
+                "desc": "runs a ray test query with our physics engine from the x,y screen position"
+            }
         },
         "derivedFrom": "baseClass",
-        "events": [],
+        "events": {},
         "subclasses": [],
         "class": "physics",
         "properties": {
             "running": {
                 "defaultType": "boolean",
-                "writable": false
+                "writable": false,
+                "desc": "wherever or not the simulation is running"
             },
             "className": {
                 "defaultType": "string",
@@ -159,19 +291,24 @@
             },
             "gravity": {
                 "defaultType": "vector3",
-                "writable": false
+                "writable": false,
+                "desc": "the rate of gravity, defaults to 0, -9.8, 0-"
             }
         }
     },
     {
         "methods": {
-            "locals": [],
-            "getfenv": [],
-            "upvalues": []
+            "locals": {},
+            "getfenv": {},
+            "upvalues": {}
         },
         "derivedFrom": "baseClass",
         "events": {
-            "output": []
+            "output": {
+                "parameters": {
+                    "output": "string"
+                }
+            }
         },
         "subclasses": [],
         "class": "debug",
@@ -188,14 +325,61 @@
     },
     {
         "methods": {
-            "post": [],
-            "request": [],
-            "urlEncode": [],
-            "urlDecode": [],
-            "get": []
+            "post": {
+                "parameters": {
+                    "url": "string",
+                    "body": "string",
+                    "callback": "function"
+                },
+                "desc": "Is callback is nil, this function yields and returns the httpResult",
+                "returns": [
+                    "httpResult"
+                ]
+            },
+            "request": {
+                "returns": [
+                    "httpResult"
+                ],
+                "parameters": {
+                    "requestType": "string",
+                    "url": "string",
+                    "body": "string",
+                    "headers": "table",
+                    "callback": "function"
+                },
+                "desc": "Is callback is nil, this function yields and returns the httpResult. "
+            },
+            "urlEncode": {
+                "returns": [
+                    "string"
+                ],
+                "parameters": {
+                    "url": "string"
+                },
+                "desc": "url encodes the string"
+            },
+            "urlDecode": {
+                "returns": [
+                    "string"
+                ],
+                "parameters": {
+                    "url": "string"
+                },
+                "desc": "decodes the url"
+            },
+            "get": {
+                "returns": [
+                    "httpResult"
+                ],
+                "parameters": {
+                    "url": "string",
+                    "callback": "function"
+                },
+                "desc": "Is callback is nil, this function yields and returns the httpResult"
+            }
         },
         "derivedFrom": "baseClass",
-        "events": [],
+        "events": {},
         "subclasses": [],
         "class": "http",
         "properties": {
@@ -211,32 +395,100 @@
     },
     {
         "methods": {
-            "isKeyDown": [],
-            "isMouseButtonDown": []
+            "isKeyDown": {
+                "returns": [
+                    "bool"
+                ],
+                "parameters": {
+                    "key": "enums.key"
+                },
+                "desc": "returns if the key is pressed"
+            },
+            "isMouseButtonDown": {
+                "returns": [
+                    "boo"
+                ],
+                "parameters": {
+                    "mb": "enums.mouseButton"
+                },
+                "desc": "returns if the mouse is down"
+            }
         },
         "derivedFrom": "baseClass",
         "events": {
-            "mouseLeftPressed": [],
-            "keyReleased": [],
-            "keyPressed": [],
-            "mouseMiddleReleased": [],
-            "mouseMiddlePressed": [],
-            "mouseScrolled": [],
-            "mouseRightReleased": [],
-            "mouseMoved": [],
-            "mouseRightPressed": [],
-            "mouseLeftReleased": []
+            "mouseLeftPressed": {
+                "parameters": {
+                    "inputObject": "inputObject"
+                },
+                "desc": "input event"
+            },
+            "keyReleased": {
+                "parameters": {
+                    "inputObject": "inputObject"
+                },
+                "desc": "input event"
+            },
+            "keyPressed": {
+                "parameters": {
+                    "inputObject": "inputObject"
+                },
+                "desc": "input event"
+            },
+            "mouseMiddleReleased": {
+                "parameters": {
+                    "inputObject": "inputObject"
+                },
+                "desc": "input event"
+            },
+            "mouseMiddlePressed": {
+                "parameters": {
+                    "inputObject": "inputObject"
+                },
+                "desc": "input event"
+            },
+            "mouseScrolled": {
+                "parameters": {
+                    "inputObject": "inputObject"
+                },
+                "desc": "input event"
+            },
+            "mouseRightReleased": {
+                "parameters": {
+                    "inputObject": "inputObject"
+                },
+                "desc": "input event"
+            },
+            "mouseMoved": {
+                "parameters": {
+                    "inputObject": "inputObject"
+                },
+                "desc": "input event"
+            },
+            "mouseRightPressed": {
+                "parameters": {
+                    "inputObject": "inputObject"
+                },
+                "desc": "input event"
+            },
+            "mouseLeftReleased": {
+                "parameters": {
+                    "inputObject": "inputObject"
+                },
+                "desc": "input event"
+            }
         },
         "subclasses": [],
         "class": "input",
         "properties": {
             "screenSize": {
                 "defaultType": "vector2",
-                "writable": false
+                "writable": false,
+                "desc": "The size of the screen"
             },
             "mousePosition": {
                 "defaultType": "vector2",
-                "writable": false
+                "writable": false,
+                "desc": "The position of the mouse"
             },
             "className": {
                 "defaultType": "string",
@@ -244,7 +496,8 @@
             },
             "mouseFocusedGui": {
                 "defaultType": "boolean",
-                "writable": false
+                "writable": false,
+                "desc": "The gui element currently capturing the mouse input"
             },
             "name": {
                 "defaultType": "string",
@@ -252,14 +505,15 @@
             },
             "cursorTexture": {
                 "defaultType": "string",
-                "writable": "string"
+                "writable": "string",
+                "desc": "the cursor's texture"
             }
         }
     },
     {
-        "methods": [],
+        "methods": {},
         "derivedFrom": "baseClass",
-        "events": [],
+        "events": {},
         "subclasses": [],
         "class": "folder",
         "properties": {
@@ -270,9 +524,9 @@
         }
     },
     {
-        "methods": [],
+        "methods": {},
         "derivedFrom": "baseClass",
-        "events": [],
+        "events": {},
         "subclasses": [],
         "class": "assetsFolder",
         "properties": {
@@ -287,9 +541,9 @@
         }
     },
     {
-        "methods": [],
+        "methods": {},
         "derivedFrom": "baseClass",
-        "events": [],
+        "events": {},
         "subclasses": [],
         "class": "luaFolder",
         "properties": {
@@ -303,17 +557,22 @@
             },
             "disableDefaultLoaders": {
                 "defaultType": "boolean",
-                "writable": "boolean"
+                "writable": "boolean",
+                "desc": "If true, default scripts are not loaded when the game is in play mode"
             }
         }
     },
     {
         "methods": {
-            "run": [],
-            "editExternal": []
+            "run": {
+                "desc": "runs the script"
+            },
+            "editExternal": {
+                "desc": "opens the script in the user's default text editor"
+            }
         },
         "derivedFrom": "baseClass",
-        "events": [],
+        "events": {},
         "subclasses": [],
         "class": "script",
         "properties": {
@@ -323,7 +582,8 @@
             },
             "source": {
                 "defaultType": "string",
-                "writable": "string"
+                "writable": "string",
+                "desc": "the script's source"
             },
             "id": {
                 "defaultType": "number",
@@ -331,18 +591,20 @@
             },
             "autoRun": {
                 "defaultType": "boolean",
-                "writable": "boolean"
+                "writable": "boolean",
+                "desc": "if true, teverse runs this automatically"
             },
             "ran": {
                 "defaultType": "boolean",
-                "writable": false
+                "writable": false,
+                "desc": "true after the script starts"
             }
         }
     },
     {
-        "methods": [],
+        "methods": {},
         "derivedFrom": "baseClass",
-        "events": [],
+        "events": {},
         "subclasses": [],
         "class": "luaClientFolder",
         "properties": {
@@ -357,9 +619,9 @@
         }
     },
     {
-        "methods": [],
+        "methods": {},
         "derivedFrom": "baseClass",
-        "events": [],
+        "events": {},
         "subclasses": [],
         "class": "luaServerFolder",
         "properties": {
@@ -374,9 +636,9 @@
         }
     },
     {
-        "methods": [],
+        "methods": {},
         "derivedFrom": "baseClass",
-        "events": [],
+        "events": {},
         "subclasses": [],
         "class": "luaSharedFolder",
         "properties": {
@@ -439,21 +701,22 @@
         },
         "derivedFrom": "baseClass",
         "events": {
-            "mouseLeftPressed": [],
-            "collisionStarted": [],
-            "mouseLeftReleased": [],
-            "mouseRightPressed": [],
-            "mouseRightReleased": [],
-            "collisionEnded": [],
-            "mouseMiddleReleased": [],
-            "mouseMiddlePressed": []
+            "mouseLeftPressed": {},
+            "collisionStarted": {},
+            "mouseLeftReleased": {},
+            "mouseRightPressed": {},
+            "mouseRightReleased": {},
+            "collisionEnded": {},
+            "mouseMiddleReleased": {},
+            "mouseMiddlePressed": {}
         },
         "subclasses": [],
         "class": "block",
         "properties": {
             "renderQueue": {
                 "defaultType": "number",
-                "writable": "number"
+                "writable": "number",
+                "desc": "not implemented"
             },
             "linearFactor": {
                 "desc": "Restricts the linear movement in the physics engine. A value of (1,1,1) allows the object to move in all directions whereas (0,1,0) means the object can only move up and down on the y axis.",
@@ -467,11 +730,13 @@
             },
             "friction": {
                 "defaultType": "number",
-                "writable": "number"
+                "writable": "number",
+                "desc": "Physics"
             },
             "linearDamping": {
                 "defaultType": "number",
-                "writable": "number"
+                "writable": "number",
+                "desc": "Physics"
             },
             "metalness": {
                 "defaultType": "number",
@@ -479,7 +744,8 @@
             },
             "restitution": {
                 "defaultType": "number",
-                "writable": "number"
+                "writable": "number",
+                "desc": "Physics"
             },
             "size": {
                 "defaultType": "vector3",
@@ -524,7 +790,8 @@
             },
             "angularFactor": {
                 "defaultType": "vector3",
-                "writable": "vector3"
+                "writable": "vector3",
+                "desc": "Physics"
             },
             "networkedId": {
                 "defaultType": "number",
@@ -537,7 +804,8 @@
             },
             "linearVelocity": {
                 "defaultType": "vector3",
-                "writable": "vector3"
+                "writable": "vector3",
+                "desc": "Physics"
             },
             "className": {
                 "defaultType": "string",
@@ -553,7 +821,8 @@
             },
             "angularDamping": {
                 "defaultType": "number",
-                "writable": "number"
+                "writable": "number",
+                "desc": "Physics"
             },
             "wireframe": {
                 "defaultType": "boolean",
@@ -561,7 +830,8 @@
             },
             "angularVelocity": {
                 "defaultType": "vector3",
-                "writable": "vector3"
+                "writable": "vector3",
+                "desc": "Physics"
             },
             "opacity": {
                 "desc": "A value of 1 indicates this object is not transparent.",
@@ -571,9 +841,9 @@
         }
     },
     {
-        "methods": [],
+        "methods": {},
         "derivedFrom": "baseClass",
-        "events": [],
+        "events": {},
         "subclasses": [],
         "class": "workspace",
         "properties": {
@@ -589,7 +859,7 @@
     },
     {
         "methods": {
-            "screenToWorld": [],
+            "screenToWorld": {},
             "worldToScreen": {
                 "desc": "Converts a 3d cooridinate into screenspace. Returns a bool indicating if the point is infront of the camera, returns a vector2 with the screenspace coordinates,",
                 "returns": [
@@ -609,7 +879,7 @@
             }
         },
         "derivedFrom": "baseClass",
-        "events": [],
+        "events": {},
         "subclasses": [],
         "class": "camera",
         "properties": {
@@ -637,23 +907,23 @@
     },
     {
         "methods": {
-            "applyImpulse": [],
-            "applyTorque": [],
-            "applyForce": [],
-            "applyForceAtPosition": [],
-            "applyImpulseAtPosition": [],
-            "applyTorqueImpulse": []
+            "applyImpulse": {},
+            "applyTorque": {},
+            "applyForce": {},
+            "applyForceAtPosition": {},
+            "applyImpulseAtPosition": {},
+            "applyTorqueImpulse": {}
         },
         "derivedFrom": "baseClass",
         "events": {
-            "mouseLeftPressed": [],
-            "collisionStarted": [],
-            "mouseLeftReleased": [],
-            "mouseRightPressed": [],
-            "mouseRightReleased": [],
-            "collisionEnded": [],
-            "mouseMiddleReleased": [],
-            "mouseMiddlePressed": []
+            "mouseLeftPressed": {},
+            "collisionStarted": {},
+            "mouseLeftReleased": {},
+            "mouseRightPressed": {},
+            "mouseRightReleased": {},
+            "collisionEnded": {},
+            "mouseMiddleReleased": {},
+            "mouseMiddlePressed": {}
         },
         "subclasses": [],
         "class": "compoundGroup",
@@ -714,10 +984,10 @@
     },
     {
         "methods": {
-            "lookAt": []
+            "lookAt": {}
         },
         "derivedFrom": "baseClass",
-        "events": [],
+        "events": {},
         "subclasses": [],
         "class": "light",
         "properties": {
@@ -781,10 +1051,10 @@
     },
     {
         "methods": {
-            "lookAt": []
+            "lookAt": {}
         },
         "derivedFrom": "baseClass",
-        "events": [],
+        "events": {},
         "subclasses": [],
         "class": "grid",
         "properties": {
@@ -815,9 +1085,9 @@
         }
     },
     {
-        "methods": [],
+        "methods": {},
         "derivedFrom": "baseClass",
-        "events": [],
+        "events": {},
         "subclasses": [],
         "class": "line",
         "properties": {
@@ -846,7 +1116,7 @@
             }
         },
         "derivedFrom": "baseClass",
-        "events": [],
+        "events": {},
         "subclasses": [],
         "class": "audioEmitter",
         "properties": {
@@ -880,10 +1150,10 @@
     },
     {
         "methods": {
-            "play": []
+            "play": {}
         },
         "derivedFrom": "baseClass",
-        "events": [],
+        "events": {},
         "subclasses": [],
         "class": "sounds",
         "properties": {
@@ -898,9 +1168,9 @@
         }
     },
     {
-        "methods": [],
+        "methods": {},
         "derivedFrom": "guiBase",
-        "events": [],
+        "events": {},
         "subclasses": [],
         "class": "guiFrame",
         "properties": {
@@ -911,9 +1181,9 @@
         }
     },
     {
-        "methods": [],
+        "methods": {},
         "derivedFrom": "guiBase",
-        "events": [],
+        "events": {},
         "subclasses": [],
         "class": "guiFrameMultiColour",
         "properties": {
@@ -956,9 +1226,9 @@
         }
     },
     {
-        "methods": [],
+        "methods": {},
         "derivedFrom": "guiBase",
-        "events": [],
+        "events": {},
         "subclasses": [],
         "class": "guiScrollView",
         "properties": {
@@ -985,9 +1255,9 @@
         }
     },
     {
-        "methods": [],
+        "methods": {},
         "derivedFrom": "guiBase",
-        "events": [],
+        "events": {},
         "subclasses": [],
         "class": "interface",
         "properties": {
@@ -999,14 +1269,14 @@
     },
     {
         "methods": {
-            "setAsPasswordInput": [],
-            "focus": [],
-            "setTextColour": [],
-            "setText": []
+            "setAsPasswordInput": {},
+            "focus": {},
+            "setTextColour": {},
+            "setText": {}
         },
         "derivedFrom": "guiTextBase",
         "events": {
-            "textInput": []
+            "textInput": {}
         },
         "subclasses": [],
         "class": "guiTextBox",
@@ -1026,9 +1296,9 @@
         }
     },
     {
-        "methods": [],
+        "methods": {},
         "derivedFrom": "guiTextBase",
-        "events": [],
+        "events": {},
         "subclasses": [],
         "class": "guiButton",
         "properties": {
@@ -1047,9 +1317,9 @@
         }
     },
     {
-        "methods": [],
+        "methods": {},
         "derivedFrom": "guiBase",
-        "events": [],
+        "events": {},
         "subclasses": [
             "guiTextBox",
             "guiButton"
@@ -1091,9 +1361,9 @@
         }
     },
     {
-        "methods": [],
+        "methods": {},
         "derivedFrom": "guiBase",
-        "events": [],
+        "events": {},
         "subclasses": [],
         "class": "guiImage",
         "properties": {
@@ -1135,22 +1405,22 @@
         },
         "derivedFrom": "baseClass",
         "events": {
-            "keyUnfocused": [],
-            "mouseFocused": [],
-            "keyReleased": [],
-            "mouseRightDragged": [],
-            "mouseLeftDragged": [],
-            "keyFocused": [],
-            "mouseMiddleReleased": [],
-            "mouseMiddlePressed": [],
-            "mouseMiddleDragged": [],
-            "mouseScrolled": [],
-            "mouseRightReleased": [],
-            "keyPressed": [],
-            "mouseRightPressed": [],
-            "mouseLeftReleased": [],
-            "mouseUnfocused": [],
-            "mouseLeftPressed": []
+            "keyUnfocused": {},
+            "mouseFocused": {},
+            "keyReleased": {},
+            "mouseRightDragged": {},
+            "mouseLeftDragged": {},
+            "keyFocused": {},
+            "mouseMiddleReleased": {},
+            "mouseMiddlePressed": {},
+            "mouseMiddleDragged": {},
+            "mouseScrolled": {},
+            "mouseRightReleased": {},
+            "keyPressed": {},
+            "mouseRightPressed": {},
+            "mouseLeftReleased": {},
+            "mouseUnfocused": {},
+            "mouseLeftPressed": {}
         },
         "subclasses": [
             "guiFrame",
@@ -1226,11 +1496,11 @@
     },
     {
         "methods": {
-            "begin": [],
-            "create": []
+            "begin": {},
+            "create": {}
         },
         "derivedFrom": "baseClass",
-        "events": [],
+        "events": {},
         "subclasses": [],
         "class": "tween",
         "properties": {
@@ -1250,34 +1520,34 @@
     },
     {
         "methods": {
-            "disconnectGame": [],
-            "joinGame": [],
-            "hasLocalTevGit": [],
-            "reloadCreate": [],
-            "setTevGit": [],
-            "saveGame": [],
-            "setSettings": [],
-            "setSoundDebug": [],
-            "openFileDialogue": [],
-            "newGame": [],
-            "remoteTestServer": [],
-            "reloadShaders": [],
-            "clearGame": [],
-            "apiDump": [],
-            "getEventsOfObject": [],
-            "isHomeRunning": [],
-            "saveGameAsDialogue": [],
-            "home": [],
-            "getMembersOfInstance": [],
-            "loadString": [],
-            "getMembersOfObject": [],
-            "publishDialogue": [],
-            "setPhysicsDebug": [],
-            "getSettings": []
+            "disconnectGame": {},
+            "joinGame": {},
+            "hasLocalTevGit": {},
+            "reloadCreate": {},
+            "setTevGit": {},
+            "saveGame": {},
+            "setSettings": {},
+            "setSoundDebug": {},
+            "openFileDialogue": {},
+            "newGame": {},
+            "remoteTestServer": {},
+            "reloadShaders": {},
+            "clearGame": {},
+            "apiDump": {},
+            "getEventsOfObject": {},
+            "isHomeRunning": {},
+            "saveGameAsDialogue": {},
+            "home": {},
+            "getMembersOfInstance": {},
+            "loadString": {},
+            "getMembersOfObject": {},
+            "publishDialogue": {},
+            "setPhysicsDebug": {},
+            "getSettings": {}
         },
         "derivedFrom": "baseClass",
         "events": {
-            "published": []
+            "published": {}
         },
         "subclasses": [],
         "class": "workshop",
@@ -1336,7 +1606,7 @@
                     "string"
                 ]
             },
-            "constructor": [],
+            "constructor": {},
             "destroyAllChildren": {
                 "desc": "Invokes the destroy method on each child of this instance."
             },
@@ -1443,12 +1713,12 @@
     },
     {
         "methods": {
-            "openUrl": [],
-            "construct": [],
-            "isAuthenticated": []
+            "openUrl": {},
+            "construct": {},
+            "isAuthenticated": {}
         },
         "derivedFrom": "baseClass",
-        "events": [],
+        "events": {},
         "subclasses": [],
         "class": "engine",
         "properties": {
