@@ -38,7 +38,7 @@ addDocs("graphics", {
   events = {
       frameDrawn = event("undefined", {['timeSinceLast'] = 'number'}), 
   },
-}
+})
 
 addDocs("json", {
   properties = {
@@ -52,7 +52,7 @@ addDocs("json", {
   },
   events = {
   },
-}
+})
 
 addDocs("networking", {
   properties = {
@@ -74,7 +74,7 @@ addDocs("networking", {
       pingUpdate = event("undefined", {}), 
       disconnected = event("undefined", {['ping'] = 'number'}), 
   },
-}
+})
 
 addDocs("client", {
   properties = {
@@ -85,7 +85,7 @@ addDocs("client", {
   },
   events = {
   },
-}
+})
 
 addDocs("clients", {
   properties = {
@@ -99,7 +99,7 @@ addDocs("clients", {
       clientDisconnected = event("undefined", {['client'] = 'client'}), 
       clientConnected = event("undefined", {['client'] = 'client'}), 
   },
-}
+})
 
 addDocs("physics", {
   properties = {
@@ -119,7 +119,7 @@ addDocs("physics", {
   },
   events = {
   },
-}
+})
 
 addDocs("debug", {
   properties = {
@@ -134,7 +134,7 @@ addDocs("debug", {
   events = {
       output = event("undefined", {['output'] = 'string'}), 
   },
-}
+})
 
 addDocs("http", {
   properties = {
@@ -150,7 +150,7 @@ addDocs("http", {
   },
   events = {
   },
-}
+})
 
 addDocs("input", {
   properties = {
@@ -177,7 +177,7 @@ addDocs("input", {
       mouseRightPressed = event("input event", {['inputObject'] = 'inputObject'}), 
       mouseLeftReleased = event("input event", {['inputObject'] = 'inputObject'}), 
   },
-}
+})
 
 addDocs("folder", {
   properties = {
@@ -187,7 +187,7 @@ addDocs("folder", {
   },
   events = {
   },
-}
+})
 
 addDocs("assetsFolder", {
   properties = {
@@ -198,7 +198,7 @@ addDocs("assetsFolder", {
   },
   events = {
   },
-}
+})
 
 addDocs("luaFolder", {
   properties = {
@@ -210,7 +210,7 @@ addDocs("luaFolder", {
   },
   events = {
   },
-}
+})
 
 addDocs("script", {
   properties = {
@@ -226,7 +226,7 @@ addDocs("script", {
   },
   events = {
   },
-}
+})
 
 addDocs("luaClientFolder", {
   properties = {
@@ -237,7 +237,7 @@ addDocs("luaClientFolder", {
   },
   events = {
   },
-}
+})
 
 addDocs("luaServerFolder", {
   properties = {
@@ -248,7 +248,7 @@ addDocs("luaServerFolder", {
   },
   events = {
   },
-}
+})
 
 addDocs("luaSharedFolder", {
   properties = {
@@ -259,7 +259,7 @@ addDocs("luaSharedFolder", {
   },
   events = {
   },
-}
+})
 
 addDocs("block", {
   properties = {
@@ -310,7 +310,7 @@ addDocs("block", {
       mouseMiddleReleased = event("undefined", {}), 
       mouseMiddlePressed = event("undefined", {}), 
   },
-}
+})
 
 addDocs("workspace", {
   properties = {
@@ -321,7 +321,7 @@ addDocs("workspace", {
   },
   events = {
   },
-}
+})
 
 addDocs("camera", {
   properties = {
@@ -338,7 +338,7 @@ addDocs("camera", {
   },
   events = {
   },
-}
+})
 
 addDocs("compoundGroup", {
   properties = {
@@ -374,7 +374,7 @@ addDocs("compoundGroup", {
       mouseMiddleReleased = event("undefined", {}), 
       mouseMiddlePressed = event("undefined", {}), 
   },
-}
+})
 
 addDocs("light", {
   properties = {
@@ -398,7 +398,7 @@ addDocs("light", {
   },
   events = {
   },
-}
+})
 
 addDocs("grid", {
   properties = {
@@ -414,7 +414,7 @@ addDocs("grid", {
   },
   events = {
   },
-}
+})
 
 addDocs("line", {
   properties = {
@@ -427,7 +427,7 @@ addDocs("line", {
   },
   events = {
   },
-}
+})
 
 addDocs("audioEmitter", {
   properties = {
@@ -443,7 +443,7 @@ addDocs("audioEmitter", {
   },
   events = {
   },
-}
+})
 
 addDocs("sounds", {
   properties = {
@@ -455,7 +455,7 @@ addDocs("sounds", {
   },
   events = {
   },
-}
+})
 
 addDocs("guiFrame", {
   properties = {
@@ -465,7 +465,7 @@ addDocs("guiFrame", {
   },
   events = {
   },
-}
+})
 
 addDocs("guiFrameMultiColour", {
   properties = {
@@ -483,7 +483,7 @@ addDocs("guiFrameMultiColour", {
   },
   events = {
   },
-}
+})
 
 addDocs("guiScrollView", {
   properties = {
@@ -497,7 +497,7 @@ addDocs("guiScrollView", {
   },
   events = {
   },
-}
+})
 
 addDocs("interface", {
   properties = {
@@ -507,7 +507,7 @@ addDocs("interface", {
   },
   events = {
   },
-}
+})
 
 addDocs("guiTextBox", {
   properties = {
@@ -524,7 +524,7 @@ addDocs("guiTextBox", {
   events = {
       textInput = event("undefined", {}), 
   },
-}
+})
 
 addDocs("guiButton", {
   properties = {
@@ -536,7 +536,7 @@ addDocs("guiButton", {
   },
   events = {
   },
-}
+})
 
 addDocs("guiTextBase", {
   properties = {
@@ -553,7 +553,7 @@ addDocs("guiTextBase", {
   },
   events = {
   },
-}
+})
 
 addDocs("guiImage", {
   properties = {
@@ -568,7 +568,7 @@ addDocs("guiImage", {
   },
   events = {
   },
-}
+})
 
 addDocs("guiBase", {
   properties = {
@@ -609,7 +609,7 @@ addDocs("guiBase", {
       mouseUnfocused = event("undefined", {}), 
       mouseLeftPressed = event("undefined", {}), 
   },
-}
+})
 
 addDocs("tween", {
   properties = {
@@ -623,7 +623,7 @@ addDocs("tween", {
   },
   events = {
   },
-}
+})
 
 addDocs("workshop", {
   properties = {
@@ -662,7 +662,7 @@ addDocs("workshop", {
   events = {
       published = event("undefined", {}), 
   },
-}
+})
 
 addDocs("baseClass", {
   properties = {
@@ -688,7 +688,7 @@ addDocs("baseClass", {
       childRemoved = event("Fired when a child is removed", {['child'] = 'variant'}), 
       destroying = event("Fired just before an object is destroyed.", {}), 
   },
-}
+})
 
 addDocs("engine", {
   properties = {
@@ -722,13 +722,13 @@ addDocs("engine", {
       line = property("The default constructor for line"), 
   },
   methods = {
-      openUrl = method("undefined", nil, nil), 
-      construct = method("undefined", nil, nil), 
+      openUrl = method("opens the default web browser", {['string'] = 'url'}, nil), 
+      construct = method("a generic constructor", {['string'] = 'className', ['variant'] = 'parent', ['table'] = 'properties'}, {'variant'}), 
       isAuthenticated = method("undefined", nil, nil), 
   },
   events = {
   },
-}
+})
 
 
 
