@@ -1,5 +1,6 @@
 local ui = require("tevgit:workshop/controllers/ui/core/ui.lua")
 local shared = require("tevgit:workshop/controllers/shared.lua")
+local keybinder = require("tevgit:workshop/controllers/core/keybinder.lua")
 
 local window = ui.window(shared.workshop.interface,
    "Settings",
@@ -82,6 +83,15 @@ if shared.developerMode then
 	createReload:mouseLeftPressed(function ()
 		shared.workshop:reloadCreate()
 	end)
+
+	keybinder:bind({
+		name = "reload",
+		key = enums.key.r,
+		priorKey = enums.key.leftCtrl,
+		action = function()
+			shared.workshop:reloadCreate()
+		end
+	})
 
 	local shaderReload = ui.button(developmentPage, "Reload Shaders", guiCoord(0, 190, 0, 30), guiCoord(0, 15, 0, 90), "secondary")
 	shaderReload:mouseLeftPressed(function ()
