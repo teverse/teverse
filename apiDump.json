@@ -115,8 +115,8 @@
         },
         "derivedFrom": "baseClass",
         "events": {
-            "connected": [],
-            "pingUpdate": [],
+            "connected": {},
+            "pingUpdate": {},
             "disconnected": {
                 "parameters": {
                     "ping": "number"
@@ -298,9 +298,9 @@
     },
     {
         "methods": {
-            "locals": [],
-            "getfenv": [],
-            "upvalues": []
+            "locals": {},
+            "getfenv": {},
+            "upvalues": {}
         },
         "derivedFrom": "baseClass",
         "events": {
@@ -701,14 +701,14 @@
         },
         "derivedFrom": "baseClass",
         "events": {
-            "mouseLeftPressed": [],
-            "collisionStarted": [],
-            "mouseLeftReleased": [],
-            "mouseRightPressed": [],
-            "mouseRightReleased": [],
-            "collisionEnded": [],
-            "mouseMiddleReleased": [],
-            "mouseMiddlePressed": []
+            "mouseLeftPressed": {},
+            "collisionStarted": {},
+            "mouseLeftReleased": {},
+            "mouseRightPressed": {},
+            "mouseRightReleased": {},
+            "collisionEnded": {},
+            "mouseMiddleReleased": {},
+            "mouseMiddlePressed": {}
         },
         "subclasses": [],
         "class": "block",
@@ -859,7 +859,7 @@
     },
     {
         "methods": {
-            "screenToWorld": [],
+            "screenToWorld": {},
             "worldToScreen": {
                 "desc": "Converts a 3d cooridinate into screenspace. Returns a bool indicating if the point is infront of the camera, returns a vector2 with the screenspace coordinates,",
                 "returns": [
@@ -907,23 +907,23 @@
     },
     {
         "methods": {
-            "applyImpulse": [],
-            "applyTorque": [],
-            "applyForce": [],
-            "applyForceAtPosition": [],
-            "applyImpulseAtPosition": [],
-            "applyTorqueImpulse": []
+            "applyImpulse": {},
+            "applyTorque": {},
+            "applyForce": {},
+            "applyForceAtPosition": {},
+            "applyImpulseAtPosition": {},
+            "applyTorqueImpulse": {}
         },
         "derivedFrom": "baseClass",
         "events": {
-            "mouseLeftPressed": [],
-            "collisionStarted": [],
-            "mouseLeftReleased": [],
-            "mouseRightPressed": [],
-            "mouseRightReleased": [],
-            "collisionEnded": [],
-            "mouseMiddleReleased": [],
-            "mouseMiddlePressed": []
+            "mouseLeftPressed": {},
+            "collisionStarted": {},
+            "mouseLeftReleased": {},
+            "mouseRightPressed": {},
+            "mouseRightReleased": {},
+            "collisionEnded": {},
+            "mouseMiddleReleased": {},
+            "mouseMiddlePressed": {}
         },
         "subclasses": [],
         "class": "compoundGroup",
@@ -984,7 +984,7 @@
     },
     {
         "methods": {
-            "lookAt": []
+            "lookAt": {}
         },
         "derivedFrom": "baseClass",
         "events": [],
@@ -1051,7 +1051,7 @@
     },
     {
         "methods": {
-            "lookAt": []
+            "lookAt": {}
         },
         "derivedFrom": "baseClass",
         "events": [],
@@ -1150,7 +1150,7 @@
     },
     {
         "methods": {
-            "play": []
+            "play": {}
         },
         "derivedFrom": "baseClass",
         "events": [],
@@ -1269,14 +1269,14 @@
     },
     {
         "methods": {
-            "setAsPasswordInput": [],
-            "focus": [],
-            "setTextColour": [],
-            "setText": []
+            "setAsPasswordInput": {},
+            "focus": {},
+            "setTextColour": {},
+            "setText": {}
         },
         "derivedFrom": "guiTextBase",
         "events": {
-            "textInput": []
+            "textInput": {}
         },
         "subclasses": [],
         "class": "guiTextBox",
@@ -1405,22 +1405,22 @@
         },
         "derivedFrom": "baseClass",
         "events": {
-            "keyUnfocused": [],
-            "mouseFocused": [],
-            "keyReleased": [],
-            "mouseRightDragged": [],
-            "mouseLeftDragged": [],
-            "keyFocused": [],
-            "mouseMiddleReleased": [],
-            "mouseMiddlePressed": [],
-            "mouseMiddleDragged": [],
-            "mouseScrolled": [],
-            "mouseRightReleased": [],
-            "keyPressed": [],
-            "mouseRightPressed": [],
-            "mouseLeftReleased": [],
-            "mouseUnfocused": [],
-            "mouseLeftPressed": []
+            "keyUnfocused": {},
+            "mouseFocused": {},
+            "keyReleased": {},
+            "mouseRightDragged": {},
+            "mouseLeftDragged": {},
+            "keyFocused": {},
+            "mouseMiddleReleased": {},
+            "mouseMiddlePressed": {},
+            "mouseMiddleDragged": {},
+            "mouseScrolled": {},
+            "mouseRightReleased": {},
+            "keyPressed": {},
+            "mouseRightPressed": {},
+            "mouseLeftReleased": {},
+            "mouseUnfocused": {},
+            "mouseLeftPressed": {}
         },
         "subclasses": [
             "guiFrame",
@@ -1496,8 +1496,8 @@
     },
     {
         "methods": {
-            "begin": [],
-            "create": []
+            "begin": {},
+            "create": {}
         },
         "derivedFrom": "baseClass",
         "events": [],
@@ -1520,34 +1520,34 @@
     },
     {
         "methods": {
-            "disconnectGame": [],
-            "joinGame": [],
-            "hasLocalTevGit": [],
-            "reloadCreate": [],
-            "setTevGit": [],
-            "saveGame": [],
-            "setSettings": [],
-            "setSoundDebug": [],
-            "openFileDialogue": [],
-            "newGame": [],
-            "remoteTestServer": [],
-            "reloadShaders": [],
-            "clearGame": [],
-            "apiDump": [],
-            "getEventsOfObject": [],
-            "isHomeRunning": [],
-            "saveGameAsDialogue": [],
-            "home": [],
-            "getMembersOfInstance": [],
-            "loadString": [],
-            "getMembersOfObject": [],
-            "publishDialogue": [],
-            "setPhysicsDebug": [],
-            "getSettings": []
+            "disconnectGame": {},
+            "joinGame": {},
+            "hasLocalTevGit": {},
+            "reloadCreate": {},
+            "setTevGit": {},
+            "saveGame": {},
+            "setSettings": {},
+            "setSoundDebug": {},
+            "openFileDialogue": {},
+            "newGame": {},
+            "remoteTestServer": {},
+            "reloadShaders": {},
+            "clearGame": {},
+            "apiDump": {},
+            "getEventsOfObject": {},
+            "isHomeRunning": {},
+            "saveGameAsDialogue": {},
+            "home": {},
+            "getMembersOfInstance": {},
+            "loadString": {},
+            "getMembersOfObject": {},
+            "publishDialogue": {},
+            "setPhysicsDebug": {},
+            "getSettings": {}
         },
         "derivedFrom": "baseClass",
         "events": {
-            "published": []
+            "published": {}
         },
         "subclasses": [],
         "class": "workshop",
@@ -1606,7 +1606,7 @@
                     "string"
                 ]
             },
-            "constructor": [],
+            "constructor": {},
             "destroyAllChildren": {
                 "desc": "Invokes the destroy method on each child of this instance."
             },
@@ -1713,9 +1713,9 @@
     },
     {
         "methods": {
-            "openUrl": [],
-            "construct": [],
-            "isAuthenticated": []
+            "openUrl": {},
+            "construct": {},
+            "isAuthenticated": {}
         },
         "derivedFrom": "baseClass",
         "events": [],
