@@ -3,13 +3,33 @@ local history = require("tevgit:workshop/controllers/core/history.lua")
 local selection = require("tevgit:workshop/controllers/core/selection.lua")
 
 local clipboard = {}
+local cut = false
 
 keybinder:bind({
     name = "copy",
     key = enums.key.c,
     priorKey = enums.key.leftCtrl,
-	action = function()
-		clipboard = selection.selection
+    action = function()
+        history.beginAction(workspace, "Copy")
+           clipboard = selection.selection
+        history.endAction()
+	end
+})
+
+keybinder:bind({
+    name = "cut",
+    key = enums.key.x,
+    priorKey = enums.key.leftCtrl,
+    action = function()
+        history.beginAction(workspace, "Cut")
+            cut = {}
+            clipboard = selection.selection
+            for i,v in pairs(selection.selection) do
+                cut[#cut + 1] = {v.opacity,v}
+                wait(0.01)
+                v.opacity = 0.6
+            end
+        history.endAction()
 	end
 })
 
@@ -40,17 +60,21 @@ keybinder:bind({
         local centre = bounds:getCentre()
 
         local clones = {}
-        for _,v in pairs(clipboard) do
+        for i,v in pairs(clipboard) do
             if v and v.alive then
                 local new = v:clone()
                 new.parent = workspace
+                if cut ~= false then
+                    v.opacity = cut[i][1]
+                    cut[i][2]:destroy()
+                end
                 if type(new.position) == "vector3" then
                     new.position = new.position + offset
                 end
                 table.insert(clones, new)
             end
         end
-
+        cut = false
         history.endAction()
         selection.setSelection(clones)
 	end
