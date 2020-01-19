@@ -49,7 +49,7 @@
                         "table"
                     ],
                     "parameters": {
-                        "string": "json"
+                        "json": "string"
                     }
                 },
                 "encodeWithTypes": {
@@ -93,8 +93,8 @@
                 "toServer": {
                     "desc": "Sends a message to the connected server",
                     "parameters": {
-                        "...": "...",
-                        "string": "eventName"
+                        "eventName": "string",
+                        "...": "..."
                     }
                 },
                 "bind": {
@@ -103,23 +103,23 @@
                         "table"
                     ],
                     "parameters": {
-                        "function": "callback",
-                        "string": "eventName"
+                        "callback": "function",
+                        "eventName": "string"
                     }
                 },
                 "toAllClients": {
                     "desc": "Broadcasts a message to all connected clients (server only)",
                     "parameters": {
-                        "...": "...",
-                        "string": "eventName"
+                        "eventName": "string",
+                        "...": "..."
                     }
                 },
                 "toClient": {
                     "desc": "Broadcasts a message to the connected client (server only)",
                     "parameters": {
-                        "...": "...",
+                        "eventName": "string",
                         "client": "client",
-                        "string": "eventName"
+                        "...": "..."
                     }
                 }
             },
@@ -202,7 +202,7 @@
                         "client"
                     ],
                     "parameters": {
-                        "string": "id"
+                        "id": "string"
                     }
                 }
             },
@@ -256,8 +256,8 @@
                         "table"
                     ],
                     "parameters": {
-                        "number": "y",
-                        "table": "exclusion"
+                        "y": "number",
+                        "exclusion": "table"
                     }
                 },
                 "rayTestAllHits": {
@@ -266,8 +266,8 @@
                         "table"
                     ],
                     "parameters": {
-                        "vector3": "end",
-                        "table": "exclusion"
+                        "end": "vector3",
+                        "exclusion": "table"
                     }
                 },
                 "pause": {
@@ -279,7 +279,7 @@
                         "table"
                     ],
                     "parameters": {
-                        "vector3": "end"
+                        "end": "vector3"
                     }
                 },
                 "rayTestScreen": {
@@ -288,7 +288,7 @@
                         "table"
                     ],
                     "parameters": {
-                        "number": "y"
+                        "y": "number"
                     }
                 }
             },
@@ -363,8 +363,8 @@
                         "httpResult"
                     ],
                     "parameters": {
-                        "function": "callback",
-                        "string": "body"
+                        "callback": "function",
+                        "body": "string"
                     }
                 },
                 "request": {
@@ -373,9 +373,9 @@
                         "httpResult"
                     ],
                     "parameters": {
-                        "function": "callback",
-                        "string": "body",
-                        "table": "headers"
+                        "callback": "function",
+                        "body": "string",
+                        "headers": "table"
                     }
                 },
                 "urlEncode": {
@@ -384,7 +384,7 @@
                         "string"
                     ],
                     "parameters": {
-                        "string": "url"
+                        "url": "string"
                     }
                 },
                 "urlDecode": {
@@ -393,7 +393,7 @@
                         "string"
                     ],
                     "parameters": {
-                        "string": "url"
+                        "url": "string"
                     }
                 },
                 "get": {
@@ -402,8 +402,8 @@
                         "httpResult"
                     ],
                     "parameters": {
-                        "function": "callback",
-                        "string": "url"
+                        "callback": "function",
+                        "url": "string"
                     }
                 }
             },
@@ -432,7 +432,7 @@
                         "bool"
                     ],
                     "parameters": {
-                        "enums.key": "key"
+                        "key": "enums.key"
                     }
                 },
                 "isMouseButtonDown": {
@@ -441,7 +441,7 @@
                         "boo"
                     ],
                     "parameters": {
-                        "enums.mouseButton": "mb"
+                        "mb": "enums.mouseButton"
                     }
                 }
             },
@@ -542,6 +542,7 @@
                     "writable": false
                 },
                 "keyFocusedGui": {
+                    "desc": "undefined",
                     "defaultType": "boolean",
                     "writable": false
                 }
@@ -707,43 +708,43 @@
                 "applyImpulseAtPosition": {
                     "desc": "Applies an impulse force at a relative position to this object",
                     "parameters": {
-                        "vector3": "position"
+                        "position": "vector3"
                     }
                 },
                 "applyImpulse": {
                     "desc": "Applies an impulse force to this object",
                     "parameters": {
-                        "vector3": "impulse"
+                        "impulse": "vector3"
                     }
                 },
                 "applyForce": {
                     "desc": "Applies a force to this object",
                     "parameters": {
-                        "vector3": "force"
+                        "force": "vector3"
                     }
                 },
                 "applyTorque": {
                     "desc": "Applies a force to this object",
                     "parameters": {
-                        "vector3": "torque"
+                        "torque": "vector3"
                     }
                 },
                 "applyForceAtPosition": {
                     "desc": "Applies a force at a relative position to this object",
                     "parameters": {
-                        "vector3": "force"
+                        "force": "vector3"
                     }
                 },
                 "lookAt": {
                     "desc": "Changes the objects rotation so that it is looking towards the provided position.",
                     "parameters": {
-                        "vector3": "position"
+                        "position": "vector3"
                     }
                 },
                 "applyTorqueImpulse": {
                     "desc": "Applies a force to this object",
                     "parameters": {
-                        "vector3": "torqueImpulse"
+                        "torqueImpulse": "vector3"
                     }
                 }
             },
@@ -954,13 +955,13 @@
                         "number"
                     ],
                     "parameters": {
-                        "vector3": "position"
+                        "position": "vector3"
                     }
                 },
                 "lookAt": {
                     "desc": "Changes the objects rotation so that it is looking towards the provided position.",
                     "parameters": {
-                        "vector3": "position"
+                        "position": "vector3"
                     }
                 }
             },
@@ -1621,8 +1622,8 @@
                 "bindSizeBreakpoint": {
                     "desc": "",
                     "parameters": {
-                        "enums.sizeBreakpoint": "breakpoint",
-                        "table": "properties"
+                        "properties": "table",
+                        "breakpoint": "enums.sizeBreakpoint"
                     }
                 }
             },
@@ -1943,7 +1944,7 @@
                         "boolean"
                     ],
                     "parameters": {
-                        "string": "className"
+                        "className": "string"
                     }
                 },
                 "destroy": {
@@ -1967,7 +1968,7 @@
                         "boolean"
                     ],
                     "parameters": {
-                        "string": "name"
+                        "name": "string"
                     }
                 },
                 "isDescendantOf": {
@@ -1976,7 +1977,7 @@
                         "boolean"
                     ],
                     "parameters": {
-                        "baseClass": "ancestor"
+                        "ancestor": "baseClass"
                     }
                 },
                 "describe": {
@@ -2068,7 +2069,7 @@
                 "openUrl": {
                     "desc": "opens the default web browser",
                     "parameters": {
-                        "string": "url"
+                        "url": "string"
                     }
                 },
                 "construct": {
@@ -2077,9 +2078,9 @@
                         "variant"
                     ],
                     "parameters": {
-                        "variant": "parent",
-                        "table": "properties",
-                        "string": "className"
+                        "className": "string",
+                        "parent": "variant",
+                        "properties": "table"
                     }
                 },
                 "isAuthenticated": {
@@ -2088,7 +2089,10 @@
             },
             "derivedFrom": "baseClass",
             "events": {
-                "stepped": []
+                "stepped": {
+                    "desc": "undefined",
+                    "parameters": []
+                }
             },
             "subclasses": [],
             "class": "engine",
@@ -2236,7 +2240,7 @@
             }
         }
     ],
-    "_generatedAt": "19/01/2020 00:22:00",
+    "_generatedAt": "19/01/2020 11:05:52",
     "enums": {
         "serverLocation": {
             "london": 0
