@@ -1,6 +1,5 @@
 {
     "_generatedVersion": "Mac-Test 0.16.0",
-    "_generatedAt": "18/01/2020 10:47:54",
     "classes": [
         {
             "methods": {
@@ -17,7 +16,7 @@
                     }
                 }
             },
-            "subclasses": [],
+            "subclasses": {},
             "class": "graphics",
             "properties": {
                 "ambientColour": {
@@ -74,7 +73,7 @@
             },
             "derivedFrom": "baseClass",
             "events": {},
-            "subclasses": [],
+            "subclasses": {},
             "class": "json",
             "properties": {
                 "name": {
@@ -141,7 +140,7 @@
                     }
                 }
             },
-            "subclasses": [],
+            "subclasses": {},
             "class": "networking",
             "properties": {
                 "className": {
@@ -180,7 +179,7 @@
             "methods": {},
             "derivedFrom": "baseClass",
             "events": {},
-            "subclasses": [],
+            "subclasses": {},
             "class": "client",
             "properties": {
                 "className": {
@@ -222,7 +221,7 @@
                     }
                 }
             },
-            "subclasses": [],
+            "subclasses": {},
             "class": "clients",
             "properties": {
                 "name": {
@@ -295,7 +294,7 @@
             },
             "derivedFrom": "baseClass",
             "events": {},
-            "subclasses": [],
+            "subclasses": {},
             "class": "physics",
             "properties": {
                 "running": {
@@ -341,7 +340,7 @@
                     }
                 }
             },
-            "subclasses": [],
+            "subclasses": {},
             "class": "debug",
             "properties": {
                 "name": {
@@ -410,7 +409,7 @@
             },
             "derivedFrom": "baseClass",
             "events": {},
-            "subclasses": [],
+            "subclasses": {},
             "class": "http",
             "properties": {
                 "name": {
@@ -509,7 +508,7 @@
                     }
                 }
             },
-            "subclasses": [],
+            "subclasses": {},
             "class": "input",
             "properties": {
                 "screenSize": {
@@ -552,7 +551,7 @@
             "methods": {},
             "derivedFrom": "baseClass",
             "events": {},
-            "subclasses": [],
+            "subclasses": {},
             "class": "folder",
             "properties": {
                 "className": {
@@ -566,7 +565,7 @@
             "methods": {},
             "derivedFrom": "baseClass",
             "events": {},
-            "subclasses": [],
+            "subclasses": {},
             "class": "assetsFolder",
             "properties": {
                 "name": {
@@ -585,7 +584,7 @@
             "methods": {},
             "derivedFrom": "baseClass",
             "events": {},
-            "subclasses": [],
+            "subclasses": {},
             "class": "luaFolder",
             "properties": {
                 "className": {
@@ -616,7 +615,7 @@
             },
             "derivedFrom": "baseClass",
             "events": {},
-            "subclasses": [],
+            "subclasses": {},
             "class": "script",
             "properties": {
                 "className": {
@@ -650,7 +649,7 @@
             "methods": {},
             "derivedFrom": "baseClass",
             "events": {},
-            "subclasses": [],
+            "subclasses": {},
             "class": "luaClientFolder",
             "properties": {
                 "name": {
@@ -669,7 +668,7 @@
             "methods": {},
             "derivedFrom": "baseClass",
             "events": {},
-            "subclasses": [],
+            "subclasses": {},
             "class": "luaServerFolder",
             "properties": {
                 "name": {
@@ -688,7 +687,7 @@
             "methods": {},
             "derivedFrom": "baseClass",
             "events": {},
-            "subclasses": [],
+            "subclasses": {},
             "class": "luaSharedFolder",
             "properties": {
                 "name": {
@@ -783,7 +782,7 @@
                     "parameters": {}
                 }
             },
-            "subclasses": [],
+            "subclasses": {},
             "class": "block",
             "properties": {
                 "renderQueue": {
@@ -927,7 +926,7 @@
             "methods": {},
             "derivedFrom": "baseClass",
             "events": {},
-            "subclasses": [],
+            "subclasses": {},
             "class": "workspace",
             "properties": {
                 "name": {
@@ -967,7 +966,7 @@
             },
             "derivedFrom": "baseClass",
             "events": {},
-            "subclasses": [],
+            "subclasses": {},
             "class": "camera",
             "properties": {
                 "fov": {
@@ -1053,7 +1052,7 @@
                     "parameters": {}
                 }
             },
-            "subclasses": [],
+            "subclasses": {},
             "class": "compoundGroup",
             "properties": {
                 "rotation": {
@@ -1131,7 +1130,7 @@
             },
             "derivedFrom": "baseClass",
             "events": {},
-            "subclasses": [],
+            "subclasses": {},
             "class": "light",
             "properties": {
                 "rotation": {
@@ -1214,7 +1213,7 @@
             },
             "derivedFrom": "baseClass",
             "events": {},
-            "subclasses": [],
+            "subclasses": {},
             "class": "grid",
             "properties": {
                 "step": {
@@ -1253,7 +1252,7 @@
             "methods": {},
             "derivedFrom": "baseClass",
             "events": {},
-            "subclasses": [],
+            "subclasses": {},
             "class": "line",
             "properties": {
                 "colour": {
@@ -1286,7 +1285,7 @@
             },
             "derivedFrom": "baseClass",
             "events": {},
-            "subclasses": [],
+            "subclasses": {},
             "class": "audioEmitter",
             "properties": {
                 "className": {
@@ -1329,7 +1328,7 @@
             },
             "derivedFrom": "baseClass",
             "events": {},
-            "subclasses": [],
+            "subclasses": {},
             "class": "sounds",
             "properties": {
                 "name": {
@@ -1348,7 +1347,7 @@
             "methods": {},
             "derivedFrom": "guiBase",
             "events": {},
-            "subclasses": [],
+            "subclasses": {},
             "class": "guiFrame",
             "properties": {
                 "className": {
@@ -1362,7 +1361,7 @@
             "methods": {},
             "derivedFrom": "guiBase",
             "events": {},
-            "subclasses": [],
+            "subclasses": {},
             "class": "guiFrameMultiColour",
             "properties": {
                 "topLeftColour": {
@@ -1416,7 +1415,7 @@
             "methods": {},
             "derivedFrom": "guiBase",
             "events": {},
-            "subclasses": [],
+            "subclasses": {},
             "class": "guiScrollView",
             "properties": {
                 "viewOffset": {
@@ -1450,7 +1449,7 @@
             "methods": {},
             "derivedFrom": "guiBase",
             "events": {},
-            "subclasses": [],
+            "subclasses": {},
             "class": "interface",
             "properties": {
                 "className": {
@@ -1482,7 +1481,7 @@
                     "parameters": {}
                 }
             },
-            "subclasses": [],
+            "subclasses": {},
             "class": "guiTextBox",
             "properties": {
                 "readOnly": {
@@ -1506,7 +1505,7 @@
             "methods": {},
             "derivedFrom": "guiTextBase",
             "events": {},
-            "subclasses": [],
+            "subclasses": {},
             "class": "guiButton",
             "properties": {
                 "className": {
@@ -1582,7 +1581,7 @@
             "methods": {},
             "derivedFrom": "guiBase",
             "events": {},
-            "subclasses": [],
+            "subclasses": {},
             "class": "guiImage",
             "properties": {
                 "imageAlpha": {
@@ -1792,7 +1791,7 @@
             },
             "derivedFrom": "baseClass",
             "events": {},
-            "subclasses": [],
+            "subclasses": {},
             "class": "tween",
             "properties": {
                 "license": {
@@ -1894,7 +1893,7 @@
                     "parameters": {}
                 }
             },
-            "subclasses": [],
+            "subclasses": {},
             "class": "workshop",
             "properties": {
                 "className": {
@@ -2091,7 +2090,7 @@
             "events": {
                 "stepped": {}
             },
-            "subclasses": [],
+            "subclasses": {},
             "class": "engine",
             "properties": {
                 "input": {
@@ -2236,5 +2235,230 @@
                 }
             }
         }
-    ]
+    ],
+    "_generatedAt": "19/01/2020 00:06:20",
+    "enums": {
+        "serverLocation": {
+            "london": 0
+        },
+        "connectionStatus": {
+            "serverFull": -2,
+            "authenticating": 2,
+            "connected": 3,
+            "searching": 0,
+            "connecting": 1,
+            "disconnected": -1
+        },
+        "sizeBreakpoint": {
+            "xl": 1200,
+            "xs": 0,
+            "lg": 992,
+            "sm": 576,
+            "xxl": 1600,
+            "md": 768
+        },
+        "sizeBreakpointIndex": [
+            [
+                0,
+                "xs"
+            ],
+            [
+                576,
+                "sm"
+            ],
+            [
+                768,
+                "md"
+            ],
+            [
+                992,
+                "lg"
+            ],
+            [
+                1200,
+                "xl"
+            ],
+            [
+                1600,
+                "xxl"
+            ]
+        ],
+        "inputState": {
+            "ended": 3,
+            "changing": 2,
+            "began": 1
+        },
+        "inputType": {
+            "mouseMove": 6,
+            "mouseWheel": 5,
+            "mouseButtonLeft": 2,
+            "keyboard": 1,
+            "mouseButtonRight": 4,
+            "mouseButtonMiddle": 3
+        },
+        "align": {
+            "topLeft": 0,
+            "bottomRight": 8,
+            "bottomLeft": 6,
+            "middleLeft": 3,
+            "middle": 4,
+            "topRight": 2,
+            "bottomMiddle": 7,
+            "middleRight": 5,
+            "topMiddle": 1
+        },
+        "key": {
+            "f17": 1073741932,
+            "pageUp": 1073741899,
+            "keyPadMultiply": 1073741909,
+            "number7": 55,
+            "r": 114,
+            "bracketSquareLeft": 91,
+            "t": 116,
+            "n": 110,
+            "up": 1073741906,
+            "f14": 1073741929,
+            "percent": 37,
+            "x": 120,
+            "v": 118,
+            "keyPadMinus": 1073741910,
+            "minus": 45,
+            "z": 122,
+            "insert": 1073741897,
+            "numLockClear": 1073741907,
+            "number9": 57,
+            "keyPad4": 1073741916,
+            "exclamation": 33,
+            "number2": 50,
+            "leftCtrl": 1073742048,
+            "a": 97,
+            "keyPad7": 1073741919,
+            "tab": 9,
+            "c": 99,
+            "delete": 127,
+            "left": 1073741904,
+            "e": 101,
+            "f20": 1073741935,
+            "number6": 54,
+            "f18": 1073741933,
+            "f23": 1073741938,
+            "backquote": 96,
+            "f4": 1073741885,
+            "number1": 49,
+            "f19": 1073741934,
+            "f6": 1073741887,
+            "k": 107,
+            "keyPad6": 1073741918,
+            "less": 60,
+            "f22": 1073741937,
+            "capsLock": 1073741881,
+            "m": 109,
+            "keyPad9": 1073741921,
+            "pause": 1073741896,
+            "asterisk": 42,
+            "o": 111,
+            "semicolon": 59,
+            "end": 1073741901,
+            "slash": 47,
+            "q": 113,
+            "keyPad2": 1073741914,
+            "f24": 1073741939,
+            "s": 115,
+            "greater": 62,
+            "bracketSquareRight": 93,
+            "keyPad5": 1073741917,
+            "u": 117,
+            "equals": 61,
+            "alt": 1073742050,
+            "backspace": 8,
+            "w": 119,
+            "keyPad8": 1073741920,
+            "caret": 94,
+            "bracketLeft": 40,
+            "y": 121,
+            "keyPad1": 1073741913,
+            "bracketRight": 41,
+            "return": 13,
+            "space": 32,
+            "ampersand": 38,
+            "f12": 1073741893,
+            "home": 1073741898,
+            "question": 63,
+            "number8": 56,
+            "scrollLock": 1073741895,
+            "comma": 44,
+            "b": 98,
+            "f13": 1073741928,
+            "d": 100,
+            "keyPad0": 1073741922,
+            "quotation": 34,
+            "keyPadPlus": 1073741911,
+            "pageDown": 1073741902,
+            "f11": 1073741892,
+            "printScreen": 1073741894,
+            "f10": 1073741891,
+            "f8": 1073741889,
+            "keyPadEnter": 1073741912,
+            "keyPad3": 1073741915,
+            "g": 103,
+            "l": 108,
+            "h": 104,
+            "at": 64,
+            "underscore": 95,
+            "right": 1073741903,
+            "f": 102,
+            "i": 105,
+            "f9": 1073741890,
+            "f5": 1073741886,
+            "hash": 35,
+            "f1": 1073741882,
+            "f3": 1073741884,
+            "unknown": 0,
+            "f2": 1073741883,
+            "j": 106,
+            "f15": 1073741930,
+            "apostrophe": 39,
+            "number0": 48,
+            "dollar": 36,
+            "number3": 51,
+            "colon": 58,
+            "keyPadPeriod": 1073741923,
+            "f21": 1073741936,
+            "backSlash": 92,
+            "escape": 27,
+            "down": 1073741905,
+            "number4": 52,
+            "f16": 1073741931,
+            "period": 46,
+            "plus": 43,
+            "leftShift": 1073742049,
+            "number5": 53,
+            "keyPadDivide": 1073741908,
+            "keyPadEquals": 1073741927,
+            "f7": 1073741888,
+            "p": 112
+        },
+        "mouseButton": {
+            "right": 3,
+            "left": 1,
+            "middle": 2
+        },
+        "lightType": {
+            "spot": 2,
+            "point": 1,
+            "directional": 0
+        },
+        "guiStyle": {
+            "checkBox": 4,
+            "windowNoCloseButton": 3,
+            "noBackground": 2,
+            "basic": 1,
+            "rounded": 3
+        },
+        "scriptType": {
+            "server": 0,
+            "module": 2,
+            "client": 1
+        }
+    }
 }
