@@ -78,38 +78,38 @@ if shared.developerMode then
 	}, "backgroundText")
 
 
-	local createReload = ui.button(developmentPage, "Reload Workshop", guiCoord(0, 190, 0, 30), guiCoord(0, 15, 0, 50))
+	local createReload = ui.button(developmentPage, "Reload Workshop", guiCoord(0, 320, 0, 30), guiCoord(0, 15, 0, 50))
 	createReload:mouseLeftPressed(function ()
 		shared.workshop:reloadCreate()
 	end)
 
-	local shaderReload = ui.button(developmentPage, "Reload Shaders", guiCoord(0, 190, 0, 30), guiCoord(0, 15, 0, 90), "secondary")
+	local shaderReload = ui.button(developmentPage, "Reload Shaders", guiCoord(0, 320, 0, 30), guiCoord(0, 15, 0, 90), "secondary")
 	shaderReload:mouseLeftPressed(function ()
 		shared.workshop:reloadShaders()
 	end)
 
 	local physicsDebugEnabled = false
-	local physicsAABBs = ui.button(developmentPage, "Enable Physics AABBs", guiCoord(0, 190, 0, 30), guiCoord(0, 15, 0, 130), "secondary")
+	local physicsAABBs = ui.button(developmentPage, "Enable Physics AABBs", guiCoord(0, 320, 0, 30), guiCoord(0, 15, 0, 130), "secondary")
 	physicsAABBs:mouseLeftPressed(function ()
 		physicsDebugEnabled = not physicsDebugEnabled
 		shared.workshop:setPhysicsDebug(physicsDebugEnabled)
 		physicsAABBs.label.text = physicsDebugEnabled and "Disable Physics AABBs" or "Enable Physics AABBs"
 	end)
 
-	local runScriptBtn = ui.button(developmentPage, "Run Lua", guiCoord(0, 190, 0, 30), guiCoord(0, 15, 0, 170), "secondary")
+	local runScriptBtn = ui.button(developmentPage, "Run Lua", guiCoord(0, 320, 0, 30), guiCoord(0, 15, 0, 170), "secondary")
 
 	runScriptBtn:mouseLeftPressed(function ()
 		shared.windows.runLua.visible = not shared.windows.runLua.visible
 	end)
 
-	local printDump = ui.button(developmentPage, "Print Dump", guiCoord(0, 190, 0, 30), guiCoord(0, 15, 0, 210), "secondary")
+	local printDump = ui.button(developmentPage, "Print Dump", guiCoord(0, 320, 0, 30), guiCoord(0, 15, 0, 210), "secondary")
 	printDump:mouseLeftPressed(function()
 		local dump = shared.workshop:apiDump()
 		print(engine.json:encode(dump))
 	end)
 	
 	local physicsEnabled = engine.physics.running
-	local physicsToggle= ui.button(developmentPage, physicsEnabled and "Stop Simulating Physics" or "Simulate Physics", guiCoord(0, 190, 0, 30), guiCoord(0, 15, 0, 250), "secondary")
+	local physicsToggle= ui.button(developmentPage, physicsEnabled and "Stop Simulating Physics" or "Simulate Physics", guiCoord(0, 320, 0, 30), guiCoord(0, 15, 0, 250), "secondary")
 	physicsToggle:mouseLeftPressed(function ()
 		physicsEnabled = not physicsEnabled
 		if physicsEnabled then
@@ -118,6 +118,13 @@ if shared.developerMode then
 			engine.physics:pause()
 		end
 		physicsToggle.label.text = physicsEnabled and "Stop Simulating Physics" or "Simulate Physics"
+	end)
+
+	local resetTheme = ui.button(developmentPage, "Reset Theme (this will restart workshop)", guiCoord(0, 320, 0, 30), guiCoord(0, 15, 0, 290), "secondary")
+	resetTheme:mouseLeftPressed(function()
+		shared.workshop:setSettings("themeType", "Default")
+		shared.workshop:setSettings("customTheme", nil)
+		shared.workshop:reloadCreate()
 	end)
 
   	addTab("Development", developmentPage)
