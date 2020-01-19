@@ -2257,32 +2257,6 @@
             "xxl": 1600,
             "md": 768
         },
-        "sizeBreakpointIndex": [
-            [
-                0,
-                "xs"
-            ],
-            [
-                576,
-                "sm"
-            ],
-            [
-                768,
-                "md"
-            ],
-            [
-                992,
-                "lg"
-            ],
-            [
-                1200,
-                "xl"
-            ],
-            [
-                1600,
-                "xxl"
-            ]
-        ],
         "inputState": {
             "ended": 3,
             "changing": 2,
