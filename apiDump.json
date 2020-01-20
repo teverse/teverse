@@ -1823,13 +1823,14 @@
                 "hasLocalTevGit": {
                     "desc": "undefined"
                 },
-                "reloadCreate": {
+                "getMembersOfInstance": {
                     "desc": "undefined"
                 },
-                "setTevGit": {
+                "newGame": {
                     "desc": "undefined"
                 },
-                "saveGame": {
+                "getHttp": [],
+                "openFileDialogue": {
                     "desc": "undefined"
                 },
                 "setSettings": {
@@ -1838,10 +1839,7 @@
                 "setSoundDebug": {
                     "desc": "undefined"
                 },
-                "openFileDialogue": {
-                    "desc": "undefined"
-                },
-                "newGame": {
+                "reloadCreate": {
                     "desc": "undefined"
                 },
                 "remoteTestServer": {
@@ -1850,7 +1848,10 @@
                 "reloadShaders": {
                     "desc": "undefined"
                 },
-                "clearGame": {
+                "saveGame": {
+                    "desc": "undefined"
+                },
+                "setPhysicsDebug": {
                     "desc": "undefined"
                 },
                 "apiDump": {
@@ -1862,13 +1863,13 @@
                 "isHomeRunning": {
                     "desc": "undefined"
                 },
-                "saveGameAsDialogue": {
+                "getSettings": {
                     "desc": "undefined"
                 },
                 "home": {
                     "desc": "undefined"
                 },
-                "getMembersOfInstance": {
+                "setTevGit": {
                     "desc": "undefined"
                 },
                 "loadString": {
@@ -1880,10 +1881,10 @@
                 "publishDialogue": {
                     "desc": "undefined"
                 },
-                "setPhysicsDebug": {
+                "clearGame": {
                     "desc": "undefined"
                 },
-                "getSettings": {
+                "saveGameAsDialogue": {
                     "desc": "undefined"
                 }
             },
@@ -2240,7 +2241,7 @@
             }
         }
     ],
-    "_generatedAt": "19/01/2020 11:05:52",
+    "_generatedAt": "20/01/2020 19:06:09",
     "enums": {
         "serverLocation": {
             "london": 0
