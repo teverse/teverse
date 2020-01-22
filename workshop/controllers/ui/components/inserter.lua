@@ -29,11 +29,24 @@ local function insert(mesh)
         insertPos = shared.controllers.env.camera.camera.position + (shared.controllers.env.camera.camera.rotation * vector3(0, 0, 10))
     end
 
-    return engine.construct("block", workspace, {
-        mesh = mesh,
-        colour = colour(0.8, 0.8, 0.8),
-        position = insertPos
-    })
+    history.beginAction(workspace, "Inserter")
+    local block;
+
+    if mesh ~= "light" then
+        block = engine.construct("block", workspace, {
+            mesh = mesh,
+            colour = colour(0.8, 0.8, 0.8),
+            position = insertPos
+        })
+    else
+        block = engine.construct("light", workspace, {
+            position = insertPos
+        })
+    end
+
+    history.endAction()
+
+    return block
 end
 
 local adders = {
@@ -49,6 +62,13 @@ local adders = {
         icon = "fa:s-globe",
         callback = function()
             insert("primitive:sphere")
+        end
+    },
+    {
+        name = "Light",
+        icon = "fa:s-lightbulb",
+        callback = function()
+            insert("light")
         end
     }
 }

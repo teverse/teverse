@@ -1,8 +1,19 @@
 -- Copyright 2020 Teverse.com
 -- Responsible for managing the aesthetics of different UI elements
 
-local currentTheme = require("tevgit:workshop/controllers/ui/themes/default.lua")
+local shared = require("tevgit:workshop/controllers/shared.lua")
+
+local currentTheme = nil
 local registeredGuis = {}
+
+local themeType = shared.workshop:getSettings("themeType")
+local customTheme = shared.workshop:getSettings("customTheme")
+
+if themeType == "Custom" then
+    currentTheme = engine.json:decode(customTheme)
+else
+    currentTheme = require("tevgit:workshop/controllers/ui/themes/default.lua")
+end
 
 local function themeriseGui(gui)
     -- Grab the gui's style name set in the "registerGui" func
@@ -52,7 +63,11 @@ return {
     	currentTheme = theme
     	for gui,v in pairs(registeredGuis) do
     		themeriseGui(gui)
-    	end
+        end
+        
+        -- Save the theme
+        shared.workshop:setSettings("themeType", "Custom")
+        shared.workshop:setSettings("customTheme", engine.json:encodeWithTypes(currentTheme))
     end,
 
     getTheme = function()
