@@ -1,6 +1,5 @@
 {
     "_generatedVersion": "Mac-Test 0.16.0",
-    "_generatedAt": "18/01/2020 10:47:54",
     "classes": [
         {
             "methods": {
@@ -50,7 +49,7 @@
                         "table"
                     ],
                     "parameters": {
-                        "string": "json"
+                        "json": "string"
                     }
                 },
                 "encodeWithTypes": {
@@ -73,7 +72,7 @@
                 }
             },
             "derivedFrom": "baseClass",
-            "events": {},
+            "events": [],
             "subclasses": [],
             "class": "json",
             "properties": {
@@ -94,8 +93,8 @@
                 "toServer": {
                     "desc": "Sends a message to the connected server",
                     "parameters": {
-                        "...": "...",
-                        "string": "eventName"
+                        "eventName": "string",
+                        "...": "..."
                     }
                 },
                 "bind": {
@@ -104,23 +103,23 @@
                         "table"
                     ],
                     "parameters": {
-                        "function": "callback",
-                        "string": "eventName"
+                        "callback": "function",
+                        "eventName": "string"
                     }
                 },
                 "toAllClients": {
                     "desc": "Broadcasts a message to all connected clients (server only)",
                     "parameters": {
-                        "...": "...",
-                        "string": "eventName"
+                        "eventName": "string",
+                        "...": "..."
                     }
                 },
                 "toClient": {
                     "desc": "Broadcasts a message to the connected client (server only)",
                     "parameters": {
-                        "...": "...",
+                        "eventName": "string",
                         "client": "client",
-                        "string": "eventName"
+                        "...": "..."
                     }
                 }
             },
@@ -128,11 +127,11 @@
             "events": {
                 "connected": {
                     "desc": "undefined",
-                    "parameters": {}
+                    "parameters": []
                 },
                 "pingUpdate": {
                     "desc": "undefined",
-                    "parameters": {}
+                    "parameters": []
                 },
                 "disconnected": {
                     "desc": "undefined",
@@ -177,9 +176,9 @@
             }
         },
         {
-            "methods": {},
+            "methods": [],
             "derivedFrom": "baseClass",
-            "events": {},
+            "events": [],
             "subclasses": [],
             "class": "client",
             "properties": {
@@ -203,7 +202,7 @@
                         "client"
                     ],
                     "parameters": {
-                        "string": "id"
+                        "id": "string"
                     }
                 }
             },
@@ -257,8 +256,8 @@
                         "table"
                     ],
                     "parameters": {
-                        "number": "y",
-                        "table": "exclusion"
+                        "y": "number",
+                        "exclusion": "table"
                     }
                 },
                 "rayTestAllHits": {
@@ -267,8 +266,8 @@
                         "table"
                     ],
                     "parameters": {
-                        "vector3": "end",
-                        "table": "exclusion"
+                        "end": "vector3",
+                        "exclusion": "table"
                     }
                 },
                 "pause": {
@@ -280,7 +279,7 @@
                         "table"
                     ],
                     "parameters": {
-                        "vector3": "end"
+                        "end": "vector3"
                     }
                 },
                 "rayTestScreen": {
@@ -289,12 +288,12 @@
                         "table"
                     ],
                     "parameters": {
-                        "number": "y"
+                        "y": "number"
                     }
                 }
             },
             "derivedFrom": "baseClass",
-            "events": {},
+            "events": [],
             "subclasses": [],
             "class": "physics",
             "properties": {
@@ -364,8 +363,8 @@
                         "httpResult"
                     ],
                     "parameters": {
-                        "function": "callback",
-                        "string": "body"
+                        "callback": "function",
+                        "body": "string"
                     }
                 },
                 "request": {
@@ -374,9 +373,9 @@
                         "httpResult"
                     ],
                     "parameters": {
-                        "function": "callback",
-                        "string": "body",
-                        "table": "headers"
+                        "callback": "function",
+                        "body": "string",
+                        "headers": "table"
                     }
                 },
                 "urlEncode": {
@@ -385,7 +384,7 @@
                         "string"
                     ],
                     "parameters": {
-                        "string": "url"
+                        "url": "string"
                     }
                 },
                 "urlDecode": {
@@ -394,7 +393,7 @@
                         "string"
                     ],
                     "parameters": {
-                        "string": "url"
+                        "url": "string"
                     }
                 },
                 "get": {
@@ -403,13 +402,13 @@
                         "httpResult"
                     ],
                     "parameters": {
-                        "function": "callback",
-                        "string": "url"
+                        "callback": "function",
+                        "url": "string"
                     }
                 }
             },
             "derivedFrom": "baseClass",
-            "events": {},
+            "events": [],
             "subclasses": [],
             "class": "http",
             "properties": {
@@ -433,7 +432,7 @@
                         "bool"
                     ],
                     "parameters": {
-                        "enums.key": "key"
+                        "key": "enums.key"
                     }
                 },
                 "isMouseButtonDown": {
@@ -442,7 +441,7 @@
                         "boo"
                     ],
                     "parameters": {
-                        "enums.mouseButton": "mb"
+                        "mb": "enums.mouseButton"
                     }
                 }
             },
@@ -543,15 +542,16 @@
                     "writable": false
                 },
                 "keyFocusedGui": {
+                    "desc": "undefined",
                     "defaultType": "boolean",
                     "writable": false
                 }
             }
         },
         {
-            "methods": {},
+            "methods": [],
             "derivedFrom": "baseClass",
-            "events": {},
+            "events": [],
             "subclasses": [],
             "class": "folder",
             "properties": {
@@ -563,9 +563,9 @@
             }
         },
         {
-            "methods": {},
+            "methods": [],
             "derivedFrom": "baseClass",
-            "events": {},
+            "events": [],
             "subclasses": [],
             "class": "assetsFolder",
             "properties": {
@@ -582,9 +582,9 @@
             }
         },
         {
-            "methods": {},
+            "methods": [],
             "derivedFrom": "baseClass",
-            "events": {},
+            "events": [],
             "subclasses": [],
             "class": "luaFolder",
             "properties": {
@@ -615,7 +615,7 @@
                 }
             },
             "derivedFrom": "baseClass",
-            "events": {},
+            "events": [],
             "subclasses": [],
             "class": "script",
             "properties": {
@@ -647,9 +647,9 @@
             }
         },
         {
-            "methods": {},
+            "methods": [],
             "derivedFrom": "baseClass",
-            "events": {},
+            "events": [],
             "subclasses": [],
             "class": "luaClientFolder",
             "properties": {
@@ -666,9 +666,9 @@
             }
         },
         {
-            "methods": {},
+            "methods": [],
             "derivedFrom": "baseClass",
-            "events": {},
+            "events": [],
             "subclasses": [],
             "class": "luaServerFolder",
             "properties": {
@@ -685,9 +685,9 @@
             }
         },
         {
-            "methods": {},
+            "methods": [],
             "derivedFrom": "baseClass",
-            "events": {},
+            "events": [],
             "subclasses": [],
             "class": "luaSharedFolder",
             "properties": {
@@ -708,43 +708,43 @@
                 "applyImpulseAtPosition": {
                     "desc": "Applies an impulse force at a relative position to this object",
                     "parameters": {
-                        "vector3": "position"
+                        "position": "vector3"
                     }
                 },
                 "applyImpulse": {
                     "desc": "Applies an impulse force to this object",
                     "parameters": {
-                        "vector3": "impulse"
+                        "impulse": "vector3"
                     }
                 },
                 "applyForce": {
                     "desc": "Applies a force to this object",
                     "parameters": {
-                        "vector3": "force"
+                        "force": "vector3"
                     }
                 },
                 "applyTorque": {
                     "desc": "Applies a force to this object",
                     "parameters": {
-                        "vector3": "torque"
+                        "torque": "vector3"
                     }
                 },
                 "applyForceAtPosition": {
                     "desc": "Applies a force at a relative position to this object",
                     "parameters": {
-                        "vector3": "force"
+                        "force": "vector3"
                     }
                 },
                 "lookAt": {
                     "desc": "Changes the objects rotation so that it is looking towards the provided position.",
                     "parameters": {
-                        "vector3": "position"
+                        "position": "vector3"
                     }
                 },
                 "applyTorqueImpulse": {
                     "desc": "Applies a force to this object",
                     "parameters": {
-                        "vector3": "torqueImpulse"
+                        "torqueImpulse": "vector3"
                     }
                 }
             },
@@ -752,35 +752,35 @@
             "events": {
                 "mouseLeftPressed": {
                     "desc": "undefined",
-                    "parameters": {}
+                    "parameters": []
                 },
                 "collisionStarted": {
                     "desc": "undefined",
-                    "parameters": {}
+                    "parameters": []
                 },
                 "mouseLeftReleased": {
                     "desc": "undefined",
-                    "parameters": {}
+                    "parameters": []
                 },
                 "mouseRightPressed": {
                     "desc": "undefined",
-                    "parameters": {}
+                    "parameters": []
                 },
                 "mouseRightReleased": {
                     "desc": "undefined",
-                    "parameters": {}
+                    "parameters": []
                 },
                 "collisionEnded": {
                     "desc": "undefined",
-                    "parameters": {}
+                    "parameters": []
                 },
                 "mouseMiddleReleased": {
                     "desc": "undefined",
-                    "parameters": {}
+                    "parameters": []
                 },
                 "mouseMiddlePressed": {
                     "desc": "undefined",
-                    "parameters": {}
+                    "parameters": []
                 }
             },
             "subclasses": [],
@@ -924,9 +924,9 @@
             }
         },
         {
-            "methods": {},
+            "methods": [],
             "derivedFrom": "baseClass",
-            "events": {},
+            "events": [],
             "subclasses": [],
             "class": "workspace",
             "properties": {
@@ -955,18 +955,18 @@
                         "number"
                     ],
                     "parameters": {
-                        "vector3": "position"
+                        "position": "vector3"
                     }
                 },
                 "lookAt": {
                     "desc": "Changes the objects rotation so that it is looking towards the provided position.",
                     "parameters": {
-                        "vector3": "position"
+                        "position": "vector3"
                     }
                 }
             },
             "derivedFrom": "baseClass",
-            "events": {},
+            "events": [],
             "subclasses": [],
             "class": "camera",
             "properties": {
@@ -1022,35 +1022,35 @@
             "events": {
                 "mouseLeftPressed": {
                     "desc": "undefined",
-                    "parameters": {}
+                    "parameters": []
                 },
                 "collisionStarted": {
                     "desc": "undefined",
-                    "parameters": {}
+                    "parameters": []
                 },
                 "mouseLeftReleased": {
                     "desc": "undefined",
-                    "parameters": {}
+                    "parameters": []
                 },
                 "mouseRightPressed": {
                     "desc": "undefined",
-                    "parameters": {}
+                    "parameters": []
                 },
                 "mouseRightReleased": {
                     "desc": "undefined",
-                    "parameters": {}
+                    "parameters": []
                 },
                 "collisionEnded": {
                     "desc": "undefined",
-                    "parameters": {}
+                    "parameters": []
                 },
                 "mouseMiddleReleased": {
                     "desc": "undefined",
-                    "parameters": {}
+                    "parameters": []
                 },
                 "mouseMiddlePressed": {
                     "desc": "undefined",
-                    "parameters": {}
+                    "parameters": []
                 }
             },
             "subclasses": [],
@@ -1130,7 +1130,7 @@
                 }
             },
             "derivedFrom": "baseClass",
-            "events": {},
+            "events": [],
             "subclasses": [],
             "class": "light",
             "properties": {
@@ -1213,7 +1213,7 @@
                 }
             },
             "derivedFrom": "baseClass",
-            "events": {},
+            "events": [],
             "subclasses": [],
             "class": "grid",
             "properties": {
@@ -1250,9 +1250,9 @@
             }
         },
         {
-            "methods": {},
+            "methods": [],
             "derivedFrom": "baseClass",
-            "events": {},
+            "events": [],
             "subclasses": [],
             "class": "line",
             "properties": {
@@ -1285,7 +1285,7 @@
                 }
             },
             "derivedFrom": "baseClass",
-            "events": {},
+            "events": [],
             "subclasses": [],
             "class": "audioEmitter",
             "properties": {
@@ -1328,7 +1328,7 @@
                 }
             },
             "derivedFrom": "baseClass",
-            "events": {},
+            "events": [],
             "subclasses": [],
             "class": "sounds",
             "properties": {
@@ -1345,9 +1345,9 @@
             }
         },
         {
-            "methods": {},
+            "methods": [],
             "derivedFrom": "guiBase",
-            "events": {},
+            "events": [],
             "subclasses": [],
             "class": "guiFrame",
             "properties": {
@@ -1359,9 +1359,9 @@
             }
         },
         {
-            "methods": {},
+            "methods": [],
             "derivedFrom": "guiBase",
-            "events": {},
+            "events": [],
             "subclasses": [],
             "class": "guiFrameMultiColour",
             "properties": {
@@ -1413,9 +1413,9 @@
             }
         },
         {
-            "methods": {},
+            "methods": [],
             "derivedFrom": "guiBase",
-            "events": {},
+            "events": [],
             "subclasses": [],
             "class": "guiScrollView",
             "properties": {
@@ -1447,9 +1447,9 @@
             }
         },
         {
-            "methods": {},
+            "methods": [],
             "derivedFrom": "guiBase",
-            "events": {},
+            "events": [],
             "subclasses": [],
             "class": "interface",
             "properties": {
@@ -1479,7 +1479,7 @@
             "events": {
                 "textInput": {
                     "desc": "undefined",
-                    "parameters": {}
+                    "parameters": []
                 }
             },
             "subclasses": [],
@@ -1503,9 +1503,9 @@
             }
         },
         {
-            "methods": {},
+            "methods": [],
             "derivedFrom": "guiTextBase",
-            "events": {},
+            "events": [],
             "subclasses": [],
             "class": "guiButton",
             "properties": {
@@ -1527,9 +1527,9 @@
             }
         },
         {
-            "methods": {},
+            "methods": [],
             "derivedFrom": "guiBase",
-            "events": {},
+            "events": [],
             "subclasses": [
                 "guiTextBox",
                 "guiButton"
@@ -1579,9 +1579,9 @@
             }
         },
         {
-            "methods": {},
+            "methods": [],
             "derivedFrom": "guiBase",
-            "events": {},
+            "events": [],
             "subclasses": [],
             "class": "guiImage",
             "properties": {
@@ -1622,8 +1622,8 @@
                 "bindSizeBreakpoint": {
                     "desc": "",
                     "parameters": {
-                        "enums.sizeBreakpoint": "breakpoint",
-                        "table": "properties"
+                        "properties": "table",
+                        "breakpoint": "enums.sizeBreakpoint"
                     }
                 }
             },
@@ -1631,67 +1631,67 @@
             "events": {
                 "keyUnfocused": {
                     "desc": "undefined",
-                    "parameters": {}
+                    "parameters": []
                 },
                 "mouseFocused": {
                     "desc": "undefined",
-                    "parameters": {}
+                    "parameters": []
                 },
                 "keyReleased": {
                     "desc": "undefined",
-                    "parameters": {}
+                    "parameters": []
                 },
                 "mouseRightDragged": {
                     "desc": "undefined",
-                    "parameters": {}
+                    "parameters": []
                 },
                 "mouseLeftDragged": {
                     "desc": "undefined",
-                    "parameters": {}
+                    "parameters": []
                 },
                 "keyFocused": {
                     "desc": "undefined",
-                    "parameters": {}
+                    "parameters": []
                 },
                 "mouseMiddleReleased": {
                     "desc": "undefined",
-                    "parameters": {}
+                    "parameters": []
                 },
                 "mouseMiddlePressed": {
                     "desc": "undefined",
-                    "parameters": {}
+                    "parameters": []
                 },
                 "mouseMiddleDragged": {
                     "desc": "undefined",
-                    "parameters": {}
+                    "parameters": []
                 },
                 "mouseScrolled": {
                     "desc": "undefined",
-                    "parameters": {}
+                    "parameters": []
                 },
                 "mouseRightReleased": {
                     "desc": "undefined",
-                    "parameters": {}
+                    "parameters": []
                 },
                 "keyPressed": {
                     "desc": "undefined",
-                    "parameters": {}
+                    "parameters": []
                 },
                 "mouseRightPressed": {
                     "desc": "undefined",
-                    "parameters": {}
+                    "parameters": []
                 },
                 "mouseLeftReleased": {
                     "desc": "undefined",
-                    "parameters": {}
+                    "parameters": []
                 },
                 "mouseUnfocused": {
                     "desc": "undefined",
-                    "parameters": {}
+                    "parameters": []
                 },
                 "mouseLeftPressed": {
                     "desc": "undefined",
-                    "parameters": {}
+                    "parameters": []
                 }
             },
             "subclasses": [
@@ -1791,7 +1791,7 @@
                 }
             },
             "derivedFrom": "baseClass",
-            "events": {},
+            "events": [],
             "subclasses": [],
             "class": "tween",
             "properties": {
@@ -1823,13 +1823,14 @@
                 "hasLocalTevGit": {
                     "desc": "undefined"
                 },
-                "reloadCreate": {
+                "getMembersOfInstance": {
                     "desc": "undefined"
                 },
-                "setTevGit": {
+                "newGame": {
                     "desc": "undefined"
                 },
-                "saveGame": {
+                "getHttp": [],
+                "openFileDialogue": {
                     "desc": "undefined"
                 },
                 "setSettings": {
@@ -1838,10 +1839,7 @@
                 "setSoundDebug": {
                     "desc": "undefined"
                 },
-                "openFileDialogue": {
-                    "desc": "undefined"
-                },
-                "newGame": {
+                "reloadCreate": {
                     "desc": "undefined"
                 },
                 "remoteTestServer": {
@@ -1850,7 +1848,10 @@
                 "reloadShaders": {
                     "desc": "undefined"
                 },
-                "clearGame": {
+                "saveGame": {
+                    "desc": "undefined"
+                },
+                "setPhysicsDebug": {
                     "desc": "undefined"
                 },
                 "apiDump": {
@@ -1862,13 +1863,13 @@
                 "isHomeRunning": {
                     "desc": "undefined"
                 },
-                "saveGameAsDialogue": {
+                "getSettings": {
                     "desc": "undefined"
                 },
                 "home": {
                     "desc": "undefined"
                 },
-                "getMembersOfInstance": {
+                "setTevGit": {
                     "desc": "undefined"
                 },
                 "loadString": {
@@ -1880,10 +1881,10 @@
                 "publishDialogue": {
                     "desc": "undefined"
                 },
-                "setPhysicsDebug": {
+                "clearGame": {
                     "desc": "undefined"
                 },
-                "getSettings": {
+                "saveGameAsDialogue": {
                     "desc": "undefined"
                 }
             },
@@ -1891,7 +1892,7 @@
             "events": {
                 "published": {
                     "desc": "undefined",
-                    "parameters": {}
+                    "parameters": []
                 }
             },
             "subclasses": [],
@@ -1944,7 +1945,7 @@
                         "boolean"
                     ],
                     "parameters": {
-                        "string": "className"
+                        "className": "string"
                     }
                 },
                 "destroy": {
@@ -1968,7 +1969,7 @@
                         "boolean"
                     ],
                     "parameters": {
-                        "string": "name"
+                        "name": "string"
                     }
                 },
                 "isDescendantOf": {
@@ -1977,7 +1978,7 @@
                         "boolean"
                     ],
                     "parameters": {
-                        "baseClass": "ancestor"
+                        "ancestor": "baseClass"
                     }
                 },
                 "describe": {
@@ -2016,7 +2017,7 @@
                 },
                 "destroying": {
                     "desc": "Fired just before an object is destroyed.",
-                    "parameters": {}
+                    "parameters": []
                 }
             },
             "subclasses": [
@@ -2069,7 +2070,7 @@
                 "openUrl": {
                     "desc": "opens the default web browser",
                     "parameters": {
-                        "string": "url"
+                        "url": "string"
                     }
                 },
                 "construct": {
@@ -2078,9 +2079,9 @@
                         "variant"
                     ],
                     "parameters": {
-                        "variant": "parent",
-                        "table": "properties",
-                        "string": "className"
+                        "className": "string",
+                        "parent": "variant",
+                        "properties": "table"
                     }
                 },
                 "isAuthenticated": {
@@ -2089,7 +2090,10 @@
             },
             "derivedFrom": "baseClass",
             "events": {
-                "stepped": {}
+                "stepped": {
+                    "desc": "undefined",
+                    "parameters": []
+                }
             },
             "subclasses": [],
             "class": "engine",
@@ -2236,5 +2240,230 @@
                 }
             }
         }
-    ]
+    ],
+    "_generatedAt": "20/01/2020 19:06:09",
+    "enums": {
+        "serverLocation": {
+            "london": 0
+        },
+        "connectionStatus": {
+            "serverFull": -2,
+            "authenticating": 2,
+            "connected": 3,
+            "searching": 0,
+            "connecting": 1,
+            "disconnected": -1
+        },
+        "sizeBreakpoint": {
+            "xl": 1200,
+            "xs": 0,
+            "lg": 992,
+            "sm": 576,
+            "xxl": 1600,
+            "md": 768
+        },
+        "sizeBreakpointIndex": [
+            [
+                0,
+                "xs"
+            ],
+            [
+                576,
+                "sm"
+            ],
+            [
+                768,
+                "md"
+            ],
+            [
+                992,
+                "lg"
+            ],
+            [
+                1200,
+                "xl"
+            ],
+            [
+                1600,
+                "xxl"
+            ]
+        ],
+        "inputState": {
+            "ended": 3,
+            "changing": 2,
+            "began": 1
+        },
+        "inputType": {
+            "mouseMove": 6,
+            "mouseWheel": 5,
+            "mouseButtonLeft": 2,
+            "keyboard": 1,
+            "mouseButtonRight": 4,
+            "mouseButtonMiddle": 3
+        },
+        "align": {
+            "topLeft": 0,
+            "bottomRight": 8,
+            "bottomLeft": 6,
+            "middleLeft": 3,
+            "middle": 4,
+            "topRight": 2,
+            "bottomMiddle": 7,
+            "middleRight": 5,
+            "topMiddle": 1
+        },
+        "key": {
+            "f17": 1073741932,
+            "pageUp": 1073741899,
+            "keyPadMultiply": 1073741909,
+            "number7": 55,
+            "r": 114,
+            "bracketSquareLeft": 91,
+            "t": 116,
+            "n": 110,
+            "up": 1073741906,
+            "f14": 1073741929,
+            "percent": 37,
+            "x": 120,
+            "v": 118,
+            "keyPadMinus": 1073741910,
+            "minus": 45,
+            "z": 122,
+            "insert": 1073741897,
+            "numLockClear": 1073741907,
+            "number9": 57,
+            "keyPad4": 1073741916,
+            "exclamation": 33,
+            "number2": 50,
+            "leftCtrl": 1073742048,
+            "a": 97,
+            "keyPad7": 1073741919,
+            "tab": 9,
+            "c": 99,
+            "delete": 127,
+            "left": 1073741904,
+            "e": 101,
+            "f20": 1073741935,
+            "number6": 54,
+            "f18": 1073741933,
+            "f23": 1073741938,
+            "backquote": 96,
+            "f4": 1073741885,
+            "number1": 49,
+            "f19": 1073741934,
+            "f6": 1073741887,
+            "k": 107,
+            "keyPad6": 1073741918,
+            "less": 60,
+            "f22": 1073741937,
+            "capsLock": 1073741881,
+            "m": 109,
+            "keyPad9": 1073741921,
+            "pause": 1073741896,
+            "asterisk": 42,
+            "o": 111,
+            "semicolon": 59,
+            "end": 1073741901,
+            "slash": 47,
+            "q": 113,
+            "keyPad2": 1073741914,
+            "f24": 1073741939,
+            "s": 115,
+            "greater": 62,
+            "bracketSquareRight": 93,
+            "keyPad5": 1073741917,
+            "u": 117,
+            "equals": 61,
+            "alt": 1073742050,
+            "backspace": 8,
+            "w": 119,
+            "keyPad8": 1073741920,
+            "caret": 94,
+            "bracketLeft": 40,
+            "y": 121,
+            "keyPad1": 1073741913,
+            "bracketRight": 41,
+            "return": 13,
+            "space": 32,
+            "ampersand": 38,
+            "f12": 1073741893,
+            "home": 1073741898,
+            "question": 63,
+            "number8": 56,
+            "scrollLock": 1073741895,
+            "comma": 44,
+            "b": 98,
+            "f13": 1073741928,
+            "d": 100,
+            "keyPad0": 1073741922,
+            "quotation": 34,
+            "keyPadPlus": 1073741911,
+            "pageDown": 1073741902,
+            "f11": 1073741892,
+            "printScreen": 1073741894,
+            "f10": 1073741891,
+            "f8": 1073741889,
+            "keyPadEnter": 1073741912,
+            "keyPad3": 1073741915,
+            "g": 103,
+            "l": 108,
+            "h": 104,
+            "at": 64,
+            "underscore": 95,
+            "right": 1073741903,
+            "f": 102,
+            "i": 105,
+            "f9": 1073741890,
+            "f5": 1073741886,
+            "hash": 35,
+            "f1": 1073741882,
+            "f3": 1073741884,
+            "unknown": 0,
+            "f2": 1073741883,
+            "j": 106,
+            "f15": 1073741930,
+            "apostrophe": 39,
+            "number0": 48,
+            "dollar": 36,
+            "number3": 51,
+            "colon": 58,
+            "keyPadPeriod": 1073741923,
+            "f21": 1073741936,
+            "backSlash": 92,
+            "escape": 27,
+            "down": 1073741905,
+            "number4": 52,
+            "f16": 1073741931,
+            "period": 46,
+            "plus": 43,
+            "leftShift": 1073742049,
+            "number5": 53,
+            "keyPadDivide": 1073741908,
+            "keyPadEquals": 1073741927,
+            "f7": 1073741888,
+            "p": 112
+        },
+        "mouseButton": {
+            "right": 3,
+            "left": 1,
+            "middle": 2
+        },
+        "lightType": {
+            "spot": 2,
+            "point": 1,
+            "directional": 0
+        },
+        "guiStyle": {
+            "checkBox": 4,
+            "windowNoCloseButton": 3,
+            "noBackground": 2,
+            "basic": 1,
+            "rounded": 3
+        },
+        "scriptType": {
+            "server": 0,
+            "module": 2,
+            "client": 1
+        }
+    }
 }

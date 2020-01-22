@@ -46,7 +46,7 @@ addDocs("json", {
       className = property("undefined"), 
   },
   methods = {
-      decode = method("undefined", {['string'] = 'json'}, {'table'}), 
+      decode = method("undefined", {['json'] = 'string'}, {'table'}), 
       encodeWithTypes = method("undefined", {['table'] = 'table'}, {'string'}), 
       encode = method("undefined", {['table'] = 'table'}, {'stripe'}), 
   },
@@ -64,10 +64,10 @@ addDocs("networking", {
       serverId = property("the id of the connected server"), 
   },
   methods = {
-      toServer = method("Sends a message to the connected server", {['string'] = 'eventName', ['...'] = '...'}, nil), 
-      bind = method("binds the provide callback to the eventname. Returns a table with a disconnect method.", {['string'] = 'eventName', ['function'] = 'callback'}, {'table'}), 
-      toAllClients = method("Broadcasts a message to all connected clients (server only)", {['string'] = 'eventName', ['...'] = '...'}, nil), 
-      toClient = method("Broadcasts a message to the connected client (server only)", {['client'] = 'client', ['string'] = 'eventName', ['...'] = '...'}, nil), 
+      toServer = method("Sends a message to the connected server", {['...'] = '...', ['eventName'] = 'string'}, nil), 
+      bind = method("binds the provide callback to the eventname. Returns a table with a disconnect method.", {['callback'] = 'function', ['eventName'] = 'string'}, {'table'}), 
+      toAllClients = method("Broadcasts a message to all connected clients (server only)", {['...'] = '...', ['eventName'] = 'string'}, nil), 
+      toClient = method("Broadcasts a message to the connected client (server only)", {['...'] = '...', ['client'] = 'client', ['eventName'] = 'string'}, nil), 
   },
   events = {
       connected = event("undefined", {}), 
@@ -93,7 +93,7 @@ addDocs("clients", {
       className = property("undefined"), 
   },
   methods = {
-      getClientFromId = method("undefined", {['string'] = 'id'}, {'client'}), 
+      getClientFromId = method("undefined", {['id'] = 'string'}, {'client'}), 
   },
   events = {
       clientDisconnected = event("undefined", {['client'] = 'client'}), 
@@ -111,11 +111,11 @@ addDocs("physics", {
   methods = {
       getContacts = method("unimplemented", {['block'] = 'block'}, {'nil'}), 
       resume = method("resumes physics and sets running to true", nil, nil), 
-      rayTestScreenAllHits = method("runs a ray test query with our physics engine from the absolute coordinates x,y", {['number'] = 'x', ['number'] = 'y', ['table'] = 'exclusion'}, {'table'}), 
-      rayTestAllHits = method("runs a ray test query with our physics engine between the start and end points provided", {['vector3'] = 'start', ['vector3'] = 'end', ['table'] = 'exclusion'}, {'table'}), 
+      rayTestScreenAllHits = method("runs a ray test query with our physics engine from the absolute coordinates x,y", {['y'] = 'number', ['exclusion'] = 'table'}, {'table'}), 
+      rayTestAllHits = method("runs a ray test query with our physics engine between the start and end points provided", {['end'] = 'vector3', ['exclusion'] = 'table'}, {'table'}), 
       pause = method("stops the physics engine and sets running to false", nil, nil), 
-      rayTestClosest = method("runs a ray test query with our physics engine between the start and end points provided", {['vector3'] = 'start', ['vector3'] = 'end'}, {'table'}), 
-      rayTestScreen = method("runs a ray test query with our physics engine from the x,y screen position", {['number'] = 'x', ['number'] = 'y'}, {'table'}), 
+      rayTestClosest = method("runs a ray test query with our physics engine between the start and end points provided", {['end'] = 'vector3'}, {'table'}), 
+      rayTestScreen = method("runs a ray test query with our physics engine from the x,y screen position", {['y'] = 'number'}, {'table'}), 
   },
   events = {
   },
@@ -142,11 +142,11 @@ addDocs("http", {
       className = property("undefined"), 
   },
   methods = {
-      post = method("Is callback is nil, this function yields and returns the httpResult", {['string'] = 'url', ['string'] = 'body', ['function'] = 'callback'}, {'httpResult'}), 
-      request = method("Is callback is nil, this function yields and returns the httpResult. ", {['string'] = 'requestType', ['string'] = 'url', ['string'] = 'body', ['table'] = 'headers', ['function'] = 'callback'}, {'httpResult'}), 
-      urlEncode = method("url encodes the string", {['string'] = 'url'}, {'string'}), 
-      urlDecode = method("decodes the url", {['string'] = 'url'}, {'string'}), 
-      get = method("Is callback is nil, this function yields and returns the httpResult", {['string'] = 'url', ['function'] = 'callback'}, {'httpResult'}), 
+      post = method("Is callback is nil, this function yields and returns the httpResult", {['callback'] = 'function', ['body'] = 'string'}, {'httpResult'}), 
+      request = method("Is callback is nil, this function yields and returns the httpResult. ", {['callback'] = 'function', ['body'] = 'string', ['headers'] = 'table'}, {'httpResult'}), 
+      urlEncode = method("url encodes the string", {['url'] = 'string'}, {'string'}), 
+      urlDecode = method("decodes the url", {['url'] = 'string'}, {'string'}), 
+      get = method("Is callback is nil, this function yields and returns the httpResult", {['callback'] = 'function', ['url'] = 'string'}, {'httpResult'}), 
   },
   events = {
   },
@@ -155,15 +155,16 @@ addDocs("http", {
 addDocs("input", {
   properties = {
       screenSize = property("The size of the screen"), 
-      mousePosition = property("The position of the mouse"), 
       className = property("undefined"), 
+      cursorTexture = property("the cursor's texture"), 
+      mousePosition = property("The position of the mouse"), 
       mouseFocusedGui = property("The gui element currently capturing the mouse input"), 
       name = property("undefined"), 
-      cursorTexture = property("the cursor's texture"), 
+      keyFocusedGui = property("undefined"), 
   },
   methods = {
-      isKeyDown = method("returns if the key is pressed", {['enums.key'] = 'key'}, {'bool'}), 
-      isMouseButtonDown = method("returns if the mouse is down", {['enums.mouseButton'] = 'mb'}, {'boo'}), 
+      isKeyDown = method("returns if the key is pressed", {['key'] = 'enums.key'}, {'bool'}), 
+      isMouseButtonDown = method("returns if the mouse is down", {['mb'] = 'enums.mouseButton'}, {'boo'}), 
   },
   events = {
       mouseLeftPressed = event("input event", {['inputObject'] = 'inputObject'}), 
@@ -292,13 +293,13 @@ addDocs("block", {
       opacity = property("A value of 1 indicates this object is not transparent."), 
   },
   methods = {
-      applyImpulseAtPosition = method("Applies an impulse force at a relative position to this object", {['vector3'] = 'impulse', ['vector3'] = 'position'}, nil), 
-      applyImpulse = method("Applies an impulse force to this object", {['vector3'] = 'impulse'}, nil), 
-      applyForce = method("Applies a force to this object", {['vector3'] = 'force'}, nil), 
-      applyTorque = method("Applies a force to this object", {['vector3'] = 'torque'}, nil), 
-      applyForceAtPosition = method("Applies a force at a relative position to this object", {['vector3'] = 'position', ['vector3'] = 'force'}, nil), 
-      lookAt = method("Changes the objects rotation so that it is looking towards the provided position.", {['vector3'] = 'position'}, nil), 
-      applyTorqueImpulse = method("Applies a force to this object", {['vector3'] = 'torqueImpulse'}, nil), 
+      applyImpulseAtPosition = method("Applies an impulse force at a relative position to this object", {['position'] = 'vector3'}, nil), 
+      applyImpulse = method("Applies an impulse force to this object", {['impulse'] = 'vector3'}, nil), 
+      applyForce = method("Applies a force to this object", {['force'] = 'vector3'}, nil), 
+      applyTorque = method("Applies a force to this object", {['torque'] = 'vector3'}, nil), 
+      applyForceAtPosition = method("Applies a force at a relative position to this object", {['force'] = 'vector3'}, nil), 
+      lookAt = method("Changes the objects rotation so that it is looking towards the provided position.", {['position'] = 'vector3'}, nil), 
+      applyTorqueImpulse = method("Applies a force to this object", {['torqueImpulse'] = 'vector3'}, nil), 
   },
   events = {
       mouseLeftPressed = event("undefined", {}), 
@@ -333,8 +334,8 @@ addDocs("camera", {
   },
   methods = {
       screenToWorld = method("undefined", nil, nil), 
-      worldToScreen = method("Converts a 3d cooridinate into screenspace. Returns a bool indicating if the point is infront of the camera, returns a vector2 with the screenspace coordinates,", {['vector3'] = 'position'}, {'boolean', 'vector2', 'number'}), 
-      lookAt = method("Changes the objects rotation so that it is looking towards the provided position.", {['vector3'] = 'position'}, nil), 
+      worldToScreen = method("Converts a 3d cooridinate into screenspace. Returns a bool indicating if the point is infront of the camera, returns a vector2 with the screenspace coordinates,", {['position'] = 'vector3'}, {'boolean', 'vector2', 'number'}), 
+      lookAt = method("Changes the objects rotation so that it is looking towards the provided position.", {['position'] = 'vector3'}, nil), 
   },
   events = {
   },
@@ -589,7 +590,7 @@ addDocs("guiBase", {
       borderWidth = property("undefined"), 
   },
   methods = {
-      bindSizeBreakpoint = method("", {['table'] = 'properties', ['enums.sizeBreakpoint'] = 'breakpoint'}, nil), 
+      bindSizeBreakpoint = method("", {['breakpoint'] = 'enums.sizeBreakpoint', ['properties'] = 'table'}, nil), 
   },
   events = {
       keyUnfocused = event("undefined", {}), 
@@ -672,13 +673,13 @@ addDocs("baseClass", {
   methods = {
       getDescendants = method("Returns a table of all descended objects", nil, {'table'}), 
       isContainer = method("Returns true if this object can contain other objects.", nil, {'boolean'}), 
-      isA = method("Returns true if this object is derived from the className given.", {['string'] = 'className'}, {'boolean'}), 
+      isA = method("Returns true if this object is derived from the className given.", {['className'] = 'string'}, {'boolean'}), 
       destroy = method("Locks the object before removing it from the hierarchy. Children will also be destroyed.", nil, nil), 
       getFullName = method("Returns a string including ancestor names", nil, {'string'}), 
       constructor = method("undefined", nil, nil), 
       destroyAllChildren = method("Invokes the destroy method on each child of this instance.", nil, nil), 
-      hasChild = method("Returns true if this object has a child with the name given", {['string'] = 'name'}, {'boolean'}), 
-      isDescendantOf = method("Returns true if this object is a descendant of the ancestor object given", {['baseClass'] = 'ancestor'}, {'boolean'}), 
+      hasChild = method("Returns true if this object has a child with the name given", {['name'] = 'string'}, {'boolean'}), 
+      isDescendantOf = method("Returns true if this object is a descendant of the ancestor object given", {['ancestor'] = 'baseClass'}, {'boolean'}), 
       describe = method("", nil, {'string'}), 
       clone = method("Creates and returns a copy of this object", nil, {'variant'}), 
   },
@@ -722,11 +723,12 @@ addDocs("engine", {
       line = property("The default constructor for line"), 
   },
   methods = {
-      openUrl = method("opens the default web browser", {['string'] = 'url'}, nil), 
-      construct = method("a generic constructor", {['string'] = 'className', ['variant'] = 'parent', ['table'] = 'properties'}, {'variant'}), 
+      openUrl = method("opens the default web browser", {['url'] = 'string'}, nil), 
+      construct = method("a generic constructor", {['parent'] = 'variant', ['properties'] = 'table', ['className'] = 'string'}, {'variant'}), 
       isAuthenticated = method("undefined", nil, nil), 
   },
   events = {
+      stepped = event("undefined", {}), 
   },
 })
 
