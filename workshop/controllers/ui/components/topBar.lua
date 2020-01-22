@@ -12,6 +12,9 @@ local tabs = {
       {"Save As", "fa:r-save", function()
          shared.workshop:saveGameAsDialogue()
       end},
+      {"Publish", "fa:s-upload", function()
+         shared.windows.publish.visible = not shared.windows.publish.visible
+      end},
       {"Seperator"},
       {"Properties", "fa:s-clipboard-list", function ()
         shared.windows.propertyEditor.visible = not shared.windows.propertyEditor.visible
