@@ -97,12 +97,7 @@ if shared.developerMode then
 		physicsAABBs.label.text = physicsDebugEnabled and "Disable Physics AABBs" or "Enable Physics AABBs"
 	end)
 
-<<<<<<< HEAD
-	local runScriptBtn = ui.button(developmentPage, "Run Lua", guiCoord(0, 190, 0, 30), guiCoord(0, 15, 0, 170), "secondary")
-=======
 	local runScriptBtn = ui.button(developmentPage, "Run Lua", guiCoord(0, 320, 0, 30), guiCoord(0, 15, 0, 170), "secondary")
-
->>>>>>> master
 	runScriptBtn:mouseLeftPressed(function ()
 		shared.windows.runLua.visible = not shared.windows.runLua.visible
 	end)
@@ -131,8 +126,9 @@ if shared.developerMode then
 	autoSaveToggle:mouseLeftPressed(function()
 		autoSave.Enabled = not autoSave.Enabled
 		autoSaveToggle.label.text = autoSave.Enabled and "Disable Auto-Save" or "Enabled Auto-Save"
-	local resetTheme = ui.button(developmentPage, "Reset Theme (this will restart workshop)", guiCoord(0, 320, 0, 30), guiCoord(0, 15, 0, 290), "secondary")
+	end)
 	
+	local resetTheme = ui.button(developmentPage, "Reset Theme (this will restart workshop)", guiCoord(0, 320, 0, 30), guiCoord(0, 15, 0, 290), "secondary")
 	resetTheme:mouseLeftPressed(function()
 		shared.workshop:setSettings("themeType", "Default")
 		shared.workshop:setSettings("customTheme", nil)
