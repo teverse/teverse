@@ -76,7 +76,7 @@ return {
 
     -- if closable is true OR a function, a close button will appear in the title bar.
     -- when clicked, if closable is a function, it is fired after hiding the window.
-    window = function(parent, title, size, position, dockable, closable)
+    window = function(parent, title, size, position, dockable, closable, dragable)
         local container = create("guiFrame", parent, {
             size = size,
             name = title,
@@ -102,6 +102,7 @@ return {
         }, themer.types.primary)
 
         titleBar:mouseLeftPressed(function ()
+            if dragable == false then return end -- Backwards compatibility
             dock.beginWindowDrag(container, not dockable)
         end)
 
