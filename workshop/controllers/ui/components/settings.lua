@@ -121,15 +121,10 @@ if shared.developerMode then
 	end)
 
 	-- Auto Save / Sync
-	local syncThread
+	local syncThread = autoSave.Sync() -- Establish thread
 	local autoSaveToggle = ui.button(developmentPage, autoSave.Enabled and "Disable Auto-Save" or "Enabled Auto-Save", guiCoord(0, 190, 0, 30), guiCoord(0, 15, 0, 290), "secondary")
 	autoSaveToggle:mouseLeftPressed(function()
 		autoSave.Enabled = not autoSave.Enabled
-		if autoSave.Enabled then
-			syncThread = autoSave.Sync -- create syncThread
-		else
-			syncThread:kill() -- kill syncThread
-		end
 		autoSaveToggle.label.text = autoSave.Enabled and "Disable Auto-Save" or "Enabled Auto-Save"
 	end)
 

@@ -5,13 +5,15 @@ local autoSave = {}
 autoSave.Enabled = false
 autoSave.timeLimit = 5 -- Default (move to settings value soon)
 
-autoSave.Sync = spawnThread(function()
-    while true do
-        if autoSave.Enabled then
-            shared.workshop:saveGame()
+autoSave.Sync = function()
+    return spawnThread(function()
+        while true do
+            if autoSave.Enabled then
+                shared.workshop:saveGame()
+            end
+            wait(autoSave.timeLimit)
         end
-        wait(autoSave.timeLimit)
-    end
-end)
+    end)
+end
 
 return autoSave
