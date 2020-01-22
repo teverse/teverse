@@ -122,13 +122,13 @@ if shared.developerMode then
 
 	-- Auto Save / Sync
 	local syncThread = autoSave.Sync() -- Establish thread
-	local autoSaveToggle = ui.button(developmentPage, autoSave.Enabled and "Disable Auto-Save" or "Enabled Auto-Save", guiCoord(0, 190, 0, 30), guiCoord(0, 15, 0, 290), "secondary")
+	local autoSaveToggle = ui.button(developmentPage, autoSave.Enabled and "Disable Auto-Save" or "Enabled Auto-Save", guiCoord(0, 320, 0, 30), guiCoord(0, 15, 0, 290), "secondary")
 	autoSaveToggle:mouseLeftPressed(function()
 		autoSave.Enabled = not autoSave.Enabled
 		autoSaveToggle.label.text = autoSave.Enabled and "Disable Auto-Save" or "Enabled Auto-Save"
 	end)
 	
-	local resetTheme = ui.button(developmentPage, "Reset Theme (this will restart workshop)", guiCoord(0, 320, 0, 30), guiCoord(0, 15, 0, 290), "secondary")
+	local resetTheme = ui.button(developmentPage, "Reset Theme (this will restart workshop)", guiCoord(0, 320, 0, 30), guiCoord(0, 15, 0, 330), "secondary")
 	resetTheme:mouseLeftPressed(function()
 		shared.workshop:setSettings("themeType", "Default")
 		shared.workshop:setSettings("customTheme", nil)
