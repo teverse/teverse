@@ -1,5 +1,6 @@
 local ui = require("tevgit:workshop/controllers/ui/core/ui.lua")
 local shared = require("tevgit:workshop/controllers/shared.lua")
+local autoSave = require("tevgit:workshop/controllers/ui/components/autoSave.lua")
 
 local window = ui.window(shared.workshop.interface,
    "Settings",
@@ -67,8 +68,8 @@ addTab("Theme", themePage)
 
 if shared.developerMode then
 	local developmentPage = ui.create("guiScrollView", window.content, {
-	size = guiCoord(0.65, 0, 1, 0),
-	position = guiCoord(0.35, 0, 0, 0)
+		size = guiCoord(0.65, 0, 1, 0),
+		position = guiCoord(0.35, 0, 0, 0)
 	}, "background")
 
 	ui.create("guiTextBox", developmentPage, {
@@ -97,7 +98,6 @@ if shared.developerMode then
 	end)
 
 	local runScriptBtn = ui.button(developmentPage, "Run Lua", guiCoord(0, 320, 0, 30), guiCoord(0, 15, 0, 170), "secondary")
-
 	runScriptBtn:mouseLeftPressed(function ()
 		shared.windows.runLua.visible = not shared.windows.runLua.visible
 	end)
@@ -120,7 +120,15 @@ if shared.developerMode then
 		physicsToggle.label.text = physicsEnabled and "Stop Simulating Physics" or "Simulate Physics"
 	end)
 
-	local resetTheme = ui.button(developmentPage, "Reset Theme (this will restart workshop)", guiCoord(0, 320, 0, 30), guiCoord(0, 15, 0, 290), "secondary")
+	-- Auto Save / Sync
+	local syncThread = autoSave.Sync() -- Establish thread
+	local autoSaveToggle = ui.button(developmentPage, autoSave.Enabled and "Disable Auto-Save" or "Enabled Auto-Save", guiCoord(0, 320, 0, 30), guiCoord(0, 15, 0, 290), "secondary")
+	autoSaveToggle:mouseLeftPressed(function()
+		autoSave.Enabled = not autoSave.Enabled
+		autoSaveToggle.label.text = autoSave.Enabled and "Disable Auto-Save" or "Enabled Auto-Save"
+	end)
+	
+	local resetTheme = ui.button(developmentPage, "Reset Theme (this will restart workshop)", guiCoord(0, 320, 0, 30), guiCoord(0, 15, 0, 330), "secondary")
 	resetTheme:mouseLeftPressed(function()
 		shared.workshop:setSettings("themeType", "Default")
 		shared.workshop:setSettings("customTheme", nil)
