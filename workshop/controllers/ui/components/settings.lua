@@ -92,7 +92,6 @@ if shared.developerMode then
 			shared.workshop:reloadCreate()
 		end
 	})
-
 	local shaderReload = ui.button(developmentPage, "Reload Shaders", guiCoord(0, 320, 0, 30), guiCoord(0, 15, 0, 90), "secondary")
 	shaderReload:mouseLeftPressed(function ()
 		shared.workshop:reloadShaders()
