@@ -98,7 +98,6 @@ if shared.developerMode then
 	end)
 
 	local runScriptBtn = ui.button(developmentPage, "Run Lua", guiCoord(0, 320, 0, 30), guiCoord(0, 15, 0, 170), "secondary")
-
 	runScriptBtn:mouseLeftPressed(function ()
 		shared.windows.runLua.visible = not shared.windows.runLua.visible
 	end)
