@@ -9,7 +9,7 @@ return {
 			name           = "mainLight",
 			position       = vector3(3, 2, 0),
 			type           = enums.lightType.directional,
-			rotation       = quaternion():setEuler(math.rad(66), 0, 0),
+			rotation       = quaternion():setEuler(math.rad(150), 0, 0),
 		})	
 
 		local basePlate = engine.construct("block", workspace, {
@@ -47,7 +47,7 @@ return {
 
 	setupEnvironment = function ()
 		engine.graphics.clearColour = colour:fromRGB(56,56,66)
-		engine.graphics.ambientColour = colour:fromRGB(235, 235, 235)
+		engine.graphics.ambientColour = colour(0.3, 0.3, 0.3)
 	end,
 
 	createPBRDebugSpheres = function ()
@@ -60,11 +60,40 @@ return {
 					roughness = r,
 					metalness = m
 				})
-
-				if m > 0.9 and r > 0.9 then
-					b.colour = colour(0,0,0)
-				end
 			end
 		end
+
+		for r = 0, 1, 0.1 do
+			for m = 0, 1, 0.1 do
+				local b = engine.construct("block", workspace, {
+					size = vector3(10, 1, 10),
+					position = vector3((r*100)-5, 1, (m*100)-5),
+					roughness = r,
+					metalness = m
+				})
+			end
+		end
+
+		local cubes = {}
+		for r = 0, 1, 0.1 do
+			for m = 0, 1, 0.1 do
+				table.insert(cubes, engine.construct("block", workspace, {
+					size = vector3(0.5, 0.5, 0.5),
+					position = vector3((r*10)+10, 3, (m*10)-5),
+					mesh = "tevurl:3d/duck.glb",
+					roughness = r,
+					metalness = m,
+					colour = colour(1,1,0)
+				}))
+			end
+		end
+
+		spawnThread(function()
+			while wait() do
+				for _,v in pairs(cubes) do
+					v.rotation = v.rotation * quaternion:setEuler(0, math.rad(v.roughness*3), math.rad(v.metalness*3))
+				end
+			end
+		end)
 	end
 }
