@@ -22,7 +22,7 @@ shared.windows.history = require("tevgit:workshop/controllers/ui/components/hist
 shared.windows.history.visible = false
 
 shared.windows.publish = require("tevgit:workshop/controllers/ui/components/publish.lua")
-shared.windows.publish.visible = false
+shared.windows.publish.visible = true --false Testing
 
 require("tevgit:workshop/controllers/ui/core/dock.lua").loadDockSettings()
 
