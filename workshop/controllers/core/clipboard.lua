@@ -10,9 +10,7 @@ keybinder:bind({
     key = enums.key.c,
     priorKey = enums.key.leftCtrl,
     action = function()
-        history.beginAction(workspace, "Copy")
            clipboard = selection.selection
-        history.endAction()
 	end
 })
 
