@@ -16,7 +16,7 @@ local function beginLoad(workshop)
 	local shared = require("tevgit:workshop/controllers/shared.lua")
 	shared.workshop = workshop
 	shared.developerMode = not shared.workshop.hasLocalTevGit or shared.workshop:hasLocalTevGit()
-
+	
 	local loadingScreen;
 	do
 		loadingScreen = engine.construct("guiFrame", workshop.interface, {

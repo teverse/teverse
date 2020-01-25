@@ -7,12 +7,19 @@ local currentTheme = nil
 local registeredGuis = {}
 
 local themeType = shared.workshop:getSettings("themeType")
-local customTheme = shared.workshop:getSettings("customTheme")
+customTheme = shared.workshop:getSettings("customTheme")
 
-if themeType == "Custom" then
+if themeType == "custom" then
     currentTheme = engine.json:decode(customTheme)
+elseif themeType == "black" then
+    currentTheme = require("tevgit:workshop/controllers/ui/themes/black.lua")
+elseif themeType == "white" then
+    currentTheme = require("tevgit:workshop/controllers/ui/themes/white.lua")
+elseif themeType == "ow" then
+    currentTheme = require("tevgit:workshop/controllers/ui/themes/ow.lua")
 else
     currentTheme = require("tevgit:workshop/controllers/ui/themes/default.lua")
+    shared.workshop:setSettings("themeType", "default")
 end
 
 local function themeriseGui(gui)
@@ -38,6 +45,7 @@ return {
         primary             = "primary",
         primaryVariant      = "primaryVariant",
         primaryText         = "primaryText",
+        primaryImage         = "primaryImage",
         
         secondary           = "secondary",
         secondaryVariant    = "secondaryVariant",
@@ -66,12 +74,33 @@ return {
         end
         
         -- Save the theme
-        shared.workshop:setSettings("themeType", "Custom")
+        shared.workshop:setSettings("themeType", "custom")
         shared.workshop:setSettings("customTheme", engine.json:encodeWithTypes(currentTheme))
+    end,
+
+    resetTheme = function(theme)
+        -- change the current theme AND re-themerise all guis
+    	currentTheme = require("tevgit:workshop/controllers/ui/themes/default.lua")
+    	for gui,v in pairs(registeredGuis) do
+    		themeriseGui(gui)
+        end
+        
+        -- Save the theme
+        shared.workshop:setSettings("themeType", "default")
+        shared.workshop:setSettings("customTheme", null)
+    end,
+
+    setThemePreset = function(theme)
+        -- change the current theme AND re-themerise all guis
+    	currentTheme = theme
+    	for gui,v in pairs(registeredGuis) do
+    		themeriseGui(gui)
+        end
+
+        shared.workshop:setSettings("customTheme", null)
     end,
 
     getTheme = function()
         return currentTheme
     end
-    
 }

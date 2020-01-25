@@ -95,8 +95,8 @@ return {
 
         local titleBar = create("guiFrame", container, {
             name = "titleBar",
-            position = guiCoord(0, 0, 0, -4),
-            size = guiCoord(1, 0, 0, 25),
+            position = guiCoord(0, -1, 0, -4),
+            size = guiCoord(1, 2, 0, 25),
             borderRadius = 4,
             hoverCursor = "fa:s-hand-pointer"
         }, themer.types.primary)
