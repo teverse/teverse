@@ -118,62 +118,62 @@ function themeReload()
    theme = themer.getTheme()
 end
 
-y = 0
+function generateEditor()
+   customUI:destroyAllChildren()
+   local y = 0
+   for _,prop in pairs(themer.types) do
+      themeProperty = engine.construct("guiFrame", customUI, {
+         size = guiCoord(1, 0, 0, 40),
+         position = guiCoord(0, 0, 0, y),
+         backgroundAlpha = 0
+      })
+      
+      ui.create("guiTextBox", themeProperty, {
+         size = guiCoord(1, -10, 0, 16),
+         position = guiCoord(0, 6, 0, 2),
+         text = prop,
+         fontSize = 16,
+         align = enums.align.middleLeft,
+         fontFile = "local:OpenSans-SemiBold.ttf"
+      }, "backgroundText")
 
-for _,prop in pairs(themer.types) do
-   themeProperty = engine.construct("guiFrame", customUI, {
-      size = guiCoord(1, 0, 0, 40),
-      position = guiCoord(0, 0, 0, y),
-      backgroundAlpha = 0
-   })
-   
-   ui.create("guiTextBox", themeProperty, {
-      size = guiCoord(1, -10, 0, 16),
-      position = guiCoord(0, 6, 0, 2),
-      text = prop,
-      fontSize = 16,
-      align = enums.align.middleLeft,
-      fontFile = "local:OpenSans-SemiBold.ttf"
-   }, "backgroundText")
+      count = 0
+      for _,v in pairs(theme[prop]) do if type(v) == "colour" then count = count + 1 end end
 
-   count = 0
-   for _,v in pairs(theme[prop]) do if type(v) == "colour" then count = count + 1 end end
+      size = 1/count
+      i = 0
 
-   size = 1/count
-   i = 0
+      for k,v in pairs(theme[prop]) do
+         if type(v) == "colour" then
+            local ch,cs,cv = v:getHSV()
+            btn = ui.create("guiTextBox", themeProperty, {
+               size = guiCoord(size, -10, 0, 20),
+               position = guiCoord(size*i, 5, 0, 20),
+               text = k,
+               fontSize = 16,
+               align = enums.align.middle,
+               backgroundColour = v,
+               textColour = cv > 0.5 and colour:black() or colour:white(),
+               borderRadius = 4,
+               borderColour = colour:black(),
+               borderAlpha = 0.3
+            }, prop)
 
-   for k,v in pairs(theme[prop]) do
-      if type(v) == "colour" then
-         ch,cs,cv = v:getHSV()
-         btn = ui.create("guiTextBox", themeProperty, {
-            size = guiCoord(size, -10, 0, 20),
-            position = guiCoord(size*i, 5, 0, 20),
-            text = k,
-            fontSize = 16,
-            align = enums.align.middle,
-            backgroundColour = v,
-            textColour = cv > 0.5 and colour:black() or colour:white(),
-            borderRadius = 4,
-            borderColour = colour:black(),
-            borderAlpha = 0.3
-         }, prop)
-
-         btn:mouseLeftReleased(function()
-            colourPicker.prompt(theme[prop][k], function(c)
-               theme[prop][k] = c
-               themer.setTheme(theme)
-               exportInput.text = engine.json:decode(shared.workshop:getSettings("customTheme"))
-               themeReload()
+            btn:mouseLeftReleased(function()
+               colourPicker.prompt(theme[prop][k], function(c)
+                  theme[prop][k] = c
+                  themer.setTheme(theme)
+                  exportInput.text = engine.json:decode(shared.workshop:getSettings("customTheme"))
+                  themeReload()
+               end)
             end)
-         end)
-         i = i + 1 
+            i = i + 1 
+         end
       end
+
+      y = y + 44
    end
-
-   y = y + 44
 end
-
-y = 0
 
 function canvasSet(size)
    container.parent.canvasSize = size
@@ -184,16 +184,17 @@ function makePresetMenu()
    preset = shared.workshop:getSettings("themeType")
    THISISTHERESETBUTTON.visible = false
    customUI.visible = false
-   _, _ = pcall(canvasSet, guiCoord(1, 0, 1, 0))
+   pcall(canvasSet, guiCoord(1, 0, 1, 0))
    if shared.workshop:getSettings("themeType") == "custom" then
       THISISTHERESETBUTTON.visible = true
       customUI.visible = true
-      _, _ = pcall(canvasSet, guiCoord(1, 0, 0, 560))
+      generateEditor()
+      pcall(canvasSet, guiCoord(1, 0, 0, 560))
    end
 
    presetMenu:destroyAllChildren()
 
-   y = 0
+   local y = 0
    for i = 1, #presets do
       if preset == presets[i][1] then background = 1 else background = 0 end
       preset = ui.create("guiButton", presetMenu, {
@@ -214,7 +215,6 @@ function makePresetMenu()
             themeReload()
          end
          makePresetMenu()
-         shared.workshop:reloadCreate()
       end)
       y = y + 20
    end
@@ -242,7 +242,6 @@ resetButton = ui.create("guiButton", container, {
    themer.setThemePreset(require("tevgit:workshop/controllers/ui/themes/default.lua"))
    themeReload()
    makePresetMenu()
-   shared.workshop:reloadCreate()
 end)
 
 makePresetMenu()
