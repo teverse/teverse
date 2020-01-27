@@ -9,12 +9,12 @@ return {
 			name           = "mainLight",
 			position       = vector3(3, 2, 0),
 			type           = enums.lightType.directional,
-			rotation       = quaternion():setEuler(math.rad(150), 0, 0),
+			rotation       = quaternion():setEuler(math.rad(80), 0, 0),
 		})	
 
 		local basePlate = engine.construct("block", workspace, {
 			name           = "basePlate",
-			colour         = colour(0.6, 0.6, 0.6),
+			colour         = colour(0.9, 0.9, 0.9),
 			size           = vector3(100, 1, 100),
 			position       = vector3(0, -1, 0),
 			workshopLocked = true
@@ -37,11 +37,13 @@ return {
 		})
 
 		local block = engine.construct("block", workspace, {
-			name           = "blueBlock",
+			name           = "blueSphere",
 			colour         = colour(0, 0, 1),
 			size           = vector3(1, 1, 1),
 			position       = vector3(0.5, 1, 0),
-			mesh  		   = "primitive:sphere"
+			mesh  		   = "primitive:sphere",
+			roughness 	   = 0.5,
+			metalness      = 0.8
 		})	
 	end,
 
