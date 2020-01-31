@@ -120,13 +120,13 @@ local updatePrediction = function()
 
 		--controller.character:applyImpulse(totalForce * 10)
 		local f = totalForce*10
-		f.y = controller.character.velocity.y
+		f.y = controller.character.linearVelocity.y
 		local lv = vector3(f.x, 0, f.z)
 		if lv ~= vector3(0,0,0) then
 			print(lv)
 			controller.character.rotation = quaternion:setLookRotation(lv:normal())
 		end
-		controller.character.velocity = f
+		controller.character.linearVelocity = f
 
 	end
 

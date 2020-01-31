@@ -24,12 +24,12 @@ update = function(client, cameraDirection)
 	if moved then
 		--controller.characters[client].character:applyImpulse(totalForce * 10)
 		local f = totalForce*10
-		f.y = controller.characters[client].character.velocity.y
+		f.y = controller.characters[client].character.linearVelocity.y
 		local lv = vector3(f.x, 0, f.z)
 		if lv ~= vector3(0,0,0) then
 			--controller.characters[client].character.rotation = quaternion:setLookRotation(lv)
 		end
-		controller.characters[client].character.velocity = f
+		controller.characters[client].character.linearVelocity = f
 	end
 
 	return moved
@@ -68,7 +68,7 @@ function onConnection(client)
 				char.static = false
 				fallen = false
 			else
-				local v = char.velocity
+				local v = char.linearVelocity
 				v.y=0
 				v = v:normal()
 				--print(v)
