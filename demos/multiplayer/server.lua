@@ -20,28 +20,28 @@ local mainLight = engine.construct("light", workspace, {
 engine.construct("block", workspace, {
     name           = "base",
     position       = vector3(-72, 2, 0),
-    size           = vector3(100, 1, 100),
+    size           = vector3(100, 0.5, 100),
     colour         = colour:fromRGB(75, 163, 57)
 })
 
 engine.construct("block", workspace, {
     name           = "base",
     position       = vector3(72, 2, 0),
-    size           = vector3(100, 1, 100),
+    size           = vector3(100, 0.5, 100),
     colour         = colour:fromRGB(75, 163, 57)
 })
 
 engine.construct("block", workspace, {
     name           = "base",
     position       = vector3(0, 2, 72),
-    size           = vector3(100, 1, 100),
+    size           = vector3(100, 0.5, 100),
     colour         = colour:fromRGB(75, 163, 57)
 })
 
 engine.construct("block", workspace, {
     name           = "base",
     position       = vector3(0, 2, -72),
-    size           = vector3(100, 1, 100),
+    size           = vector3(100, 0.5, 100),
     colour         = colour:fromRGB(75, 163, 57)
 })
 
@@ -64,8 +64,9 @@ local function fillSpace(x, y, z)
         name        = "minable",
         position    = vector3(x * 4, y * 4, z * 4),
         size        = vector3(4, 4, 4),
-        colour      = colour:fromRGB(math.random(55, 85), math.random(40, 60), 5),
-        static      = true
+        colour      = colour:fromRGB(math.random(85, 150), math.random(70, 140), 25),
+        static      = true,
+        roughness   = math.random()
     })
 
     -- If we dont set the space as used, it will not be mineable...
@@ -100,7 +101,6 @@ end
 engine.networking:bind( "mineBlock", function( client, x, y, z )
 	if type(x) == "number" and type(y) == "number" and type(z) == "number" and isSpaceUsed(x, y, z) then
         local block = minable[x][y][z]
-        block:destroy()
 
         setSpaceUsed(x, y, z, true)
 
@@ -127,6 +127,8 @@ engine.networking:bind( "mineBlock", function( client, x, y, z )
         if not isSpaceUsed(x, y, z + 1) then
             fillSpace(x, y, z + 1)
         end
+
+        block:destroy()
 	end
 end)
 
