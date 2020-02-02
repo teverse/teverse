@@ -40,7 +40,6 @@ local function setupCharacterLocally(client, char)
 end
 
 local function characterSpawnedHandler(newClientId)
-	repeat wait() until engine.networking.me -- we shouldnt need to do this
 	print("spawning", newClientId, engine.networking.me.id)
 	if engine.networking.me.id == newClientId then
 		print("waiting")
@@ -61,10 +60,6 @@ local function characterSpawnedHandler(newClientId)
 		local client = engine.networking.clients:getClientFromId(newClientId)
 		setupCharacterLocally(client, workspace[newClientId])
 	end
-end
-
-for _,v in pairs(engine.networking.clients.children) do
-	characterSpawnedHandler(v.id)
 end
 
 engine.networking.clients:clientConnected(function (client)
@@ -173,5 +168,8 @@ engine.input:keyReleased(function (inputObj)
 		controller.keys[controller.keyBinds[inputObj.key]] = false
 	end
 end)
+
+repeat print(engine.networking.me) wait() until engine.networking.me
+characterSpawnedHandler(engine.networking.me.id)
 
 return controller

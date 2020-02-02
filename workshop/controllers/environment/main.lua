@@ -40,11 +40,13 @@ return {
 			name           = "blueSphere",
 			colour         = colour(0, 0, 1),
 			size           = vector3(1, 1, 1),
-			position       = vector3(0.5, 1, 0),
+			position       = vector3(0.5, 5, 0),
 			mesh  		   = "primitive:sphere",
 			roughness 	   = 0.5,
-			metalness      = 0.8
+			metalness      = 0.8,
+			static = false
 		})	
+		engine.physics:resume()
 	end,
 
 	setupEnvironment = function ()
