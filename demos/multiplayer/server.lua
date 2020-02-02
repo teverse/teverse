@@ -5,7 +5,6 @@ print("Hello Server!")
 
 require("tevgit:core/server/debug.lua")
 require("tevgit:core/server/chat.lua")
-local char = require("tevgit:core/server/characterController.lua")
 
 workspace:destroyAllChildren()
 
