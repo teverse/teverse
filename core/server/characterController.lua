@@ -44,8 +44,6 @@ function onConnection(client)
 		colour 		  	= colour:random(),
 		position 	  	= vector3(0, 20, 0),
 		static 		  	= false,
-		rollingFriction	= 1.5,
-		spinningFriction = 1.5,
 		friction = 1.5,
 		linearDamping = 0.5,
 	--	mesh = "primitive:sphere", 

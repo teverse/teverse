@@ -9,7 +9,7 @@ print("loading chars")
 local controller = {}
 
 -- set to false for debugging purposes.
-local CLIENT_PREDICTION = true
+local CLIENT_PREDICTION = false
 
 controller.character = nil -- server creates this
 controller.camera = require("tevgit:core/client/cameraController.lua")
