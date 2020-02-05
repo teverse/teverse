@@ -15,7 +15,7 @@ local function registerBlock(c)
     if c.className == "block" then
         c:once("mouseLeftPressed", function ()
             if c.size == vector3(4, 4, 4) then
-                print("mining", c.position.x/4, c.position.y/4, c.position.z/4)
+                --print("mining", c.position.x/4, c.position.y/4, c.position.z/4)
                 engine.networking:toServer("mineBlock", c.position.x/4, c.position.y/4, c.position.z/4)
             end
         end)
