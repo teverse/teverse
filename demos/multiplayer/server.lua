@@ -19,28 +19,28 @@ local mainLight = engine.construct("light", workspace, {
 
 engine.construct("block", workspace, {
     name           = "base",
-    position       = vector3(-72, 2.5, 0),
-    size           = vector3(100, 0.5, 50),
+    position       = vector3(-72, 2.25, 0),
+    size           = vector3(100, 0.5, 45),
     colour         = colour:fromRGB(75, 163, 57)
 })
 
 engine.construct("block", workspace, {
     name           = "base",
-    position       = vector3(72, 2.5, 0),
-    size           = vector3(100, 0.5, 50),
+    position       = vector3(72, 2.25, 0),
+    size           = vector3(100, 0.5, 45),
     colour         = colour:fromRGB(75, 163, 57)
 })
 
 engine.construct("block", workspace, {
     name           = "base",
-    position       = vector3(0, 2.5, 72),
+    position       = vector3(0, 2.25, 72),
     size           = vector3(200, 0.5, 100),
     colour         = colour:fromRGB(75, 163, 57)
 })
 
 engine.construct("block", workspace, {
     name           = "base",
-    position       = vector3(0, 2.5, -72),
+    position       = vector3(0, 2.25, -72),
     size           = vector3(200, 0.5, 100),
     colour         = colour:fromRGB(75, 163, 57)
 })
