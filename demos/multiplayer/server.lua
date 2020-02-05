@@ -21,7 +21,7 @@ local pointLight = engine.construct("light", workspace, {
     name           = "pointLight",
     position       = vector3(0, 1, 0),
     type           = enums.lightType.point,
-    diffuseColour  = colour(3, 3, 3),
+    diffuseColour  = colour(10, 10, 10),
     radius         = 20
 })
 
@@ -79,7 +79,7 @@ local function fillSpace(x, y, z)
 
     -- If we dont set the space as used, it will not be mineable...
     -- Use this to our advantage to set a boundary
-    if x < 20 and x > -20 and y > -20 and z > -20 and z < 20 then
+    if x < 40 and x > -40 and y > -50 and z > -40 and z < 40 then
         setSpaceUsed(x, y, z, block)
     else
         -- this block is not minable, let's make it look different?
