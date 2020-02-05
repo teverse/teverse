@@ -110,33 +110,35 @@ engine.networking:bind( "mineBlock", function( client, x, y, z )
 	if type(x) == "number" and type(y) == "number" and type(z) == "number" and isSpaceUsed(x, y, z) then
         local block = minable[x][y][z]
 
-        setSpaceUsed(x, y, z, true)
+        if block then
+            setSpaceUsed(x, y, z, true)
 
-        if not isSpaceUsed(x, y - 1, z) then
-            fillSpace(x, y - 1, z)
+            if not isSpaceUsed(x, y - 1, z) then
+                fillSpace(x, y - 1, z)
+            end
+
+            if not isSpaceUsed(x, y + 1, z) then
+                fillSpace(x, y + 1, z)
+            end
+
+            if not isSpaceUsed(x - 1, y, z) then
+                fillSpace(x - 1, y, z)
+            end
+
+            if not isSpaceUsed(x + 1, y, z) then
+                fillSpace(x + 1, y, z)
+            end
+
+            if not isSpaceUsed(x, y, z - 1) then
+                fillSpace(x, y, z - 1)
+            end
+
+            if not isSpaceUsed(x, y, z + 1) then
+                fillSpace(x, y, z + 1)
+            end
+
+            block:destroy()
         end
-
-        if not isSpaceUsed(x, y + 1, z) then
-            fillSpace(x, y + 1, z)
-        end
-
-        if not isSpaceUsed(x - 1, y, z) then
-            fillSpace(x - 1, y, z)
-        end
-
-        if not isSpaceUsed(x + 1, y, z) then
-            fillSpace(x + 1, y, z)
-        end
-
-        if not isSpaceUsed(x, y, z - 1) then
-            fillSpace(x, y, z - 1)
-        end
-
-        if not isSpaceUsed(x, y, z + 1) then
-            fillSpace(x, y, z + 1)
-        end
-
-        block:destroy()
 	end
 end)
 
