@@ -17,6 +17,14 @@ local mainLight = engine.construct("light", workspace, {
     specularColour = colour(1, 1, 1)
 })
 
+local pointLight = engine.construct("light", workspace, {
+    name           = "pointLight",
+    position       = vector3(0, 1, 0),
+    type           = enums.lightType.point,
+    diffuseColour  = colour(3, 3, 3),
+    radius         = 20
+})
+
 engine.construct("block", workspace, {
     name           = "base",
     position       = vector3(-72, 2.25, 0),
