@@ -13,21 +13,21 @@ local mainLight = engine.construct("light", workspace, {
     position       = vector3(3, 2, 0),
     type           = enums.lightType.directional,
     rotation       = quaternion():setEuler(math.rad(66), 0, 0),
-    diffuseColour  = colour(10, 10, 10),
-    specularColour = colour(10, 10, 10)
+    diffuseColour  = colour(1, 1, 1),
+    specularColour = colour(1, 1, 1)
 })
 
 engine.construct("block", workspace, {
     name           = "base",
     position       = vector3(-72, 2, 0),
-    size           = vector3(100, 0.5, 100),
+    size           = vector3(100, 0.5, 50),
     colour         = colour:fromRGB(75, 163, 57)
 })
 
 engine.construct("block", workspace, {
     name           = "base",
     position       = vector3(72, 2, 0),
-    size           = vector3(100, 0.5, 100),
+    size           = vector3(100, 0.5, 50),
     colour         = colour:fromRGB(75, 163, 57)
 })
 
