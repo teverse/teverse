@@ -106,7 +106,7 @@ for x = -5, 5 do
 end
 
 local function mine(x, y, z)
-    if isSpaceUsed(x, y, z) then
+    if isSpaceUsed(x, y, z) and minable[x] and minable[x][y] and minable[x][y][z] then
         local block = minable[x][y][z]
         if type(block) == "block" then
             setSpaceUsed(x, y, z, true)
