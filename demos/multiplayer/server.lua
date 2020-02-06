@@ -105,11 +105,9 @@ for x = -5, 5 do
     end
 end
 
--- There's not much validation here...
-engine.networking:bind( "mineBlock", function( client, x, y, z )
-	if type(x) == "number" and type(y) == "number" and type(z) == "number" and isSpaceUsed(x, y, z) then
+local function mine(x, y, z)
+    if isSpaceUsed(x, y, z) then
         local block = minable[x][y][z]
-
         if block then
             setSpaceUsed(x, y, z, true)
 
@@ -138,6 +136,25 @@ engine.networking:bind( "mineBlock", function( client, x, y, z )
             end
 
             block:destroy()
+        end
+    end
+end
+
+-- There's not much validation here...
+engine.networking:bind( "mineBlock", function( client, x, y, z )
+	if type(x) == "number" and type(y) == "number" and type(z) == "number" then
+        mine(x, y, z)
+	end
+end)
+
+engine.networking:bind( "explodeBlock", function( client, x, y, z )
+	if type(x) == "number" and type(y) == "number" and type(z) == "number" then
+        for xo = -2, 2 do
+            for yo = -2, 2 do
+                for zo = -2, 2 do
+                    mine(x + xo, y + yo, z + zo)
+                end
+            end
         end
 	end
 end)
