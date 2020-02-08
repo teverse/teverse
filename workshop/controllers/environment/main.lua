@@ -35,16 +35,6 @@ return {
 			mesh	       = "primitive:wedge",
 			rotation       = quaternion:setEuler(0, math.rad(90), 0)
 		})
-
-		local block = engine.construct("block", workspace, {
-			name           = "blueSphere",
-			colour         = colour(0, 0, 1),
-			size           = vector3(1, 1, 1),
-			position       = vector3(0.5, 1, 0),
-			mesh  		   = "primitive:sphere",
-			roughness 	   = 0.5,
-			metalness      = 0.8
-		})	
 	end,
 
 	setupEnvironment = function ()

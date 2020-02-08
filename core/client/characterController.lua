@@ -9,7 +9,7 @@ print("loading chars")
 local controller = {}
 
 -- set to false for debugging purposes.
-local CLIENT_PREDICTION = true
+local CLIENT_PREDICTION = false
 
 controller.character = nil -- server creates this
 controller.camera = require("tevgit:core/client/cameraController.lua")
@@ -40,15 +40,17 @@ local function setupCharacterLocally(client, char)
 end
 
 local function characterSpawnedHandler(newClientId)
-	repeat wait() until engine.networking.me -- we shouldnt need to do this
-	print("spawning", newClientId, engine.networking.me.id)
+	print('waiting for mne')
+	repeat wait() until engine.networking.me
 	if engine.networking.me.id == newClientId then
-		print("waiting")
+		print("Waiting for my character")
 		repeat wait() until workspace[engine.networking.me.id]
-		print("got char")
+		print('GOT my CHAR')
 		controller.character = workspace[engine.networking.me.id]
 
+		
 		setupCharacterLocally(engine.networking.me, controller.character)
+		print('set up')
 	--	controller.character.physics=false
 		if controller.camera then
 		--	controller.character.opacity = 0
@@ -57,20 +59,21 @@ local function characterSpawnedHandler(newClientId)
 			controller.camera.setTarget(controller.character)
 		end
 	else
+		print("Waiting for other character")
 		repeat wait() until workspace[newClientId]
+		print("got other character")
 		local client = engine.networking.clients:getClientFromId(newClientId)
 		setupCharacterLocally(client, workspace[newClientId])
 	end
-end
-
-for _,v in pairs(engine.networking.clients.children) do
-	characterSpawnedHandler(v.id)
 end
 
 engine.networking.clients:clientConnected(function (client)
 	characterSpawnedHandler(client.id)
 end)
 
+for _,v in pairs(engine.networking.clients.children)do
+	characterSpawnedHandler(v.id)
+end
 
 controller.keyBinds = {
 	[enums.key.w]  = 1,
@@ -120,13 +123,13 @@ local updatePrediction = function()
 
 		--controller.character:applyImpulse(totalForce * 10)
 		local f = totalForce*10
-		f.y = controller.character.velocity.y
+		f.y = controller.character.linearVelocity.y
 		local lv = vector3(f.x, 0, f.z)
 		if lv ~= vector3(0,0,0) then
 			print(lv)
 			controller.character.rotation = quaternion:setLookRotation(lv:normal())
 		end
-		controller.character.velocity = f
+		controller.character.linearVelocity = f
 
 	end
 
