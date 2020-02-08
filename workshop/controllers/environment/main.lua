@@ -9,12 +9,12 @@ return {
 			name           = "mainLight",
 			position       = vector3(3, 2, 0),
 			type           = enums.lightType.directional,
-			rotation       = quaternion():setEuler(math.rad(150), 0, 0),
+			rotation       = quaternion():setEuler(math.rad(80), 0, 0),
 		})	
 
 		local basePlate = engine.construct("block", workspace, {
 			name           = "basePlate",
-			colour         = colour(0.6, 0.6, 0.6),
+			colour         = colour(0.9, 0.9, 0.9),
 			size           = vector3(100, 1, 100),
 			position       = vector3(0, -1, 0),
 			workshopLocked = true
@@ -35,14 +35,6 @@ return {
 			mesh	       = "primitive:wedge",
 			rotation       = quaternion:setEuler(0, math.rad(90), 0)
 		})
-
-		local block = engine.construct("block", workspace, {
-			name           = "blueBlock",
-			colour         = colour(0, 0, 1),
-			size           = vector3(1, 1, 1),
-			position       = vector3(0.5, 1, 0),
-			mesh  		   = "primitive:sphere"
-		})	
 	end,
 
 	setupEnvironment = function ()
