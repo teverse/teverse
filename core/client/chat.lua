@@ -70,8 +70,8 @@ end)
 
 function addMessage(txt)
 	local newValue = messagesOutput.text .. "\n" .. txt
-	if (newValue:len() > 610) then
-		newValue = newValue:sub(newValue:len() - 600)
+	if (newValue:len() > 310) then
+		newValue = newValue:sub(newValue:len() - 300)
 	end
 	messagesOutput.text = newValue
 end
