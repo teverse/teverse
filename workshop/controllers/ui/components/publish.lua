@@ -10,6 +10,25 @@ local i, x, y = 0, 0, 0
 local data = http:get("https://teverse.com/api/users/958102cf-d0f4-4f92-b1eb-75a2e2202f98/games")
 data = engine.json:decode(data["body"])
 
+-- https://teverse.com/api/games POST
+--[[
+    {
+        "name": string,
+        "description": string,
+        "maxClients": 0,
+        "active": true,
+        "featured": true
+    }
+]]--
+
+-- PUT /api/games/{id}/game
+    -- returns game's .tev serialized format
+
+-- PUT /api/games/{id}
+    -- Body is the games object (name, description. etc)
+
+-- engine.http:request("PUT","URL","BODY",{["Content-Type"] = "application/json", ["HEADER"] = "EXAMPLE"})
+
 local window = ui.window(shared.workshop.interface, "Publish Game to Teverse",
     guiCoord(0, 620, 0, 500),
     guiCoord(0.5, -310, 0.5, -250),
@@ -84,7 +103,7 @@ for _, place in pairs(data) do
         position = guiCoord(x, 0, y, 0),
         size = guiCoord(0.2, 0, 0.25, 0),
         cropChildren = true,
-        --texture = place["thumbnail"]
+        texture = "tevurl:"..place["thumbnail"]
     }, "primary")
     
     local containerButton = ui.create("guiButton", placeContainer, {
@@ -97,7 +116,7 @@ for _, place in pairs(data) do
 
     local popupContainer = ui.create("guiFrame", placeContainer, {
         position = guiCoord(0, 0, 1, 0),
-        size = guiCoord(1, 0, 0.25, 0),
+        size = guiCoord(1.1, 0, 0.25, 0),
         cropChildren = true,
         zIndex = 20
     }, "secondary")
