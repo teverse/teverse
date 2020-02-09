@@ -40,5 +40,21 @@ local function registerBlock(c)
     end
 end
 
-workspace:childAdded(registerBlock)
-for _,v in pairs(workspace.children) do registerBlock(v) end
+engine.input:onSync("mouseLeftPressed", function(io)
+    if io.systemHandled then return end
+
+	local mouseHit = engine.physics:rayTestScreen( engine.input.mousePosition )
+    if mouseHit then
+        local c = mouseHit.object
+        if c.size == vector3(4, 4, 4) then
+            if boomMode then
+                engine.networking:toServer("explodeBlock", c.position.x/4, c.position.y/4, c.position.z/4)
+            else
+                engine.networking:toServer("mineBlock", c.position.x/4, c.position.y/4, c.position.z/4)
+            end
+        end
+	end
+end)
+
+--workspace:childAdded(registerBlock)
+--for _,v in pairs(workspace.children) do registerBlock(v) end
