@@ -20,7 +20,7 @@ controller.setTarget = function(t)
 	controller.camera.position = target.position + (controller.cameraRotation*vector3(0,0,cameraDistance))
 	controller.camera:lookAt(target.position)
 
-	target:changed(function ()
+	target:onSync("changed", function ()
 		controller.camera.position = target.position + (controller.cameraRotation*vector3(0,0,cameraDistance))
 		controller.camera:lookAt(target.position)
 	end)
