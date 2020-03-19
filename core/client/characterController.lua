@@ -165,7 +165,9 @@ end
 engine.input:keyPressed(function (inputObj)
 	if controller.keyBinds[inputObj.key] then
 		forward = quaternion:setEuler(0, controller.camera.cameraRotation:getEuler().y + math.rad(180), 0)
-		predictServerMovementOnClient(controller.keyBinds[inputObj.key])
+		if CLIENT_PREDICTION then
+			predictServerMovementOnClient(controller.keyBinds[inputObj.key])
+		end
 		engine.networking:toServer("characterSetInputStarted", controller.keyBinds[inputObj.key], controller.camera.cameraRotation)
 	end
 end)

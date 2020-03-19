@@ -36,7 +36,7 @@ update = function(client, cameraDirection)
 end
 
 function onConnection(client)
-	wait(1)
+	wait(3)
 	print("spawning", client.id)
 	local char = engine.construct("block", workspace, {
 		name 		  	= client.id,
@@ -86,6 +86,7 @@ engine.networking.clients:clientConnected(onConnection)
 
 engine.networking.clients:clientDisconnected(function (client)	wait(1)
 	if controller.characters[client] then
+		print('despawn')
 		controller.characters[client].character:destroy()
 		controller.characters[client] = nil
 	end
