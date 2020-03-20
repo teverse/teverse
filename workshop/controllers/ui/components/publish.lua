@@ -5,9 +5,9 @@ local user = engine:isAuthenticated()
 
 local i, x, y = 0, 0, 0
 
---local data = http:get("https://teverse.com/api/users/"..(user[3].id).."/games") -- returns 404
+--local data = http:get("https://teverse.com/api/users/958102cf-d0f4-4f92-b1eb-75a2e2202f98/games")
 
-local data = http:get("https://teverse.com/api/users/958102cf-d0f4-4f92-b1eb-75a2e2202f98/games")
+local data = http:get("https://teverse.com/api/users/"..user[3].id.."/games") -- idk if this actually works lol
 data = engine.json:decode(data["body"])
 
 -- https://teverse.com/api/games POST
@@ -90,12 +90,12 @@ local newPlaceContainer = ui.create("guiFrame", container, {
 
 local newContainerButton = ui.button(newPlaceContainer, "+ CREATE", guiCoord(1, 0, 1, 0), guiCoord(0, 0, 0, 0), "primary")
 newContainerButton:mouseLeftPressed(function()
-    shared.workshop:publishDialogue()  
+    --shared.workshop:publishDialogue()
+    print("Published clicked")
 end)
+
 x = x + 0.23
 i = i + 1
-
-
 
 for _, place in pairs(data) do
 
