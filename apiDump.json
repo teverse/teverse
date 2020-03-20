@@ -1,11 +1,12 @@
 {
-    "_generatedVersion": "Mac-Test 0.16.0",
+    "_generatedVersion": "Mac-Test 0.18.3",
     "classes": [
         {
             "methods": {
                 "reloadShaders": {
                     "desc": "Reloads the shaders of the scene and recompiles if possible."
-                }
+                },
+                "preloadTexture": []
             },
             "derivedFrom": "baseClass",
             "events": {
@@ -1417,6 +1418,31 @@
             "derivedFrom": "guiBase",
             "events": [],
             "subclasses": [],
+            "class": "guiLine",
+            "properties": {
+                "thickness": {
+                    "defaultType": "number",
+                    "writable": "number"
+                },
+                "pointA": {
+                    "defaultType": "guiCoord",
+                    "writable": "guiCoord"
+                },
+                "className": {
+                    "defaultType": "string",
+                    "writable": false
+                },
+                "pointB": {
+                    "defaultType": "guiCoord",
+                    "writable": "guiCoord"
+                }
+            }
+        },
+        {
+            "methods": [],
+            "derivedFrom": "guiBase",
+            "events": [],
+            "subclasses": [],
             "class": "guiScrollView",
             "properties": {
                 "viewOffset": {
@@ -1697,6 +1723,7 @@
             "subclasses": [
                 "guiFrame",
                 "guiFrameMultiColour",
+                "guiLine",
                 "guiScrollView",
                 "interface",
                 "guiTextBase",
@@ -2123,9 +2150,14 @@
                     "defaultType": "compoundGroup",
                     "writable": false
                 },
-                "sounds": {
-                    "desc": "A singleton used for playing global sounds.",
-                    "defaultType": "sounds",
+                "line": {
+                    "desc": "The default constructor for line",
+                    "defaultType": "line",
+                    "writable": false
+                },
+                "graphics": {
+                    "desc": "A singleton for graphics",
+                    "defaultType": "graphics",
                     "writable": false
                 },
                 "guiButton": {
@@ -2138,14 +2170,14 @@
                     "defaultType": "block",
                     "writable": false
                 },
-                "graphics": {
-                    "desc": "A singleton for graphics",
-                    "defaultType": "graphics",
-                    "writable": false
-                },
                 "guiScrollView": {
                     "desc": "The default constructor for guiScrollView",
                     "defaultType": "guiScrollView",
+                    "writable": false
+                },
+                "workspace": {
+                    "desc": "The workspace singleton",
+                    "defaultType": "workspace",
                     "writable": false
                 },
                 "platform": {
@@ -2153,14 +2185,13 @@
                     "defaultType": "string",
                     "writable": false
                 },
-                "guiFrame": {
-                    "desc": "The default constructor for guiFrame",
-                    "defaultType": "guiFrame",
-                    "writable": false
-                },
                 "script": {
                     "desc": "The default constructor for script",
                     "defaultType": "script",
+                    "writable": false
+                },
+                "guiLine": {
+                    "defaultType": "guiLine",
                     "writable": false
                 },
                 "folder": {
@@ -2198,9 +2229,9 @@
                     "defaultType": "json",
                     "writable": false
                 },
-                "workspace": {
-                    "desc": "The workspace singleton",
-                    "defaultType": "workspace",
+                "tween": {
+                    "desc": "The tween singleton",
+                    "defaultType": "tween",
                     "writable": false
                 },
                 "className": {
@@ -2223,9 +2254,9 @@
                     "defaultType": "interface",
                     "writable": false
                 },
-                "tween": {
-                    "desc": "The tween singleton",
-                    "defaultType": "tween",
+                "guiFrame": {
+                    "desc": "The default constructor for guiFrame",
+                    "defaultType": "guiFrame",
                     "writable": false
                 },
                 "name": {
@@ -2233,15 +2264,15 @@
                     "defaultType": "string",
                     "writable": false
                 },
-                "line": {
-                    "desc": "The default constructor for line",
-                    "defaultType": "line",
+                "sounds": {
+                    "desc": "A singleton used for playing global sounds.",
+                    "defaultType": "sounds",
                     "writable": false
                 }
             }
         }
     ],
-    "_generatedAt": "20/01/2020 19:06:09",
+    "_generatedAt": "09/03/2020 22:01:21",
     "enums": {
         "serverLocation": {
             "london": 0
