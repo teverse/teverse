@@ -45,7 +45,6 @@ local function themeriseGui(gui,...)
         end
         if args then
             gui["borderRadius"] = args[1] or 0
-            --(function() if not args[1] then return 0 else return args[1] end)() -- borderRadius override
         end
     end
 end
