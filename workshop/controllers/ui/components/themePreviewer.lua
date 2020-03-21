@@ -5,6 +5,10 @@ ui = require("tevgit:workshop/controllers/ui/core/ui.lua")
 shared = require("tevgit:workshop/controllers/shared.lua")
 themer = require("tevgit:workshop/controllers/ui/core/themer.lua")
 colourPicker = require("tevgit:workshop/controllers/ui/components/colourPicker.lua")
+parseInputs = require("tevgit:workshop/controllers/ui/components/propertyEditor/parseInputs.lua")
+
+-- Overrides
+local radiusNum = 0 -- defaults to flat
 
 presets = {
    {"default", "Classic (default)"},
@@ -41,6 +45,7 @@ frame = ui.create("guiFrame", importWindow.content, {
    cropChildren = true,
    backgroundAlpha = 0
 })
+
 importInput = ui.create("guiTextBox", frame, {
 	size = guiCoord(1, 0, 1, 0),
 	position = guiCoord(0, 0, 0, 0),
@@ -93,6 +98,32 @@ exportInput = ui.create("guiTextBox", eframe, {
    zIndex = 100
 }, "secondary")
 
+ui.create("guiTextBox", container, {
+   position = guiCoord(0.5, 10, 0, 80),
+   size = guiCoord(0.5, -20, 0, 30),
+   text = "Border Radius"
+}, "backgroundText")
+
+local borderRadiusInput = ui.create("guiTextBox", container, {
+	size = guiCoord(0.153, 0, 0.038, 0),
+   position = guiCoord(0.79, 10, 0, 80),
+   backgroundAlpha = 0.25,
+   readOnly = false,
+   multiline = false,
+   name = "input",
+   text = tostring(radiusNum),
+   align = enums.align.middle
+}, "secondary")
+
+borderRadiusInput:textInput(function(numText)
+   num = tonumber(numText)
+   if #numText == 0 then radiusNum = 0 return end
+   if string.find(numText,"%a") or string.find(numText,"%s") then borderRadiusInput:setText("0")  radiusNum = 0  return end
+   if string.len(numText) > 5 then borderRadiusInput:setText(string.sub(numText,1,5)) radiusNum = 0 return end
+   if num < 0 then borderRadiusInput:setText("0") return end
+   radiusNum = tonumber(borderRadiusInput.text)
+end)
+
 THISISTHERESETBUTTON = ui.create("guiButton", container, {
    size = guiCoord(0.5, -20, 0, 30),
    position = guiCoord(0.5, 10, 0, 80),
@@ -101,6 +132,7 @@ THISISTHERESETBUTTON = ui.create("guiButton", container, {
    align = enums.align.middle,
    visible = false
 },"primaryVariant")
+
 THISISTHERESETBUTTON:mouseLeftReleased(function()
    exportInput.text = shared.workshop:getSettings("customTheme")
    exportWindow.visible = true
@@ -154,7 +186,7 @@ function generateEditor()
                align = enums.align.middle,
                backgroundColour = v,
                textColour = cv > 0.5 and colour:black() or colour:white(),
-               borderRadius = 4,
+               borderRadius = radiusNum, -- override this
                borderColour = colour:black(),
                borderAlpha = 0.3
             }, prop)
@@ -207,11 +239,11 @@ function makePresetMenu()
          if presets[i][1] == "custom" then
             shared.workshop:setSettings("themeType", presets[i][1])
             shared.workshop:setSettings("customTheme", engine.json:encodeWithTypes(theme))
-            themer.setTheme(theme)
+            themer.setTheme(theme,radiusNum)
             themeReload()
          else
             shared.workshop:setSettings("themeType", presets[i][1])
-            themer.setThemePreset(require("tevgit:workshop/controllers/ui/themes/" .. presets[i][1] .. ".lua"))
+            themer.setThemePreset(require("tevgit:workshop/controllers/ui/themes/" .. presets[i][1] .. ".lua"),radiusNum)
             themeReload()
          end
          makePresetMenu()
