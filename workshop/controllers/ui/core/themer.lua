@@ -22,9 +22,15 @@ else
     shared.workshop:setSettings("themeType", "default")
 end
 
-local function themeriseGui(gui)
+local function themeriseGui(gui,...)
     -- Grab the gui's style name set in the "registerGui" func
     local styleName = registeredGuis[gui]
+
+    local args = nil
+    if #{...} > 0 then
+        args = {...}
+        args = args[1]
+    end 
 
     -- get the style's properties from the current theme
     local style = currentTheme[styleName]
@@ -36,6 +42,9 @@ local function themeriseGui(gui)
     for property, value in pairs(style) do
         if gui[property] and gui[property] ~= value then
             gui[property] = value
+        end
+        if args then
+            gui["borderRadius"] = args[1] or 0
         end
     end
 end
@@ -60,17 +69,27 @@ return {
     
     themeriseGui = themeriseGui,
 
-    registerGui = function(gui, style)
+    registerGui = function(gui, style, ...)
         -- set the gui's style and themerise it.
         registeredGuis[gui] = style
-        themeriseGui(gui)
+        local args = {...} -- contains overrides
+        if args then
+            themeriseGui(gui,args)
+        elseif not args then
+            themeriseGui(gui)
+        end
     end,
     
-    setTheme = function(theme)
+    setTheme = function(theme,...)
         -- change the current theme AND re-themerise all guis
-    	currentTheme = theme
-    	for gui,v in pairs(registeredGuis) do
-    		themeriseGui(gui)
+        currentTheme = theme
+        args = {...} -- contains overrides
+        for gui,v in pairs(registeredGuis) do
+            if args then
+                themeriseGui(gui,args)
+            else
+                themeriseGui(gui)
+            end
         end
         
         -- Save the theme
@@ -90,11 +109,16 @@ return {
         shared.workshop:setSettings("customTheme", null)
     end,
 
-    setThemePreset = function(theme)
+    setThemePreset = function(theme,...)
         -- change the current theme AND re-themerise all guis
-    	currentTheme = theme
-    	for gui,v in pairs(registeredGuis) do
-    		themeriseGui(gui)
+        currentTheme = theme
+        local args = {...} -- contains overrides
+        for gui,v in pairs(registeredGuis) do
+            if args then
+                themeriseGui(gui,args)
+            elseif not args then
+                themeriseGui(gui)
+            end
         end
 
         shared.workshop:setSettings("customTheme", null)
