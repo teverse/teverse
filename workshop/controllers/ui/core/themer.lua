@@ -44,8 +44,8 @@ local function themeriseGui(gui,...)
             gui[property] = value
         end
         if args then
-            print("Idk if u work: ",args[1])
-            gui["borderRadius"] = args[1] -- borderRadius override
+            gui["borderRadius"] = args[1] or 0
+            --(function() if not args[1] then return 0 else return args[1] end)() -- borderRadius override
         end
     end
 end
