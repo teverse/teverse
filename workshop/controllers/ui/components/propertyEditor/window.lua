@@ -68,7 +68,7 @@ function controller.generateProperties()
                 local container = engine.construct("guiFrame",
                                                    controller.scrollView, {
                     name = "_" .. v.property,
-                    backgroundAlpha = 0,
+                    backgroundAlpha = 1,
                     size = guiCoord(1, -10, 0, 20),
                     position = guiCoord(0, 0, 0, y),
                     cropChildren = false
