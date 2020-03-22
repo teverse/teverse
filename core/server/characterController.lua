@@ -70,6 +70,7 @@ function onConnection(client)
 				v.y=0
 				v = v:normal()
 				--print(v)
+				print(char.position, char.linearVelocity)
 			--	char.rotation = quaternion:setLookRotation(v)
 			end
 		end
