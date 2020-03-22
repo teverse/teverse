@@ -10,11 +10,9 @@ Teverse is a platform that enables developers with a simple, unified interface t
 
 As a platform, we pride ourselves on giving developers more control without little to no strings attached. As such, we allow contribution to be made by our community in order better our own platform. 
 
-Please see the [Contributing Guide]() for more details.
+Please see the [Contributing Guide](/TEVERSE-CONTRIB.md) and [View Style Guide](/TEVERSE-STYLE.md) for more details.
 
 For those that have contributed, we thank you for your time and service to make this platform powerful.
-
-[View Style Guide](/TEVERSE-STYLE.md)
 
 # Copyright
 
