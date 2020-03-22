@@ -723,9 +723,9 @@ addDocs("engine", {
       line = property("The default constructor for line"), 
   },
   methods = {
-      openUrl = method("opens the default web browser", {['url'] = 'string'}, nil), 
-      construct = method("a generic constructor", {['parent'] = 'variant', ['properties'] = 'table', ['className'] = 'string'}, {'variant'}), 
-      isAuthenticated = method("undefined", nil, nil), 
+      openUrl = method("Opens the default web browser", {['url'] = 'string'}, nil), 
+      construct = method("A generic constructor", {['parent'] = 'variant', ['properties'] = 'table', ['className'] = 'string'}, {'variant'}), 
+      isAuthenticated = method("Returns the internal isAuthenticated cache", nil, {'Table'}), 
   },
   events = {
       stepped = event("undefined", {}), 
