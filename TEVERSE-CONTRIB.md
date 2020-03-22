@@ -1,6 +1,6 @@
 # Contributions
 
-Everyone is welcome to contribute to Teverse. For Teverse to truly be for developers. we strongly encourage developers to take part in its development. Whether you're here to suggest, find bugs or build the next component to workshop, those efforts mean a lot to us and the community that we foster. 
+Everyone is welcome to contribute to Teverse. For Teverse to truly be for developers, we strongly encourage developers to take part in its development. Whether you're here to suggest, find bugs or build the next component to workshop, those efforts mean a lot to us and the community that we foster. 
 
 # Issues
 
@@ -20,13 +20,13 @@ When reporting, please include the following format:
 
 * **Version of Teverse** - the version that the bug started to become noticeable 
 
-* **Operating System Name & Version** - i.e MacOS Cataline 10.15.1  
+* **Operating System Name & Version** - i.e. MacOS Catalina 10.15.1  
 
 * **Detailed Description** - a description of the bug in full detail 
 
 * **Issues caused by the the bug** - development setbacks, workflow disruption, etc 
 
-* **Steps that were tried to correct beforhand** - Steps you have taken in an effort to correct the issue.  
+* **Steps that were tried to correct beforehand** - Steps you have taken in an effort to correct the issue.  
 
 * **Steps to reproduce the bug** - Steps that can be used to reproduce the bug; clear & concise 
 
@@ -74,4 +74,4 @@ We'll let you know what needs to be changed and you can request a reviewer to re
 
 # Policies and Licensing
 
-Contributions to Teverse must follow our [licensing](https://github.com/teverse/teverse/blob/master/LICENSE) and [coding standards](https://github.com/teverse/teverse/blob/master/TEVERSE-STYLE.md). In accordance, all work that has been used from othr sources must include a credit line to their respective authors. If you pass copied code as your own with unethical intent, we'll deny your pull request and block your acces to the repository. We take this seriously.
+Contributions to Teverse must follow our [licensing](https://github.com/teverse/teverse/blob/master/LICENSE) and [coding standards](https://github.com/teverse/teverse/blob/master/TEVERSE-STYLE.md). In accordance, all work that has been used from other sources must include a credit line to their respective authors. If you pass copied code as your own with unethical intent, we'll deny your pull request and block your access to the repository. We take this seriously.
