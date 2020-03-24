@@ -29,8 +29,8 @@ return {
                     text = text,
                     fontSize = 16,
                     align = enums.align.middle,
-                    borderRadius = 3,
-                    borderAlpha = 0.25,
+                    borderRadius = 0,
+                    borderAlpha = 1,
                     zIndex = 5000,
                     handleEvents = false,
                     visible = false
@@ -58,7 +58,7 @@ return {
         local btn = create("guiFrame", parent, {
             size = size,
             position = position,
-            borderRadius = 3,
+            borderRadius = 0,
             hoverCursor = "fa:s-hand-pointer"
         }, theme)
 
@@ -97,7 +97,7 @@ return {
             name = "titleBar",
             position = guiCoord(0, -1, 0, -4),
             size = guiCoord(1, 2, 0, 25),
-            borderRadius = 4,
+            borderRadius = 0,
             hoverCursor = "fa:s-hand-pointer"
         }, themer.types.primary)
 
@@ -181,7 +181,7 @@ return {
             size = guiCoord(0.4, 0, 0.4, 0),
             position = guiCoord(0.3, 0, 0.3, 0),
             cropChildren = false,
-            borderRadius = 5,
+            borderRadius = 0,
             handleEvents = false
         }, themer.types.primary)
 

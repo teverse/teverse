@@ -79,6 +79,8 @@ function controller.generateProperties()
                     size = guiCoord(0.55, -15, 1, 0),
                     position = guiCoord(0, 0, 0, 0),
                     fontSize = 18,
+                    backgroundAlpha = 1,
+                    borderAlpha = 0,
                     text = v.property,
                     align = enums.align.topRight
                 }, "backgroundText")
