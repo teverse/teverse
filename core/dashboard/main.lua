@@ -1,2 +1,2 @@
-local ui = require("tevgit:core/dashboard/ui")
+local ui = require("tevgit:core/dashboard/ui.lua")
 ui.setup()
