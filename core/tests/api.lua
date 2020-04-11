@@ -11,8 +11,7 @@ return function()
     print("Safety Test (teverse.userToken)", teverse.userToken == nil and "PASS" or "FAIL")
     print("Safety Test (globaltest)", globaltest == nil and "PASS" or "FAIL")
 
-    print("Require Test #1", (require == nil) and "PASS" or "FAIL")
-    print("Require Test #2", (teverse.load ~= nil and teverse.load("ping") == "pong") and "PASS" or "FAIL")
+    print("Require Test (Has teverse overriden default require)", (require ~= nil and require("ping") == "pong") and "PASS" or "FAIL")
 
     local result = teverse.load("tevgit:core/tests/tevgit.lua")
     print("Require Test #3", result == "Hello World!" and "PASS" or "FAIL")
