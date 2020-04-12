@@ -1,8 +1,8 @@
 local function newFeedItem(pfp, name, date, body)
     local item = teverse.construct("guiFrame", {
         size = guiCoord(1, -20, 0, 48),
-        position = guiCoord(0, 10, 0, 26),
-        backgroundAlpha = 1
+        position = guiCoord(0, 10, 0, 40),
+        backgroundAlpha = 0
     })
 
     teverse.construct("guiImage", {
@@ -36,7 +36,8 @@ local function newFeedItem(pfp, name, date, body)
         text = date,
         textAlign = enums.align.middleRight,
         textSize = 14,
-        textAlpha = 0.4
+        textAlpha = 0.4,
+        textWrap = true
     })
     
     teverse.construct("guiTextBox", {
@@ -99,13 +100,13 @@ return {
                 position = guiCoord(0, 10, 0, 0)
             })
 
-        teverse.construct("guiTextBox", {
+        local tevCoins = teverse.construct("guiTextBox", {
             parent = tevs,
-            size = guiCoord(0.5, -20, 0, 40),
+            size = guiCoord(0.5, 0, 0, 40),
             position = guiCoord(0.5, 0, 0.5, -15),
             backgroundAlpha = 0,
-            text = "975",
-            textSize = 40,
+            text = "",
+            textSize = 34,
             textAlign = "middleLeft",
             textColour = colour(1, 1, 1),
             textFont = "tevurl:fonts/openSansBold.ttf"
@@ -168,17 +169,25 @@ return {
             textFont = "tevurl:fonts/openSansLight.ttf"
         })
 
-        teverse.construct("guiTextBox", {
+        local membershipText = teverse.construct("guiTextBox", {
             parent = membership,
-            size = guiCoord(0.5, -20, 0, 40),
+            size = guiCoord(0.5, 0, 0, 40),
             position = guiCoord(0.5, 0, 0.5, -15),
             backgroundAlpha = 0,
-            text = "Free",
-            textSize = 40,
+            textSize = 34,
             textAlign = "middleLeft",
             textColour = colour(1, 1, 1),
             textFont = "tevurl:fonts/openSansBold.ttf"
         })
+
+        local membertype = teverse.networking.localClient.membership
+        if membership == "plus" then
+            membershipText.text = "Plus"
+        elseif membership == "pro" then
+            membershipText.text = "Pro"
+        else
+            membershipText.text = "Free"
+        end
 
         teverse.construct("guiIcon", {
             parent = membership,
@@ -231,7 +240,7 @@ return {
             position = guiCoord(0.5, 0, 0.5, -15),
             backgroundAlpha = 0,
             text = _TEV_BUILD,
-            textSize = 40,
+            textSize = 34,
             textAlign = "middleLeft",
             textColour = colour(1, 1, 1),
             textFont = "tevurl:fonts/openSansBold.ttf"
@@ -247,6 +256,14 @@ return {
             iconId = "code-branch",
             iconAlpha = 0.9
         })
+
+        teverse.http:get("https://teverse.com/api/users/me/tevs", {
+            ["Authorization"] = "BEARER " .. teverse.userToken
+        }, function(code, body)
+            if code == 200 then
+                tevCoins.text = body
+            end
+        end)
 
         local feedItems = teverse.construct("guiFrame", {
             parent = feed,
@@ -269,24 +286,33 @@ return {
             })
 
         teverse.construct("guiTextBox", {
-            size = guiCoord(1, -20, 0, 26),
-            position = guiCoord(0, 10, 0, 0),
-            backgroundAlpha = 0,
             parent = feedItems,
-            text = "Feed",
-            textSize = 26,
-            textFont = "tevurl:fonts/openSansBold.ttf"
+            size = guiCoord(1, -20, 0, 30),
+            position = guiCoord(0, 10, 0, 10),
+            strokeAlpha = 0.15,
+            strokeRadius = 3,
+            textEditable = true,
+            textAlign = "topLeft"
         })
 
-        local function pushItem(item)
-            local y = item.absoluteSize.y
-            for i,v in pairs(feedItems.children) do
-                v.position = guiCoord(0, 10, 0, y)
-                y = y + v.absoluteSize.y + 10
-            end
-            item.parent = feedItems
-        end
+        teverse.http:get("https://teverse.com/api/feed", {
+            ["Authorization"] = "BEARER " .. teverse.userToken
+        }, function(code, body)
+            if code == 200 then
+                local json = teverse.json:decode(body)
+                local y = 50
+                for _,v in pairs(json) do
+                    local date = os.date("%d/%m/%Y %H:%M", os.parseISO8601(v.postedAt))
+                    local item = newFeedItem("tevurl:asset/user/" .. v.postedBy.id, v.postedBy.username, date, v.message)
+                    item.parent = feedItems
+                    local dy = item:child("body").textDimensions.y
+                    item.size = guiCoord(1, -20, 0, dy + 28)
+                    item.position = guiCoord(0, 10, 0, y)
+                    y = y + dy + 28
+                end
 
-        pushItem(newFeedItem("tevurl:asset/user/" .. teverse.networking.localClient.id, teverse.networking.localClient.name, "Now", "test"))
+                feed.canvasSize = guiCoord(1, 0, 0, feedItems.absolutePosition.y + y + 100)
+            end
+        end)
     end
 }

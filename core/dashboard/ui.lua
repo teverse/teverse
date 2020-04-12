@@ -12,7 +12,7 @@ controller.setup = function()
         parent = navBar,
         backgroundAlpha = 0
     })
-    
+
     teverse.bp
         .gridConstraint(navContainer, {
             cellSize = guiCoord(0, 40, 0, 40),
@@ -135,9 +135,9 @@ controller.setup = function()
 
         table.insert(pages, {container, icon})
     end
-    setupPage(require("tevgit:core/dashboard/pages/home"))
-    setupPage(require("tevgit:core/dashboard/pages/apps"))
-    setupPage(require("tevgit:core/dashboard/pages/develop"))
+    setupPage(require("tevgit:core/dashboard/pages/home.lua"))
+    setupPage(require("tevgit:core/dashboard/pages/apps.lua"))
+    setupPage(require("tevgit:core/dashboard/pages/develop.lua"))
 end
 
 return controller
