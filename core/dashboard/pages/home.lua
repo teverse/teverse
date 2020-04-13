@@ -2,7 +2,8 @@ local function newFeedItem(pfp, name, date, body)
     local item = teverse.construct("guiFrame", {
         size = guiCoord(1, -20, 0, 48),
         position = guiCoord(0, 10, 0, 40),
-        backgroundAlpha = 0
+        backgroundAlpha = 0,
+        name = "feedItem"
     })
 
     teverse.construct("guiImage", {
@@ -285,7 +286,7 @@ return {
                 position = guiCoord(0, 10, 0, 80)
             })
 
-        teverse.construct("guiTextBox", {
+        local input = teverse.construct("guiTextBox", {
             parent = feedItems,
             size = guiCoord(1, -20, 0, 30),
             position = guiCoord(0, 10, 0, 10),
@@ -295,23 +296,68 @@ return {
             textAlign = "topLeft"
         })
 
-        teverse.http:get("https://teverse.com/api/feed", {
-            ["Authorization"] = "BEARER " .. teverse.userToken
-        }, function(code, body)
-            if code == 200 then
-                local json = teverse.json:decode(body)
-                local y = 50
-                for _,v in pairs(json) do
-                    local date = os.date("%d/%m/%Y %H:%M", os.parseISO8601(v.postedAt))
-                    local item = newFeedItem("tevurl:asset/user/" .. v.postedBy.id, v.postedBy.username, date, v.message)
-                    item.parent = feedItems
-                    local dy = item:child("body").textDimensions.y
-                    item.size = guiCoord(1, -20, 0, dy + 28)
-                    item.position = guiCoord(0, 10, 0, y)
-                    y = y + dy + 28
-                end
+        local newestFeed = ""
+        local lastRefresh = 0 
 
-                feed.canvasSize = guiCoord(1, 0, 0, feedItems.absolutePosition.y + y + 100)
+        local function refresh()
+            lastRefresh = os.clock()
+            teverse.http:get("https://teverse.com/api/feed", {
+                ["Authorization"] = "BEARER " .. teverse.userToken
+            }, function(code, body)
+                if code == 200 then
+                    lastRefresh = os.clock()
+                    local json = teverse.json:decode(body)
+                    if json[1].id == newestFeed then
+                        -- no change from last refresh
+                    else
+                        -- may require refactoring
+                        for _,v in pairs(feedItems.children) do
+                            if v.name == "feedItem" then
+                                v:destroy()
+                            end
+                        end
+                    end
+                    local y = 50
+                    for _,v in pairs(json) do
+                        local date = os.date("%d/%m/%Y %H:%M", os.parseISO8601(v.postedAt))
+                        local item = newFeedItem("tevurl:asset/user/" .. v.postedBy.id, v.postedBy.username, date, v.message)
+                        item.parent = feedItems
+                        local dy = item:child("body").textDimensions.y
+                        item.size = guiCoord(1, -20, 0, dy + 28)
+                        item.position = guiCoord(0, 10, 0, y)
+                        y = y + dy + 28
+                    end
+
+                    feed.canvasSize = guiCoord(1, 0, 0, feedItems.absolutePosition.y + y + 100)
+                end
+            end)
+        end
+
+        local submitting = false
+        input:on("keyUp", function(keycode)
+            if keycode == "KEY_RETURN" and not submitting then
+                submitting = true
+                input.textEditable = false
+                input.textAlpha = 0.5
+                local payload = teverse.json:encode({ message = input.text }) 
+                teverse.http:post("https://teverse.com/api/feed", payload, {
+                    ["Authorization"] = "BEARER " .. teverse.userToken,
+                    ["Content-Type"] = "application/json"
+                }, function(code, body)
+                    refresh()
+                    input.text = ""
+                    input.textEditable = true
+                    input.textAlpha = 1.0
+                end)
+            end
+        end)
+
+        refresh()
+        spawn(function()
+            while sleep(2.5) do
+                if page.Visible and os.clock() - lastRefresh > 2 then
+                    refresh()
+                end
             end
         end)
     end
