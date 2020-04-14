@@ -3,6 +3,8 @@
 
 This repo contains open source components produced for Teverse. 
 
+Contains the redesigned components of Workshop (``./workshop``). 
+
 
 # Contributing to Teverse
 
