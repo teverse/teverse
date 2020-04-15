@@ -61,6 +61,8 @@ return {
     iconId = "sliders-h",
     iconType = "faSolid",
     setup = function(page)
+        page.backgroundAlpha = 1.0
+
         local feed = teverse.construct("guiScrollView", {
             parent = page,
             size = guiCoord(1, 0, 1, 50),
@@ -69,7 +71,7 @@ return {
             strokeRadius = 3
         })
 
-        teverse.bp
+        teverse.guiHelper
             .bind(feed, "xs", {
                 size = guiCoord(1, 0, 1, 50),
                 position = guiCoord(0, 0, 0, -50)
@@ -87,7 +89,7 @@ return {
             strokeRadius = 3
         })
 
-        teverse.bp
+        teverse.guiHelper
             .bind(tevs, "xs", {
                 size = guiCoord(1, -20, 0, 70),
                 position = guiCoord(0, 10, 0, 50)
@@ -144,7 +146,7 @@ return {
             strokeRadius = 3
         })
 
-        teverse.bp
+        teverse.guiHelper
             .bind(membership, "xs", {
                 size = guiCoord(1, -20, 0, 70),
                 position = guiCoord(0, 10, 0, 80 + 50)
@@ -209,7 +211,7 @@ return {
             strokeRadius = 3
         })
 
-        teverse.bp
+        teverse.guiHelper
             .bind(version, "xs", {
                 size = guiCoord(1, -20, 0, 70),
                 position = guiCoord(0, 10, 0, 160 + 50)
@@ -272,7 +274,7 @@ return {
             clip = true
         })
 
-        teverse.bp
+        teverse.guiHelper
             .bind(feedItems, "xs", {
                 size = guiCoord(1, -20, 1, -(240 + 50)),
                 position = guiCoord(0, 10, 0, 240 + 50)
@@ -309,6 +311,7 @@ return {
                     local json = teverse.json:decode(body)
                     if json[1].id == newestFeed then
                         -- no change from last refresh
+                        return nil
                     else
                         -- may require refactoring
                         for _,v in pairs(feedItems.children) do
@@ -317,6 +320,7 @@ return {
                             end
                         end
                     end
+                    newestFeed = json[1].id
                     local y = 50
                     for _,v in pairs(json) do
                         local date = os.date("%d/%m/%Y %H:%M", os.parseISO8601(v.postedAt))

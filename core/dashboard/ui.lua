@@ -13,7 +13,7 @@ controller.setup = function()
         backgroundAlpha = 0
     })
 
-    teverse.bp
+    teverse.guiHelper
         .gridConstraint(navContainer, {
             cellSize = guiCoord(0, 40, 0, 40),
             cellMargin = guiCoord(0, 25, 0, 25)
@@ -68,7 +68,7 @@ controller.setup = function()
         backgroundColour = colour.rgb(242, 244, 245)
     })
 
-    teverse.bp
+    teverse.guiHelper
         .bind(body, "xs", {
             size = guiCoord(1, 90, 1, -5),
             position = guiCoord(0, -45, 0, -60)
@@ -90,7 +90,7 @@ controller.setup = function()
             visible = false
         })
 
-        teverse.bp
+        teverse.guiHelper
             .bind(container, "xs", {
                 size = guiCoord(1, -120, 1, -80),
                 position = guiCoord(0, 60, 0, 80)
