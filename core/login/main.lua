@@ -1,5 +1,5 @@
 local main = teverse.construct("guiFrame", {
-    parent = teverse.coreInterface,
+    parent = teverse.interface,
     backgroundColour = colour.rgb(52, 58, 64),
     size = guiCoord(1, 0, 1, 100),
     position = guiCoord(0, 0, 0, -50)
