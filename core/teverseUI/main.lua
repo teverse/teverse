@@ -37,33 +37,45 @@ ico:on("mouseLeftDown", function()
     end
 end)
 
-if teverse.dev.localTevGit then
-    ico:on("mouseLeftUp", function()
-        container.backgroundAlpha = 1.0
+--if teverse.dev.localTevGit then
+
+homebtn = teverse.construct("guiTextBox", {
+    parent = container,
+    size = guiCoord(0, 40, 0, 14),
+    position = guiCoord(0, 6, 0.5, -7),
+    text = "HOME",
+    textAlign = "middle",
+    textFont = "tevurl:fonts/openSansLight.ttf",
+    textColour = colour(0, 0, 0),
+    textSize = 14,
+    strokeRadius = 7,
+    strokeAlpha = 0.5,
+    backgroundAlpha = 0,
+    visible = false
+})
+
+homebtn:on("mouseLeftUp", function()
+    teverse.apps:loadDashboard()
+end)
+
+ico:on("mouseLeftUp", function()
+    container.backgroundAlpha = 1.0
+    homebtn.visible = true
+
+    if teverse.dev.state == "dashboard" then
+        if teverse.dev.localTevGit then
+            homebtn.text = "RESET"
+            homebtn.visible = true
+        else
+            homebtn.visible = false
+        end
+    else
+        homebtn.text = "HOME"
         homebtn.visible = true
+    end
 
-        repeat sleep(0.1) until teverse.input.mousePosition.y < container.absolutePosition.y - 25
+    repeat sleep(0.1) until teverse.input.mousePosition.y < container.absolutePosition.y - 25
 
-        container.backgroundAlpha = 0.0
-        homebtn.visible = false
-    end)
-
-    homebtn = teverse.construct("guiTextBox", {
-        parent = container,
-        size = guiCoord(0, 40, 0, 14),
-        position = guiCoord(0, 6, 0.5, -7),
-        text = "HOME",
-        textAlign = "middle",
-        textFont = "tevurl:fonts/openSansLight.ttf",
-        textColour = colour(0, 0, 0),
-        textSize = 14,
-        strokeRadius = 7,
-        strokeAlpha = 0.5,
-        backgroundAlpha = 0,
-        visible = false
-    })
-
-    homebtn:on("mouseLeftUp", function()
-        teverse.apps:loadDashboard()
-    end)
-end
+    container.backgroundAlpha = 0.0
+    homebtn.visible = false
+end)
