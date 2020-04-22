@@ -6,12 +6,12 @@ local main = teverse.construct("guiFrame", {
 })
 
 teverse.construct("guiImage", {
-    position = guiCoord(0.5, -750, 0.5, -750),
-    size = guiCoord(0, 1500, 0, 1500),
+    position = guiCoord(0.5, -1500, 0.5, -750),
+    size = guiCoord(0, 3000, 0, 1500),
     parent = main,
     backgroundAlpha = 0,
     image = "tevurl:img/tTiled.png",
-    imageBottomRight = vector2(90, 90),
+    imageBottomRight = vector2(180, 90),
     imageColour = colour:rgb(28, 33, 38),
     imageAlpha = 0.25,
     zIndex = -1
