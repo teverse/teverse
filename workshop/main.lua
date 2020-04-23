@@ -19,13 +19,15 @@ local function init(dev)
     globals.user = teverse:isAuthenticated() -- Set & Streamline user instance as a global
     globals.developerMode = (not globals.dev.hasLocalTevGit) or (globals.dev:hasLocalTevGit()) -- Set developmode boolean as a global
 
-    local loadingScreen = teverse.construct("guiFrame", dev.interface, {
+    local loadingScreen = teverse.construct("guiFrame", {
+        parent = dev.interface,
         size = guiCoord(1, 0, 1, 0),
         backgroundColour = globals.defaultColours.background,
         zIndex = 1000
     })
 
-    teverse.construct("guiTextBox", loadingScreen, {
+    teverse.construct("guiTextBox", {
+        parent = loadingScreen,
         size = guiCoord(0.5, 0, 0.5, 0),
         position = guiCoord(0.25, 0, 0.25, 0),
         align = enums.align.middle,
@@ -55,19 +57,20 @@ return function(dev)
     ]]--
     
     local success, message = pcall(init, dev)
-    local teverse = dev -- Laziness
 
     -- If initialize phase fails, prompt to the error screen
     if (not success) then
         teverse.interface:destroyAllChildren()
 
-        local errorScreen = teverse.construct("guiFrame", teverse.interface, {
+        local errorScreen = teverse.construct("guiFrame", {
+            parent = dev.interface,
             size = guiCoord(1, 0, 1, 0),
             backgroundColour = globals.defaultColours.background,
             zIndex = 10000
         })
 
-        teverse.construct("guiTextBox", errorScreen, {
+        teverse.construct("guiTextBox", {
+            parent = errorScreen,
             size = guiCoord(0.8, 0, 0.8, 0),
             position = guiCoord(0.1, 0, 0.1, 0),
             backgroundColour = globals.defaultColours.background,

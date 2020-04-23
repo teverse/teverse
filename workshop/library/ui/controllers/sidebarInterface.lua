@@ -22,25 +22,29 @@ return {
         self.id = idValue -- Unique Indentifier
         self.pages = {} -- Where we store our pages for sidebar
 
-        teverse.construct("guiFrame", teverse.interface, {
+        teverse.construct("guiFrame", {
+            parent = teverse.interface,
             size = guiCoord(0.04, 0, 0.015, 0),
             position = guiCoord(0, 0, 0.05, 0),
             backgroundColour = globals.defaultColours.secondary,
         })
 
-        teverse.construct("guiFrame", teverse.interface, {
+        teverse.construct("guiFrame", {
+            parent = teverse.interface,
             size = guiCoord(0.04, 0, 0.015, 0),
             position = guiCoord(0, 0, 0.24, 0),
             backgroundColour = globals.defaultColours.secondary,
         })
         
-        local toolsContainer = teverse.construct("guiFrame", teverse.interface, {
+        local toolsContainer = teverse.construct("guiFrame", {
+            parent = teverse.interface,
             size = guiCoord(0.04, 0, 0.18, 0),
             position = guiCoord(0, 0, 0.065, 0),
             backgroundColour = globals.defaultColours.white,
         })
 
-        local selectTool = teverse.construct("guiImage", toolsContainer, {
+        local selectTool = teverse.construct("guiImage", {
+            parent = toolsContainer,
             size = guiCoord(0, 20, 0, 20),
             position = guiCoord(0.25, 0, 0.1, 0),
             texture = "fa:s-location-arrow",
@@ -48,7 +52,8 @@ return {
             backgroundColour = globals.defaultColours.white,
         })
 
-        local moveTool = teverse.construct("guiImage", toolsContainer, {
+        local moveTool = teverse.construct("guiImage", {
+            parent = toolsContainer,
             size = guiCoord(0, 20, 0, 20),
             position = guiCoord(0.25, 0, 0.32, 0),
             texture = "fa:s-arrows-alt-h",
@@ -56,7 +61,8 @@ return {
             backgroundColour = globals.defaultColours.white,
         })
 
-        local rotateTool = teverse.construct("guiImage", toolsContainer, {
+        local rotateTool = teverse.construct("guiImage", {
+            parent = toolsContainer,
             size = guiCoord(0, 20, 0, 20),
             position = guiCoord(0.25, 0, 0.54, 0),
             texture = "fa:s-sync",
@@ -64,7 +70,8 @@ return {
             backgroundColour = globals.defaultColours.white,
         })
 
-        local sizeTool = teverse.construct("guiImage", toolsContainer, {
+        local sizeTool = teverse.construct("guiImage", {
+            parent = toolsContainer,
             size = guiCoord(0, 20, 0, 20),
             position = guiCoord(0.25, 0, 0.76, 0),
             texture = "fa:s-expand",
@@ -72,7 +79,8 @@ return {
             backgroundColour = globals.defaultColours.white,
         })
 
-        local moreToolsContainer = teverse.construct("guiFrame", globals.workshop.interface, {
+        local moreToolsContainer = teverse.construct("guiFrame", {
+            parent = teverse.interface,
             name = "moreToolsContainer",
             size = guiCoord(0.04, 0, 1, 0),
             position = guiCoord(0, 0, 0.255, 0),
@@ -98,7 +106,8 @@ return {
                 zIndexRange = 101
             end
 
-            local iconContainer = teverse.construct("guiFrame", moreToolsContainer, {
+            local iconContainer = teverse.construct("guiFrame", {
+                parent = moreToolsContainer,
                 name = pageName,
                 size = guiCoord(1, 0, 1, 0),
                 position = guiCoord(0, 0, 0, 0),
@@ -129,7 +138,8 @@ return {
             local args = {...} -- Holds overrides
             local xPositionOverride = args[1] or 0 -- Override if specified, else 0
             local positionToolTipOverride = args[2] or guiCoord(0, 0, 0, 0) -- Override if specified, else guiCoord(0, 0, 0, 0)
-            local iconImage = teverse.construct("guiImage", page, {
+            local iconImage = teverse.construct("guiImage", {
+                parent = page
                 name = name,
                 size = guiCoord(0, 20, 0, 20),
                 position = guiCoord((0.25+xPositionOverride), 0, 0.02+(#page.children*0.04), 0), -- Shorthand positioning w/o a for-loop
