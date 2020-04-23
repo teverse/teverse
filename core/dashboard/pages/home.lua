@@ -1,3 +1,77 @@
+-- Copyright 2020- Teverse.com
+-- Used to display the home screen of the teverse application
+
+local globals = require("tevgit:workshop/library/globals.lua") -- globals; variables or instances that can be shared between files
+
+local function createFlair(parent)
+    local username = parent:child("username").text
+    teverse.http:get("https://teverse.com/api/users/fromUsername/"..username, {
+        ["Authorization"] = "BEARER " .. teverse.userToken
+    }, function(code, body)
+        if code == 200 then
+            local json = teverse.json:decode(body)
+            local flairCount = 0
+            -- Beta Insignia
+            if json["beta"] == true then
+                teverse.construct("guiIcon", {
+                    parent = parent:child("username"),
+                    size = guiCoord(0, 10, 0, 10),
+                    position = guiCoord(0, parent:child("username").textDimensions.x+((flairCount*10)+2), 0, 6),
+                    iconType = "faSolid",
+                    iconId = "flask",
+                    iconColour = colour.rgb(220, 53, 69),
+                })
+                flairCount = flairCount + 1
+            end
+
+            -- Plus Membership Insignia
+            if json["membership"] == "plus" then
+                teverse.construct("guiIcon", {
+                    parent = parent:child("username"),
+                    size = guiCoord(0, 10, 0, 10),
+                    position = guiCoord(0, parent:child("username").textDimensions.x+((flairCount*10)+2), 0, 6),
+                    iconType = "faSolid",
+                    iconId = "thermometer-empty",
+                    iconColour = globals.defaultColours.primary
+                })
+                flairCount = flairCount + 1
+            end
+
+            -- Pro Membership Insignia
+            if json["membership"] == "pro" then
+                teverse.construct("guiIcon", {
+                    parent = parent:child("username"),
+                    size = guiCoord(0, 10, 0, 10),
+                    position = guiCoord(0, parent:child("username").textDimensions.x+((flairCount*10)+2), 0, 6),
+                    iconType = "faSolid",
+                    iconId = "thermometer-full",
+                    iconColour = globals.defaultColours.purple
+                })
+                parent:child("username").textColour = globals.defaultColours.purple
+                parent:child("body").textColour = globals.defaultColours.purple
+                flairCount = flairCount + 1
+            end
+
+            -- Mod/Staff Insignia
+            --[[
+            if then
+                teverse.construct("guiIcon", {
+                    parent = parent:child("username"),
+                    size = guiCoord(0, 10, 0, 10),
+                    position = guiCoord(0, parent:child("username").textDimensions.x+((flairCount*10)+2), 0, 6),
+                    iconType = "faSolid",
+                    iconId = "shield-alt",
+                    iconColour = globals.defaultColours.blue
+                })
+                parent:child("username").textColour = globals.defaultColours.blue
+                parent:child("body").textColour = globals.defaultColours.blue
+                flairCount = flairCount + 1
+            end
+            ]]--
+        end
+    end)
+end
+
 local function newFeedItem(pfp, name, date, body)
     local item = teverse.construct("guiFrame", {
         size = guiCoord(1, -20, 0, 48),
@@ -16,7 +90,7 @@ local function newFeedItem(pfp, name, date, body)
         strokeAlpha = 0.04
     })
 
-    local name = teverse.construct("guiTextBox", {
+    local username = teverse.construct("guiTextBox", {
         name = "username",
         size = guiCoord(1, -40, 0, 20),
         position = guiCoord(0, 40, 0, 3),
@@ -50,8 +124,10 @@ local function newFeedItem(pfp, name, date, body)
         text = body,
         textWrap = true,
         textAlign = enums.align.topLeft,
-        textSize = 16
+        textSize = 16,
     })
+
+    createFlair(item)
 
     return item
 end
