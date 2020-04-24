@@ -356,6 +356,7 @@ return {
                     input.text = ""
                     input.textEditable = true
                     input.textAlpha = 1.0
+                    submitting = false
                 end)
             end
         end)
