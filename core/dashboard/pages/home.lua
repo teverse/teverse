@@ -61,7 +61,6 @@ return {
     iconId = "sliders-h",
     iconType = "faSolid",
     setup = function(page)
-        page.backgroundAlpha = 1.0
 
         local feed = teverse.construct("guiScrollView", {
             parent = page,
@@ -270,7 +269,7 @@ return {
 
         local feedItems = teverse.construct("guiFrame", {
             parent = feed,
-            backgroundAlpha = 1,
+            backgroundAlpha = 0,
             clip = true
         })
 
