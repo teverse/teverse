@@ -309,30 +309,34 @@ return {
                 if code == 200 then
                     lastRefresh = os.clock()
                     local json = teverse.json:decode(body)
-                    if json[1].id == newestFeed then
-                        -- no change from last refresh
-                        return nil
-                    else
-                        -- may require refactoring
-                        for _,v in pairs(feedItems.children) do
-                            if v.name == "feedItem" then
-                                v:destroy()
+                    if #json > 0 then
+                        if json[1].id == newestFeed then
+                            -- no change from last refresh
+                            return nil
+                        else
+                            -- may require refactoring
+                            for _,v in pairs(feedItems.children) do
+                                if v.name == "feedItem" then
+                                    v:destroy()
+                                end
                             end
                         end
-                    end
-                    newestFeed = json[1].id
-                    local y = 50
-                    for _,v in pairs(json) do
-                        local date = os.date("%d/%m/%Y %H:%M", os.parseISO8601(v.postedAt))
-                        local item = newFeedItem("tevurl:asset/user/" .. v.postedBy.id, v.postedBy.username, date, v.message)
-                        item.parent = feedItems
-                        local dy = item:child("body").textDimensions.y
-                        item.size = guiCoord(1, -20, 0, dy + 28)
-                        item.position = guiCoord(0, 10, 0, y)
-                        y = y + dy + 28
-                    end
+                        newestFeed = json[1].id
+                        local y = 50
+                        for _,v in pairs(json) do
+                            local date = os.date("%d/%m/%Y %H:%M", os.parseISO8601(v.postedAt))
+                            local item = newFeedItem("tevurl:asset/user/" .. v.postedBy.id, v.postedBy.username, date, v.message)
+                            item.parent = feedItems
+                            local dy = item:child("body").textDimensions.y
+                            item.size = guiCoord(1, -20, 0, dy + 28)
+                            item.position = guiCoord(0, 10, 0, y)
+                            y = y + dy + 28
+                        end
 
-                    feed.canvasSize = guiCoord(1, 0, 0, feedItems.absolutePosition.y + y + 100)
+                        feed.canvasSize = guiCoord(1, 0, 0, feedItems.absolutePosition.y + y + 100)
+                    else
+                        feed.canvasSize = guiCoord(1, 0, 0, 0)
+                    end
                 end
             end)
         end
