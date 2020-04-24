@@ -43,8 +43,8 @@ local login = teverse.construct("guiTextBox", {
     visible = false
 })
 
-login.size = guiCoord(0, login.textDimensions.x + 30, 0, 26)
-login.position = guiCoord(0.5, -(login.textDimensions.x + 30)/2, 0.5, 45)
+login.size = guiCoord(0, 100, 0, 26)
+login.position = guiCoord(0.5, -50, 0.5, 45)
 
 local db = false
 local listenerid = login:on("mouseLeftDown", function()

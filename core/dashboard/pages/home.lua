@@ -73,11 +73,13 @@ return {
         teverse.guiHelper
             .bind(feed, "xs", {
                 size = guiCoord(1, 0, 1, 50),
-                position = guiCoord(0, 0, 0, -50)
+                position = guiCoord(0, 0, 0, -50),
+                scrollbarAlpha = 0.0
             })
             .bind(feed, "lg", {
                 size = guiCoord(1, 0, 1, 0),
-                position = guiCoord(0, 0, 0, 0)
+                position = guiCoord(0, 0, 0, 0),
+                scrollbarAlpha = 1.0
             })
 
         local tevs = teverse.construct("guiFrame", {
