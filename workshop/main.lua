@@ -3,7 +3,7 @@
 
 local globals = require("tevgit:workshop/library/globals.lua") -- globals; variables or instances that can be shared between files
 
-local function init(workshop)
+local function init(dev)
     --[[
         @Description
             The initializer method that comes first when a new scene is open. 
@@ -15,17 +15,19 @@ local function init(workshop)
             void, null, nil
     ]]--
 
-    globals.workshop = workshop -- Set workshop instance as a global
-    globals.user = engine:isAuthenticated() -- Set & Streamline user instance as a global
-    globals.developerMode = (not globals.workshop.hasLocalTevGit) or (globals.workshop:hasLocalTevGit()) -- Set developmode boolean as a global
+    globals.dev = dev -- Set teverse.dev (previously workshop) instance as a global
+    globals.user = teverse:isAuthenticated() -- Set & Streamline user instance as a global
+    globals.developerMode = (not globals.dev.hasLocalTevGit) or (globals.dev:hasLocalTevGit()) -- Set developmode boolean as a global
 
-    local loadingScreen = engine.construct("guiFrame", workshop.interface, {
+    local loadingScreen = teverse.construct("guiFrame", {
+        parent = dev.interface,
         size = guiCoord(1, 0, 1, 0),
         backgroundColour = globals.defaultColours.background,
         zIndex = 1000
     })
 
-    engine.construct("guiTextBox", loadingScreen, {
+    teverse.construct("guiTextBox", {
+        parent = loadingScreen,
         size = guiCoord(0.5, 0, 0.5, 0),
         position = guiCoord(0.25, 0, 0.25, 0),
         align = enums.align.middle,
@@ -42,7 +44,7 @@ local function init(workshop)
     end
 end
 
-return function(workshop)
+return function(dev)
     --[[
         @Description
             The main method that comes when a new scene is opened. 
@@ -54,19 +56,21 @@ return function(workshop)
             function, method
     ]]--
     
-    local success, message = pcall(init, workshop)
+    local success, message = pcall(init, dev)
 
     -- If initialize phase fails, prompt to the error screen
     if (not success) then
-        workshop.interface:destroyAllChildren()
+        teverse.interface:destroyAllChildren()
 
-        local errorScreen = engine.construct("guiFrame", workshop.interface, {
+        local errorScreen = teverse.construct("guiFrame", {
+            parent = dev.interface,
             size = guiCoord(1, 0, 1, 0),
             backgroundColour = globals.defaultColours.background,
             zIndex = 10000
         })
 
-        engine.construct("guiTextBox", errorScreen, {
+        teverse.construct("guiTextBox", {
+            parent = errorScreen,
             size = guiCoord(0.8, 0, 0.8, 0),
             position = guiCoord(0.1, 0, 0.1, 0),
             backgroundColour = globals.defaultColours.background,
@@ -77,17 +81,17 @@ return function(workshop)
         })
 
         -- Bind the "return" key on the keyboard as temporary fast-reload keybind
-        engine.input:on("keyPressed", function(keyboard)
+        teverse.input:on("keyPressed", function(keyboard)
             if keyboard.key == enums.key["return"] then
-                workshop:reloadCreate()
+                teverse:reloadCreate()
             end
         end)
     end
 
     -- Bind the "f12" key on the keyboard as fast-reload keybind if initialize phase is successful
-    engine.input:on("keyPressed", function(keyboard)
+    teverse.input:on("keyPressed", function(keyboard)
         if keyboard.key == enums.key["f12"] then
-            workshop:reloadCreate()
+            teverse:reloadCreate()
         end
     end)
 end

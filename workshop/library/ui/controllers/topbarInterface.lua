@@ -26,13 +26,15 @@ return {
         self.titleIcon = titleIconValue
         self.keys = {} -- Where item keys are stored
 
-        local container = engine.construct("guiFrame", globals.workshop.interface, {
+        local container = teverse.construct("guiFrame", {
+            parent = teverse.interface,
             size = guiCoord(1, 0, 0.05, 0),
             position = guiCoord(0, 0, 0, 0),
             backgroundColour = globals.defaultColours.white,
         })
 
-        engine.construct("guiImage", container, {
+        teverse.construct("guiImage", {
+            parent = container,
             size = guiCoord(0, 28, 0, 28),
             position = guiCoord(0.01, 0, 0.1, 0),
             texture = titleIconValue,
@@ -41,7 +43,8 @@ return {
             handleEvents = false,
         })
 
-        engine.construct("guiTextBox", container, {
+        teverse.construct("guiTextBox", {
+            parent = container,
             size = guiCoord(0.5, 0, 0.1, 0),
             position = guiCoord(0.04, 0, 0.05, 0),
             text = titleValue,
@@ -51,7 +54,8 @@ return {
             readOnly = true
         })
 
-        engine.construct("guiTextBox", container, {
+        teverse.construct("guiTextBox", {
+            parent = container,
             size = guiCoord(0.48, 0, 0.1, 0),
             position = guiCoord(0.86, 0, 0.1, 0),
             text = globals.user[2],
@@ -60,14 +64,16 @@ return {
             readOnly = true
         })
 
-        local userIcon = engine.construct("guiFrame", container, {
+        local userIcon = teverse.construct("guiFrame", {
+            parent = container,
             size = guiCoord(0, 32, 0, 32),
             position = guiCoord(0.82, 0, 0, 0),
             backgroundColour = globals.defaultColours.primary,
             borderRadius = 100
         })
 
-        local statusIcon = engine.construct("guiFrame", container, {
+        local statusIcon = teverse.construct("guiFrame", {
+            parent = container
             size = guiCoord(0, 16, 0, 16),
             position = guiCoord(0.836, 0, 0.5, 0),
             backgroundColour = globals.defaultColours.green,
@@ -78,7 +84,8 @@ return {
             zIndex = 100
         })
 
-        local undoButton = engine.construct("guiImage", container, {
+        local undoButton = teverse.construct("guiImage", {
+            parent = container,
             size = guiCoord(0, 20, 0, 20),
             position = guiCoord(0.92, 0, 0.2, 0),
             texture = "fa:s-arrow-left",
@@ -86,7 +93,8 @@ return {
             backgroundColour = globals.defaultColours.white,
         })
 
-        local redoButton = engine.construct("guiImage", container, {
+        local redoButton = teverse.construct("guiImage", {
+            parent = container,
             size = guiCoord(0, 20, 0, 20),
             position = guiCoord(0.94, 0, 0.2, 0),
             texture = "fa:s-arrow-right",
@@ -94,7 +102,8 @@ return {
             backgroundColour = globals.defaultColours.white,
         })
 
-        local settingsButton = engine.construct("guiImage", container, {
+        local settingsButton = teverse.construct("guiImage", {
+            parent = container,
             size = guiCoord(0, 20, 0, 20),
             position = guiCoord(0.97, 0, 0.2, 0),
             texture = "fa:s-sliders-h",
@@ -117,7 +126,8 @@ return {
             ]]--
 
             table.insert(self.keys, {name})
-            local button = engine.construct("guiButton", container, {
+            local button = teverse.construct("guiButton", {
+                parent = container,
                 size = guiCoord(0.056, 0, 0.9, 0),
                 position = guiCoord(0.2+(#self.keys*0.07), 0, 0.05, 0),
                 text = name,
