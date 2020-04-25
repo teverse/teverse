@@ -1,4 +1,13 @@
 -- This is the main interface loaded into coreinterface
+
+teverse.construct("guiFrame", {
+    parent = teverse.coreInterface,
+    size = guiCoord(1, 0, 0, 50),
+    position = guiCoord(0, 0, 0, -50),
+    backgroundColour = colour.black(),
+    backgroundAlpha = 0.75
+})
+
 local console = require("tevgit:core/teverseUI/console.lua")
 
 local container = teverse.construct("guiFrame", {
