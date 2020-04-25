@@ -138,8 +138,12 @@ controller.setup = function()
     setupPage(require("tevgit:core/dashboard/pages/home.lua"))
     setupPage(require("tevgit:core/dashboard/pages/apps.lua"))
 
-    if _DEVICE:sub(0,6) ~= "iPhone" then
-        setupPage(require("tevgit:core/dashboard/pages/develop.lua"))
+    if _DEVICE:sub(0, 6) ~= "iPhone" then
+        if _DEVICE:sub(0, 4) == "iPad" then
+            setupPage(require("tevgit:core/dashboard/pages/developTablet.lua"))
+        else
+            setupPage(require("tevgit:core/dashboard/pages/developDesktop.lua"))
+        end
     end
 end
 
