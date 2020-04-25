@@ -2,7 +2,7 @@
     "os": "OSX",
     "arch": "x64",
     "version": "0.20.0",
-    "generatedAt": "25/04/2020 21:22:31",
+    "generatedAt": "25/04/2020 21:34:21",
     "sandbox": {
         "coroutine": {
             "create": "function",
@@ -402,6 +402,7 @@
     "classes": {
         "input": {
             "methods": [],
+            "className": "input",
             "events": {
                 "mouseRightUp": {
                     "parameters": [],
@@ -501,8 +502,9 @@
         },
         "guiImage": {
             "methods": [],
-            "extends": "guiFrame",
+            "className": "guiImage",
             "events": [],
+            "extends": "guiFrame",
             "properties": {
                 "imageAlpha": {
                     "hasGetter": true,
@@ -554,6 +556,7 @@
                     "description": "Pauses a playing track"
                 }
             },
+            "className": "audioEmitter",
             "events": [],
             "properties": {
                 "rolloffFactor": {
@@ -622,6 +625,7 @@
                     "description": "Destroys this object, further accessing this instance will error"
                 }
             },
+            "className": "guiBase",
             "events": {
                 "mouseRightUp": {
                     "parameters": [],
@@ -739,8 +743,9 @@
         },
         "guiLineBezier": {
             "methods": [],
-            "extends": "guiLine",
+            "className": "guiLineBezier",
             "events": [],
+            "extends": "guiLine",
             "properties": {
                 "controlB": {
                     "hasGetter": true,
@@ -758,6 +763,7 @@
         },
         "client": {
             "methods": [],
+            "className": "client",
             "events": [],
             "properties": {
                 "id": {
@@ -824,13 +830,15 @@
                     "description": "Undocumented"
                 }
             },
+            "className": "guiHelper",
             "events": [],
             "properties": []
         },
         "guiScrollView": {
             "methods": [],
-            "extends": "guiFrame",
+            "className": "guiScrollView",
             "events": [],
+            "extends": "guiFrame",
             "properties": {
                 "canvasSize": {
                     "hasGetter": true,
@@ -893,13 +901,15 @@
                     "description": "Undocumented"
                 }
             },
+            "className": "http",
             "events": [],
             "properties": []
         },
         "guiLine": {
             "methods": [],
-            "extends": "guiBase",
+            "className": "guiLine",
             "events": [],
+            "extends": "guiBase",
             "properties": {
                 "pointA": {
                     "hasGetter": true,
@@ -941,8 +951,9 @@
         },
         "guiFrame": {
             "methods": [],
-            "extends": "guiBase",
+            "className": "guiFrame",
             "events": [],
+            "extends": "guiBase",
             "properties": {
                 "size": {
                     "hasGetter": true,
@@ -1018,6 +1029,7 @@
                     "description": "Returns the client for the matching name or id you provide"
                 }
             },
+            "className": "networking",
             "events": [],
             "properties": {
                 "clients": {
@@ -1036,7 +1048,7 @@
         },
         "guiTextBox": {
             "methods": [],
-            "extends": "guiFrame",
+            "className": "guiTextBox",
             "events": {
                 "keyUp": {
                     "parameters": [
@@ -1051,6 +1063,7 @@
                     "description": "Key pressed"
                 }
             },
+            "extends": "guiFrame",
             "properties": {
                 "textShadowColour": {
                     "hasGetter": true,
@@ -1150,13 +1163,15 @@
                     "description": ""
                 }
             },
+            "className": "json",
             "events": [],
             "properties": []
         },
         "guiGradientFrame": {
             "methods": [],
-            "extends": "guiFrame",
+            "className": "guiGradientFrame",
             "events": [],
+            "extends": "guiFrame",
             "properties": {
                 "strokeColourB": {
                     "hasGetter": true,
@@ -1198,8 +1213,9 @@
         },
         "guiIcon": {
             "methods": [],
-            "extends": "guiFrame",
+            "className": "guiIcon",
             "events": [],
+            "extends": "guiFrame",
             "properties": {
                 "shadowColour": {
                     "hasGetter": true,
@@ -1263,8 +1279,9 @@
                     "description": "Undocumented"
                 }
             },
-            "extends": "guiTextBox",
+            "className": "guiRichTextBox",
             "events": [],
+            "extends": "guiTextBox",
             "properties": {
                 "colours": {
                     "hasGetter": true,
@@ -1275,6 +1292,7 @@
         },
         "debug": {
             "methods": [],
+            "className": "debug",
             "events": {
                 "print": {
                     "parameters": [],
@@ -1285,6 +1303,7 @@
         },
         "scene": {
             "methods": [],
+            "className": "scene",
             "events": [],
             "properties": {
                 "size": {
@@ -1296,6 +1315,7 @@
         },
         "dev": {
             "methods": [],
+            "className": "dev",
             "events": [],
             "properties": {
                 "state": {
@@ -1355,6 +1375,7 @@
                     "description": "Undocumented"
                 }
             },
+            "className": "apps",
             "events": [],
             "properties": []
         }
