@@ -28,7 +28,11 @@ return {
 
         if orientation == "vertical" then -- If orientation is specified to "vertical"
             local container = teverse.construct("guiFrame", {
+<<<<<<< HEAD
                 parent = teverse.interface,
+=======
+                parent = teverse.interface
+>>>>>>> 519fa3ee76b47d7bf280e4d2187a7c3c9ffada65
                 size = guiCoord(0.1, 0, 0.1, 0),
                 position = element.position+guiCoord(-0.02, 0, -0.01, 0),
                 backgroundColour = globals.defaultColours.red,
@@ -37,7 +41,11 @@ return {
                 backgroundAlpha = 0
             })
 
+<<<<<<< HEAD
             teverse.construct("guiIcon", {
+=======
+            teverse.construct("guiImage", {
+>>>>>>> 519fa3ee76b47d7bf280e4d2187a7c3c9ffada65
                 parent = container,
                 size = guiCoord(0, 48, 0, 48),
                 position = guiCoord(0.33, 0, -0.15, 0),
@@ -59,7 +67,11 @@ return {
                 borderColour = globals.defaultColours.secondary
             })
 
+<<<<<<< HEAD
             teverse.construct("guiIcon", {
+=======
+            teverse.construct("guiImage", {
+>>>>>>> 519fa3ee76b47d7bf280e4d2187a7c3c9ffada65
                 parent = bodyContainer,
                 size = guiCoord(0, 16, 0, 16),
                 position = guiCoord(0.04, 0, 0.25, 0),
@@ -95,7 +107,11 @@ return {
                 backgroundAlpha = 0
             })
 
+<<<<<<< HEAD
             teverse.construct("guiIcon", {
+=======
+            teverse.construct("guiImage", {
+>>>>>>> 519fa3ee76b47d7bf280e4d2187a7c3c9ffada65
                 parent = container,
                 size = guiCoord(0, 48, 0, 48),
                 position = guiCoord(-0.03, 0, -0.06, 0),
@@ -117,7 +133,11 @@ return {
                 borderColour = globals.defaultColours.primary
             })
 
+<<<<<<< HEAD
             teverse.construct("guiIcon", {
+=======
+            teverse.construct("guiImage", {
+>>>>>>> 519fa3ee76b47d7bf280e4d2187a7c3c9ffada65
                 parent = bodyContainer,
                 size = guiCoord(0, 16, 0, 16),
                 position = guiCoord(0.05, 0, 0.3, 0),

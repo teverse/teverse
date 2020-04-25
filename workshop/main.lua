@@ -60,8 +60,13 @@ return function(dev)
 
     -- If initialize phase fails, prompt to the error screen
     if (not success) then
+<<<<<<< HEAD
         teverse.interface:destroyChildren()
         
+=======
+        teverse.interface:destroyAllChildren()
+
+>>>>>>> 519fa3ee76b47d7bf280e4d2187a7c3c9ffada65
         local errorScreen = teverse.construct("guiFrame", {
             parent = dev.interface,
             size = guiCoord(1, 0, 1, 0),
