@@ -2,7 +2,7 @@
     "os": "OSX",
     "arch": "x64",
     "version": "0.20.0",
-    "generatedAt": "25/04/2020 21:53:30",
+    "generatedAt": "25/04/2020 22:24:24",
     "sandbox": {
         "coroutine": {
             "create": "function",
@@ -464,38 +464,38 @@
             "properties": {
                 "screenPaddingBottom": {
                     "hasGetter": true,
-                    "type": "Padding applied to the bottom of the viewport by Teverse.",
-                    "description": "number",
+                    "type": "number",
+                    "description": "Padding applied to the bottom of the viewport by Teverse.",
                     "hasSetter": false
                 },
                 "screenPaddingLeft": {
                     "hasGetter": true,
-                    "type": "Padding applied to the left of the viewport by Teverse.",
-                    "description": "number",
+                    "type": "number",
+                    "description": "Padding applied to the left of the viewport by Teverse.",
                     "hasSetter": false
                 },
                 "mousePosition": {
                     "hasGetter": true,
-                    "type": "Absolute position of cursor in pixels",
-                    "description": "vector2",
+                    "type": "vector2",
+                    "description": "Absolute position of cursor in pixels",
                     "hasSetter": false
                 },
                 "screenPaddingTop": {
                     "hasGetter": true,
-                    "type": "Padding applied to the top of the viewport by Teverse. Mostly on devices with notches.",
-                    "description": "number",
+                    "type": "number",
+                    "description": "Padding applied to the top of the viewport by Teverse. Mostly on devices with notches.",
                     "hasSetter": false
                 },
                 "screenSize": {
                     "hasGetter": true,
-                    "type": "Absolute size of the viewport measured in pixels",
-                    "description": "vector2",
+                    "type": "vector2",
+                    "description": "Absolute size of the viewport measured in pixels",
                     "hasSetter": false
                 },
                 "screenPaddingRight": {
                     "hasGetter": true,
-                    "type": "Padding applied to the right of the viewport by Teverse.",
-                    "description": "number",
+                    "type": "number",
+                    "description": "Padding applied to the right of the viewport by Teverse.",
                     "hasSetter": false
                 }
             }
@@ -508,32 +508,32 @@
             "properties": {
                 "imageAlpha": {
                     "hasGetter": true,
-                    "type": "",
-                    "description": "number",
+                    "type": "number",
+                    "description": "",
                     "hasSetter": true
                 },
                 "imageBottomRight": {
                     "hasGetter": true,
-                    "type": "",
-                    "description": "vector2",
+                    "type": "vector2",
+                    "description": "",
                     "hasSetter": true
                 },
                 "imageTopLeft": {
                     "hasGetter": true,
-                    "type": "",
-                    "description": "vector2",
+                    "type": "vector2",
+                    "description": "",
                     "hasSetter": true
                 },
                 "imageColour": {
                     "hasGetter": true,
-                    "type": "",
-                    "description": "colour",
+                    "type": "colour",
+                    "description": "",
                     "hasSetter": true
                 },
                 "image": {
                     "hasGetter": true,
-                    "type": "",
-                    "description": "string",
+                    "type": "string",
+                    "description": "",
                     "hasSetter": true
                 }
             }
@@ -561,44 +561,44 @@
             "properties": {
                 "rolloffFactor": {
                     "hasGetter": true,
-                    "type": "",
-                    "description": "number",
+                    "type": "number",
+                    "description": "",
                     "hasSetter": true
                 },
                 "offset": {
                     "hasGetter": true,
-                    "type": "",
-                    "description": "number",
+                    "type": "number",
+                    "description": "",
                     "hasSetter": true
                 },
                 "pitch": {
                     "hasGetter": true,
-                    "type": "",
-                    "description": "number",
+                    "type": "number",
+                    "description": "",
                     "hasSetter": true
                 },
                 "maxDistance": {
                     "hasGetter": true,
-                    "type": "",
-                    "description": "number",
+                    "type": "number",
+                    "description": "",
                     "hasSetter": true
                 },
                 "loop": {
                     "hasGetter": true,
-                    "type": "",
-                    "description": "boolean",
+                    "type": "boolean",
+                    "description": "",
                     "hasSetter": true
                 },
                 "gain": {
                     "hasGetter": true,
-                    "type": "",
-                    "description": "number",
+                    "type": "number",
+                    "description": "",
                     "hasSetter": true
                 },
                 "track": {
                     "hasGetter": true,
-                    "type": "",
-                    "description": "string",
+                    "type": "string",
+                    "description": "",
                     "hasSetter": true
                 }
             }
@@ -687,50 +687,50 @@
             "properties": {
                 "zIndex": {
                     "hasGetter": true,
-                    "type": "Increasing the zIndex will render this element above others",
-                    "description": "number",
+                    "type": "number",
+                    "description": "Increasing the zIndex will render this element above others",
                     "hasSetter": true
                 },
                 "active": {
                     "hasGetter": true,
-                    "type": "When true, this element can capture the mouse's hover",
-                    "description": "boolean",
+                    "type": "boolean",
+                    "description": "When true, this element can capture the mouse's hover",
                     "hasSetter": true
                 },
                 "rotation": {
                     "hasGetter": true,
-                    "type": "",
-                    "description": "number",
+                    "type": "number",
+                    "description": "",
                     "hasSetter": true
                 },
                 "children": {
                     "hasGetter": true,
-                    "type": "",
-                    "description": "table",
+                    "type": "table",
+                    "description": "",
                     "hasSetter": false
                 },
                 "visible": {
                     "hasGetter": true,
-                    "type": "",
-                    "description": "boolean",
+                    "type": "boolean",
+                    "description": "",
                     "hasSetter": true
                 },
                 "clip": {
                     "hasGetter": true,
-                    "type": "When true, children are cropped to fit",
-                    "description": "boolean",
+                    "type": "boolean",
+                    "description": "When true, children are cropped to fit",
                     "hasSetter": true
                 },
                 "name": {
                     "hasGetter": true,
-                    "type": "",
-                    "description": "string",
+                    "type": "string",
+                    "description": "",
                     "hasSetter": true
                 },
                 "parent": {
                     "hasGetter": true,
-                    "type": "Parent of a guiBase must be another gui element",
-                    "description": "guiBase",
+                    "type": "guiBase",
+                    "description": "Parent of a guiBase must be another gui element",
                     "hasSetter": true
                 }
             }
@@ -743,14 +743,14 @@
             "properties": {
                 "controlB": {
                     "hasGetter": true,
-                    "type": "",
-                    "description": "guiCoord",
+                    "type": "guiCoord",
+                    "description": "",
                     "hasSetter": true
                 },
                 "controlA": {
                     "hasGetter": true,
-                    "type": "",
-                    "description": "guiCoord",
+                    "type": "guiCoord",
+                    "description": "",
                     "hasSetter": true
                 }
             }
@@ -762,26 +762,26 @@
             "properties": {
                 "id": {
                     "hasGetter": true,
-                    "type": "Unique GUID for this user",
-                    "description": "string",
+                    "type": "string",
+                    "description": "Unique GUID for this user",
                     "hasSetter": false
                 },
                 "beta": {
                     "hasGetter": true,
-                    "type": "True if this account has beta privelages",
-                    "description": "boolean",
+                    "type": "boolean",
+                    "description": "True if this account has beta privelages",
                     "hasSetter": false
                 },
                 "name": {
                     "hasGetter": true,
-                    "type": "Unique name for this user",
-                    "description": "string",
+                    "type": "string",
+                    "description": "Unique name for this user",
                     "hasSetter": false
                 },
                 "membership": {
                     "hasGetter": true,
-                    "type": "",
-                    "description": "number",
+                    "type": "number",
+                    "description": "",
                     "hasSetter": false
                 }
             }
@@ -836,38 +836,38 @@
             "properties": {
                 "canvasSize": {
                     "hasGetter": true,
-                    "type": "If bigger than 1,0,1,0, scrollvars will be visible",
-                    "description": "guiCoord",
+                    "type": "guiCoord",
+                    "description": "If bigger than 1,0,1,0, scrollvars will be visible",
                     "hasSetter": true
                 },
                 "scrollbarWidth": {
                     "hasGetter": true,
-                    "type": "",
-                    "description": "number",
+                    "type": "number",
+                    "description": "",
                     "hasSetter": true
                 },
                 "scrollbarRadius": {
                     "hasGetter": true,
-                    "type": "",
-                    "description": "number",
+                    "type": "number",
+                    "description": "",
                     "hasSetter": true
                 },
                 "canvasOffset": {
                     "hasGetter": true,
-                    "type": "",
-                    "description": "vector2",
+                    "type": "vector2",
+                    "description": "",
                     "hasSetter": true
                 },
                 "scrollbarColour": {
                     "hasGetter": true,
-                    "type": "",
-                    "description": "colour",
+                    "type": "colour",
+                    "description": "",
                     "hasSetter": true
                 },
                 "scrollbarAlpha": {
                     "hasGetter": true,
-                    "type": "",
-                    "description": "number",
+                    "type": "number",
+                    "description": "",
                     "hasSetter": true
                 }
             }
@@ -907,38 +907,38 @@
             "properties": {
                 "pointA": {
                     "hasGetter": true,
-                    "type": "",
-                    "description": "guiCoord",
+                    "type": "guiCoord",
+                    "description": "",
                     "hasSetter": true
                 },
                 "lineAlpha": {
                     "hasGetter": true,
-                    "type": "",
-                    "description": "number",
+                    "type": "number",
+                    "description": "",
                     "hasSetter": true
                 },
                 "pointB": {
                     "hasGetter": true,
-                    "type": "",
-                    "description": "guiCoord",
+                    "type": "guiCoord",
+                    "description": "",
                     "hasSetter": true
                 },
                 "lineCap": {
                     "hasGetter": true,
-                    "type": "",
-                    "description": "enums.lineCap",
+                    "type": "enums.lineCap",
+                    "description": "",
                     "hasSetter": true
                 },
                 "lineColour": {
                     "hasGetter": true,
-                    "type": "",
-                    "description": "colour",
+                    "type": "colour",
+                    "description": "",
                     "hasSetter": true
                 },
                 "lineWidth": {
                     "hasGetter": true,
-                    "type": "",
-                    "description": "number",
+                    "type": "number",
+                    "description": "",
                     "hasSetter": true
                 }
             }
@@ -951,62 +951,62 @@
             "properties": {
                 "size": {
                     "hasGetter": true,
-                    "type": "",
-                    "description": "guiCoord",
+                    "type": "guiCoord",
+                    "description": "",
                     "hasSetter": true
                 },
                 "strokeAlpha": {
                     "hasGetter": true,
-                    "type": "",
-                    "description": "number",
+                    "type": "number",
+                    "description": "",
                     "hasSetter": true
                 },
                 "absolutePosition": {
                     "hasGetter": true,
-                    "type": "",
-                    "description": "vector2",
+                    "type": "vector2",
+                    "description": "",
                     "hasSetter": false
                 },
                 "backgroundAlpha": {
                     "hasGetter": true,
-                    "type": "",
-                    "description": "number",
+                    "type": "number",
+                    "description": "",
                     "hasSetter": true
                 },
                 "strokeColour": {
                     "hasGetter": true,
-                    "type": "",
-                    "description": "colour",
+                    "type": "colour",
+                    "description": "",
                     "hasSetter": true
                 },
                 "strokeWidth": {
                     "hasGetter": true,
-                    "type": "",
-                    "description": "number",
+                    "type": "number",
+                    "description": "",
                     "hasSetter": true
                 },
                 "strokeRadius": {
                     "hasGetter": true,
-                    "type": "",
-                    "description": "number",
+                    "type": "number",
+                    "description": "",
                     "hasSetter": true
                 },
                 "position": {
                     "hasGetter": true,
-                    "type": "",
-                    "description": "guiCoord",
+                    "type": "guiCoord",
+                    "description": "",
                     "hasSetter": true
                 },
                 "backgroundColour": {
                     "hasGetter": true,
-                    "type": "",
-                    "description": "colour",
+                    "type": "colour",
+                    "description": "",
                     "hasSetter": true
                 },
                 "absoluteSize": {
                     "hasGetter": true,
-                    "type": "",
-                    "description": "vector2",
+                    "type": "vector2",
+                    "description": "",
                     "hasSetter": false
                 }
             }
@@ -1028,14 +1028,14 @@
             "properties": {
                 "clients": {
                     "hasGetter": true,
-                    "type": "A readonly list of clients, excluding local client when offline",
-                    "description": "table",
+                    "type": "table",
+                    "description": "A readonly list of clients, excluding local client when offline",
                     "hasSetter": false
                 },
                 "localClient": {
                     "hasGetter": true,
-                    "type": "The current local client, nil when unauthenticated",
-                    "description": "client",
+                    "type": "client",
+                    "description": "The current local client, nil when unauthenticated",
                     "hasSetter": false
                 }
             }
@@ -1061,68 +1061,68 @@
             "properties": {
                 "textShadowColour": {
                     "hasGetter": true,
-                    "type": "The text shadow colour, rendered as a blurred backing.",
-                    "description": "colour",
+                    "type": "colour",
+                    "description": "The text shadow colour, rendered as a blurred backing.",
                     "hasSetter": true
                 },
                 "textAlpha": {
                     "hasGetter": true,
-                    "type": "0.0 makes the text fully transparent and invisible.",
-                    "description": "number",
+                    "type": "number",
+                    "description": "0.0 makes the text fully transparent and invisible.",
                     "hasSetter": true
                 },
                 "textEditable": {
                     "hasGetter": true,
-                    "type": "When true, the user can input into this box",
-                    "description": "boolean",
+                    "type": "boolean",
+                    "description": "When true, the user can input into this box",
                     "hasSetter": true
                 },
                 "text": {
                     "hasGetter": true,
-                    "type": "The text rendered",
-                    "description": "string",
+                    "type": "string",
+                    "description": "The text rendered",
                     "hasSetter": true
                 },
                 "textShadowSize": {
                     "hasGetter": true,
-                    "type": "When 0, no shadow is rendered. Increasing this value will determine how much the shadow spreads.",
-                    "description": "number",
+                    "type": "number",
+                    "description": "When 0, no shadow is rendered. Increasing this value will determine how much the shadow spreads.",
                     "hasSetter": true
                 },
                 "textWrap": {
                     "hasGetter": true,
-                    "type": "When true, text wraps onto a new line with new line characters.",
-                    "description": "boolean",
+                    "type": "boolean",
+                    "description": "When true, text wraps onto a new line with new line characters.",
                     "hasSetter": true
                 },
                 "textSize": {
                     "hasGetter": true,
-                    "type": "Size of the text rendered",
-                    "description": "number",
+                    "type": "number",
+                    "description": "Size of the text rendered",
                     "hasSetter": true
                 },
                 "textDimensions": {
                     "hasGetter": true,
-                    "type": "Gets the bounds of the text",
-                    "description": "string",
+                    "type": "string",
+                    "description": "Gets the bounds of the text",
                     "hasSetter": false
                 },
                 "textFont": {
                     "hasGetter": true,
-                    "type": "Determines the rendered text's font",
-                    "description": "string",
+                    "type": "string",
+                    "description": "Determines the rendered text's font",
                     "hasSetter": true
                 },
                 "textAlign": {
                     "hasGetter": true,
-                    "type": "Determines the rendered text is aligned",
-                    "description": "enums.align",
+                    "type": "enums.align",
+                    "description": "Determines the rendered text is aligned",
                     "hasSetter": true
                 },
                 "textColour": {
                     "hasGetter": true,
-                    "type": "Colour of the text rendered",
-                    "description": "colour",
+                    "type": "colour",
+                    "description": "Colour of the text rendered",
                     "hasSetter": true
                 }
             }
@@ -1169,38 +1169,38 @@
             "properties": {
                 "strokeColourB": {
                     "hasGetter": true,
-                    "type": "",
-                    "description": "colour",
+                    "type": "colour",
+                    "description": "",
                     "hasSetter": true
                 },
                 "backgroundColourB": {
                     "hasGetter": true,
-                    "type": "",
-                    "description": "colour",
+                    "type": "colour",
+                    "description": "",
                     "hasSetter": true
                 },
                 "finish": {
                     "hasGetter": true,
-                    "type": "",
-                    "description": "guiCoord",
+                    "type": "guiCoord",
+                    "description": "",
                     "hasSetter": true
                 },
                 "strokeAlphaB": {
                     "hasGetter": true,
-                    "type": "",
-                    "description": "colour",
+                    "type": "colour",
+                    "description": "",
                     "hasSetter": true
                 },
                 "backgroundAlphaB": {
                     "hasGetter": true,
-                    "type": "",
-                    "description": "number",
+                    "type": "number",
+                    "description": "",
                     "hasSetter": true
                 },
                 "start": {
                     "hasGetter": true,
-                    "type": "",
-                    "description": "guiCoord",
+                    "type": "guiCoord",
+                    "description": "",
                     "hasSetter": true
                 }
             }
@@ -1213,44 +1213,44 @@
             "properties": {
                 "shadowColour": {
                     "hasGetter": true,
-                    "type": "",
-                    "description": "colour",
+                    "type": "colour",
+                    "description": "",
                     "hasSetter": true
                 },
                 "shadowSize": {
                     "hasGetter": true,
-                    "type": "",
-                    "description": "number",
+                    "type": "number",
+                    "description": "",
                     "hasSetter": true
                 },
                 "iconMax": {
                     "hasGetter": true,
-                    "type": "",
-                    "description": "number",
+                    "type": "number",
+                    "description": "",
                     "hasSetter": true
                 },
                 "iconColour": {
                     "hasGetter": true,
-                    "type": "",
-                    "description": "colour",
+                    "type": "colour",
+                    "description": "",
                     "hasSetter": true
                 },
                 "iconType": {
                     "hasGetter": true,
-                    "type": "",
-                    "description": "enums.iconType",
+                    "type": "enums.iconType",
+                    "description": "",
                     "hasSetter": true
                 },
                 "iconAlpha": {
                     "hasGetter": true,
-                    "type": "",
-                    "description": "number",
+                    "type": "number",
+                    "description": "",
                     "hasSetter": true
                 },
                 "iconId": {
                     "hasGetter": true,
-                    "type": "",
-                    "description": "string",
+                    "type": "string",
+                    "description": "",
                     "hasSetter": true
                 }
             }
@@ -1314,8 +1314,8 @@
             "properties": {
                 "state": {
                     "hasGetter": true,
-                    "type": "",
-                    "description": "string",
+                    "type": "string",
+                    "description": "",
                     "hasSetter": true
                 },
                 "interface": {
@@ -1325,8 +1325,8 @@
                 },
                 "localTevGit": {
                     "hasGetter": true,
-                    "type": "True if a local tevgit repo is in use",
-                    "description": "boolean",
+                    "type": "boolean",
+                    "description": "True if a local tevgit repo is in use",
                     "hasSetter": false
                 }
             }
