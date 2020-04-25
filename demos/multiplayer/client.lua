@@ -19,7 +19,7 @@ local boomBtn = engine.construct("guiTextBox", engine.interface, {
     fontSize = 18,
     backgroundColour = colour(0.2, 0.2, 0.25),
     borderRadius = 4,
-    align = enums.align.middle
+    textAlign = enums.align.middle
 })
 boomBtn:on("mouseLeftReleased", function()
     boomMode = not boomMode

@@ -23,7 +23,8 @@ local ico = teverse.construct("guiIcon", {
     iconAlpha = 0.75,
     strokeRadius = 10,
     strokeAlpha = 0.5,
-    backgroundAlpha = 1
+    backgroundAlpha = 1,
+    visible = teverse.networking.localClient ~= nil
 })
 
 local lastClick = 0

@@ -33,14 +33,15 @@ return {
             backgroundColour = globals.defaultColours.white,
         })
 
-        teverse.construct("guiImage", {
+        teverse.construct("guiIcon", {
             parent = container,
             size = guiCoord(0, 28, 0, 28),
             position = guiCoord(0.01, 0, 0.1, 0),
-            texture = titleIconValue,
-            imageColour = globals.defaultColours.primary,
+            iconId = titleIconValue,
+            iconType = "faSolid",
+            iconColour = globals.defaultColours.primary,
             backgroundColour = globals.defaultColours.white,
-            handleEvents = false,
+            active = false,
         })
 
         teverse.construct("guiTextBox", {
@@ -73,7 +74,7 @@ return {
         })
 
         local statusIcon = teverse.construct("guiFrame", {
-            parent = container
+            parent = container,
             size = guiCoord(0, 16, 0, 16),
             position = guiCoord(0.836, 0, 0.5, 0),
             backgroundColour = globals.defaultColours.green,
@@ -84,30 +85,33 @@ return {
             zIndex = 100
         })
 
-        local undoButton = teverse.construct("guiImage", {
+        local undoButton = teverse.construct("guiIcon", {
             parent = container,
             size = guiCoord(0, 20, 0, 20),
             position = guiCoord(0.92, 0, 0.2, 0),
-            texture = "fa:s-arrow-left",
-            imageColour = globals.defaultColours.primary,
+            iconId = "arrow-left",
+            iconType = "faSolid",
+            iconColour = globals.defaultColours.primary,
             backgroundColour = globals.defaultColours.white,
         })
 
-        local redoButton = teverse.construct("guiImage", {
+        local redoButton = teverse.construct("guiIcon", {
             parent = container,
             size = guiCoord(0, 20, 0, 20),
             position = guiCoord(0.94, 0, 0.2, 0),
-            texture = "fa:s-arrow-right",
-            imageColour = globals.defaultColours.primary,
+            iconId = "arrow-right",
+            iconType = "faSolid",
+            iconColour = globals.defaultColours.primary,
             backgroundColour = globals.defaultColours.white,
         })
 
-        local settingsButton = teverse.construct("guiImage", {
+        local settingsButton = teverse.construct("guiIcon", {
             parent = container,
             size = guiCoord(0, 20, 0, 20),
             position = guiCoord(0.97, 0, 0.2, 0),
-            texture = "fa:s-sliders-h",
-            imageColour = globals.defaultColours.primary,
+            iconId = "sliders-h",
+            iconType = "faSolid",
+            iconColour = globals.defaultColours.primary,
             backgroundColour = globals.defaultColours.white,
         })
 
@@ -133,7 +137,7 @@ return {
                 text = name,
                 textColour = globals.defaultColours.primary,
                 fontSize = 30,
-                align = enums.align.middle,
+                textAlign = enums.align.middle,
                 zIndex = 100
             })
 

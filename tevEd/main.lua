@@ -18,7 +18,7 @@ local mainContainer = nil
 local workshop = nil
 
 local function runTutorial(module)
-	mainContainer:destroyAllChildren()
+	mainContainer:destroyChildren()
 	local tutorial = require("tevgit:"..module)
 
 	local tutorialContainer = engine.construct("guiFrame", mainContainer, {
@@ -85,14 +85,14 @@ local function runTutorial(module)
 	})
 
 	for _,page in pairs(tutorial.tutorial) do
-		instructions:destroyAllChildren()
+		instructions:destroyChildren()
 		if type(page) == "string" then
 			local txt = engine.construct("guiTextBox", instructions, {
 				size 			= guiCoord(1,-10,1,-10),
 				position 		= guiCoord(0,5,0,5),
 				backgroundAlpha = 0,
 				align 			= enums.align.topLeft,
-				wrap = true,
+				textWrap = true,
 				fontFile	  	= "local:OpenSans-Regular.ttf",
 				fontSize 		= 20,
 				text 			= page,
@@ -200,7 +200,7 @@ local function runTutorial(module)
 end
 
 local function createMainInterface()
-	mainContainer:destroyAllChildren()
+	mainContainer:destroyChildren()
 	local sectionYPos = 0
 	for section, tutorials in pairs(tevEd.tutorials) do
 
