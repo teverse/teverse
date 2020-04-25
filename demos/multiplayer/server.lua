@@ -6,7 +6,7 @@ print("Hello Server!")
 require("tevgit:core/server/debug.lua")
 require("tevgit:core/server/chat.lua")
 
-workspace:destroyAllChildren()
+workspace:destroyChildren()
 
 local mainLight = engine.construct("light", workspace, {
     name           = "mainLight",

@@ -137,7 +137,6 @@ return {
     iconId = "sliders-h",
     iconType = "faSolid",
     setup = function(page)
-        page.backgroundAlpha = 1.0
 
         local feed = teverse.construct("guiScrollView", {
             parent = page,
@@ -150,11 +149,13 @@ return {
         teverse.guiHelper
             .bind(feed, "xs", {
                 size = guiCoord(1, 0, 1, 50),
-                position = guiCoord(0, 0, 0, -50)
+                position = guiCoord(0, 0, 0, -50),
+                scrollbarAlpha = 0.0
             })
             .bind(feed, "lg", {
                 size = guiCoord(1, 0, 1, 0),
-                position = guiCoord(0, 0, 0, 0)
+                position = guiCoord(0, 0, 0, 0),
+                scrollbarAlpha = 1.0
             })
 
         local tevs = teverse.construct("guiFrame", {
@@ -346,7 +347,7 @@ return {
 
         local feedItems = teverse.construct("guiFrame", {
             parent = feed,
-            backgroundAlpha = 1,
+            backgroundAlpha = 0,
             clip = true
         })
 
@@ -385,30 +386,34 @@ return {
                 if code == 200 then
                     lastRefresh = os.clock()
                     local json = teverse.json:decode(body)
-                    if json[1].id == newestFeed then
-                        -- no change from last refresh
-                        return nil
-                    else
-                        -- may require refactoring
-                        for _,v in pairs(feedItems.children) do
-                            if v.name == "feedItem" then
-                                v:destroy()
+                    if #json > 0 then
+                        if json[1].id == newestFeed then
+                            -- no change from last refresh
+                            return nil
+                        else
+                            -- may require refactoring
+                            for _,v in pairs(feedItems.children) do
+                                if v.name == "feedItem" then
+                                    v:destroy()
+                                end
                             end
                         end
-                    end
-                    newestFeed = json[1].id
-                    local y = 50
-                    for _,v in pairs(json) do
-                        local date = os.date("%d/%m/%Y %H:%M", os.parseISO8601(v.postedAt))
-                        local item = newFeedItem("tevurl:asset/user/" .. v.postedBy.id, v.postedBy.username, date, v.message)
-                        item.parent = feedItems
-                        local dy = item:child("body").textDimensions.y
-                        item.size = guiCoord(1, -20, 0, dy + 28)
-                        item.position = guiCoord(0, 10, 0, y)
-                        y = y + dy + 28
-                    end
+                        newestFeed = json[1].id
+                        local y = 50
+                        for _,v in pairs(json) do
+                            local date = os.date("%d/%m/%Y %H:%M", os.parseISO8601(v.postedAt))
+                            local item = newFeedItem("tevurl:asset/user/" .. v.postedBy.id, v.postedBy.username, date, v.message)
+                            item.parent = feedItems
+                            local dy = item:child("body").textDimensions.y
+                            item.size = guiCoord(1, -20, 0, dy + 28)
+                            item.position = guiCoord(0, 10, 0, y)
+                            y = y + dy + 28
+                        end
 
-                    feed.canvasSize = guiCoord(1, 0, 0, feedItems.absolutePosition.y + y + 100)
+                        feed.canvasSize = guiCoord(1, 0, 0, feedItems.absolutePosition.y + y + 100)
+                    else
+                        feed.canvasSize = guiCoord(1, 0, 0, 0)
+                    end
                 end
             end)
         end
@@ -428,6 +433,7 @@ return {
                     input.text = ""
                     input.textEditable = true
                     input.textAlpha = 1.0
+                    submitting = false
                 end)
             end
         end)

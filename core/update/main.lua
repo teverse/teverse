@@ -50,6 +50,13 @@ local gui = teverse.construct("guiTextBox", {
     textColour = colour.rgb(61, 66, 71)
 })
 
+local progressBar = teverse.construct("guiFrame", {
+    parent = dialog,
+    size = guiCoord(0, 0, 0, 5),
+    position = guiCoord(0, 0, 1, -5),
+    backgroundColour = colour.rgb(74, 140, 122)
+})
+
 if _OS == "OSX" or _OS == "IOS" then
     -- We distribute updates via the app store on iOS/OSX
     gui.text = "A new version is available, please check the App Store."
@@ -58,4 +65,9 @@ end
 teverse.networking:on("_update", function(message)
     print('got ', message)
     gui.text = message
+end)
+
+teverse.networking:on("_downloadProgress", function(str)
+    local pcnt = tonumber(str)
+    progressBar.size = guiCoord(pcnt/100, 0, 0, 5)
 end)

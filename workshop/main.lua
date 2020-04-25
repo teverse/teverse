@@ -16,19 +16,21 @@ local function init(dev)
     ]]--
 
     globals.dev = dev -- Set teverse.dev (previously workshop) instance as a global
-    globals.user = teverse:isAuthenticated() -- Set & Streamline user instance as a global
-    globals.developerMode = (not globals.dev.hasLocalTevGit) or (globals.dev:hasLocalTevGit()) -- Set developmode boolean as a global
+    globals.user = teverse.networking.localClient -- Set & Streamline user instance as a global
+    globals.developerMode = not globals.dev.localTevGit -- Set developmode boolean as a global
 
-    local loadingScreen = teverse.construct("guiFrame", dev.interface, {
+    local loadingScreen = teverse.construct("guiFrame", {
+        parent = dev.interface,
         size = guiCoord(1, 0, 1, 0),
         backgroundColour = globals.defaultColours.background,
         zIndex = 1000
     })
 
-    teverse.construct("guiTextBox", loadingScreen, {
+    teverse.construct("guiTextBox", {
+        parent = loadingScreen,
         size = guiCoord(0.5, 0, 0.5, 0),
         position = guiCoord(0.25, 0, 0.25, 0),
-        align = enums.align.middle,
+        textAlign = enums.align.middle,
         backgroundAlpha = 0,
         text = "Downloading the latest workshop...\nThis takes longer than a moment during beta."
     })
@@ -53,42 +55,46 @@ return function(dev)
         @Returns
             function, method
     ]]--
-    
+    dev = teverse.dev
     local success, message = pcall(init, dev)
-    local teverse = dev -- Laziness
 
     -- If initialize phase fails, prompt to the error screen
     if (not success) then
-        teverse.interface:destroyAllChildren()
-
-        local errorScreen = teverse.construct("guiFrame", teverse.interface, {
+        teverse.interface:destroyChildren()
+        
+        local errorScreen = teverse.construct("guiFrame", {
+            parent = dev.interface,
             size = guiCoord(1, 0, 1, 0),
             backgroundColour = globals.defaultColours.background,
+            backgroundAlpha = 0,
             zIndex = 10000
         })
 
-        teverse.construct("guiTextBox", errorScreen, {
+        teverse.construct("guiTextBox", {
+            parent = errorScreen,
             size = guiCoord(0.8, 0, 0.8, 0),
             position = guiCoord(0.1, 0, 0.1, 0),
             backgroundColour = globals.defaultColours.background,
+            backgroundAlpha = 0,
             textColour = globals.defaultColours.red,
-            align = enums.align.topLeft,
+            textAlign = enums.align.topLeft,
             text = "Error loading Workshop\nIf this isn't your fault, please take a screenshot and report this as a bug. \n\n" .. message .." \n\nPlease press 'ENTER' on your keyboard to restart Teverse.",
-            wrap = true,
+            textWrap = true,
+            textFont = "tevurl:fonts/firaCodeMedium.otf"
         })
 
         -- Bind the "return" key on the keyboard as temporary fast-reload keybind
-        teverse.input:on("keyPressed", function(keyboard)
-            if keyboard.key == enums.key["return"] then
-                teverse:reloadCreate()
+        teverse.input:on("keyDown", function(key)
+            if key == "KEY_RETURN" then
+                teverse.apps:loadWorkshop()
             end
         end)
     end
 
     -- Bind the "f12" key on the keyboard as fast-reload keybind if initialize phase is successful
-    teverse.input:on("keyPressed", function(keyboard)
-        if keyboard.key == enums.key["f12"] then
-            teverse:reloadCreate()
+    teverse.input:on("keyDown", function(key)
+        if key == "KEY_F12" then
+            teverse.apps:loadWorkshop()
         end
     end)
 end
