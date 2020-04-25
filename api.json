@@ -2,7 +2,7 @@
     "os": "OSX",
     "arch": "x64",
     "version": "0.20.0",
-    "generatedAt": "25/04/2020 22:24:24",
+    "generatedAt": "25/04/2020 22:46:36",
     "sandbox": {
         "coroutine": {
             "create": "function",
@@ -461,6 +461,7 @@
                     "description": "Left mouse button down"
                 }
             },
+            "constructable": false,
             "properties": {
                 "screenPaddingBottom": {
                     "hasGetter": true,
@@ -504,6 +505,7 @@
             "methods": [],
             "className": "guiImage",
             "events": [],
+            "constructable": true,
             "extends": "guiFrame",
             "properties": {
                 "imageAlpha": {
@@ -558,6 +560,7 @@
             },
             "className": "audioEmitter",
             "events": [],
+            "constructable": true,
             "properties": {
                 "rolloffFactor": {
                     "hasGetter": true,
@@ -684,6 +687,7 @@
                     "description": "Left mouse button down"
                 }
             },
+            "constructable": false,
             "properties": {
                 "zIndex": {
                     "hasGetter": true,
@@ -739,6 +743,7 @@
             "methods": [],
             "className": "guiLineBezier",
             "events": [],
+            "constructable": true,
             "extends": "guiLine",
             "properties": {
                 "controlB": {
@@ -759,6 +764,7 @@
             "methods": [],
             "className": "client",
             "events": [],
+            "constructable": false,
             "properties": {
                 "id": {
                     "hasGetter": true,
@@ -826,12 +832,14 @@
             },
             "className": "guiHelper",
             "events": [],
+            "constructable": false,
             "properties": []
         },
         "guiScrollView": {
             "methods": [],
             "className": "guiScrollView",
             "events": [],
+            "constructable": true,
             "extends": "guiFrame",
             "properties": {
                 "canvasSize": {
@@ -897,12 +905,14 @@
             },
             "className": "http",
             "events": [],
+            "constructable": false,
             "properties": []
         },
         "guiLine": {
             "methods": [],
             "className": "guiLine",
             "events": [],
+            "constructable": true,
             "extends": "guiBase",
             "properties": {
                 "pointA": {
@@ -947,6 +957,7 @@
             "methods": [],
             "className": "guiFrame",
             "events": [],
+            "constructable": true,
             "extends": "guiBase",
             "properties": {
                 "size": {
@@ -1025,6 +1036,7 @@
             },
             "className": "networking",
             "events": [],
+            "constructable": false,
             "properties": {
                 "clients": {
                     "hasGetter": true,
@@ -1057,6 +1069,7 @@
                     "description": "Key pressed"
                 }
             },
+            "constructable": true,
             "extends": "guiFrame",
             "properties": {
                 "textShadowColour": {
@@ -1159,12 +1172,14 @@
             },
             "className": "json",
             "events": [],
+            "constructable": false,
             "properties": []
         },
         "guiGradientFrame": {
             "methods": [],
             "className": "guiGradientFrame",
             "events": [],
+            "constructable": true,
             "extends": "guiFrame",
             "properties": {
                 "strokeColourB": {
@@ -1209,6 +1224,7 @@
             "methods": [],
             "className": "guiIcon",
             "events": [],
+            "constructable": true,
             "extends": "guiFrame",
             "properties": {
                 "shadowColour": {
@@ -1275,6 +1291,7 @@
             },
             "className": "guiRichTextBox",
             "events": [],
+            "constructable": true,
             "extends": "guiTextBox",
             "properties": {
                 "colours": {
@@ -1293,12 +1310,14 @@
                     "description": "Fired when a print occurs"
                 }
             },
+            "constructable": false,
             "properties": []
         },
         "scene": {
             "methods": [],
             "className": "scene",
             "events": [],
+            "constructable": false,
             "properties": {
                 "size": {
                     "hasGetter": true,
@@ -1311,6 +1330,7 @@
             "methods": [],
             "className": "dev",
             "events": [],
+            "constructable": false,
             "properties": {
                 "state": {
                     "hasGetter": true,
@@ -1371,6 +1391,7 @@
             },
             "className": "apps",
             "events": [],
+            "constructable": false,
             "properties": []
         }
     },
