@@ -2,7 +2,7 @@
     "os": "OSX",
     "arch": "x64",
     "version": "0.20.0",
-    "generatedAt": "25/04/2020 21:34:21",
+    "generatedAt": "25/04/2020 21:53:30",
     "sandbox": {
         "coroutine": {
             "create": "function",
@@ -409,9 +409,9 @@
                     "description": "Right mouse button up"
                 },
                 "keyUp": {
-                    "parameters": [
-                        "enums.keysym keyCode"
-                    ],
+                    "parameters": {
+                        "enums.keysym": "keyCode"
+                    },
                     "description": "Key released"
                 },
                 "mouseMiddleUp": {
@@ -439,9 +439,9 @@
                     "description": "Left mouse button up"
                 },
                 "keyDown": {
-                    "parameters": [
-                        "enums.keysym keyCode"
-                    ],
+                    "parameters": {
+                        "enums.keysym": "keyCode"
+                    },
                     "description": "Key pressed"
                 },
                 "mouseMoved": {
@@ -606,9 +606,9 @@
         "guiBase": {
             "methods": {
                 "child": {
-                    "parameters": [
-                        "string name"
-                    ],
+                    "parameters": {
+                        "string": "name"
+                    },
                     "returns": [
                         "guiBase"
                     ],
@@ -648,9 +648,7 @@
                     "description": "Mouse is hovering over this element"
                 },
                 "childAdded": {
-                    "parameters": [
-                        "tewt"
-                    ],
+                    "parameters": [],
                     "description": "Triggered when the viewport size is changed"
                 },
                 "mouseExit": {
@@ -666,9 +664,7 @@
                     "description": "Left mouse button up"
                 },
                 "destroying": {
-                    "parameters": [
-                        "tewt"
-                    ],
+                    "parameters": [],
                     "description": "Triggered when the object is destroyed"
                 },
                 "mouseRightDown": {
@@ -680,9 +676,7 @@
                     "description": "finger down"
                 },
                 "childRemoved": {
-                    "parameters": [
-                        "tewt"
-                    ],
+                    "parameters": [],
                     "description": "Triggered when a child is added"
                 },
                 "mouseLeftDown": {
@@ -1020,9 +1014,9 @@
         "networking": {
             "methods": {
                 "getClient": {
-                    "parameters": [
-                        "string nameOrClientId"
-                    ],
+                    "parameters": {
+                        "string": "nameOrClientId"
+                    },
                     "returns": [
                         "client"
                     ],
@@ -1051,15 +1045,15 @@
             "className": "guiTextBox",
             "events": {
                 "keyUp": {
-                    "parameters": [
-                        "enums.keysym keyCode"
-                    ],
+                    "parameters": {
+                        "enums.keysym": "keyCode"
+                    },
                     "description": "Key released"
                 },
                 "keyDown": {
-                    "parameters": [
-                        "enums.keysym keyCode"
-                    ],
+                    "parameters": {
+                        "enums.keysym": "keyCode"
+                    },
                     "description": "Key pressed"
                 }
             },
@@ -1136,27 +1130,27 @@
         "json": {
             "methods": {
                 "decode": {
-                    "parameters": [
-                        "string json"
-                    ],
+                    "parameters": {
+                        "string": "json"
+                    },
                     "returns": [
                         "table"
                     ],
                     "description": ""
                 },
                 "encodeWithTypes": {
-                    "parameters": [
-                        "variant toEncode"
-                    ],
+                    "parameters": {
+                        "variant": "toEncode"
+                    },
                     "returns": [
                         "string"
                     ],
                     "description": ""
                 },
                 "encode": {
-                    "parameters": [
-                        "variant toEncode"
-                    ],
+                    "parameters": {
+                        "variant": "toEncode"
+                    },
                     "returns": [
                         "string"
                     ],
