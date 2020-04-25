@@ -8,7 +8,7 @@ local function createFlair(parent, data)
     if data then
         local flairCount = 0
         
-        -- Beta Insignia
+        -- Beta(Tester) Insignia
         if data.postedBy.beta == true then
             teverse.construct("guiIcon", {
                 parent = parent:child("username"),
@@ -50,7 +50,8 @@ local function createFlair(parent, data)
         end
 
         -- Mod/Staff Insignia
-        if data.postedBy.username == "Sanjay" then
+        --[[
+        if  then
             teverse.construct("guiIcon", {
                 parent = parent:child("username"),
                 size = guiCoord(0, 10, 0, 10),
@@ -63,6 +64,7 @@ local function createFlair(parent, data)
             parent:child("body").textColour = globals.defaultColours.blue
             flairCount = flairCount + 1
         end
+        ]]--
     end
 end
 
@@ -421,7 +423,7 @@ return {
                 local payload = teverse.json:encode({ message = input.text }) 
                 teverse.http:post("https://teverse.com/api/feed", payload, {
                     ["Authorization"] = "BEARER " .. teverse.userToken,
-                    ["Content-Type"] = "application/data"
+                    ["Content-Type"] = "application/json"
                 }, function(code, body)
                     refresh()
                     input.text = ""
