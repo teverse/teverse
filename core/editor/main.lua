@@ -3,8 +3,8 @@ local theme = require("tevgit:core/editor/theme/default.lua")
 
 local editor = teverse.construct("guiRichTextBox", {
     parent = teverse.interface,
-    size = guiCoord(1, 0, 1, 0),
-    position = guiCoord(0, 0, 0, 0),
+    size = guiCoord(1, 0, 1, -100),
+    position = guiCoord(0, 0, 0, 50),
     text = "local test = 10 + 10\n\n",
     textWrap = true,
     textFont = "tevurl:fonts/firaCodeRegular.otf",
@@ -18,16 +18,17 @@ local function doLex()
 
     local lines = lex(editor.text)
     local index = 0
+    local lastColour = nil
     for lineNumber, line in pairs(lines) do
         local lineCount = 0
         for _, token in pairs(line) do
             local c = theme[token.type]
-            if c then
+            if c and lastColour ~= c then
                 editor:setColour(index + token.posFirst, c)
-                lineCount = token.posLast
-            else
-                print("no token ", token.type)
+                lastColour = c
             end
+
+            lineCount = token.posLast
         end
         index = index + lineCount
     end
