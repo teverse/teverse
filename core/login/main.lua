@@ -50,7 +50,7 @@ local db = false
 local listenerid = login:on("mouseLeftDown", function()
     if db then return end
 
-    if _DEVICE:sub(0, 6) ~= "iPhone" or _DEVICE:sub(0, 4) == "iPad" then
+    if _DEVICE:sub(0, 6) == "iPhone" or _DEVICE:sub(0, 4) == "iPad" then
         teverse.openUrl("https://teverse.com/dashboard?client=2")
     else
         teverse.openUrl("https://teverse.com/dashboard?client=1")
