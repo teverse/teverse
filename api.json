@@ -2,7 +2,7 @@
     "os": "OSX",
     "arch": "x64",
     "version": "0.20.5",
-    "generatedAt": "27/04/2020 15:18:45",
+    "generatedAt": "27/04/2020 17:14:10",
     "sandbox": {
         "coroutine": {
             "create": "function",
@@ -408,9 +408,12 @@
                     "description": "Right mouse button up"
                 },
                 "keyUp": {
-                    "parameters": {
-                        "enums.keysym": "keyCode"
-                    },
+                    "parameters": [
+                        {
+                            "type": "enums.keysym",
+                            "name": "keyCode"
+                        }
+                    ],
                     "description": "Key released"
                 },
                 "mouseMiddleUp": {
@@ -438,9 +441,12 @@
                     "description": "Left mouse button up"
                 },
                 "keyDown": {
-                    "parameters": {
-                        "enums.keysym": "keyCode"
-                    },
+                    "parameters": [
+                        {
+                            "type": "enums.keysym",
+                            "name": "keyCode"
+                        }
+                    ],
                     "description": "Key pressed"
                 },
                 "mouseMoved": {
@@ -608,9 +614,12 @@
         "guiBase": {
             "methods": {
                 "child": {
-                    "parameters": {
-                        "string": "name"
-                    },
+                    "parameters": [
+                        {
+                            "type": "string",
+                            "name": "name"
+                        }
+                    ],
                     "returns": [
                         "guiBase"
                     ],
@@ -630,27 +639,39 @@
             "className": "guiBase",
             "events": {
                 "mouseRightUp": {
-                    "parameters": {
-                        "vector2": "mousePosition"
-                    },
+                    "parameters": [
+                        {
+                            "type": "vector2",
+                            "name": "mousePosition"
+                        }
+                    ],
                     "description": "Right mouse button up"
                 },
                 "mouseWheel": {
-                    "parameters": {
-                        "vector2": "wheelMovement"
-                    },
+                    "parameters": [
+                        {
+                            "type": "vector2",
+                            "name": "wheelMovement"
+                        }
+                    ],
                     "description": "Mouse wheeled"
                 },
                 "fingerUp": {
-                    "parameters": {
-                        "vector2": "fingerPosition"
-                    },
+                    "parameters": [
+                        {
+                            "type": "vector2",
+                            "name": "fingerPosition"
+                        }
+                    ],
                     "description": "finger up"
                 },
                 "mouseMiddleUp": {
-                    "parameters": {
-                        "vector2": "mousePosition"
-                    },
+                    "parameters": [
+                        {
+                            "type": "vector2",
+                            "name": "mousePosition"
+                        }
+                    ],
                     "description": "Middle mouse button up"
                 },
                 "mouseEnter": {
@@ -658,9 +679,12 @@
                     "description": "Mouse is hovering over this element"
                 },
                 "childAdded": {
-                    "parameters": {
-                        "guiBase": "newChild"
-                    },
+                    "parameters": [
+                        {
+                            "type": "guiBase",
+                            "name": "newChild"
+                        }
+                    ],
                     "description": "Triggered when the viewport size is changed"
                 },
                 "mouseExit": {
@@ -668,45 +692,66 @@
                     "description": "Mouse is no longer hovering"
                 },
                 "mouseMiddleDown": {
-                    "parameters": {
-                        "vector2": "mousePosition"
-                    },
+                    "parameters": [
+                        {
+                            "type": "vector2",
+                            "name": "mousePosition"
+                        }
+                    ],
                     "description": "Middle mouse button down"
                 },
                 "mouseLeftUp": {
-                    "parameters": {
-                        "vector2": "mousePosition"
-                    },
+                    "parameters": [
+                        {
+                            "type": "vector2",
+                            "name": "mousePosition"
+                        }
+                    ],
                     "description": "Left mouse button up"
                 },
                 "destroying": {
-                    "parameters": {
-                        "guiBase": "newChild"
-                    },
+                    "parameters": [
+                        {
+                            "type": "guiBase",
+                            "name": "newChild"
+                        }
+                    ],
                     "description": "Triggered when the object is destroyed"
                 },
                 "mouseRightDown": {
-                    "parameters": {
-                        "vector2": "mousePosition"
-                    },
+                    "parameters": [
+                        {
+                            "type": "vector2",
+                            "name": "mousePosition"
+                        }
+                    ],
                     "description": "Right mouse button down"
                 },
                 "fingerDown": {
-                    "parameters": {
-                        "vector2": "fingerPosition"
-                    },
+                    "parameters": [
+                        {
+                            "type": "vector2",
+                            "name": "fingerPosition"
+                        }
+                    ],
                     "description": "finger down"
                 },
                 "childRemoved": {
-                    "parameters": {
-                        "guiBase": "newChild"
-                    },
+                    "parameters": [
+                        {
+                            "type": "guiBase",
+                            "name": "newChild"
+                        }
+                    ],
                     "description": "Triggered when a child is added"
                 },
                 "mouseLeftDown": {
-                    "parameters": {
-                        "vector2": "mousePosition"
-                    },
+                    "parameters": [
+                        {
+                            "type": "vector2",
+                            "name": "mousePosition"
+                        }
+                    ],
                     "description": "Left mouse button down"
                 }
             },
@@ -818,10 +863,16 @@
         "guiHelper": {
             "methods": {
                 "show": {
-                    "parameters": {
-                        "guiBase": "gui",
-                        "breakpoint": "bp"
-                    },
+                    "parameters": [
+                        {
+                            "type": "guiBase",
+                            "name": "gui"
+                        },
+                        {
+                            "type": "breakpoint",
+                            "name": "bp"
+                        }
+                    ],
                     "returns": [],
                     "description": "Show this element for the breakpoint provided"
                 },
@@ -836,34 +887,58 @@
                     "description": "Undocumented"
                 },
                 "bind": {
-                    "parameters": {
-                        "guiBase": "gui",
-                        "breakpoint": "bp",
-                        "table": "properties"
-                    },
+                    "parameters": [
+                        {
+                            "type": "guiBase",
+                            "name": "gui"
+                        },
+                        {
+                            "type": "breakpoint",
+                            "name": "bp"
+                        },
+                        {
+                            "type": "table",
+                            "name": "properties"
+                        }
+                    ],
                     "returns": [],
                     "description": "Apply properties to this element for a particular breakpoint"
                 },
                 "hide": {
-                    "parameters": {
-                        "guiBase": "gui",
-                        "breakpoint": "bp"
-                    },
+                    "parameters": [
+                        {
+                            "type": "guiBase",
+                            "name": "gui"
+                        },
+                        {
+                            "type": "breakpoint",
+                            "name": "bp"
+                        }
+                    ],
                     "returns": [],
                     "description": "Hide this element for the breakpoint provided"
                 },
                 "hoverColour": {
-                    "parameters": {
-                        "guiBase": "gui"
-                    },
+                    "parameters": [
+                        {
+                            "type": "guiBase",
+                            "name": "gui"
+                        }
+                    ],
                     "returns": [],
                     "description": "Set the colour of the gui on hover"
                 },
                 "gridConstraint": {
-                    "parameters": {
-                        "guiBase": "gui",
-                        "table": "properties"
-                    },
+                    "parameters": [
+                        {
+                            "type": "guiBase",
+                            "name": "gui"
+                        },
+                        {
+                            "type": "table",
+                            "name": "properties"
+                        }
+                    ],
                     "returns": [],
                     "description": "Quick and dirty way of setting up child elements to follow a simple grid alignment"
                 }
@@ -921,38 +996,86 @@
         "http": {
             "methods": {
                 "delete": {
-                    "parameters": {
-                        "function": "?callback",
-                        "string": "body",
-                        "table": "?headers"
-                    },
+                    "parameters": [
+                        {
+                            "type": "string",
+                            "name": "url"
+                        },
+                        {
+                            "type": "string",
+                            "name": "body"
+                        },
+                        {
+                            "type": "table",
+                            "name": "?headers"
+                        },
+                        {
+                            "type": "function",
+                            "name": "?callback"
+                        }
+                    ],
                     "returns": [],
                     "description": "Sends a DELETE request. If callback is provided, this function is nonblocking and returns nil. If callback is not provided, this function yields and returns statusCode, body."
                 },
                 "put": {
-                    "parameters": {
-                        "function": "?callback",
-                        "string": "body",
-                        "table": "?headers"
-                    },
+                    "parameters": [
+                        {
+                            "type": "string",
+                            "name": "url"
+                        },
+                        {
+                            "type": "string",
+                            "name": "body"
+                        },
+                        {
+                            "type": "table",
+                            "name": "?headers"
+                        },
+                        {
+                            "type": "function",
+                            "name": "?callback"
+                        }
+                    ],
                     "returns": [],
                     "description": "Sends a PUT request. If callback is provided, this function is nonblocking and returns nil. If callback is not provided, this function yields and returns statusCode, body."
                 },
                 "post": {
-                    "parameters": {
-                        "function": "?callback",
-                        "string": "body",
-                        "table": "?headers"
-                    },
+                    "parameters": [
+                        {
+                            "type": "string",
+                            "name": "url"
+                        },
+                        {
+                            "type": "string",
+                            "name": "body"
+                        },
+                        {
+                            "type": "table",
+                            "name": "?headers"
+                        },
+                        {
+                            "type": "function",
+                            "name": "?callback"
+                        }
+                    ],
                     "returns": [],
                     "description": "Sends a POST request. If callback is provided, this function is nonblocking and returns nil. If callback is not provided, this function yields and returns statusCode, body."
                 },
                 "get": {
-                    "parameters": {
-                        "function": "?callback",
-                        "string": "url",
-                        "table": "?headers"
-                    },
+                    "parameters": [
+                        {
+                            "type": "string",
+                            "name": "url"
+                        },
+                        {
+                            "type": "table",
+                            "name": "?headers"
+                        },
+                        {
+                            "type": "function",
+                            "name": "?callback"
+                        }
+                    ],
                     "returns": [],
                     "description": "Sends a GET request. If callback is provided, this function is nonblocking and returns nil. If callback is not provided, this function yields and returns statusCode, body."
                 }
@@ -1079,9 +1202,12 @@
         "networking": {
             "methods": {
                 "getClient": {
-                    "parameters": {
-                        "string": "nameOrClientId"
-                    },
+                    "parameters": [
+                        {
+                            "type": "string",
+                            "name": "nameOrClientId"
+                        }
+                    ],
                     "returns": [
                         "client"
                     ],
@@ -1111,15 +1237,21 @@
             "className": "guiTextBox",
             "events": {
                 "keyUp": {
-                    "parameters": {
-                        "enums.keysym": "keyCode"
-                    },
+                    "parameters": [
+                        {
+                            "type": "enums.keysym",
+                            "name": "keyCode"
+                        }
+                    ],
                     "description": "Key released"
                 },
                 "keyDown": {
-                    "parameters": {
-                        "enums.keysym": "keyCode"
-                    },
+                    "parameters": [
+                        {
+                            "type": "enums.keysym",
+                            "name": "keyCode"
+                        }
+                    ],
                     "description": "Key pressed"
                 }
             },
@@ -1203,27 +1335,36 @@
         "json": {
             "methods": {
                 "decode": {
-                    "parameters": {
-                        "string": "json"
-                    },
+                    "parameters": [
+                        {
+                            "type": "string",
+                            "name": "json"
+                        }
+                    ],
                     "returns": [
                         "table"
                     ],
                     "description": ""
                 },
                 "encodeWithTypes": {
-                    "parameters": {
-                        "variant": "toEncode"
-                    },
+                    "parameters": [
+                        {
+                            "type": "variant",
+                            "name": "toEncode"
+                        }
+                    ],
                     "returns": [
                         "string"
                     ],
                     "description": ""
                 },
                 "encode": {
-                    "parameters": {
-                        "variant": "toEncode"
-                    },
+                    "parameters": [
+                        {
+                            "type": "variant",
+                            "name": "toEncode"
+                        }
+                    ],
                     "returns": [
                         "string"
                     ],
@@ -1334,17 +1475,26 @@
         "guiRichTextBox": {
             "methods": {
                 "removeColour": {
-                    "parameters": {
-                        "int": "index"
-                    },
+                    "parameters": [
+                        {
+                            "type": "int",
+                            "name": "index"
+                        }
+                    ],
                     "returns": [],
                     "description": "Removes any set colour at the index provided"
                 },
                 "setColour": {
-                    "parameters": {
-                        "colour": "colour",
-                        "int": "index"
-                    },
+                    "parameters": [
+                        {
+                            "type": "int",
+                            "name": "index"
+                        },
+                        {
+                            "type": "colour",
+                            "name": "colour"
+                        }
+                    ],
                     "returns": [],
                     "description": "Sets the colour of text onwards from the provided index"
                 },
@@ -1372,9 +1522,12 @@
             "className": "debug",
             "events": {
                 "print": {
-                    "parameters": {
-                        "string": "message"
-                    },
+                    "parameters": [
+                        {
+                            "type": "string",
+                            "name": "message"
+                        }
+                    ],
                     "description": "Fired when a print occurs"
                 }
             },
@@ -1438,9 +1591,12 @@
                     "description": "Resets the environment and reloads the loaded app"
                 },
                 "loadString": {
-                    "parameters": {
-                        "string": "lua"
-                    },
+                    "parameters": [
+                        {
+                            "type": "string",
+                            "name": "lua"
+                        }
+                    ],
                     "returns": [
                         "boolean"
                     ],
@@ -1454,9 +1610,12 @@
                     "description": "Returns the source code of the loaded app or nil if no app is loaded."
                 },
                 "loadScript": {
-                    "parameters": {
-                        "string": "file"
-                    },
+                    "parameters": [
+                        {
+                            "type": "string",
+                            "name": "file"
+                        }
+                    ],
                     "returns": [
                         "boolean"
                     ],
