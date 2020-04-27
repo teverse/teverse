@@ -30,7 +30,7 @@ return {
     string_end      = colours.Cyan,
     string          = colours.Cyan,
     escape          = colours.Blue,
-    keyword         = colours.Green,
+    keyword         = colours.Magenta,
     value           = colours.Green,
     ident           = colours.Blue,
     number          = colours.Magenta,

@@ -3,12 +3,13 @@ local theme = require("tevgit:core/editor/theme/default.lua")
 
 local editor = teverse.construct("guiRichTextBox", {
     parent = teverse.interface,
-    size = guiCoord(1, 0, 1, -100),
-    position = guiCoord(0, 0, 0, 50),
-    text = "local test = 10 + 10\n\n",
+    size = guiCoord(1, 0, 1, 0),
+    position = guiCoord(0, 0, 0, 0),
+    text = "print(\"Hello World\")\n\n",
     textWrap = true,
     textFont = "tevurl:fonts/firaCodeRegular.otf",
-    textEditable = true
+    textEditable = true,
+    textMultiline = true
 })
 
 local function doLex()
