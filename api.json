@@ -1,8 +1,8 @@
 {
     "os": "OSX",
     "arch": "x64",
-    "version": "0.20.0",
-    "generatedAt": "25/04/2020 22:46:36",
+    "version": "0.20.5",
+    "generatedAt": "27/04/2020 15:18:45",
     "sandbox": {
         "coroutine": {
             "create": "function",
@@ -20,7 +20,7 @@
         "xpcall": "function",
         "_DEVICE_PAD_BOTTOM": 0,
         "ipairs": "function",
-        "_TEV_BUILD": "0200",
+        "_TEV_BUILD": "0205",
         "colour": "cdata",
         "print": "function",
         "pcall": "function",
@@ -42,7 +42,7 @@
             "insert": "function"
         },
         "error": "function",
-        "_TEV_VERSION": "0.20.0",
+        "_TEV_VERSION": "0.20.5",
         "_DEVICE": "Mac",
         "_VERSION": "Lua 5.1",
         "_OS": "OSX",
@@ -88,8 +88,7 @@
             "parseISO8601": "function"
         },
         "thread": {
-            "create": "function",
-            "init": "function"
+            "create": "function"
         },
         "select": "function",
         "string": {
@@ -511,13 +510,13 @@
                 "imageAlpha": {
                     "hasGetter": true,
                     "type": "number",
-                    "description": "",
+                    "description": "An alpha value of 1.0 is completely visible, 0.0 is invisible.",
                     "hasSetter": true
                 },
                 "imageBottomRight": {
                     "hasGetter": true,
                     "type": "vector2",
-                    "description": "",
+                    "description": "Defaults to {1, 1}, the bottom right corner of the image loaded. Decreasing this number leads to cropping, increasing will lead to repetition.",
                     "hasSetter": true
                 },
                 "imageTopLeft": {
@@ -565,13 +564,13 @@
                 "rolloffFactor": {
                     "hasGetter": true,
                     "type": "number",
-                    "description": "",
+                    "description": "Rolloff rate for the source, default is 1.0",
                     "hasSetter": true
                 },
                 "offset": {
                     "hasGetter": true,
                     "type": "number",
-                    "description": "",
+                    "description": "The offset of the track in seconds",
                     "hasSetter": true
                 },
                 "pitch": {
@@ -583,25 +582,25 @@
                 "maxDistance": {
                     "hasGetter": true,
                     "type": "number",
-                    "description": "",
+                    "description": "Audio will not be audible beyond this distance in 3D Space",
                     "hasSetter": true
                 },
                 "loop": {
                     "hasGetter": true,
                     "type": "boolean",
-                    "description": "",
+                    "description": "When true, the audio is repeated until manually stopped",
                     "hasSetter": true
                 },
                 "gain": {
                     "hasGetter": true,
                     "type": "number",
-                    "description": "",
+                    "description": "Controls the loudness of the audio",
                     "hasSetter": true
                 },
                 "track": {
                     "hasGetter": true,
                     "type": "string",
-                    "description": "",
+                    "description": "The loaded track",
                     "hasSetter": true
                 }
             }
@@ -631,19 +630,27 @@
             "className": "guiBase",
             "events": {
                 "mouseRightUp": {
-                    "parameters": [],
+                    "parameters": {
+                        "vector2": "mousePosition"
+                    },
                     "description": "Right mouse button up"
                 },
                 "mouseWheel": {
-                    "parameters": [],
+                    "parameters": {
+                        "vector2": "wheelMovement"
+                    },
                     "description": "Mouse wheeled"
                 },
                 "fingerUp": {
-                    "parameters": [],
+                    "parameters": {
+                        "vector2": "fingerPosition"
+                    },
                     "description": "finger up"
                 },
                 "mouseMiddleUp": {
-                    "parameters": [],
+                    "parameters": {
+                        "vector2": "mousePosition"
+                    },
                     "description": "Middle mouse button up"
                 },
                 "mouseEnter": {
@@ -651,7 +658,9 @@
                     "description": "Mouse is hovering over this element"
                 },
                 "childAdded": {
-                    "parameters": [],
+                    "parameters": {
+                        "guiBase": "newChild"
+                    },
                     "description": "Triggered when the viewport size is changed"
                 },
                 "mouseExit": {
@@ -659,31 +668,45 @@
                     "description": "Mouse is no longer hovering"
                 },
                 "mouseMiddleDown": {
-                    "parameters": [],
+                    "parameters": {
+                        "vector2": "mousePosition"
+                    },
                     "description": "Middle mouse button down"
                 },
                 "mouseLeftUp": {
-                    "parameters": [],
+                    "parameters": {
+                        "vector2": "mousePosition"
+                    },
                     "description": "Left mouse button up"
                 },
                 "destroying": {
-                    "parameters": [],
+                    "parameters": {
+                        "guiBase": "newChild"
+                    },
                     "description": "Triggered when the object is destroyed"
                 },
                 "mouseRightDown": {
-                    "parameters": [],
+                    "parameters": {
+                        "vector2": "mousePosition"
+                    },
                     "description": "Right mouse button down"
                 },
                 "fingerDown": {
-                    "parameters": [],
+                    "parameters": {
+                        "vector2": "fingerPosition"
+                    },
                     "description": "finger down"
                 },
                 "childRemoved": {
-                    "parameters": [],
+                    "parameters": {
+                        "guiBase": "newChild"
+                    },
                     "description": "Triggered when a child is added"
                 },
                 "mouseLeftDown": {
-                    "parameters": [],
+                    "parameters": {
+                        "vector2": "mousePosition"
+                    },
                     "description": "Left mouse button down"
                 }
             },
@@ -692,7 +715,7 @@
                 "zIndex": {
                     "hasGetter": true,
                     "type": "number",
-                    "description": "Increasing the zIndex will render this element above others",
+                    "description": "Increasing the zIndex will render this element above others. Currently a signed 16 bit integer.",
                     "hasSetter": true
                 },
                 "active": {
@@ -749,13 +772,13 @@
                 "controlB": {
                     "hasGetter": true,
                     "type": "guiCoord",
-                    "description": "",
+                    "description": "Control position relative to the parent element",
                     "hasSetter": true
                 },
                 "controlA": {
                     "hasGetter": true,
                     "type": "guiCoord",
-                    "description": "",
+                    "description": "Control position relative to the parent element",
                     "hasSetter": true
                 }
             }
@@ -795,14 +818,17 @@
         "guiHelper": {
             "methods": {
                 "show": {
-                    "parameters": [],
+                    "parameters": {
+                        "guiBase": "gui",
+                        "breakpoint": "bp"
+                    },
                     "returns": [],
-                    "description": "Undocumented"
+                    "description": "Show this element for the breakpoint provided"
                 },
                 "setupGrid": {
                     "parameters": [],
                     "returns": [],
-                    "description": "Undocumented"
+                    "description": "Internal use only"
                 },
                 "rehook": {
                     "parameters": [],
@@ -810,24 +836,36 @@
                     "description": "Undocumented"
                 },
                 "bind": {
-                    "parameters": [],
+                    "parameters": {
+                        "guiBase": "gui",
+                        "breakpoint": "bp",
+                        "table": "properties"
+                    },
                     "returns": [],
-                    "description": "Undocumented"
+                    "description": "Apply properties to this element for a particular breakpoint"
                 },
                 "hide": {
-                    "parameters": [],
+                    "parameters": {
+                        "guiBase": "gui",
+                        "breakpoint": "bp"
+                    },
                     "returns": [],
-                    "description": "Undocumented"
+                    "description": "Hide this element for the breakpoint provided"
                 },
                 "hoverColour": {
-                    "parameters": [],
+                    "parameters": {
+                        "guiBase": "gui"
+                    },
                     "returns": [],
-                    "description": "Undocumented"
+                    "description": "Set the colour of the gui on hover"
                 },
                 "gridConstraint": {
-                    "parameters": [],
+                    "parameters": {
+                        "guiBase": "gui",
+                        "table": "properties"
+                    },
                     "returns": [],
-                    "description": "Undocumented"
+                    "description": "Quick and dirty way of setting up child elements to follow a simple grid alignment"
                 }
             },
             "className": "guiHelper",
@@ -883,24 +921,40 @@
         "http": {
             "methods": {
                 "delete": {
-                    "parameters": [],
+                    "parameters": {
+                        "function": "?callback",
+                        "string": "body",
+                        "table": "?headers"
+                    },
                     "returns": [],
-                    "description": "Undocumented"
+                    "description": "Sends a DELETE request. If callback is provided, this function is nonblocking and returns nil. If callback is not provided, this function yields and returns statusCode, body."
                 },
                 "put": {
-                    "parameters": [],
+                    "parameters": {
+                        "function": "?callback",
+                        "string": "body",
+                        "table": "?headers"
+                    },
                     "returns": [],
-                    "description": "Undocumented"
+                    "description": "Sends a PUT request. If callback is provided, this function is nonblocking and returns nil. If callback is not provided, this function yields and returns statusCode, body."
                 },
                 "post": {
-                    "parameters": [],
+                    "parameters": {
+                        "function": "?callback",
+                        "string": "body",
+                        "table": "?headers"
+                    },
                     "returns": [],
-                    "description": "Undocumented"
+                    "description": "Sends a POST request. If callback is provided, this function is nonblocking and returns nil. If callback is not provided, this function yields and returns statusCode, body."
                 },
                 "get": {
-                    "parameters": [],
+                    "parameters": {
+                        "function": "?callback",
+                        "string": "url",
+                        "table": "?headers"
+                    },
                     "returns": [],
-                    "description": "Undocumented"
+                    "description": "Sends a GET request. If callback is provided, this function is nonblocking and returns nil. If callback is not provided, this function yields and returns statusCode, body."
                 }
             },
             "className": "http",
@@ -918,25 +972,25 @@
                 "pointA": {
                     "hasGetter": true,
                     "type": "guiCoord",
-                    "description": "",
+                    "description": "Position of where the line starts relative to the parent element.",
                     "hasSetter": true
                 },
                 "lineAlpha": {
                     "hasGetter": true,
                     "type": "number",
-                    "description": "",
+                    "description": "An alpha value of 1.0 is completely visible, 0.0 is invisible.",
                     "hasSetter": true
                 },
                 "pointB": {
                     "hasGetter": true,
                     "type": "guiCoord",
-                    "description": "",
+                    "description": "Position of where the line ends relative to the parent element.",
                     "hasSetter": true
                 },
                 "lineCap": {
                     "hasGetter": true,
                     "type": "enums.lineCap",
-                    "description": "",
+                    "description": "Determines how lines are capped",
                     "hasSetter": true
                 },
                 "lineColour": {
@@ -963,7 +1017,7 @@
                 "size": {
                     "hasGetter": true,
                     "type": "guiCoord",
-                    "description": "",
+                    "description": "Size relative to the parent element",
                     "hasSetter": true
                 },
                 "strokeAlpha": {
@@ -975,13 +1029,13 @@
                 "absolutePosition": {
                     "hasGetter": true,
                     "type": "vector2",
-                    "description": "",
+                    "description": "Absolute position in pixels from the top left of the screen",
                     "hasSetter": false
                 },
                 "backgroundAlpha": {
                     "hasGetter": true,
                     "type": "number",
-                    "description": "",
+                    "description": "An alpha value of 1.0 is completely visible, 0.0 is invisible.",
                     "hasSetter": true
                 },
                 "strokeColour": {
@@ -1005,7 +1059,7 @@
                 "position": {
                     "hasGetter": true,
                     "type": "guiCoord",
-                    "description": "",
+                    "description": "Position relative to the parent element",
                     "hasSetter": true
                 },
                 "backgroundColour": {
@@ -1017,7 +1071,7 @@
                 "absoluteSize": {
                     "hasGetter": true,
                     "type": "vector2",
-                    "description": "",
+                    "description": "Absolute size in pixels",
                     "hasSetter": false
                 }
             }
@@ -1096,6 +1150,12 @@
                     "description": "The text rendered",
                     "hasSetter": true
                 },
+                "textSize": {
+                    "hasGetter": true,
+                    "type": "number",
+                    "description": "Size of the text rendered",
+                    "hasSetter": true
+                },
                 "textShadowSize": {
                     "hasGetter": true,
                     "type": "number",
@@ -1108,10 +1168,10 @@
                     "description": "When true, text wraps onto a new line with new line characters.",
                     "hasSetter": true
                 },
-                "textSize": {
+                "textMultiline": {
                     "hasGetter": true,
-                    "type": "number",
-                    "description": "Size of the text rendered",
+                    "type": "boolean",
+                    "description": "When true, user can input newline characters.",
                     "hasSetter": true
                 },
                 "textDimensions": {
@@ -1126,16 +1186,16 @@
                     "description": "Determines the rendered text's font",
                     "hasSetter": true
                 },
-                "textAlign": {
-                    "hasGetter": true,
-                    "type": "enums.align",
-                    "description": "Determines the rendered text is aligned",
-                    "hasSetter": true
-                },
                 "textColour": {
                     "hasGetter": true,
                     "type": "colour",
                     "description": "Colour of the text rendered",
+                    "hasSetter": true
+                },
+                "textAlign": {
+                    "hasGetter": true,
+                    "type": "enums.align",
+                    "description": "Determines the rendered text is aligned",
                     "hasSetter": true
                 }
             }
@@ -1197,25 +1257,25 @@
                 "finish": {
                     "hasGetter": true,
                     "type": "guiCoord",
-                    "description": "",
+                    "description": "Position where the gradient ends, relative to the top left corner of this element.",
                     "hasSetter": true
                 },
                 "strokeAlphaB": {
                     "hasGetter": true,
                     "type": "colour",
-                    "description": "",
+                    "description": "An alpha value of 1.0 is completely visible, 0.0 is invisible.",
                     "hasSetter": true
                 },
                 "backgroundAlphaB": {
                     "hasGetter": true,
                     "type": "number",
-                    "description": "",
+                    "description": "An alpha value of 1.0 is completely visible, 0.0 is invisible.",
                     "hasSetter": true
                 },
                 "start": {
                     "hasGetter": true,
                     "type": "guiCoord",
-                    "description": "",
+                    "description": "Position where the gradient begins, relative to the top left corner of this element.",
                     "hasSetter": true
                 }
             }
@@ -1274,19 +1334,24 @@
         "guiRichTextBox": {
             "methods": {
                 "removeColour": {
-                    "parameters": [],
+                    "parameters": {
+                        "int": "index"
+                    },
                     "returns": [],
-                    "description": "Undocumented"
+                    "description": "Removes any set colour at the index provided"
                 },
                 "setColour": {
-                    "parameters": [],
+                    "parameters": {
+                        "colour": "colour",
+                        "int": "index"
+                    },
                     "returns": [],
-                    "description": "Undocumented"
+                    "description": "Sets the colour of text onwards from the provided index"
                 },
                 "clearColours": {
                     "parameters": [],
                     "returns": [],
-                    "description": "Undocumented"
+                    "description": "Removes any set colours at all indexes"
                 }
             },
             "className": "guiRichTextBox",
@@ -1296,7 +1361,8 @@
             "properties": {
                 "colours": {
                     "hasGetter": true,
-                    "type": "Undocumented",
+                    "type": "table",
+                    "description": "Returns a table of {index, colour} (e.g: {{1, colour(1,0,0)}, {3, colour(0,1,0)}})",
                     "hasSetter": false
                 }
             }
@@ -1306,7 +1372,9 @@
             "className": "debug",
             "events": {
                 "print": {
-                    "parameters": [],
+                    "parameters": {
+                        "string": "message"
+                    },
                     "description": "Fired when a print occurs"
                 }
             },
@@ -1335,12 +1403,13 @@
                 "state": {
                     "hasGetter": true,
                     "type": "string",
-                    "description": "",
+                    "description": "Mostly for internal use, represents what the user is currently doing.",
                     "hasSetter": true
                 },
                 "interface": {
                     "hasGetter": true,
-                    "type": "Undocumented",
+                    "type": "interface",
+                    "description": "Workshop level interface, renders above the teverse.interfave singleton",
                     "hasSetter": false
                 },
                 "localTevGit": {
@@ -1356,37 +1425,52 @@
                 "loadDashboard": {
                     "parameters": [],
                     "returns": [],
-                    "description": "Undocumented"
+                    "description": "Resets the environment and loads the default Dashboard app"
+                },
+                "reset": {
+                    "parameters": [],
+                    "returns": [],
+                    "description": "Resets the environment"
                 },
                 "reload": {
                     "parameters": [],
                     "returns": [],
-                    "description": "Undocumented"
+                    "description": "Resets the environment and reloads the loaded app"
                 },
                 "loadString": {
-                    "parameters": [],
-                    "returns": [],
-                    "description": "Undocumented"
+                    "parameters": {
+                        "string": "lua"
+                    },
+                    "returns": [
+                        "boolean"
+                    ],
+                    "description": "Resets the environment and loads the Lua string provided as an app."
                 },
                 "getSource": {
                     "parameters": [],
-                    "returns": [],
-                    "description": "Undocumented"
+                    "returns": [
+                        "string"
+                    ],
+                    "description": "Returns the source code of the loaded app or nil if no app is loaded."
                 },
                 "loadScript": {
-                    "parameters": [],
-                    "returns": [],
-                    "description": "Undocumented"
+                    "parameters": {
+                        "string": "file"
+                    },
+                    "returns": [
+                        "boolean"
+                    ],
+                    "description": "Resets the environment and loads the Lua file at the provided path as an app."
                 },
                 "loadWorkshop": {
                     "parameters": [],
                     "returns": [],
-                    "description": "Undocumented"
+                    "description": "Resets the environment and loads the default Workshop app"
                 },
                 "prompt": {
                     "parameters": [],
                     "returns": [],
-                    "description": "Undocumented"
+                    "description": "Prompts the user to select a Lua file, this method then triggers app:loadScript(path)"
                 }
             },
             "className": "apps",
@@ -1395,5 +1479,5 @@
             "properties": []
         }
     },
-    "build": "0200"
+    "build": "0205"
 }
