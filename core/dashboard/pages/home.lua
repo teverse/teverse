@@ -87,7 +87,8 @@ return {
             size = guiCoord(1/3, -20, 0, 70),
             position = guiCoord(0, 10, 0, 0),
             backgroundColour = colour.rgb(74, 140, 122),
-            strokeRadius = 3
+            strokeRadius = 3,
+            dropShadowAlpha = 0.4
         })
 
         teverse.guiHelper
@@ -144,7 +145,8 @@ return {
             size = guiCoord(1/3, -20, 0, 70),
             position = guiCoord(1/3, 10, 0, 0),
             backgroundColour = colour.rgb(235, 187, 83),
-            strokeRadius = 3
+            strokeRadius = 3,
+            dropShadowAlpha = 0.4,
         })
 
         teverse.guiHelper
@@ -209,7 +211,8 @@ return {
             size = guiCoord(1/3, -20, 0, 70),
             position = guiCoord(2/3, 10, 0, 0),
             backgroundColour = colour.rgb(216, 100, 89),
-            strokeRadius = 3
+            strokeRadius = 3,
+            dropShadowAlpha = 0.4
         })
 
         teverse.guiHelper
