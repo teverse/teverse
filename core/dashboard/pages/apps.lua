@@ -46,7 +46,7 @@ return {
         if _DEVICE:sub(0, 6) == "iPhone" then
             teverse.guiHelper
                 .gridConstraint(appsContainer, {
-                    cellSize = guiCoord(0, page.absoluteSize.x - 40, 0, 80),
+                    cellSize = guiCoord(0, page.absoluteSize.x - 20, 0, 80),
                     cellMargin = guiCoord(0, 15, 0, 25)
                 })
         else
