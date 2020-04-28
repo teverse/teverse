@@ -1,8 +1,8 @@
 {
     "os": "OSX",
     "arch": "x64",
-    "version": "0.20.5",
-    "generatedAt": "27/04/2020 17:14:10",
+    "version": "0.20.6",
+    "generatedAt": "28/04/2020 23:25:06",
     "sandbox": {
         "coroutine": {
             "create": "function",
@@ -20,7 +20,7 @@
         "xpcall": "function",
         "_DEVICE_PAD_BOTTOM": 0,
         "ipairs": "function",
-        "_TEV_BUILD": "0205",
+        "_TEV_BUILD": "0206",
         "colour": "cdata",
         "print": "function",
         "pcall": "function",
@@ -42,7 +42,7 @@
             "insert": "function"
         },
         "error": "function",
-        "_TEV_VERSION": "0.20.5",
+        "_TEV_VERSION": "0.20.6",
         "_DEVICE": "Mac",
         "_VERSION": "Lua 5.1",
         "_OS": "OSX",
@@ -416,13 +416,13 @@
                     ],
                     "description": "Key released"
                 },
-                "mouseMiddleUp": {
-                    "parameters": [],
-                    "description": "Middle mouse button up"
-                },
                 "fingerUp": {
                     "parameters": [],
                     "description": "finger up"
+                },
+                "mouseMiddleUp": {
+                    "parameters": [],
+                    "description": "Middle mouse button up"
                 },
                 "mouseWheel": {
                     "parameters": [],
@@ -431,6 +431,23 @@
                 "fingerDown": {
                     "parameters": [],
                     "description": "finger down"
+                },
+                "changed": {
+                    "parameters": [
+                        {
+                            "type": "string",
+                            "name": "property"
+                        },
+                        {
+                            "type": "variant",
+                            "name": "oldValue"
+                        },
+                        {
+                            "type": "variant",
+                            "name": "newValue"
+                        }
+                    ],
+                    "description": "Fired when a property is changed."
                 },
                 "mouseMiddleDown": {
                     "parameters": [],
@@ -656,14 +673,31 @@
                     ],
                     "description": "Mouse wheeled"
                 },
-                "fingerUp": {
+                "changed": {
                     "parameters": [
                         {
-                            "type": "vector2",
-                            "name": "fingerPosition"
+                            "type": "string",
+                            "name": "property"
+                        },
+                        {
+                            "type": "variant",
+                            "name": "oldValue"
+                        },
+                        {
+                            "type": "variant",
+                            "name": "newValue"
                         }
                     ],
-                    "description": "finger up"
+                    "description": "Fired when a property is changed."
+                },
+                "childAdded": {
+                    "parameters": [
+                        {
+                            "type": "guiBase",
+                            "name": "newChild"
+                        }
+                    ],
+                    "description": "Triggered when the viewport size is changed"
                 },
                 "mouseMiddleUp": {
                     "parameters": [
@@ -678,27 +712,27 @@
                     "parameters": [],
                     "description": "Mouse is hovering over this element"
                 },
-                "childAdded": {
+                "fingerUp": {
                     "parameters": [
                         {
-                            "type": "guiBase",
-                            "name": "newChild"
+                            "type": "vector2",
+                            "name": "fingerPosition"
                         }
                     ],
-                    "description": "Triggered when the viewport size is changed"
+                    "description": "finger up"
                 },
                 "mouseExit": {
                     "parameters": [],
                     "description": "Mouse is no longer hovering"
                 },
-                "mouseMiddleDown": {
+                "fingerDown": {
                     "parameters": [
                         {
                             "type": "vector2",
-                            "name": "mousePosition"
+                            "name": "fingerPosition"
                         }
                     ],
-                    "description": "Middle mouse button down"
+                    "description": "finger down"
                 },
                 "mouseLeftUp": {
                     "parameters": [
@@ -727,14 +761,14 @@
                     ],
                     "description": "Right mouse button down"
                 },
-                "fingerDown": {
+                "mouseMiddleDown": {
                     "parameters": [
                         {
                             "type": "vector2",
-                            "name": "fingerPosition"
+                            "name": "mousePosition"
                         }
                     ],
-                    "description": "finger down"
+                    "description": "Middle mouse button down"
                 },
                 "childRemoved": {
                     "parameters": [
@@ -955,10 +989,10 @@
             "constructable": true,
             "extends": "guiFrame",
             "properties": {
-                "canvasSize": {
+                "scrollbarColour": {
                     "hasGetter": true,
-                    "type": "guiCoord",
-                    "description": "If bigger than 1,0,1,0, scrollvars will be visible",
+                    "type": "colour",
+                    "description": "",
                     "hasSetter": true
                 },
                 "scrollbarWidth": {
@@ -979,10 +1013,10 @@
                     "description": "",
                     "hasSetter": true
                 },
-                "scrollbarColour": {
+                "canvasSize": {
                     "hasGetter": true,
-                    "type": "colour",
-                    "description": "",
+                    "type": "guiCoord",
+                    "description": "If bigger than 1,0,1,0, scrollvars will be visible",
                     "hasSetter": true
                 },
                 "scrollbarAlpha": {
@@ -1137,6 +1171,30 @@
             "constructable": true,
             "extends": "guiBase",
             "properties": {
+                "position": {
+                    "hasGetter": true,
+                    "type": "guiCoord",
+                    "description": "Position relative to the parent element",
+                    "hasSetter": true
+                },
+                "strokeWidth": {
+                    "hasGetter": true,
+                    "type": "number",
+                    "description": "",
+                    "hasSetter": true
+                },
+                "backgroundAlpha": {
+                    "hasGetter": true,
+                    "type": "number",
+                    "description": "An alpha value of 1.0 is completely visible, 0.0 is invisible.",
+                    "hasSetter": true
+                },
+                "dropShadowAlpha": {
+                    "hasGetter": true,
+                    "type": "number",
+                    "description": "",
+                    "hasSetter": true
+                },
                 "size": {
                     "hasGetter": true,
                     "type": "guiCoord",
@@ -1155,21 +1213,15 @@
                     "description": "Absolute position in pixels from the top left of the screen",
                     "hasSetter": false
                 },
-                "backgroundAlpha": {
-                    "hasGetter": true,
-                    "type": "number",
-                    "description": "An alpha value of 1.0 is completely visible, 0.0 is invisible.",
-                    "hasSetter": true
-                },
-                "strokeColour": {
+                "dropShadowColour": {
                     "hasGetter": true,
                     "type": "colour",
                     "description": "",
                     "hasSetter": true
                 },
-                "strokeWidth": {
+                "strokeColour": {
                     "hasGetter": true,
-                    "type": "number",
+                    "type": "colour",
                     "description": "",
                     "hasSetter": true
                 },
@@ -1179,15 +1231,21 @@
                     "description": "",
                     "hasSetter": true
                 },
-                "position": {
-                    "hasGetter": true,
-                    "type": "guiCoord",
-                    "description": "Position relative to the parent element",
-                    "hasSetter": true
-                },
                 "backgroundColour": {
                     "hasGetter": true,
                     "type": "colour",
+                    "description": "",
+                    "hasSetter": true
+                },
+                "dropShadowOffset": {
+                    "hasGetter": true,
+                    "type": "vector2",
+                    "description": "",
+                    "hasSetter": true
+                },
+                "dropShadowBlur": {
+                    "hasGetter": true,
+                    "type": "number",
                     "description": "",
                     "hasSetter": true
                 },
@@ -1270,10 +1328,10 @@
                     "description": "0.0 makes the text fully transparent and invisible.",
                     "hasSetter": true
                 },
-                "textEditable": {
+                "textMultiline": {
                     "hasGetter": true,
                     "type": "boolean",
-                    "description": "When true, the user can input into this box",
+                    "description": "When true, user can input newline characters.",
                     "hasSetter": true
                 },
                 "text": {
@@ -1282,10 +1340,10 @@
                     "description": "The text rendered",
                     "hasSetter": true
                 },
-                "textSize": {
+                "textAlign": {
                     "hasGetter": true,
-                    "type": "number",
-                    "description": "Size of the text rendered",
+                    "type": "enums.align",
+                    "description": "Determines the rendered text is aligned",
                     "hasSetter": true
                 },
                 "textShadowSize": {
@@ -1300,12 +1358,6 @@
                     "description": "When true, text wraps onto a new line with new line characters.",
                     "hasSetter": true
                 },
-                "textMultiline": {
-                    "hasGetter": true,
-                    "type": "boolean",
-                    "description": "When true, user can input newline characters.",
-                    "hasSetter": true
-                },
                 "textDimensions": {
                     "hasGetter": true,
                     "type": "string",
@@ -1318,16 +1370,22 @@
                     "description": "Determines the rendered text's font",
                     "hasSetter": true
                 },
+                "textEditable": {
+                    "hasGetter": true,
+                    "type": "boolean",
+                    "description": "When true, the user can input into this box",
+                    "hasSetter": true
+                },
                 "textColour": {
                     "hasGetter": true,
                     "type": "colour",
                     "description": "Colour of the text rendered",
                     "hasSetter": true
                 },
-                "textAlign": {
+                "textSize": {
                     "hasGetter": true,
-                    "type": "enums.align",
-                    "description": "Determines the rendered text is aligned",
+                    "type": "number",
+                    "description": "Size of the text rendered",
                     "hasSetter": true
                 }
             }
@@ -1446,15 +1504,15 @@
                     "description": "",
                     "hasSetter": true
                 },
-                "iconColour": {
-                    "hasGetter": true,
-                    "type": "colour",
-                    "description": "",
-                    "hasSetter": true
-                },
                 "iconType": {
                     "hasGetter": true,
                     "type": "enums.iconType",
+                    "description": "",
+                    "hasSetter": true
+                },
+                "iconColour": {
+                    "hasGetter": true,
+                    "type": "colour",
                     "description": "",
                     "hasSetter": true
                 },
@@ -1521,6 +1579,23 @@
             "methods": [],
             "className": "debug",
             "events": {
+                "changed": {
+                    "parameters": [
+                        {
+                            "type": "string",
+                            "name": "property"
+                        },
+                        {
+                            "type": "variant",
+                            "name": "oldValue"
+                        },
+                        {
+                            "type": "variant",
+                            "name": "newValue"
+                        }
+                    ],
+                    "description": "Fired when a property is changed."
+                },
                 "print": {
                     "parameters": [
                         {
@@ -1638,5 +1713,5 @@
             "properties": []
         }
     },
-    "build": "0205"
+    "build": "0206"
 }
