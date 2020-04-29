@@ -1,4 +1,74 @@
-local function newFeedItem(pfp, name, date, body)
+-- Copyright 2020- Teverse.com
+-- Used to display the home screen of the teverse application
+
+local globals = require("tevgit:workshop/library/globals.lua") -- globals; variables or instances that can be shared between files
+
+local function createFlair(parent, data)
+    local username = parent:child("username").text
+    if data then
+        local flairCount = 0
+        
+        -- Beta(Tester) Insignia
+        if data.postedBy.beta == true then
+            teverse.construct("guiIcon", {
+                parent = parent:child("username"),
+                size = guiCoord(0, 10, 0, 10),
+                position = guiCoord(0, parent:child("username").textDimensions.x+((flairCount*10)+2), 0, 6),
+                iconType = "faSolid",
+                iconId = "flask",
+                iconColour = colour.rgb(220, 53, 69),
+            })
+            flairCount = flairCount + 1
+        end
+
+        -- Plus Membership Insignia
+        if data.postedBy.membership == "plus" then
+            teverse.construct("guiIcon", {
+                parent = parent:child("username"),
+                size = guiCoord(0, 10, 0, 10),
+                position = guiCoord(0, parent:child("username").textDimensions.x+((flairCount*10)+2), 0, 6),
+                iconType = "faSolid",
+                iconId = "thermometer-empty",
+                iconColour = globals.defaultColours.primary
+            })
+            flairCount = flairCount + 1
+        end
+
+        -- Pro Membership Insignia
+        if data.postedBy.membership == "pro" then
+            teverse.construct("guiIcon", {
+                parent = parent:child("username"),
+                size = guiCoord(0, 10, 0, 10),
+                position = guiCoord(0, parent:child("username").textDimensions.x+((flairCount*10)+2), 0, 6),
+                iconType = "faSolid",
+                iconId = "thermometer-full",
+                iconColour = globals.defaultColours.purple
+            })
+            parent:child("username").textColour = globals.defaultColours.purple
+            parent:child("body").textColour = globals.defaultColours.purple
+            flairCount = flairCount + 1
+        end
+
+        -- Mod/Staff Insignia
+        --[[
+        if  then
+            teverse.construct("guiIcon", {
+                parent = parent:child("username"),
+                size = guiCoord(0, 10, 0, 10),
+                position = guiCoord(0, parent:child("username").textDimensions.x+((flairCount*10)+2), 0, 6),
+                iconType = "faSolid",
+                iconId = "shield-alt",
+                iconColour = globals.defaultColours.blue
+            })
+            parent:child("username").textColour = globals.defaultColours.blue
+            parent:child("body").textColour = globals.defaultColours.blue
+            flairCount = flairCount + 1
+        end
+        ]]--
+    end
+end
+
+local function newFeedItem(date, data)
     local item = teverse.construct("guiFrame", {
         size = guiCoord(1, -20, 0, 48),
         position = guiCoord(0, 10, 0, 40),
@@ -10,19 +80,19 @@ local function newFeedItem(pfp, name, date, body)
         name = "profilePicture",
         size = guiCoord(0, 30, 0, 30),
         position = guiCoord(0, 0, 0, 5),
-        image = pfp,
+        image = "tevurl:asset/user/"..(data.postedBy.id),
         parent = item,
         strokeRadius = 15,
         strokeAlpha = 0.04
     })
 
-    local name = teverse.construct("guiTextBox", {
+    local username = teverse.construct("guiTextBox", {
         name = "username",
         size = guiCoord(1, -40, 0, 20),
         position = guiCoord(0, 40, 0, 3),
         backgroundAlpha = 0,
         parent = item,
-        text = name,
+        text = data.postedBy.username,
         textSize = 20,
         textAlpha = 0.6,
         textFont = "tevurl:fonts/openSansBold.ttf"
@@ -47,11 +117,13 @@ local function newFeedItem(pfp, name, date, body)
         position = guiCoord(0, 40, 0, 22),
         backgroundAlpha = 0,
         parent = item,
-        text = body,
+        text = data.message,
         textWrap = true,
         textAlign = enums.align.topLeft,
-        textSize = 16
+        textSize = 16,
     })
+    
+    createFlair(item, data)
 
     return item
 end
@@ -309,9 +381,9 @@ return {
             }, function(code, body)
                 if code == 200 then
                     lastRefresh = os.clock()
-                    local json = teverse.json:decode(body)
-                    if #json > 0 then
-                        if json[1].id == newestFeed then
+                    local data = teverse.json:decode(body)
+                    if #data > 0 then
+                        if data[1].id == newestFeed then
                             -- no change from last refresh
                             return nil
                         else
@@ -322,11 +394,11 @@ return {
                                 end
                             end
                         end
-                        newestFeed = json[1].id
+                        newestFeed = data[1].id
                         local y = 50
-                        for _,v in pairs(json) do
+                        for _,v in pairs(data) do
                             local date = os.date("%d/%m/%Y %H:%M", os.parseISO8601(v.postedAt))
-                            local item = newFeedItem("tevurl:asset/user/" .. v.postedBy.id, v.postedBy.username, date, v.message)
+                            local item = newFeedItem(date, v)
                             item.parent = feedItems
                             local dy = item:child("body").textDimensions.y
                             item.size = guiCoord(1, -20, 0, dy + 28)
