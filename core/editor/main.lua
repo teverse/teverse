@@ -3,8 +3,8 @@ local theme = require("tevgit:core/editor/theme/default.lua")
 
 local editor = teverse.construct("guiRichTextBox", {
     parent = teverse.interface,
-    size = guiCoord(1, 0, 1, 0),
-    position = guiCoord(0, 0, 0, 0),
+    size = guiCoord(1, 0, 1, -50),
+    position = guiCoord(0, 0, 0, 50),
     text = "print(\"Hello World\")\n\n",
     textWrap = true,
     textFont = "tevurl:fonts/firaCodeRegular.otf",
