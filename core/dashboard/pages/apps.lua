@@ -105,21 +105,23 @@ return {
                 })
         end
 
-        local appGui = createApp({
-            id = "",
-            name = "Learn Code",
-            owner = {
-                username = "Teverse"
-            }
-        })
-        appGui.parent = appsContainer
-        appGui:on("mouseLeftUp", function()
-            if not loading.visible then
-                loading.visible = false
-                teverse.apps:loadString("require('tevgit:core/tutorials/main.lua')")
-            end
-        end)
-
+        if teverse.dev.localTevGit then
+            local appGui = createApp({
+                id = "",
+                name = "Learn Code",
+                owner = {
+                    username = "Teverse"
+                }
+            })
+            appGui.parent = appsContainer
+            appGui:on("mouseLeftUp", function()
+                if not loading.visible then
+                    loading.visible = false
+                    teverse.apps:loadString("require('tevgit:core/tutorials/main.lua')")
+                end
+            end)
+        end
+        
         teverse.http:get("https://teverse.com/api/apps", {
             ["Authorization"] = "BEARER " .. teverse.userToken
         }, function(code, body)
