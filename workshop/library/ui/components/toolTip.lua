@@ -37,7 +37,7 @@ return {
                 backgroundAlpha = 0
             })
 
-            teverse.construct("guiImage", {
+            teverse.construct("guiIcon", {
                 parent = container,
                 size = guiCoord(0, 48, 0, 48),
                 position = guiCoord(0.33, 0, -0.15, 0),
@@ -59,7 +59,7 @@ return {
                 borderColour = globals.defaultColours.secondary
             })
 
-            teverse.construct("guiImage", {
+            teverse.construct("guiIcon", {
                 parent = bodyContainer,
                 size = guiCoord(0, 16, 0, 16),
                 position = guiCoord(0.04, 0, 0.25, 0),
@@ -95,7 +95,7 @@ return {
                 backgroundAlpha = 0
             })
 
-            teverse.construct("guiImage", {
+            teverse.construct("guiIcon", {
                 parent = container,
                 size = guiCoord(0, 48, 0, 48),
                 position = guiCoord(-0.03, 0, -0.06, 0),
@@ -117,7 +117,7 @@ return {
                 borderColour = globals.defaultColours.primary
             })
 
-            teverse.construct("guiImage", {
+            teverse.construct("guiIcon", {
                 parent = bodyContainer,
                 size = guiCoord(0, 16, 0, 16),
                 position = guiCoord(0.05, 0, 0.3, 0),

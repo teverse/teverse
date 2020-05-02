@@ -43,7 +43,7 @@ return {
             backgroundColour = globals.defaultColours.white,
         })
     
-        local selectTool = teverse.construct("guiImage", {
+        local selectTool = teverse.construct("guiIcon", {
             parent = toolsContainer,
             size = guiCoord(0, 20, 0, 20),
             position = guiCoord(0.25, 0, 0.1, 0),
@@ -53,7 +53,7 @@ return {
             backgroundColour = globals.defaultColours.white,
         })
     
-        local moveTool = teverse.construct("guiImage", {
+        local moveTool = teverse.construct("guiIcon", {
             parent = toolsContainer,
             size = guiCoord(0, 20, 0, 20),
             position = guiCoord(0.25, 0, 0.32, 0),
@@ -63,7 +63,7 @@ return {
             backgroundColour = globals.defaultColours.white,
         })
     
-        local rotateTool = teverse.construct("guiImage", {
+        local rotateTool = teverse.construct("guiIcon", {
             parent = toolsContainer,
             size = guiCoord(0, 20, 0, 20),
             position = guiCoord(0.25, 0, 0.54, 0),
@@ -73,7 +73,7 @@ return {
             backgroundColour = globals.defaultColours.white,
         })
 
-        local sizeTool = teverse.construct("guiImage", {
+        local sizeTool = teverse.construct("guiIcon", {
             parent = toolsContainer,
             size = guiCoord(0, 20, 0, 20),
             position = guiCoord(0.25, 0, 0.76, 0),
@@ -142,7 +142,7 @@ return {
             local args = {...} -- Holds overrides
             local xPositionOverride = args[1] or 0 -- Override if specified, else 0
             local positionToolTipOverride = args[2] or guiCoord(0, 0, 0, 0) -- Override if specified, else guiCoord(0, 0, 0, 0)
-            local iconImage = teverse.construct("guiImage", {
+            local iconImage = teverse.construct("guiIcon", {
                 parent = page
                 name = name,
                 size = guiCoord(0, 20, 0, 20),
