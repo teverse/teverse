@@ -105,7 +105,7 @@ return {
                 })
         end
 
-        if teverse.dev.localTevGit then
+        if _TEV_VERSION ~= "0.20.6" then
             local appGui = createApp({
                 id = "",
                 name = "Learn Code",
@@ -113,6 +113,7 @@ return {
                     username = "Teverse"
                 }
             })
+            appGui.name = "a"
             appGui.parent = appsContainer
             appGui:on("mouseLeftUp", function()
                 if not loading.visible then

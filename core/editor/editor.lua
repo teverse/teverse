@@ -80,7 +80,7 @@ return {
         doLex()
         
         local lastStroke = nil
-        editor:on("keyUp", function()
+        local handler = function()
             if lastStroke then 
                 return
             end
@@ -90,8 +90,11 @@ return {
             doLex()
             sleep(0.1)
             lastStroke = nil
-        end)
+        end
         
-        return container
+        editor:on("keyUp", handler)
+        editor:on("changed", handler)
+        
+        return container, editor
     end
 }

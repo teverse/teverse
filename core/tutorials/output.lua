@@ -1,7 +1,7 @@
 local theme = require("tevgit:core/editor/theme/default.lua")
 
 return {
-    create = function()
+    create = function(doNotHook)
         local container = teverse.construct("guiRichTextBox", {
             parent = teverse.interface,
             size = guiCoord(1, 0, 1, 0),
@@ -35,9 +35,11 @@ return {
             name = "output"
         })
 
-        teverse.debug:on("print", function(msg)
-            text.text = string.sub(os.date("%H:%M:%S") .. " : " .. msg .. "\n" .. text.text, 0, 500)
-        end)
+        if not doNotHook then
+            teverse.debug:on("print", function(msg)
+                text.text = string.sub(os.date("%H:%M:%S") .. " : " .. msg .. "\n" .. text.text, 0, 500)
+            end)
+        end
 
         return container, text
     end
