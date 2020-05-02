@@ -58,7 +58,7 @@ local function createFlair(parent, data)
         end
 
         -- Pro Membership Insignia
-        if data.postedBy.membership == 1 then
+        if data.postedBy.membership == 2 then
             teverse.construct("guiIcon", {
                 parent = username,
                 size = guiCoord(0, 10, 0, 10),
