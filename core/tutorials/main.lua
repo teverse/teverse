@@ -8,6 +8,7 @@ local container = teverse.construct("guiScrollView", {
     parent = containerNegativePadding,
     size = guiCoord(1, 0, 1, -100),
     position = guiCoord(0, 0, 0, 50),
+    canvasSize = guiCoord(1, 0, 1, 0),
     backgroundAlpha = 0,
 })
 
@@ -41,15 +42,75 @@ local function loadTutorialPage(tutorial, pagei, lessonFrame)
 
         teverse.construct("guiTextBox", {
             parent = lessonFrame,
-            size = guiCoord(1.0, -20, 0, 18),
+            size = guiCoord(1.0, -20, 1, -50),
             position = guiCoord(0, 10, 0, 42),
             backgroundAlpha = 0,
             text = page.description,
             textSize = 18,
-            textAlign = "middleLeft"
+            textAlign = "topLeft",
+            textWrap = true
         })
-    elseif page.type == "" then
+    elseif page.type == "titleDescCode" then
+        teverse.construct("guiTextBox", {
+            parent = lessonFrame,
+            size = guiCoord(1.0, -20, 0, 32),
+            position = guiCoord(0, 10, 0, 10),
+            backgroundAlpha = 0,
+            text = page.title,
+            textSize = 32,
+            textAlign = "middleLeft",
+            textFont = "tevurl:fonts/openSansBold.ttf"
+        })
 
+        local desc = teverse.construct("guiTextBox", {
+            parent = lessonFrame,
+            size = guiCoord(1.0, -20, 1, -50),
+            position = guiCoord(0, 10, 0, 42),
+            backgroundAlpha = 0,
+            text = page.description,
+            textSize = 18,
+            textAlign = "topLeft",
+            textWrap = true
+        })
+
+        local textDimensions = desc.textDimensions.y
+        desc.size = guiCoord(1, -20, 0, textDimensions)
+
+        local output, outputtxt = require("tevgit:core/tutorials/output.lua").create()
+        output.parent = lessonFrame
+        output.position = guiCoord(0.5, 10, 0, textDimensions + 52)
+        output.size = guiCoord(0.5, -20, 1, -(textDimensions + 122))
+
+        local editor = require("tevgit:core/editor/editor.lua").create()
+        editor.parent = lessonFrame
+        editor.position = guiCoord(0, 10, 0, textDimensions + 52)
+        editor.size = guiCoord(0.5, -20, 1, -(textDimensions + 62))
+
+        local btn = teverse.construct("guiTextBox", {
+            parent = lessonFrame,
+            size = guiCoord(0, 90, 0, 30),
+            position = guiCoord(1, -205, 1, -50),
+            text = "Run",
+            textSize = 24,
+            textAlign = "middle",
+            textFont = "tevurl:fonts/openSansBold.ttf",
+            backgroundColour = colour.rgb(74, 140, 122),
+            textColour = colour.white(),
+            dropShadowAlpha = 0.2
+        })
+
+        btn:on("mouseLeftUp", function()
+            outputtxt.text = ""
+            local f, msg = loadstring(editor:child("editor").text)
+            if not f then
+                outputtxt.text = "Error when running your code:\n"..msg
+            else
+                local success, result = pcall(f)
+                if not success then
+                    outputtxt.text = "Error when running your code:\n"..result
+                end
+            end
+        end)
     end
 
     if pagei == #tutorial.pages then

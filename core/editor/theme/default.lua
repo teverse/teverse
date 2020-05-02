@@ -24,6 +24,7 @@ local colours = {
 return {
     background      = colours.Base03,
     foreground      = colours.Base0,
+    highlighted     = colours.Base02,
 
     comment         = colours.Base01,
     string_start    = colours.Cyan,
