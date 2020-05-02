@@ -166,13 +166,14 @@ local function loadTutorialPage(tutorial, pagei, lessonFrame)
 
         local desc = teverse.construct("guiTextBox", {
             parent = lessonFrame,
-            size = guiCoord(0.5, -20, 1, -50),
+            size = guiCoord(0.5, -20, 1, -100),
             position = guiCoord(0.5, 10, 0, 42),
             backgroundAlpha = 0,
             text = page.description,
             textSize = 18,
             textAlign = "topLeft",
-            textWrap = true
+            textWrap = true,
+            active = false
         })
 
         if page.output then
@@ -183,6 +184,7 @@ local function loadTutorialPage(tutorial, pagei, lessonFrame)
             output.position = guiCoord(0.5, 10, 0, descDimensions.y + 45)
             output.size = guiCoord(0.5, -20, 0, outputtxt.textDimensions.y + 44)
         end
+        allowContinue = true
     end
 
     if pagei == #tutorial.pages then
@@ -194,7 +196,7 @@ local function loadTutorialPage(tutorial, pagei, lessonFrame)
             textSize = 20,
             textAlign = "middle",
             textFont = "tevurl:fonts/openSansBold.ttf",
-            backgroundColour = colour.rgb(235, 187, 83),
+            backgroundColour = colour.rgb(122, 122, 122),
             textColour = colour.white(),
             dropShadowAlpha = 0.2
         })
@@ -221,6 +223,8 @@ local function loadTutorialPage(tutorial, pagei, lessonFrame)
         btn:on("mouseEnter", function()
             if allowContinue then
                 btn.backgroundColour = colour.rgb(235, 187, 83)
+            else
+                btn.backgroundColour = colour.rgb(122, 122, 122)
             end
         end)
 

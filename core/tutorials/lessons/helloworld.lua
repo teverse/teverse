@@ -13,7 +13,9 @@ Type Hello World between the two quotation marks, then press run]],
             function(script, logs)
                 local correct = script.text:lower() == "print(\"hello world\")"
                 if not correct then
-                    print("Try again thats not quite right...")
+                    print("Try again thats not quite right...\n")
+                else
+                    print("Well done! Press next!\n")
                 end
                 return correct
             end
