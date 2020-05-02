@@ -4,49 +4,72 @@
 local globals = require("tevgit:workshop/library/globals.lua") -- globals; variables or instances that can be shared between files
 
 local function createFlair(parent, data)
-    local username = parent:child("username").text
+    local username = parent:child("username")
     if data then
-        local flairCount = 0
+        local x = username.textDimensions.x + 3
         
         -- Beta(Tester) Insignia
         if data.postedBy.beta == true then
             teverse.construct("guiIcon", {
-                parent = parent:child("username"),
+                parent = username,
                 size = guiCoord(0, 10, 0, 10),
-                position = guiCoord(0, parent:child("username").textDimensions.x+((flairCount*10)+2), 0, 6),
+                position = guiCoord(0, x, 0, 6),
                 iconType = "faSolid",
                 iconId = "flask",
                 iconColour = colour.rgb(220, 53, 69),
             })
-            flairCount = flairCount + 1
+            x = x + 11
         end
 
         -- Plus Membership Insignia
-        if data.postedBy.membership == "plus" then
-            teverse.construct("guiIcon", {
-                parent = parent:child("username"),
-                size = guiCoord(0, 10, 0, 10),
-                position = guiCoord(0, parent:child("username").textDimensions.x+((flairCount*10)+2), 0, 6),
-                iconType = "faSolid",
-                iconId = "thermometer-empty",
-                iconColour = globals.defaultColours.primary
+        if data.postedBy.membership == 1 then
+            local badge = teverse.construct("guiFrame", {
+                parent = username,
+                size = guiCoord(0, 32, 0, 12),
+                position = guiCoord(0, x, 0, 5),
+                strokeRadius = 5,
+                backgroundColour = globals.defaultColours.red,
+                strokeAlpha = 0.2
             })
-            flairCount = flairCount + 1
+
+            teverse.construct("guiIcon", {
+                parent = badge,
+                size = guiCoord(0, 8, 0, 8),
+                position = guiCoord(0, 2, 0, 2),
+                iconType = "faSolid",
+                iconId = "star",
+                iconColour = globals.defaultColours.secondary
+            })
+
+            teverse.construct("guiTextBox", {
+                parent = badge,
+                size = guiCoord(0, 18, 0, 10),
+                position = guiCoord(0, 11, 0, 1),
+                textSize = 10,
+                text = "PLUS",
+                textColour = globals.defaultColours.secondary,
+                textFont = "tevurl:fonts/openSansSemiBold.ttf",
+                backgroundAlpha = 0
+            })
+
+            username.textColour = globals.defaultColours.red
+            parent:child("body").textColour = globals.defaultColours.red
+            x = x + 33
         end
 
         -- Pro Membership Insignia
-        if data.postedBy.membership == "pro" then
+        if data.postedBy.membership == 1 then
             teverse.construct("guiIcon", {
-                parent = parent:child("username"),
+                parent = username,
                 size = guiCoord(0, 10, 0, 10),
-                position = guiCoord(0, parent:child("username").textDimensions.x+((flairCount*10)+2), 0, 6),
+                position = guiCoord(0, x, 0, 6),
                 iconType = "faSolid",
                 iconId = "thermometer-full",
                 iconColour = globals.defaultColours.purple
             })
-            parent:child("username").textColour = globals.defaultColours.purple
+            username.textColour = globals.defaultColours.purple
             parent:child("body").textColour = globals.defaultColours.purple
-            flairCount = flairCount + 1
+            x = x + 11
         end
 
         -- Mod/Staff Insignia
