@@ -50,19 +50,17 @@ return {
             position = guiCoord(0.04, 0, 0.05, 0),
             text = titleValue,
             textColour = globals.defaultColours.primary,
-            fontFile = "local:OpenSans-Bold.ttf",
-            fontSize = 30,
-            readOnly = true
+            textFont = "tevurl:fonts/openSansBold.ttf",
+            textSize = 30
         })
 
         teverse.construct("guiTextBox", {
             parent = container,
             size = guiCoord(0.48, 0, 0.1, 0),
             position = guiCoord(0.86, 0, 0.1, 0),
-            text = globals.user[2],
+            text = globals.user.name,
             textColour = globals.defaultColours.primary,
-            fontSize = 25,
-            readOnly = true
+            textSize = 25
         })
 
         local userIcon = teverse.construct("guiFrame", {
@@ -70,7 +68,7 @@ return {
             size = guiCoord(0, 32, 0, 32),
             position = guiCoord(0.82, 0, 0, 0),
             backgroundColour = globals.defaultColours.primary,
-            borderRadius = 100
+            strokeRadius = 100
         })
 
         local statusIcon = teverse.construct("guiFrame", {
@@ -78,10 +76,10 @@ return {
             size = guiCoord(0, 16, 0, 16),
             position = guiCoord(0.836, 0, 0.5, 0),
             backgroundColour = globals.defaultColours.green,
-            borderWidth = 2,
-            borderColour = globals.defaultColours.white,
-            borderAlpha = 1,
-            borderRadius = 32,
+            strokeWidth = 2,
+            strokeColour = globals.defaultColours.white,
+            strokeAlpha = 1,
+            strokeRadius = 32,
             zIndex = 100
         })
 
@@ -114,7 +112,7 @@ return {
             iconColour = globals.defaultColours.primary,
             backgroundColour = globals.defaultColours.white,
         })
-
+        local test = self
         self.register = function(name, tooltip, page)
             --[[
                 @Description
@@ -129,21 +127,21 @@ return {
                     Void, null, nil
             ]]--
 
-            table.insert(self.keys, {name})
-            local button = teverse.construct("guiButton", {
+            table.insert(test.keys, {name})
+            local button = teverse.construct("guiTextBox", {
                 parent = container,
                 size = guiCoord(0.056, 0, 0.9, 0),
-                position = guiCoord(0.2+(#self.keys*0.07), 0, 0.05, 0),
+                position = guiCoord(0.2+(#test.keys*0.07), 0, 0.05, 0),
                 text = name,
                 textColour = globals.defaultColours.primary,
-                fontSize = 30,
+                textSize = 30,
                 textAlign = enums.align.middle,
                 zIndex = 100
             })
 
             local _tooltip = toolTip.construct("vertical", button, tooltip) -- Initialize tooltip instance
 
-            button:mouseLeftPressed(function()
+            button:on("mouseLeftDown", function()
                 globals.sideBarPageActive.visible = (not globals.sideBarPageActive.visible) -- Unlist active page from view
                 if globals.sideBarPageActive == page then -- If the same page is clicked twice, unlist and replace with default page
                     globals.sideBarPageActive = globals.sideBarPageDefault
@@ -155,12 +153,12 @@ return {
             end)
 
             -- When mouse hovers over button, display tooltip
-            button:on("mouseFocused", function() 
+            button:on("mouseEnter", function() 
                 _tooltip.display()
             end)
 
             -- When mouse leaves from button, hide tooltip
-            button:on("mouseUnfocused", function() 
+            button:on("mouseExit", function() 
                 _tooltip.hide()
             end)
         end

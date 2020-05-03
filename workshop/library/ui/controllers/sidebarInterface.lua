@@ -77,7 +77,7 @@ return {
             parent = toolsContainer,
             size = guiCoord(0, 20, 0, 20),
             position = guiCoord(0.25, 0, 0.76, 0),
-            iconId = "fa:s-expand",
+            iconId = "expand",
             iconType = "faSolid",
             iconColour = globals.defaultColours.primary,
             backgroundColour = globals.defaultColours.white,
@@ -158,12 +158,12 @@ return {
             --button:mouseLeftPressed(callback) -- When button is clicked, perform callback action
 
             -- When mouse hovers over button, display tooltip
-            iconImage:on("mouseFocused", function() 
+            iconImage:on("mouseEnter", function() 
                 _tooltip.display()
             end)
 
             -- When mouse leaves from button, hide tooltip
-            iconImage:on("mouseUnfocused", function() 
+            iconImage:on("mouseExit", function() 
                 _tooltip.hide()
             end)
         end

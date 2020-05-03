@@ -44,7 +44,7 @@ local testPage = sideBar.registerPage("Test") -- Register test page to sidebar i
 sideBar.registerIcon(testPage, "consoleIcon", "terminal", " Open console window", nil)
 sideBar.registerIcon(testPage, "playIcon", "play", "Play scene", nil)
 sideBar.registerIcon(testPage, "serverIcon", "server", "Configure server", nil)
-sideBar.registerIcon(testPage, "fullScreenIcon", "fullscreen", "Toggle full screen", nil)
+sideBar.registerIcon(testPage, "fullScreenIcon", "expand-alt", "Toggle full screen", nil)
 
 
 
