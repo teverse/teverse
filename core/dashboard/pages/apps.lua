@@ -1,3 +1,51 @@
+local function createApp(app)
+    local appGui = teverse.construct("guiFrame", {
+        strokeAlpha = 0.1,
+        strokeRadius = 4
+    })
+
+    teverse.guiHelper.hoverColour(appGui, colour.rgb(247, 247, 247))
+
+    teverse.construct("guiTextBox", {
+        parent = appGui,
+        size = guiCoord(1.0, -20, 0, 22),
+        position = guiCoord(0, 10, 0, 5),
+        backgroundAlpha = 0,
+        text = app.name,
+        textSize = 22,
+        textAlign = "middleLeft",
+        textFont = "tevurl:fonts/openSansBold.ttf",
+        active = false
+    })
+
+    teverse.construct("guiTextBox", {
+        parent = appGui,
+        size = guiCoord(1.0, -20, 0, 16),
+        position = guiCoord(0, 10, 0, 24),
+        backgroundAlpha = 0,
+        textAlpha = 0.5,
+        text = "by " .. app.owner.username,
+        textSize = 16,
+        active = false
+    })
+
+    teverse.construct("guiIcon", {
+        parent = appGui,
+        size = guiCoord(1, 0, 1, -45),
+        position = guiCoord(0, 0, 0, 45),
+        iconMax = 20,
+        iconColour = colour(1, 1, 1),
+        iconType = "faSolid",
+        iconId = "code",
+        iconAlpha = 0.9,
+        backgroundAlpha = 1.0,
+        backgroundColour = colour.rgb(216, 100, 89),
+        active = false
+    })
+
+    return appGui
+end
+
 return {
     name = "Apps",
     iconId = "shapes",
@@ -43,12 +91,38 @@ return {
             backgroundAlpha = 0
         })
 
-        teverse.guiHelper
-            .gridConstraint(appsContainer, {
-                cellSize = guiCoord(0, 150, 0, 80),
-                cellMargin = guiCoord(0, 15, 0, 25)
-            })
+        if _DEVICE:sub(0, 6) == "iPhone" then
+            teverse.guiHelper
+                .gridConstraint(appsContainer, {
+                    cellSize = guiCoord(0, page.absoluteSize.x - 20, 0, 80),
+                    cellMargin = guiCoord(0, 15, 0, 25)
+                })
+        else
+            teverse.guiHelper
+                .gridConstraint(appsContainer, {
+                    cellSize = guiCoord(0, 160, 0, 80),
+                    cellMargin = guiCoord(0, 15, 0, 25)
+                })
+        end
 
+        if _TEV_VERSION ~= "0.20.6" then
+            local appGui = createApp({
+                id = "",
+                name = "Learn Code",
+                owner = {
+                    username = "Teverse"
+                }
+            })
+            appGui.name = "a"
+            appGui.parent = appsContainer
+            appGui:on("mouseLeftUp", function()
+                if not loading.visible then
+                    loading.visible = false
+                    teverse.apps:loadString("require('tevgit:core/tutorials/main.lua')")
+                end
+            end)
+        end
+        
         teverse.http:get("https://teverse.com/api/apps", {
             ["Authorization"] = "BEARER " .. teverse.userToken
         }, function(code, body)
@@ -56,13 +130,8 @@ return {
                 local apps = teverse.json:decode(body)
                 subtitle.text = "Found " .. #apps .. " public apps."
                 for _,app in pairs(apps) do
-                    local appGui = teverse.construct("guiFrame", {
-                        parent = appsContainer,
-                        strokeAlpha = 0.1,
-                        strokeRadius = 4
-                    })
-
-                    teverse.guiHelper.hoverColour(appGui, colour.rgb(247, 247, 247))
+                    local appGui = createApp(app)
+                    appGui.parent = appsContainer
                     appGui:on("mouseLeftUp", function()
                         if not loading.visible then
                             loading.text = "Working..."
@@ -81,43 +150,6 @@ return {
                             end)
                         end
                     end)
-
-                    teverse.construct("guiTextBox", {
-                        parent = appGui,
-                        size = guiCoord(1.0, -20, 0, 22),
-                        position = guiCoord(0, 10, 0, 5),
-                        backgroundAlpha = 0,
-                        text = app.name,
-                        textSize = 22,
-                        textAlign = "middleLeft",
-                        textFont = "tevurl:fonts/openSansBold.ttf",
-                        active = false
-                    })
-
-                    teverse.construct("guiTextBox", {
-                        parent = appGui,
-                        size = guiCoord(1.0, -20, 0, 16),
-                        position = guiCoord(0, 10, 0, 24),
-                        backgroundAlpha = 0,
-                        textAlpha = 0.5,
-                        text = "by " .. app.owner.username,
-                        textSize = 16,
-                        active = false
-                    })
-
-                    teverse.construct("guiIcon", {
-                        parent = appGui,
-                        size = guiCoord(1, 0, 1, -45),
-                        position = guiCoord(0, 0, 0, 45),
-                        iconMax = 20,
-                        iconColour = colour(1, 1, 1),
-                        iconType = "faSolid",
-                        iconId = "code",
-                        iconAlpha = 0.9,
-                        backgroundAlpha = 1.0,
-                        backgroundColour = colour.rgb(216, 100, 89),
-                        active = false
-                    })
                 end
             else
                 subtitle.text = "Server error."

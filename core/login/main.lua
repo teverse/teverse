@@ -49,7 +49,13 @@ login.position = guiCoord(0.5, -50, 0.5, 45)
 local db = false
 local listenerid = login:on("mouseLeftDown", function()
     if db then return end
-    teverse.openUrl("https://teverse.com/dashboard?client=1")
+
+    if _DEVICE:sub(0, 6) == "iPhone" or _DEVICE:sub(0, 4) == "iPad" then
+        teverse.openUrl("https://teverse.com/dashboard?client=2")
+    else
+        teverse.openUrl("https://teverse.com/dashboard?client=1")
+    end
+
     login.visible = false
     sleep(2)
     login.visible = true

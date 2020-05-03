@@ -1,0 +1,1 @@
+local editor = require("tevgit:core/editor/editor.lua").create()

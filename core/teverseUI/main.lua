@@ -1,82 +1,70 @@
 -- This is the main interface loaded into coreinterface
-local console = require("tevgit:core/teverseUI/console.lua")
 
-local container = teverse.construct("guiFrame", {
+-- status bar for mobiles:
+teverse.construct("guiFrame", {
+    name = "statusBar",
     parent = teverse.coreInterface,
-    size = guiCoord(0, 77, 0, 26),
-    position = guiCoord(1, -81, 1, -30),
-    backgroundAlpha = 0.0,
-    strokeRadius = 13,
-    zIndex = 1000
+    size = guiCoord(1, 0, 0, 50),
+    position = guiCoord(0, 0, 0, -50),
+    backgroundColour = colour.black(),
+    backgroundAlpha = 0.75
 })
 
-local homebtn
-
-local ico = teverse.construct("guiIcon", {
-    parent = container,
-    size = guiCoord(0, 20, 0, 20),
-    position = guiCoord(1, -23, 0.5, -10),
+local settingsButton = teverse.construct("guiIcon", {
+    parent = teverse.coreInterface,
+    size = guiCoord(0, 35, 0, 35),
+    position = guiCoord(1, -45, 1, -45),
     iconId = "wrench",
     iconType = "faSolid",
     iconColour = colour(0, 0, 0),
     iconMax = 12,
     iconAlpha = 0.75,
-    strokeRadius = 10,
-    strokeAlpha = 0.5,
+    strokeRadius = 2,
+    dropShadowAlpha = 0.15,
+    strokeAlpha = 0.05,
     backgroundAlpha = 1,
-    visible = teverse.networking.localClient ~= nil
+    visible = teverse.networking.localClient ~= nil,
+    zIndex = 1000
 })
 
+local container = teverse.construct("guiFrame", {
+    parent = teverse.coreInterface,
+    size = guiCoord(0, 100, 0, 35),
+    position = guiCoord(1, -155, 1, -45),
+    backgroundAlpha = 0,
+    visible = false
+})
+
+local console = require("tevgit:core/teverseUI/console.lua")
 local lastClick = 0
-ico:on("mouseLeftDown", function()
+settingsButton:on("mouseLeftUp", function()
     if os.clock() - lastClick < 0.4 then
         -- double click
         lastClick = 0
         console.visible = not console.visible
     else
         lastClick = os.clock()
+        container.visible = true
+        repeat sleep(0.1) until teverse.input.mousePosition.y < container.absolutePosition.y - 25
+        container.visible = false
     end
 end)
 
---if teverse.dev.localTevGit then
-
-homebtn = teverse.construct("guiTextBox", {
+local homeButton = teverse.construct("guiIcon", {
     parent = container,
-    size = guiCoord(0, 40, 0, 14),
-    position = guiCoord(0, 6, 0.5, -7),
-    text = "HOME",
-    textAlign = "middle",
-    textFont = "tevurl:fonts/openSansLight.ttf",
-    textColour = colour(0, 0, 0),
-    textSize = 14,
-    strokeRadius = 7,
-    strokeAlpha = 0.5,
-    backgroundAlpha = 0,
-    visible = false
+    size = guiCoord(0, 35, 0, 35),
+    position = guiCoord(1, -35, 0, 0),
+    iconId = "home",
+    iconType = "faSolid",
+    iconColour = colour(0, 0, 0),
+    iconMax = 12,
+    iconAlpha = 0.75,
+    strokeRadius = 2,
+    dropShadowAlpha = 0.15,
+    strokeAlpha = 0.05,
+    backgroundAlpha = 1
 })
 
-homebtn:on("mouseLeftUp", function()
+homeButton:on("mouseLeftUp", function()
     teverse.apps:loadDashboard()
-end)
-
-ico:on("mouseLeftUp", function()
-    container.backgroundAlpha = 1.0
-    homebtn.visible = true
-
-    if teverse.dev.state == "dashboard" then
-        if teverse.dev.localTevGit then
-            homebtn.text = "RESET"
-            homebtn.visible = true
-        else
-            homebtn.visible = false
-        end
-    else
-        homebtn.text = "HOME"
-        homebtn.visible = true
-    end
-
-    repeat sleep(0.1) until teverse.input.mousePosition.y < container.absolutePosition.y - 25
-
-    container.backgroundAlpha = 0.0
-    homebtn.visible = false
 end)
