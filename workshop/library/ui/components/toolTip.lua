@@ -28,7 +28,7 @@ return {
 
         if orientation == "vertical" then -- If orientation is specified to "vertical"
             local container = teverse.construct("guiFrame", {
-                parent = teverse.interface,
+                parent = teverse.interface
                 size = guiCoord(0.1, 0, 0.1, 0),
                 position = element.position+guiCoord(-0.02, 0, -0.01, 0),
                 backgroundColour = globals.defaultColours.red,

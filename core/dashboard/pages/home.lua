@@ -1,4 +1,122 @@
-local function newFeedItem(pfp, name, date, body)
+-- Copyright 2020- Teverse.com
+-- Used to display the home screen of the teverse application
+
+local globals = require("tevgit:workshop/library/globals.lua") -- globals; variables or instances that can be shared between files
+local modal = require("tevgit:workshop/library/ui/components/modal.lua") -- UI component
+
+local count = 0
+local function addTag(parent, icon, name, iconColour)
+    local frame = teverse.construct("guiFrame", {
+        parent = parent:child("_container"):child("_content"),
+        size = guiCoord(0.3, 0, 0.25, 0),
+        position = guiCoord(0, (count*43)+5, 0, 40),
+        backgroundColour = globals.defaultColours.white,
+        strokeRadius = 2,
+        dropShadowAlpha = 0.4,
+        dropShadowBlur = 2,
+        dropShadowColour = colour.rgb(127, 127, 127),
+        dropShadowOffset = vector2(0.5 , 1),
+        zIndex = 500
+    })
+
+    teverse.construct("guiIcon", {
+        parent = frame,
+        size = guiCoord(0, 10, 0, 10),
+        position = guiCoord(0.05, 0, 0.21, 0),
+        iconType = "faSolid",
+        iconId = icon,
+        iconColour = iconColour
+    })
+
+    teverse.construct("guiTextBox", {
+        parent = frame,
+        size = guiCoord(0.6, 0, 0.6, 0),
+        position = guiCoord(0.3, 0, 0.23, 0),
+        text = name,
+        textEditable = false,
+        textAlign = "middle",
+        textColour = globals.defaultColours.primary,
+        textSize = 12,
+        textWrap = false,
+        textFont = "tevurl:fonts/openSansBold.ttf",
+        zIndex = 100
+    })
+
+    count = count + 1
+end
+
+local function createFlair(parent, data)
+    local username = parent:child("username").text
+    if data then
+        local flairCount = 0
+        
+        -- Beta(Tester) Insignia
+        if data.postedBy.beta == true then
+            teverse.construct("guiIcon", {
+                parent = parent:child("username"),
+                size = guiCoord(0, 10, 0, 10),
+                position = guiCoord(0, parent:child("username").textDimensions.x+((flairCount*10)+2), 0, 6),
+                iconType = "faSolid",
+                iconId = "flask",
+                iconColour = globals.defaultColours.red
+            })
+            addTag(parent, "flask", "BETA", globals.defaultColours.red)
+            flairCount = flairCount + 1
+        end
+
+        -- Plus Membership Insignia
+        if data.postedBy.membership == "plus" then
+            teverse.construct("guiIcon", {
+                parent = parent:child("username"),
+                size = guiCoord(0, 10, 0, 10),
+                position = guiCoord(0, parent:child("username").textDimensions.x+((flairCount*10)+2), 0, 6),
+                iconType = "faSolid",
+                iconId = "star",
+                iconColour = globals.defaultColours.primary
+            })
+            addTag(parent, "star", "PLUS", colour.rgb(67, 67, 67))
+            flairCount = flairCount + 1
+        end
+
+        -- Pro Membership Insignia
+        if data.postedBy.membership == "pro" then
+            teverse.construct("guiIcon", {
+                parent = parent:child("username"),
+                size = guiCoord(0, 10, 0, 10),
+                position = guiCoord(0, parent:child("username").textDimensions.x+((flairCount*10)+2), 0, 6),
+                iconType = "faSolid",
+                iconId = "thermometer-full",
+                iconColour = globals.defaultColours.purple
+            })
+            parent:child("username").textColour = globals.defaultColours.purple
+            parent:child("body").textColour = globals.defaultColours.purple
+            addTag(parent, "thermometer-full", "PRO", globals.defaultColours.purple)
+            flairCount = flairCount + 1
+        end
+
+        -- Mod/Staff Insignia
+        --[[
+        if  then
+            teverse.construct("guiIcon", {
+                parent = parent:child("username"),
+                size = guiCoord(0, 10, 0, 10),
+                position = guiCoord(0, parent:child("username").textDimensions.x+((flairCount*10)+2), 0, 6),
+                iconType = "faSolid",
+                iconId = "shield-alt",
+                iconColour = globals.defaultColours.blue
+            })
+            parent:child("username").textColour = globals.defaultColours.blue
+            parent:child("body").textColour = globals.defaultColours.blue
+            addTag(parent, "shield-alt", "STAFF", globals.defaultColours.blue)
+            flairCount = flairCount + 1
+        end
+        ]]--
+
+        count = 0
+    end
+end
+
+local function newFeedItem(date, data)
     local item = teverse.construct("guiFrame", {
         size = guiCoord(1, -20, 0, 48),
         position = guiCoord(0, 10, 0, 40),
@@ -10,22 +128,23 @@ local function newFeedItem(pfp, name, date, body)
         name = "profilePicture",
         size = guiCoord(0, 30, 0, 30),
         position = guiCoord(0, 0, 0, 5),
-        image = pfp,
+        image = "tevurl:asset/user/"..(data.postedBy.id),
         parent = item,
         strokeRadius = 15,
         strokeAlpha = 0.04
     })
 
-    local name = teverse.construct("guiTextBox", {
+    local username = teverse.construct("guiTextBox", {
         name = "username",
-        size = guiCoord(1, -40, 0, 20),
+        size = guiCoord(0.8, -50, 0, 20),
         position = guiCoord(0, 40, 0, 3),
         backgroundAlpha = 0,
         parent = item,
-        text = name,
+        text = data.postedBy.username,
         textSize = 20,
         textAlpha = 0.6,
-        textFont = "tevurl:fonts/openSansBold.ttf"
+        textFont = "tevurl:fonts/openSansBold.ttf",
+        zIndex = 500
     })
     
     teverse.construct("guiTextBox", {
@@ -47,11 +166,83 @@ local function newFeedItem(pfp, name, date, body)
         position = guiCoord(0, 40, 0, 22),
         backgroundAlpha = 0,
         parent = item,
-        text = body,
+        text = data.message,
         textWrap = true,
         textAlign = enums.align.topLeft,
-        textSize = 16
+        textSize = 16,
     })
+
+    -- Create User Modal (profile click/touch on feed)
+    local _modal = modal.construct(guiCoord(0.3, 0, 1.4, 0), guiCoord(0.088, 0, 0.55, 0))
+    _modal.content.parent = item
+    local content = teverse.construct("guiFrame", {
+        parent = _modal.content,
+        name = "_content",
+        position = guiCoord(0, 0, 0, 0),
+        size = guiCoord(1, 0, 1, 0),
+        backgroundColour = globals.defaultColours.white,
+        strokeColour = globals.defaultColours.white,
+        strokeRadius = 5,
+        strokeWidth = 1
+    })
+    
+    teverse.construct("guiImage", {
+        parent = content,
+        name = "profilePicture",
+        size = guiCoord(0, 30, 0, 30),
+        position = guiCoord(0, 3, 0, 3),
+        image = "tevurl:asset/user/"..(data.postedBy.id),
+        strokeRadius = 15,
+        strokeAlpha = 0.04
+    })
+
+    teverse.construct("guiTextBox", {
+        parent = content,
+        name = "username",
+        size = guiCoord(0, 92, 0, 20),
+        position = guiCoord(0, 38, 0, 1),
+        text = data.postedBy.username,
+        textEditable = false,
+        textAlign = "middleLeft",
+        textColour = globals.defaultColours.primary,
+        textFont = "tevurl:fonts/openSansBold.ttf",
+        backgroundAlpha = 0,
+        zIndex = 500
+    })
+
+    local messageButton = teverse.construct("guiTextBox", {
+        parent = content,
+        name = "messageButton",
+        size = guiCoord(0.68, 0, 0.25, 0),
+        position = guiCoord(0, 38, 0, 23),
+        text = "MESSAGE",
+        textEditable = false,
+        textAlign = "middle",
+        textColour = globals.defaultColours.primary,
+        textSize = 12,
+        textFont = "tevurl:fonts/openSansBold.ttf",
+        backgroundColour = globals.defaultColours.white,
+        strokeRadius = 2,
+        dropShadowAlpha = 0.4,
+        dropShadowBlur = 2,
+        dropShadowColour = colour.rgb(127, 127, 127),
+        dropShadowOffset = vector2(0.5, 1),
+        zIndex = 500
+    })
+
+    -- When mouse hovers over label, display user modal
+    item:child("username"):on("mouseLeftDown", function()
+        _modal.display()
+        item.zIndex = 300
+    end)
+
+    -- When mouse leaves from label, hide user modal
+    item:child("username"):on("mouseExit", function() 
+        _modal.hide()
+        item.zIndex = 1
+    end)
+    
+    createFlair(item, data)
 
     return item
 end
@@ -309,9 +500,9 @@ return {
             }, function(code, body)
                 if code == 200 then
                     lastRefresh = os.clock()
-                    local json = teverse.json:decode(body)
-                    if #json > 0 then
-                        if json[1].id == newestFeed then
+                    local data = teverse.json:decode(body)
+                    if #data > 0 then
+                        if data[1].id == newestFeed then
                             -- no change from last refresh
                             return nil
                         else
@@ -322,11 +513,11 @@ return {
                                 end
                             end
                         end
-                        newestFeed = json[1].id
+                        newestFeed = data[1].id
                         local y = 50
-                        for _,v in pairs(json) do
+                        for _,v in pairs(data) do
                             local date = os.date("%d/%m/%Y %H:%M", os.parseISO8601(v.postedAt))
-                            local item = newFeedItem("tevurl:asset/user/" .. v.postedBy.id, v.postedBy.username, date, v.message)
+                            local item = newFeedItem(date, v)
                             item.parent = feedItems
                             local dy = item:child("body").textDimensions.y
                             item.size = guiCoord(1, -20, 0, dy + 28)

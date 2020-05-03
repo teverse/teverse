@@ -33,7 +33,7 @@ return {
             backgroundColour = globals.defaultColours.white,
         })
 
-        teverse.construct("guiIcon", {
+        teverse.construct("guiImage", {
             parent = container,
             size = guiCoord(0, 28, 0, 28),
             position = guiCoord(0.01, 0, 0.1, 0),
@@ -74,7 +74,7 @@ return {
         })
 
         local statusIcon = teverse.construct("guiFrame", {
-            parent = container,
+            parent = container
             size = guiCoord(0, 16, 0, 16),
             position = guiCoord(0.836, 0, 0.5, 0),
             backgroundColour = globals.defaultColours.green,
@@ -85,7 +85,7 @@ return {
             zIndex = 100
         })
 
-        local undoButton = teverse.construct("guiIcon", {
+        local undoButton = teverse.construct("guiImage", {
             parent = container,
             size = guiCoord(0, 20, 0, 20),
             position = guiCoord(0.92, 0, 0.2, 0),
@@ -95,7 +95,7 @@ return {
             backgroundColour = globals.defaultColours.white,
         })
 
-        local redoButton = teverse.construct("guiIcon", {
+        local redoButton = teverse.construct("guiImage", {
             parent = container,
             size = guiCoord(0, 20, 0, 20),
             position = guiCoord(0.94, 0, 0.2, 0),
@@ -105,7 +105,7 @@ return {
             backgroundColour = globals.defaultColours.white,
         })
 
-        local settingsButton = teverse.construct("guiIcon", {
+        local settingsButton = teverse.construct("guiImage", {
             parent = container,
             size = guiCoord(0, 20, 0, 20),
             position = guiCoord(0.97, 0, 0.2, 0),
