@@ -28,7 +28,7 @@ return {
 
         local container = teverse.construct("guiFrame", {
             parent = teverse.interface,
-            size = guiCoord(1, 0, 0.05, 0),
+            size = guiCoord(1, 0, 0, 40),
             position = guiCoord(0, 0, 0, 0),
             backgroundColour = globals.defaultColours.white,
         })
@@ -134,7 +134,7 @@ return {
                 position = guiCoord(0.2+(#test.keys*0.07), 0, 0.05, 0),
                 text = name,
                 textColour = globals.defaultColours.primary,
-                textSize = 30,
+                textSize = 22,
                 textAlign = enums.align.middle,
                 zIndex = 100
             })
