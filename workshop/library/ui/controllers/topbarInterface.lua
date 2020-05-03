@@ -74,7 +74,7 @@ return {
         })
 
         local statusIcon = teverse.construct("guiFrame", {
-            parent = container
+            parent = container,
             size = guiCoord(0, 16, 0, 16),
             position = guiCoord(0.836, 0, 0.5, 0),
             backgroundColour = globals.defaultColours.green,
