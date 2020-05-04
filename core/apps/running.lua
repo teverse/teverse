@@ -2,14 +2,16 @@
 
 local disclaimer = teverse.construct("guiTextBox", {
     parent = teverse.coreInterface,
-    size = guiCoord(1, -60, 0, 20),
-    position = guiCoord(0, 30, 1, -20),
-    backgroundAlpha = 0,
-    text = "You are running user generated code",
-    textShadowSize = 2,
-    textSize = 12,
-    textColour = colour(1, 1, 1),
-    textAlign = "middle"
+    size = guiCoord(0, 140, 0, 25),
+    position = guiCoord(0.5, -70, 1, -35),
+    text = "User Generated Content",
+    textSize = 14,
+    textColour = colour(0, 0, 0),
+    textAlign = "middle",
+    textFont = "tevurl:fonts/openSansSemiBold.ttf",
+    strokeRadius = 2,
+    dropShadowAlpha = 0.15,
+    strokeAlpha = 0.05
 })
 
 disclaimer:on("mouseLeftUp", function()

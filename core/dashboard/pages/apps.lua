@@ -105,7 +105,7 @@ return {
                 })
         end
 
-        if _TEV_VERSION ~= "0.20.6" then
+        if _DEVICE:sub(0, 6) ~= "iPhone" then
             local appGui = createApp({
                 id = "",
                 name = "Learn Code",
