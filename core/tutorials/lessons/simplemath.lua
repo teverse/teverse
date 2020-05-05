@@ -51,7 +51,35 @@ print(2/1)
     You may need to include numbers as well. When you think you have it, press run.]],
     [[print(2000 "division" __ )]],
     function(script, logs)
-        local correct = script.text:lower() == "print(2000 / 10)"
+        local correct = script.text:lower() == "print(2000 / 100)"
+        if not correct then
+            print("Try again thats not quite right...\n")
+        else
+            print("Well done! Press next!\n")
+        end
+        return correct
+    end),
+    framework.interactiveCode("Try it: Arithmetic Operations",
+    [[Now that you know the basic operators, let's try to use them.
+    For each of the following samples, make the output equal 20, using the operation in between the two quotation marks.
+    You may need to include numbers as well. When you think you have it, press run.]],
+    [[print(__ "subtraction" 40 )]],
+    function(script, logs)
+        local correct = script.text:lower() == "print(60 - 40)"
+        if not correct then
+            print("Try again thats not quite right...\n")
+        else
+            print("Well done! Press next!\n")
+        end
+        return correct
+    end),
+    framework.interactiveCode("Try it: Arithmetic Operations",
+    [[Now that you know the basic operators, let's try to use them.
+    For each of the following samples, make the output equal 20, using the operation in between the two quotation marks.
+    You may need to include numbers as well. When you think you have it, press run.]],
+    [[print(10 "multiplication" __ )]],
+    function(script, logs)
+        local correct = script.text:lower() == "print(10 * 2)"
         if not correct then
             print("Try again thats not quite right...\n")
         else
