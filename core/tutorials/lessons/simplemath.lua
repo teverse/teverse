@@ -30,6 +30,22 @@ print(2/1)
 2
 8
 2
-]])
+]]),
+    framework.interactiveCode("Try it: Arithmetic Operations",
+    [[Now that you know the basic operators, let's try to use them.
+    For each of the following samples, make the output equal 20, using the operation in between the two quotation marks.
+    You may need to include numbers as well. When you think you have it, press run.]],
+    [[print(12 "addition" __ )]],
+    function(script, logs)
+        local correct = script.text:lower() == "print(12 + 8)"
+        if not correct then
+            print("Try again thats not quite right...\n")
+        else
+            print(12 + 8)
+            print("Well done! Press next!\n")
+        end
+        return correct
+    end),
+    )
     }
 }
