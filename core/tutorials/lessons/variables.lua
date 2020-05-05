@@ -11,7 +11,7 @@ return {
 Type testVariable between the two quotation marks, then press run]],
             [[local newVariable = "blank"]],
             function(script, logs)
-                local correct = script.text:lower() == "local newvariable = \"testvariable\")"
+                local correct = script.text:lower() == "local newvariable = \"testvariable\""
                 if not correct then
                     print("Try again thats not quite right...\n")
                 else
