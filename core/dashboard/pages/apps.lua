@@ -1,7 +1,8 @@
 local function createApp(app)
     local appGui = teverse.construct("guiFrame", {
-        strokeAlpha = 0.1,
-        strokeRadius = 4
+        strokeRadius = 2,
+        dropShadowAlpha = 0.15,
+        strokeAlpha = 0.05
     })
 
     teverse.guiHelper.hoverColour(appGui, colour.rgb(247, 247, 247))
