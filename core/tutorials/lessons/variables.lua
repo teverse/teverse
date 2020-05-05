@@ -20,20 +20,23 @@ return {
                         return correct
                     end),
                     framework.exampleCode("Dissecting your script",
-                        [[A variable is a way to assign a name to something.
-                        Variables can come in the form of multiple types: strings, numbers, booleans, tables, functions, and much more!
-                        In the first section, you declared the variable "newVariable" as a string "testVariable";a string is usually a phrase or non-numeric set of characters.
-                        The print function simply outputs the stuff you give it to the console. The console is what you seen on the right of the screen.
-                        Example Output from the script on the left:]],
-                            [[
-                                local newPhrase = "This is a string"
-                                local newNumber = 4
-                                print(newPhrase)
-                                print(newNumber)
-                            ]], 
-                            [[
-                                "This is a string"
-                                4
-                            ]])
-                        }
-                    }
+[[A variable is a way to assign a name to something.
+Variables can come in the form of multiple types: strings, numbers, booleans, tables, functions, and much more!
+
+In the first section, you declared the variable "newVariable" as a string "testVariable";a string is usually a phrase or non-numeric set of characters.
+
+
+The print function simply outputs the stuff you give it to the console. The console is what you seen on the right of the screen.
+
+Example Output from the script on the left:]],
+                                    [[local newPhrase = "This is a string"
+local newNumber = 4
+
+print(newPhrase)
+print(newNumber)
+
+]], [["This is a string"
+4
+]])
+    }
+}
