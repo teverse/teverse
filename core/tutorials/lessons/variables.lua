@@ -17,7 +17,6 @@ Type testVariable between the two quotation marks, then press run]],
                 else
                     local newVariable = "testVariable"
                     print("Well done! Press next!\n")
-                    wait(2)
                     print(newVariable)
                 end
                 return correct
