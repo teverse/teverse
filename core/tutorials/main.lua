@@ -99,7 +99,7 @@ local function loadTutorialPage(tutorial, pagei, lessonFrame)
             size = guiCoord(1.0, -20, 0.5, -(textDimensions + 60)),
             position = guiCoord(0, 10, 0.5, textDimensions + 10)
         }).bind(output, "md", {
-            size = guiCoord(1.0, -20, 1, -(textDimensions + 102)),
+            size = guiCoord(0.5, -20, 1, -(textDimensions + 102)),
             position = guiCoord(0.5, 10, 0, textDimensions + 52)
         })
 
