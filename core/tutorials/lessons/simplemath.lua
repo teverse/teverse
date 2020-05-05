@@ -5,7 +5,7 @@ return {
     description = "Simple mathematic operations",
     pages = {
         framework.titleDesc("Simple Math", "Using mathematics in your code"),
-        framework.exampleCode("Arithmetic Operators"
+        framework.exampleCode("Arithmetic Operators",
 [[Arithmetic operations are sometimes necessary to determine how to handle arguments or conditions.
 
 Lua can handle the typical math operators:
