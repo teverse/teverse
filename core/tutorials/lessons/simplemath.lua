@@ -45,7 +45,6 @@ print(2/1)
             print("Well done! Press next!\n")
         end
         return correct
-    end),
-    )
+    end)
     }
 }
