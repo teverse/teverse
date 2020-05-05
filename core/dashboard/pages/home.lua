@@ -162,7 +162,8 @@ return {
             size = guiCoord(1, 0, 1, 50),
             position = guiCoord(0, 0, 0, -50),
             backgroundAlpha = 0,
-            strokeRadius = 3
+            strokeRadius = 3,
+            scrollbarWidth = 4
         })
 
         teverse.guiHelper

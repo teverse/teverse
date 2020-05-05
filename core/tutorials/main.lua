@@ -8,8 +8,9 @@ local container = teverse.construct("guiScrollView", {
     parent = containerNegativePadding,
     size = guiCoord(1, 0, 1, -100),
     position = guiCoord(0, 0, 0, 50),
-    canvasSize = guiCoord(1, 0, 1, 0),
+    canvasSize = guiCoord(2, 0, 2, 0),
     backgroundAlpha = 0,
+    scrollbarWidth = 4
 })
 
 teverse.construct("guiTextBox", {
