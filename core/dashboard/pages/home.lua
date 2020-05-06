@@ -173,7 +173,7 @@ local function newFeedItem(date, data)
     })
 
     -- Create User Modal (profile click/touch on feed)
-    local _modal = modal.construct(guiCoord(0.3, 0, 1.4, 0), guiCoord(0.088, 0, 0.55, 0))
+    local _modal = modal.construct(guiCoord(0, 130, 0, 60), guiCoord(0.088, 0, 0.55, 0))
     _modal.content.parent = item
     local content = teverse.construct("guiFrame", {
         parent = _modal.content,
