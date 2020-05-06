@@ -37,7 +37,7 @@ print(2/1)
     You may need to include numbers as well. When you think you have it, press run.]],
     [[print(12 "addition" __ )]],
     function(script, logs)
-        local correct = script.text:lower() == "print(12 + 8)"
+        local correct = script.text:lower() == "print(12+8)"
         if not correct then
             print("Try again thats not quite right...\n")
         else
@@ -51,7 +51,7 @@ print(2/1)
     You may need to include numbers as well. When you think you have it, press run.]],
     [[print(2000 "division" __ )]],
     function(script, logs)
-        local correct = script.text:lower() == "print(2000 / 100)"
+        local correct = script.text:lower() == "print(2000/100)"
         if not correct then
             print("Try again thats not quite right...\n")
         else
@@ -65,7 +65,7 @@ print(2/1)
     You may need to include numbers as well. When you think you have it, press run.]],
     [[print(10 "multiplication" __ )]],
     function(script, logs)
-        local correct = script.text:lower() == "print(10 * 2)"
+        local correct = script.text:lower() == "print(10*2)"
         if not correct then
             print("Try again thats not quite right...\n")
         else
@@ -79,7 +79,7 @@ print(2/1)
     You may need to include numbers as well. When you think you have it, press run.]],
     [[print(__ "subtraction" 40)]],
     function(script, logs)
-        local correct = script.text:lower() == "print(60 - 40)"
+        local correct = script.text:lower() == "print(60-40)"
         if not correct then
             print("Try again thats not quite right...\n")
         else
