@@ -2,9 +2,9 @@
 
 local disclaimer = teverse.construct("guiTextBox", {
     parent = teverse.coreInterface,
-    size = guiCoord(0, 140, 0, 25),
-    position = guiCoord(0.5, -70, 1, -35),
-    text = "User Generated Content",
+    size = guiCoord(0, 75, 0, 18),
+    position = guiCoord(0, 10, 1, -28),
+    text = "User Content",
     textSize = 14,
     textColour = colour(0, 0, 0),
     textAlign = "middle",
