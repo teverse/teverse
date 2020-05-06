@@ -1,8 +1,8 @@
 {
     "os": "OSX",
     "arch": "x64",
-    "version": "0.20.6",
-    "generatedAt": "28/04/2020 23:25:06",
+    "version": "0.20.7",
+    "generatedAt": "03/05/2020 09:41:24",
     "sandbox": {
         "coroutine": {
             "create": "function",
@@ -20,11 +20,12 @@
         "xpcall": "function",
         "_DEVICE_PAD_BOTTOM": 0,
         "ipairs": "function",
-        "_TEV_BUILD": "0206",
+        "_TEV_BUILD": "0207",
         "colour": "cdata",
         "print": "function",
         "pcall": "function",
         "gcinfo": "function",
+        "loadstring": "function",
         "sleep": "function",
         "spawn": "function",
         "vector2": "cdata",
@@ -42,10 +43,10 @@
             "insert": "function"
         },
         "error": "function",
-        "_TEV_VERSION": "0.20.6",
+        "_TEV_VERSION": "0.20.7",
         "_DEVICE": "Mac",
         "_VERSION": "Lua 5.1",
-        "_OS": "OSX",
+        "require": "function",
         "next": "function",
         "math": {
             "ceil": "function",
@@ -79,7 +80,7 @@
             "pi": 3.1415926535898,
             "rad": "function"
         },
-        "unpack": "function",
+        "_OS": "OSX",
         "os": {
             "difftime": "function",
             "date": "function",
@@ -87,9 +88,7 @@
             "clock": "function",
             "parseISO8601": "function"
         },
-        "thread": {
-            "create": "function"
-        },
+        "type": "function",
         "select": "function",
         "string": {
             "split": "function",
@@ -108,18 +107,22 @@
             "format": "function",
             "gsub": "function"
         },
-        "type": "function",
-        "require": "function",
+        "unpack": "function",
+        "thread": {
+            "create": "function"
+        },
         "teverse": {
             "input": "input",
+            "tween": "tween",
             "networking": "networking",
+            "interface": "guiFrame",
+            "guiHelper": "guiHelper",
             "scene": "scene",
-            "http": "http",
             "load": "function",
             "construct": "function",
-            "guiHelper": "guiHelper",
-            "interface": "guiFrame",
             "json": "json",
+            "debug": "debug",
+            "http": "http",
             "dev": "dev",
             "disconnect": "function"
         },
@@ -1027,6 +1030,37 @@
                 }
             }
         },
+        "block": {
+            "methods": {
+                "setShader": {
+                    "parameters": [
+                        {
+                            "type": "string",
+                            "name": "mesh"
+                        }
+                    ],
+                    "returns": [],
+                    "description": "Sets mesh"
+                }
+            },
+            "className": "block",
+            "events": [],
+            "constructable": true,
+            "properties": {
+                "position": {
+                    "hasGetter": true,
+                    "type": "vector3",
+                    "description": "",
+                    "hasSetter": true
+                },
+                "mesh": {
+                    "hasGetter": true,
+                    "type": "string",
+                    "description": "",
+                    "hasSetter": true
+                }
+            }
+        },
         "http": {
             "methods": {
                 "delete": {
@@ -1575,6 +1609,66 @@
                 }
             }
         },
+        "tween": {
+            "methods": {
+                "begin": {
+                    "parameters": [
+                        {
+                            "type": "variant",
+                            "name": "object"
+                        },
+                        {
+                            "type": "number",
+                            "name": "duration"
+                        },
+                        {
+                            "type": "table",
+                            "name": "properties"
+                        },
+                        {
+                            "type": "string",
+                            "name": "easing"
+                        },
+                        {
+                            "type": "function?",
+                            "name": "tweenCallback"
+                        }
+                    ],
+                    "returns": [],
+                    "description": "Creates and starts a tween"
+                },
+                "create": {
+                    "parameters": [
+                        {
+                            "type": "variant",
+                            "name": "object"
+                        },
+                        {
+                            "type": "number",
+                            "name": "duration"
+                        },
+                        {
+                            "type": "table",
+                            "name": "properties"
+                        },
+                        {
+                            "type": "string",
+                            "name": "easing"
+                        },
+                        {
+                            "type": "function?",
+                            "name": "tweenCallback"
+                        }
+                    ],
+                    "returns": [],
+                    "description": "Creates a tween"
+                }
+            },
+            "className": "tween",
+            "events": [],
+            "constructable": false,
+            "properties": []
+        },
         "debug": {
             "methods": [],
             "className": "debug",
@@ -1703,7 +1797,9 @@
                 },
                 "prompt": {
                     "parameters": [],
-                    "returns": [],
+                    "returns": [
+                        "boolean"
+                    ],
                     "description": "Prompts the user to select a Lua file, this method then triggers app:loadScript(path)"
                 }
             },
@@ -1713,5 +1809,5 @@
             "properties": []
         }
     },
-    "build": "0206"
+    "build": "0207"
 }

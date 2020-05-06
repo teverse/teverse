@@ -24,29 +24,29 @@ return {
 
         teverse.construct("guiFrame", {
             parent = teverse.interface,
-            size = guiCoord(0.04, 0, 0.015, 0),
-            position = guiCoord(0, 0, 0.05, 0),
+            size = guiCoord(0, 40, 0, 10),
+            position = guiCoord(0, 0, 0, 40),
             backgroundColour = globals.defaultColours.secondary,
         })
 
         teverse.construct("guiFrame", {
             parent = teverse.interface,
-            size = guiCoord(0.04, 0, 0.015, 0),
-            position = guiCoord(0, 0, 0.24, 0),
+            size = guiCoord(0, 40, 0, 10),
+            position = guiCoord(0, 0, 0, 180),
             backgroundColour = globals.defaultColours.secondary,
         })
     
         local toolsContainer = teverse.construct("guiFrame", {
             parent = teverse.interface,
-            size = guiCoord(0.04, 0, 0.18, 0),
-            position = guiCoord(0, 0, 0.065, 0),
+            size = guiCoord(0, 40, 0, 130),
+            position = guiCoord(0, 0, 0, 50),
             backgroundColour = globals.defaultColours.white,
         })
     
         local selectTool = teverse.construct("guiIcon", {
             parent = toolsContainer,
             size = guiCoord(0, 20, 0, 20),
-            position = guiCoord(0.25, 0, 0.1, 0),
+            position = guiCoord(0.25, 0, 0, 10),
             iconId = "location-arrow",
             iconType = "faSolid",
             iconColour = globals.defaultColours.primary,
@@ -56,7 +56,7 @@ return {
         local moveTool = teverse.construct("guiIcon", {
             parent = toolsContainer,
             size = guiCoord(0, 20, 0, 20),
-            position = guiCoord(0.25, 0, 0.32, 0),
+            position = guiCoord(0.25, 0, 0, 40),
             iconId = "arrows-alt-h",
             iconType = "faSolid",
             iconColour = globals.defaultColours.primary,
@@ -66,7 +66,7 @@ return {
         local rotateTool = teverse.construct("guiIcon", {
             parent = toolsContainer,
             size = guiCoord(0, 20, 0, 20),
-            position = guiCoord(0.25, 0, 0.54, 0),
+            position = guiCoord(0.25, 0, 0, 70),
             iconId = "sync",
             iconType = "faSolid",
             iconColour = globals.defaultColours.primary,
@@ -76,8 +76,8 @@ return {
         local sizeTool = teverse.construct("guiIcon", {
             parent = toolsContainer,
             size = guiCoord(0, 20, 0, 20),
-            position = guiCoord(0.25, 0, 0.76, 0),
-            iconId = "fa:s-expand",
+            position = guiCoord(0.25, 0, 0, 100),
+            iconId = "expand",
             iconType = "faSolid",
             iconColour = globals.defaultColours.primary,
             backgroundColour = globals.defaultColours.white,
@@ -86,8 +86,8 @@ return {
         local moreToolsContainer = teverse.construct("guiFrame", {
             parent = teverse.interface,
             name = "moreToolsContainer",
-            size = guiCoord(0.04, 0, 1, 0),
-            position = guiCoord(0, 0, 0.255, 0),
+            size = guiCoord(0, 40, 1, -190),
+            position = guiCoord(0, 0, 0, 190),
             backgroundColour = globals.defaultColours.white,
         })
 
@@ -146,7 +146,7 @@ return {
                 parent = page,
                 name = name,
                 size = guiCoord(0, 20, 0, 20),
-                position = guiCoord((0.25+xPositionOverride), 0, 0.02+(#page.children*0.04), 0), -- Shorthand positioning w/o a for-loop
+                position = guiCoord((0.25+xPositionOverride), 0, 0, 10 + (#page.children*30)), -- Shorthand positioning w/o a for-loop
                 iconId = icon,
                 iconType = "faSolid",
                 iconColour = globals.defaultColours.primary,
@@ -158,12 +158,12 @@ return {
             --button:mouseLeftPressed(callback) -- When button is clicked, perform callback action
 
             -- When mouse hovers over button, display tooltip
-            iconImage:on("mouseFocused", function() 
+            iconImage:on("mouseEnter", function() 
                 _tooltip.display()
             end)
 
             -- When mouse leaves from button, hide tooltip
-            iconImage:on("mouseUnfocused", function() 
+            iconImage:on("mouseExit", function() 
                 _tooltip.hide()
             end)
         end

@@ -10,6 +10,7 @@ local container = teverse.construct("guiScrollView", {
     position = guiCoord(0, 0, 0, 50),
     canvasSize = guiCoord(1, 0, 1, 0),
     backgroundAlpha = 0,
+    scrollbarWidth = 4
 })
 
 teverse.construct("guiTextBox", {
@@ -81,18 +82,32 @@ local function loadTutorialPage(tutorial, pagei, lessonFrame)
         local output, outputtxt = require("tevgit:core/tutorials/output.lua").create()
         output.parent = lessonFrame
         output.position = guiCoord(0.5, 10, 0, textDimensions + 52)
-        output.size = guiCoord(0.5, -20, 1, -(textDimensions + 122))
+        output.size = guiCoord(0.5, -20, 1, -(textDimensions + 102))
 
         local editor, editortxt = require("tevgit:core/editor/editor.lua").create()
         editor.parent = lessonFrame
         editor.position = guiCoord(0, 10, 0, textDimensions + 52)
-        editor.size = guiCoord(0.5, -20, 1, -(textDimensions + 62))
+        editor.size = guiCoord(0.5, -20, 1, -(textDimensions + 102))
         editortxt.text = page.code
+
+        teverse.guiHelper.bind(editor, "xs", {
+            size = guiCoord(1.0, -20, 0.5, -52)
+        }).bind(editor, "md", {
+            size = guiCoord(0.5, -20, 1, -(textDimensions + 102))
+        })
+
+        teverse.guiHelper.bind(output, "xs", {
+            size = guiCoord(1.0, -20, 0.5, -(textDimensions + 60)),
+            position = guiCoord(0, 10, 0.5, textDimensions + 10)
+        }).bind(output, "md", {
+            size = guiCoord(0.5, -20, 1, -(textDimensions + 102)),
+            position = guiCoord(0.5, 10, 0, textDimensions + 52)
+        })
 
         local run = teverse.construct("guiTextBox", {
             parent = lessonFrame,
             size = guiCoord(0, 90, 0, 30),
-            position = guiCoord(1, -205, 1, -50),
+            position = guiCoord(1, -235, 1, -35),
             text = "Run",
             textSize = 24,
             textAlign = "middle",
@@ -106,7 +121,7 @@ local function loadTutorialPage(tutorial, pagei, lessonFrame)
         local reset = teverse.construct("guiTextBox", {
             parent = lessonFrame,
             size = guiCoord(0, 90, 0, 30),
-            position = guiCoord(1, -310, 1, -50),
+            position = guiCoord(1, -340, 1, -35),
             text = "Reset",
             textSize = 24,
             textAlign = "middle",
@@ -191,7 +206,7 @@ local function loadTutorialPage(tutorial, pagei, lessonFrame)
         btn = teverse.construct("guiTextBox", {
             parent = lessonFrame,
             size = guiCoord(0, 90, 0, 30),
-            position = guiCoord(1, -110, 1, -50),
+            position = guiCoord(1, -140, 1, -35),
             text = "Finished",
             textSize = 20,
             textAlign = "middle",
@@ -204,7 +219,7 @@ local function loadTutorialPage(tutorial, pagei, lessonFrame)
         btn = teverse.construct("guiTextBox", {
             parent = lessonFrame,
             size = guiCoord(0, 80, 0, 30),
-            position = guiCoord(1, -100, 1, -50),
+            position = guiCoord(1, -130, 1, -35),
             text = "Next",
             textSize = 24,
             textAlign = "middle",
@@ -238,20 +253,11 @@ end
 
 local function loadTutorial(tutorial)
     container:destroyChildren()
-    teverse.construct("guiTextBox", {
-        parent = container,
-        size = guiCoord(1.0, -20, 0, 48),
-        position = guiCoord(0, 10, 0, 10),
-        backgroundAlpha = 0,
-        text = tutorial.name,
-        textSize = 48,
-        textAlign = "middleLeft"
-    })
 
     local lessonFrame = teverse.construct("guiFrame", {
         parent = container,
-        size = guiCoord(1.0, -20, 1, -70),
-        position = guiCoord(0, 10, 0, 60),
+        size = guiCoord(1.0, -20, 1, 0),
+        position = guiCoord(0, 10, 0, 0),
         backgroundAlpha = 0,
     })
 

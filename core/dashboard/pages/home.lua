@@ -258,7 +258,8 @@ return {
             size = guiCoord(1, 0, 1, 50),
             position = guiCoord(0, 0, 0, -50),
             backgroundAlpha = 0,
-            strokeRadius = 3
+            strokeRadius = 3,
+            scrollbarWidth = 4
         })
 
         teverse.guiHelper
@@ -278,7 +279,9 @@ return {
             size = guiCoord(1/3, -20, 0, 70),
             position = guiCoord(0, 10, 0, 0),
             backgroundColour = colour.rgb(74, 140, 122),
-            strokeRadius = 3
+            strokeRadius = 2,
+            dropShadowAlpha = 0.15,
+            strokeAlpha = 0.05
         })
 
         teverse.guiHelper
@@ -335,7 +338,9 @@ return {
             size = guiCoord(1/3, -20, 0, 70),
             position = guiCoord(1/3, 10, 0, 0),
             backgroundColour = colour.rgb(235, 187, 83),
-            strokeRadius = 3
+            strokeRadius = 2,
+            dropShadowAlpha = 0.15,
+            strokeAlpha = 0.05
         })
 
         teverse.guiHelper
@@ -400,7 +405,9 @@ return {
             size = guiCoord(1/3, -20, 0, 70),
             position = guiCoord(2/3, 10, 0, 0),
             backgroundColour = colour.rgb(216, 100, 89),
-            strokeRadius = 3
+            strokeRadius = 2,
+            dropShadowAlpha = 0.15,
+            strokeAlpha = 0.05
         })
 
         teverse.guiHelper
@@ -482,12 +489,13 @@ return {
 
         local input = teverse.construct("guiTextBox", {
             parent = feedItems,
-            size = guiCoord(1, -20, 0, 30),
-            position = guiCoord(0, 10, 0, 10),
-            strokeAlpha = 0.15,
-            strokeRadius = 3,
+            size = guiCoord(1, -2, 0, 30),
+            position = guiCoord(0, 1, 0, 10),
             textEditable = true,
-            textAlign = "topLeft"
+            textAlign = "topLeft",
+            strokeRadius = 2,
+            dropShadowAlpha = 0.15,
+            strokeAlpha = 0.05
         })
 
         local newestFeed = ""

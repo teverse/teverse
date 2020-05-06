@@ -2,14 +2,14 @@ local framework = require("tevgit:core/tutorials/framework.lua")
 
 return {
     name = "Hello World",
-    description = "test test test",
+    description = "A very quick and simple introduction, you can start here.",
     pages = {
         framework.interactiveCode(
             "Saying Hello to the World ", 
             [[Let's jump straight into writing your first script!
             
 Type Hello World between the two quotation marks, then press run]],
-            [[print("hello world")]],
+            [[print("")]],
             function(script, logs)
                 local correct = script.text:lower() == "print(\"hello world\")"
                 if not correct then
@@ -36,7 +36,6 @@ print("We can put anything here")
 [[Hello World
 We can put anything here
 ]]
-        ),
-        framework.titleDesc("The end ", "Placeholder")
+        )
     }
 }
