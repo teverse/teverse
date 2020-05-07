@@ -189,11 +189,15 @@ local function newFeedItem(date, data)
     teverse.construct("guiImage", {
         parent = content,
         name = "profilePicture",
-        size = guiCoord(0, 30, 0, 30),
-        position = guiCoord(0, 3, 0, 3),
+        size = guiCoord(0, 32, 0, 32),
+        position = guiCoord(0, 3, 0, 6),
         image = "tevurl:asset/user/"..(data.postedBy.id),
-        strokeRadius = 15,
-        strokeAlpha = 0.04
+        strokeRadius = 3,
+        backgroundColour = globals.defaultColours.white,
+        dropShadowAlpha = 0.4,
+        dropShadowBlur = 2,
+        dropShadowColour = colour.rgb(127, 127, 127),
+        dropShadowOffset = vector2(0.5, 1.5)
     })
 
     teverse.construct("guiTextBox", {
