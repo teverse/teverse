@@ -29,7 +29,10 @@ local txt = teverse.construct("guiTextBox", {
 })
 
 teverse.debug:on("print", function(msg)
-    txt.text = string.sub(os.date("%H:%M:%S") .. " : " .. msg .. "\n" .. txt.text, 0, 500)
+    -- TODO Not a great solution
+    pcall(function()
+        txt.text = string.sub(os.date("%H:%M:%S") .. " : " .. msg .. "\n" .. txt.text, 0, 500)
+    end)
 end)
 
 if _TEV_VERSION_PATCH and _TEV_VERSION_PATCH >= 9 then

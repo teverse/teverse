@@ -37,7 +37,9 @@ return {
 
         if not doNotHook then
             teverse.debug:on("print", function(msg)
-                text.text = string.sub(os.date("%H:%M:%S") .. " : " .. msg .. "\n" .. text.text, 0, 500)
+                pcall(function()
+                    text.text = string.sub(os.date("%H:%M:%S") .. " : " .. msg .. "\n" .. text.text, 0, 500)
+                end)
             end)
         end
 
