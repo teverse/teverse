@@ -5,21 +5,28 @@ return {
     description = "Learning Variables",
     pages = {
         framework.interactiveCode("Naming things in our world ",
-            [[Let's jump straight into creating your first variables!
+            [[Variables are a way of storing data in your code. In Lua, a variable can contain any 'type' - for example: numbers, strings and tables.
+
 Try pressing run right now and take note of what displays in the console.
 
 Then type testVariable between the two quotation marks, and press run again]],
-                [[local newVariable = "blank"
+                [[local newVariable = "example"
 
 print(newVariable)]],
                     function(script, logs)
-                        local correct = script.text:lower() == "local newvariable = \"testvariable\""
+                        local answer = "localnewvariable=\"testvariable\""
+                        local correct = script.text:lower():gsub(" ", ""):sub(0, answer:len()) == answer
                         if not correct then
-                            print("Try again thats not quite right...\n")
+                            local answer = "localnewvariable=\"example\""
+                            correct = script.text:lower():gsub(" ", ""):sub(0, answer:len()) == answer
+                            if correct then
+                                print("As you can see, print(newVariable) displays the contents of the variable - AKA: example\n\nChange the value from example to testVariable\n")
+                            else
+                                print("Try again!\n")
+                            end
+                            return false
                         else
-                        local newVariable = "testVariable"
                             print("Well done, isn't setting variables a blast? Press next!\n")
-                            print(newVariable)
                         end
                         return correct
                     end),
