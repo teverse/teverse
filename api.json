@@ -1,17 +1,17 @@
 {
     "os": "OSX",
     "arch": "x64",
-    "version": "0.20.8",
-    "generatedAt": "07/05/2020 21:23:22",
+    "version": "0.20.9",
+    "generatedAt": "08/05/2020 20:22:50",
     "sandbox": {
         "coroutine": {
-            "create": "function",
-            "yield": "function",
+            "status": "function",
             "resume": "function",
+            "running": "function",
             "wrap": "function",
             "isyieldable": "function",
-            "running": "function",
-            "status": "function"
+            "create": "function",
+            "yield": "function"
         },
         "assert": "function",
         "tostring": "function",
@@ -20,33 +20,36 @@
         "xpcall": "function",
         "_DEVICE_PAD_BOTTOM": 0,
         "ipairs": "function",
-        "_TEV_BUILD": "0208",
+        "_TEV_BUILD": "0209",
         "colour": "cdata",
         "print": "function",
+        "_TEV_VERSION_MINOR": 20,
         "pcall": "function",
         "gcinfo": "function",
         "loadstring": "function",
+        "_TEV_VERSION_MAJOR": 0,
         "sleep": "function",
         "spawn": "function",
-        "vector2": "cdata",
+        "_OS": "OSX",
         "guiCoord": "function",
         "pairs": "function",
         "table": {
             "maxn": "function",
             "foreach": "function",
-            "move": "function",
+            "sort": "function",
             "remove": "function",
             "foreachi": "function",
-            "sort": "function",
+            "move": "function",
             "getn": "function",
             "concat": "function",
             "insert": "function"
         },
         "error": "function",
-        "_TEV_VERSION": "0.20.8",
+        "_TEV_VERSION": "0.20.9",
         "_DEVICE": "Mac",
-        "_VERSION": "Lua 5.1",
         "require": "function",
+        "_VERSION": "Lua 5.1",
+        "_TEV_VERSION_PATCH": 9,
         "next": "function",
         "math": {
             "ceil": "function",
@@ -55,32 +58,32 @@
             "huge": 0,
             "cos": "function",
             "sinh": "function",
-            "asin": "function",
-            "cosh": "function",
-            "modf": "function",
-            "randomseed": "function",
+            "pi": 3.1415926535898,
+            "max": "function",
+            "random": "function",
             "tanh": "function",
+            "pow": "function",
             "ldexp": "function",
             "floor": "function",
             "sqrt": "function",
             "deg": "function",
             "atan": "function",
-            "log": "function",
+            "abs": "function",
             "acos": "function",
-            "frexp": "function",
-            "atan2": "function",
+            "fmod": "function",
+            "cosh": "function",
             "min": "function",
             "sin": "function",
-            "fmod": "function",
-            "abs": "function",
-            "pow": "function",
+            "frexp": "function",
+            "atan2": "function",
+            "log": "function",
             "exp": "function",
-            "random": "function",
-            "max": "function",
-            "pi": 3.1415926535898,
+            "modf": "function",
+            "asin": "function",
+            "randomseed": "function",
             "rad": "function"
         },
-        "_OS": "OSX",
+        "unpack": "function",
         "os": {
             "difftime": "function",
             "date": "function",
@@ -88,26 +91,26 @@
             "clock": "function",
             "parseISO8601": "function"
         },
-        "type": "function",
+        "vector2": "cdata",
         "select": "function",
         "string": {
             "split": "function",
             "find": "function",
-            "sub": "function",
+            "gsub": "function",
             "rep": "function",
+            "format": "function",
             "lower": "function",
-            "len": "function",
-            "upper": "function",
+            "match": "function",
             "dump": "function",
             "gmatch": "function",
-            "reverse": "function",
-            "byte": "function",
+            "upper": "function",
+            "sub": "function",
             "char": "function",
-            "match": "function",
-            "format": "function",
-            "gsub": "function"
+            "byte": "function",
+            "reverse": "function",
+            "len": "function"
         },
-        "unpack": "function",
+        "type": "function",
         "thread": {
             "create": "function"
         },
@@ -802,10 +805,10 @@
                     "description": "Increasing the zIndex will render this element above others. Currently a signed 16 bit integer.",
                     "hasSetter": true
                 },
-                "rotation": {
+                "active": {
                     "hasGetter": true,
-                    "type": "number",
-                    "description": "",
+                    "type": "boolean",
+                    "description": "When true, this element can capture the mouse's hover",
                     "hasSetter": true
                 },
                 "visible": {
@@ -832,10 +835,10 @@
                     "description": "Parent of a guiBase must be another gui element",
                     "hasSetter": true
                 },
-                "active": {
+                "rotation": {
                     "hasGetter": true,
-                    "type": "boolean",
-                    "description": "When true, this element can capture the mouse's hover",
+                    "type": "number",
+                    "description": "",
                     "hasSetter": true
                 }
             }
@@ -1006,16 +1009,16 @@
                     "description": "",
                     "hasSetter": true
                 },
-                "canvasSize": {
-                    "hasGetter": true,
-                    "type": "guiCoord",
-                    "description": "If bigger than 1,0,1,0, scrollvars will be visible",
-                    "hasSetter": true
-                },
                 "canvasOffset": {
                     "hasGetter": true,
                     "type": "vector2",
                     "description": "",
+                    "hasSetter": true
+                },
+                "canvasSize": {
+                    "hasGetter": true,
+                    "type": "guiCoord",
+                    "description": "If bigger than 1,0,1,0, scrollvars will be visible",
                     "hasSetter": true
                 },
                 "scrollbarAlpha": {
@@ -1677,13 +1680,22 @@
             "methods": {
                 "traceback": {
                     "parameters": [],
-                    "returns": [],
-                    "description": "Undocumented"
+                    "returns": [
+                        "string"
+                    ],
+                    "description": "Returns a string with a traceback of the stack call."
                 },
                 "schedulerUi": {
                     "parameters": [],
                     "returns": [],
                     "description": "Undocumented"
+                },
+                "getOutputHistory": {
+                    "parameters": [],
+                    "returns": [
+                        "table"
+                    ],
+                    "description": "Returns a table of dictionaries: {time, message}"
                 }
             },
             "className": "debug",
@@ -1871,5 +1883,5 @@
             "properties": []
         }
     },
-    "build": "0208"
+    "build": "0209"
 }
