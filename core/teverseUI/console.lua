@@ -28,6 +28,10 @@ local txt = teverse.construct("guiTextBox", {
     textWrap = true
 })
 
+teverse.debug:on("print", function(msg)
+    txt.text = string.sub(os.date("%H:%M:%S") .. " : " .. msg .. "\n" .. txt.text, 0, 500)
+end)
+
 if _TEV_VERSION_PATCH and _TEV_VERSION_PATCH >= 9 then
     for _,v in pairs(teverse.debug:getOutputHistory()) do
         txt.text = txt.text .. "\n" .. os.date("%H:%M:%S (h)", v.time) .. " : " .. v.message
@@ -35,9 +39,5 @@ if _TEV_VERSION_PATCH and _TEV_VERSION_PATCH >= 9 then
 else
     print("History not supported")
 end
-
-teverse.debug:on("print", function(msg)
-    txt.text = string.sub(os.date("%H:%M:%S") .. " : " .. msg .. "\n" .. txt.text, 0, 500)
-end)
 
 return container
