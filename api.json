@@ -1,8 +1,8 @@
 {
     "os": "OSX",
     "arch": "x64",
-    "version": "0.20.7",
-    "generatedAt": "03/05/2020 09:41:24",
+    "version": "0.20.8",
+    "generatedAt": "07/05/2020 21:23:22",
     "sandbox": {
         "coroutine": {
             "create": "function",
@@ -20,7 +20,7 @@
         "xpcall": "function",
         "_DEVICE_PAD_BOTTOM": 0,
         "ipairs": "function",
-        "_TEV_BUILD": "0207",
+        "_TEV_BUILD": "0208",
         "colour": "cdata",
         "print": "function",
         "pcall": "function",
@@ -43,7 +43,7 @@
             "insert": "function"
         },
         "error": "function",
-        "_TEV_VERSION": "0.20.7",
+        "_TEV_VERSION": "0.20.8",
         "_DEVICE": "Mac",
         "_VERSION": "Lua 5.1",
         "require": "function",
@@ -116,13 +116,14 @@
             "tween": "tween",
             "networking": "networking",
             "interface": "guiFrame",
+            "graphics": "graphics",
             "guiHelper": "guiHelper",
-            "scene": "scene",
+            "json": "json",
             "load": "function",
             "construct": "function",
-            "json": "json",
-            "debug": "debug",
             "http": "http",
+            "debug": "debug",
+            "scene": "scene",
             "dev": "dev",
             "disconnect": "function"
         },
@@ -793,6 +794,7 @@
                 }
             },
             "constructable": false,
+            "extends": "objectBase",
             "properties": {
                 "zIndex": {
                     "hasGetter": true,
@@ -800,15 +802,15 @@
                     "description": "Increasing the zIndex will render this element above others. Currently a signed 16 bit integer.",
                     "hasSetter": true
                 },
-                "active": {
-                    "hasGetter": true,
-                    "type": "boolean",
-                    "description": "When true, this element can capture the mouse's hover",
-                    "hasSetter": true
-                },
                 "rotation": {
                     "hasGetter": true,
                     "type": "number",
+                    "description": "",
+                    "hasSetter": true
+                },
+                "visible": {
+                    "hasGetter": true,
+                    "type": "boolean",
                     "description": "",
                     "hasSetter": true
                 },
@@ -818,28 +820,22 @@
                     "description": "",
                     "hasSetter": false
                 },
-                "visible": {
-                    "hasGetter": true,
-                    "type": "boolean",
-                    "description": "",
-                    "hasSetter": true
-                },
                 "clip": {
                     "hasGetter": true,
                     "type": "boolean",
                     "description": "When true, children are cropped to fit",
                     "hasSetter": true
                 },
-                "name": {
-                    "hasGetter": true,
-                    "type": "string",
-                    "description": "",
-                    "hasSetter": true
-                },
                 "parent": {
                     "hasGetter": true,
                     "type": "guiBase",
                     "description": "Parent of a guiBase must be another gui element",
+                    "hasSetter": true
+                },
+                "active": {
+                    "hasGetter": true,
+                    "type": "boolean",
+                    "description": "When true, this element can capture the mouse's hover",
                     "hasSetter": true
                 }
             }
@@ -1010,16 +1006,16 @@
                     "description": "",
                     "hasSetter": true
                 },
-                "canvasOffset": {
-                    "hasGetter": true,
-                    "type": "vector2",
-                    "description": "",
-                    "hasSetter": true
-                },
                 "canvasSize": {
                     "hasGetter": true,
                     "type": "guiCoord",
                     "description": "If bigger than 1,0,1,0, scrollvars will be visible",
+                    "hasSetter": true
+                },
+                "canvasOffset": {
+                    "hasGetter": true,
+                    "type": "vector2",
+                    "description": "",
                     "hasSetter": true
                 },
                 "scrollbarAlpha": {
@@ -1030,34 +1026,23 @@
                 }
             }
         },
-        "block": {
-            "methods": {
-                "setShader": {
-                    "parameters": [
-                        {
-                            "type": "string",
-                            "name": "mesh"
-                        }
-                    ],
-                    "returns": [],
-                    "description": "Sets mesh"
-                }
-            },
-            "className": "block",
+        "objectBase": {
+            "methods": [],
+            "className": "objectBase",
             "events": [],
-            "constructable": true,
+            "constructable": false,
             "properties": {
-                "position": {
-                    "hasGetter": true,
-                    "type": "vector3",
-                    "description": "",
-                    "hasSetter": true
-                },
-                "mesh": {
+                "name": {
                     "hasGetter": true,
                     "type": "string",
                     "description": "",
                     "hasSetter": true
+                },
+                "id": {
+                    "hasGetter": true,
+                    "type": "number",
+                    "description": "",
+                    "hasSetter": false
                 }
             }
         },
@@ -1324,6 +1309,95 @@
                 }
             }
         },
+        "guiRichTextBox": {
+            "methods": {
+                "removeColour": {
+                    "parameters": [
+                        {
+                            "type": "int",
+                            "name": "index"
+                        }
+                    ],
+                    "returns": [],
+                    "description": "Removes any set colour at the index provided"
+                },
+                "setColour": {
+                    "parameters": [
+                        {
+                            "type": "int",
+                            "name": "index"
+                        },
+                        {
+                            "type": "colour",
+                            "name": "colour"
+                        }
+                    ],
+                    "returns": [],
+                    "description": "Sets the colour of text onwards from the provided index"
+                },
+                "clearColours": {
+                    "parameters": [],
+                    "returns": [],
+                    "description": "Removes any set colours at all indexes"
+                }
+            },
+            "className": "guiRichTextBox",
+            "events": [],
+            "constructable": true,
+            "extends": "guiTextBox",
+            "properties": {
+                "colours": {
+                    "hasGetter": true,
+                    "type": "table",
+                    "description": "Returns a table of {index, colour} (e.g: {{1, colour(1,0,0)}, {3, colour(0,1,0)}})",
+                    "hasSetter": false
+                }
+            }
+        },
+        "json": {
+            "methods": {
+                "decode": {
+                    "parameters": [
+                        {
+                            "type": "string",
+                            "name": "json"
+                        }
+                    ],
+                    "returns": [
+                        "table"
+                    ],
+                    "description": ""
+                },
+                "encodeWithTypes": {
+                    "parameters": [
+                        {
+                            "type": "variant",
+                            "name": "toEncode"
+                        }
+                    ],
+                    "returns": [
+                        "string"
+                    ],
+                    "description": ""
+                },
+                "encode": {
+                    "parameters": [
+                        {
+                            "type": "variant",
+                            "name": "toEncode"
+                        }
+                    ],
+                    "returns": [
+                        "string"
+                    ],
+                    "description": ""
+                }
+            },
+            "className": "json",
+            "events": [],
+            "constructable": false,
+            "properties": []
+        },
         "guiTextBox": {
             "methods": [],
             "className": "guiTextBox",
@@ -1424,46 +1498,37 @@
                 }
             }
         },
-        "json": {
+        "graphics": {
             "methods": {
-                "decode": {
+                "setRenderer": {
                     "parameters": [
                         {
                             "type": "string",
-                            "name": "json"
+                            "name": "rendererName"
                         }
                     ],
+                    "returns": [],
+                    "description": "Sets the renderer used by this client"
+                },
+                "getRenderers": {
+                    "parameters": [],
                     "returns": [
                         "table"
                     ],
-                    "description": ""
+                    "description": "Returns the list of supported renderers on this client"
                 },
-                "encodeWithTypes": {
+                "setDebug": {
                     "parameters": [
                         {
-                            "type": "variant",
-                            "name": "toEncode"
+                            "type": "bool",
+                            "name": "debugMode"
                         }
                     ],
-                    "returns": [
-                        "string"
-                    ],
-                    "description": ""
-                },
-                "encode": {
-                    "parameters": [
-                        {
-                            "type": "variant",
-                            "name": "toEncode"
-                        }
-                    ],
-                    "returns": [
-                        "string"
-                    ],
-                    "description": ""
+                    "returns": [],
+                    "description": "Enable or disable debug mode"
                 }
             },
-            "className": "json",
+            "className": "graphics",
             "events": [],
             "constructable": false,
             "properties": []
@@ -1564,50 +1629,94 @@
                 }
             }
         },
-        "guiRichTextBox": {
-            "methods": {
-                "removeColour": {
-                    "parameters": [
-                        {
-                            "type": "int",
-                            "name": "index"
-                        }
-                    ],
-                    "returns": [],
-                    "description": "Removes any set colour at the index provided"
-                },
-                "setColour": {
-                    "parameters": [
-                        {
-                            "type": "int",
-                            "name": "index"
-                        },
-                        {
-                            "type": "colour",
-                            "name": "colour"
-                        }
-                    ],
-                    "returns": [],
-                    "description": "Sets the colour of text onwards from the provided index"
-                },
-                "clearColours": {
-                    "parameters": [],
-                    "returns": [],
-                    "description": "Removes any set colours at all indexes"
-                }
-            },
-            "className": "guiRichTextBox",
+        "scene": {
+            "methods": [],
+            "className": "scene",
             "events": [],
-            "constructable": true,
-            "extends": "guiTextBox",
+            "constructable": false,
             "properties": {
-                "colours": {
+                "size": {
                     "hasGetter": true,
-                    "type": "table",
-                    "description": "Returns a table of {index, colour} (e.g: {{1, colour(1,0,0)}, {3, colour(0,1,0)}})",
-                    "hasSetter": false
+                    "type": "Undocumented",
+                    "hasSetter": true
                 }
             }
+        },
+        "block": {
+            "methods": {
+                "setShader": {
+                    "parameters": [
+                        {
+                            "type": "string",
+                            "name": "mesh"
+                        }
+                    ],
+                    "returns": [],
+                    "description": "Sets mesh"
+                }
+            },
+            "className": "block",
+            "events": [],
+            "constructable": true,
+            "properties": {
+                "position": {
+                    "hasGetter": true,
+                    "type": "vector3",
+                    "description": "",
+                    "hasSetter": true
+                },
+                "mesh": {
+                    "hasGetter": true,
+                    "type": "string",
+                    "description": "",
+                    "hasSetter": true
+                }
+            }
+        },
+        "debug": {
+            "methods": {
+                "traceback": {
+                    "parameters": [],
+                    "returns": [],
+                    "description": "Undocumented"
+                },
+                "schedulerUi": {
+                    "parameters": [],
+                    "returns": [],
+                    "description": "Undocumented"
+                }
+            },
+            "className": "debug",
+            "events": {
+                "changed": {
+                    "parameters": [
+                        {
+                            "type": "string",
+                            "name": "property"
+                        },
+                        {
+                            "type": "variant",
+                            "name": "oldValue"
+                        },
+                        {
+                            "type": "variant",
+                            "name": "newValue"
+                        }
+                    ],
+                    "description": "Fired when a property is changed."
+                },
+                "print": {
+                    "parameters": [
+                        {
+                            "type": "string",
+                            "name": "message"
+                        }
+                    ],
+                    "description": "Fired when a print occurs"
+                }
+            },
+            "constructable": false,
+            "properties": []
         },
         "tween": {
             "methods": {
@@ -1668,53 +1777,6 @@
             "events": [],
             "constructable": false,
             "properties": []
-        },
-        "debug": {
-            "methods": [],
-            "className": "debug",
-            "events": {
-                "changed": {
-                    "parameters": [
-                        {
-                            "type": "string",
-                            "name": "property"
-                        },
-                        {
-                            "type": "variant",
-                            "name": "oldValue"
-                        },
-                        {
-                            "type": "variant",
-                            "name": "newValue"
-                        }
-                    ],
-                    "description": "Fired when a property is changed."
-                },
-                "print": {
-                    "parameters": [
-                        {
-                            "type": "string",
-                            "name": "message"
-                        }
-                    ],
-                    "description": "Fired when a print occurs"
-                }
-            },
-            "constructable": false,
-            "properties": []
-        },
-        "scene": {
-            "methods": [],
-            "className": "scene",
-            "events": [],
-            "constructable": false,
-            "properties": {
-                "size": {
-                    "hasGetter": true,
-                    "type": "Undocumented",
-                    "hasSetter": true
-                }
-            }
         },
         "dev": {
             "methods": [],
@@ -1809,5 +1871,5 @@
             "properties": []
         }
     },
-    "build": "0207"
+    "build": "0208"
 }
