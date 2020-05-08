@@ -215,6 +215,10 @@ local function loadTutorialPage(tutorial, pagei, lessonFrame)
             textColour = colour.white(),
             dropShadowAlpha = 0.2
         })
+
+        btn:on("mouseLeftUp", function()
+            reload()
+        end)
     else
         btn = teverse.construct("guiTextBox", {
             parent = lessonFrame,
