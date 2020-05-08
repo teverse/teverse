@@ -173,7 +173,7 @@ local function newFeedItem(date, data)
     })
 
     -- Create User Modal (profile click/touch on feed)
-    local _modal = modal.construct(guiCoord(0.3, 0, 1.4, 0), guiCoord(0.088, 0, 0.55, 0))
+    local _modal = modal.construct(guiCoord(0, 130, 0, 60), guiCoord(0, 40, 0, 25))
     _modal.content.parent = item
     local content = teverse.construct("guiFrame", {
         parent = _modal.content,
@@ -189,11 +189,15 @@ local function newFeedItem(date, data)
     teverse.construct("guiImage", {
         parent = content,
         name = "profilePicture",
-        size = guiCoord(0, 30, 0, 30),
-        position = guiCoord(0, 3, 0, 3),
+        size = guiCoord(0, 32, 0, 32),
+        position = guiCoord(0, 3, 0, 6),
         image = "tevurl:asset/user/"..(data.postedBy.id),
-        strokeRadius = 15,
-        strokeAlpha = 0.04
+        strokeRadius = 3,
+        backgroundColour = globals.defaultColours.white,
+        dropShadowAlpha = 0.4,
+        dropShadowBlur = 2,
+        dropShadowColour = colour.rgb(127, 127, 127),
+        dropShadowOffset = vector2(0.5, 1.5)
     })
 
     teverse.construct("guiTextBox", {
