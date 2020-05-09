@@ -22,6 +22,12 @@ if teverse.dev.localTevGit then
         textAlpha = 0.5,
         backgroundAlpha = 0
     })
+elseif _TEV_VERSION_PATCH and _TEV_VERSION_PATCH >= 12 then
+    teverse.input:on("keyUp", function(key)
+        if key == "KEY_F1" and not teverse.dev.localTevGit then
+            teverse.dev:promptTevGit()
+        end
+    end)
 end
 
 local settingsButton = teverse.construct("guiIcon", {
