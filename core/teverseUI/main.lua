@@ -10,6 +10,20 @@ teverse.construct("guiFrame", {
     backgroundAlpha = 0.75
 })
 
+if teverse.dev.localTevGit then
+    teverse.construct("guiTextBox", {
+        parent = teverse.coreInterface,
+        size = guiCoord(0,60, 0, 12),
+        position = guiCoord(1, -70, 1, -59),
+        zIndex = 1000,
+        textSize = 12,
+        text = "Local TevGit",
+        textAlign = "middleRight",
+        textAlpha = 0.5,
+        backgroundAlpha = 0
+    })
+end
+
 local settingsButton = teverse.construct("guiIcon", {
     parent = teverse.coreInterface,
     size = guiCoord(0, 35, 0, 35),
