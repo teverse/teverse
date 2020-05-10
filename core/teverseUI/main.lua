@@ -24,7 +24,7 @@ if teverse.dev.localTevGit then
     })
 elseif _TEV_VERSION_PATCH and _TEV_VERSION_PATCH >= 12 then
     teverse.input:on("keyUp", function(key)
-        if key == "KEY_F1" and not teverse.dev.localTevGit and teverse.input:isKeyDown("KEY_LCTRL") then
+        if key == "KEY_F1" and not teverse.dev.localTevGit and teverse.input:isKeyDown("KEY_LSHIFT") then
             teverse.dev:promptTevGit()
         end
     end)
