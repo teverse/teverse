@@ -1,8 +1,8 @@
 {
     "os": "OSX",
     "arch": "x64",
-    "version": "0.20.9",
-    "generatedAt": "08/05/2020 20:22:50",
+    "version": "0.20.13",
+    "generatedAt": "10/05/2020 22:07:37",
     "sandbox": {
         "coroutine": {
             "status": "function",
@@ -20,7 +20,7 @@
         "xpcall": "function",
         "_DEVICE_PAD_BOTTOM": 0,
         "ipairs": "function",
-        "_TEV_BUILD": "0209",
+        "_TEV_BUILD": "02013",
         "colour": "cdata",
         "print": "function",
         "_TEV_VERSION_MINOR": 20,
@@ -45,11 +45,11 @@
             "insert": "function"
         },
         "error": "function",
-        "_TEV_VERSION": "0.20.9",
+        "_TEV_VERSION": "0.20.13",
         "_DEVICE": "Mac",
         "require": "function",
         "_VERSION": "Lua 5.1",
-        "_TEV_VERSION_PATCH": 9,
+        "_TEV_VERSION_PATCH": 13,
         "next": "function",
         "math": {
             "ceil": "function",
@@ -407,7 +407,20 @@
     },
     "classes": {
         "input": {
-            "methods": [],
+            "methods": {
+                "isKeyDown": {
+                    "parameters": [
+                        {
+                            "type": "keyCode",
+                            "name": "code"
+                        }
+                    ],
+                    "returns": [
+                        "boolean"
+                    ],
+                    "description": "Returns true if the provided key is down"
+                }
+            },
             "className": "input",
             "events": {
                 "mouseRightUp": {
@@ -1791,22 +1804,28 @@
             "properties": []
         },
         "dev": {
-            "methods": [],
+            "methods": {
+                "promptTevGit": {
+                    "parameters": [],
+                    "returns": [],
+                    "description": "Prompts the user to select a directory for tevgit."
+                }
+            },
             "className": "dev",
             "events": [],
             "constructable": false,
             "properties": {
-                "state": {
-                    "hasGetter": true,
-                    "type": "string",
-                    "description": "Mostly for internal use, represents what the user is currently doing.",
-                    "hasSetter": true
-                },
                 "interface": {
                     "hasGetter": true,
                     "type": "interface",
                     "description": "Workshop level interface, renders above the teverse.interfave singleton",
                     "hasSetter": false
+                },
+                "state": {
+                    "hasGetter": true,
+                    "type": "string",
+                    "description": "Mostly for internal use, represents what the user is currently doing.",
+                    "hasSetter": true
                 },
                 "localTevGit": {
                     "hasGetter": true,
@@ -1883,5 +1902,5 @@
             "properties": []
         }
     },
-    "build": "0209"
+    "build": "02013"
 }
