@@ -97,7 +97,7 @@ share:on("mouseLeftUp", function()
                     if code == 200 then
                         msg.text = "Your app was updated! Please note apps may be subject to moderation before becoming public."
                     else
-                        msg.text = "Something went wrong."
+                        msg.text = "Something went wrong: "..code..body
                     end
                 end)
             end
