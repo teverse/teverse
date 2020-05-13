@@ -474,7 +474,7 @@ return {
         local feedItems = teverse.construct("guiFrame", {
             parent = feed,
             backgroundAlpha = 0,
-            clip = true
+            clip = false
         })
 
         teverse.guiHelper
