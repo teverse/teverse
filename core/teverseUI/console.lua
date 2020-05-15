@@ -42,6 +42,10 @@ function addLog (msg, time)
     txt.size = guiCoord(1, -10, 0, txt.textDimensions.y)
     lastPos = lastPos + txt.textDimensions.y + 3
 
+    if string.find(msg, "ERROR:") then
+        txt.textColour = colour.rgb(220, 50, 47)
+    end
+
     -- Update container size
     logContainer.canvasSize = guiCoord(1, -1, 0.5, lastPos)
 end
