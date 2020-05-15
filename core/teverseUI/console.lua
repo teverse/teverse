@@ -21,10 +21,12 @@ teverse.construct("guiTextBox", {
 
 local logContainer = teverse.construct("guiScrollView", {
     parent = container,
-    size = guiCoord(1, -10, 1, -10),
+    size = guiCoord(1, -10, 1, -22),
     position = guiCoord(0, 5, 0, 20),
     backgroundAlpha = 0.0,
-    canvasSize = guiCoord(1, -1, 10, 0) 
+    canvasSize = guiCoord(1, -1, 10, 0),
+    scrollbarWidth = 3,
+    scrollbarRadius = 2
 })
 
 local lastPos = 0
@@ -60,6 +62,7 @@ if _TEV_VERSION_PATCH and _TEV_VERSION_PATCH >= 9 then
     for _,v in pairs(teverse.debug:getOutputHistory()) do
         addLog(v.message, v.time)
     end
+    logContainer.canvasOffset = vector2(0, lastPos - 200)
 else
     print("History not supported")
 end
