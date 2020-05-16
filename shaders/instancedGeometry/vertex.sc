@@ -29,6 +29,8 @@ void main()
 	vec4 tangent = a_tangent * 2.0 - 1.0;
 
 	vec3 wnormal = normalize(mul(modelIT, normal.xyz ));
+	wnormal = instMul(model, vec4(wnormal, 1.0) ).xyz;
+
 	vec3 wtangent = normalize(mul(modelIT, tangent.xyz ));
 
 	vec3 view = mul(u_view, vec4(wpos, 0.0) ).xyz;
