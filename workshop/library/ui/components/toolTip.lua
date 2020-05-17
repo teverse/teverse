@@ -53,10 +53,10 @@ return {
                 size = guiCoord(0.95, 0, 0.4, 0),
                 position = guiCoord(0.025, 0, 0.23, 0),
                 backgroundColour = globals.defaultColours.white,
-                borderAlpha = 1,
-                borderRadius = 5,
-                borderWidth = 3,
-                borderColour = globals.defaultColours.secondary
+                strokeAlpha = 1,
+                strokeRadius = 5,
+                strokeWidth = 3,
+                strokeColour = globals.defaultColours.secondary
             })
 
             teverse.construct("guiIcon", {
@@ -74,7 +74,7 @@ return {
                 size = guiCoord(0.82, 0, 1, 0),
                 position = guiCoord(0.15, 0, 0, 0),
                 text = text,
-                fontSize = 16,
+                textSize = 16,
                 textColour = globals.defaultColours.primary,
                 backgroundColour = globals.defaultColours.white,
                 textAlign = enums.align.middle,
@@ -111,17 +111,17 @@ return {
                 size = guiCoord(0.8, 0, 0.9, 0),
                 position = guiCoord(0.133, 0, 0.05, 0),
                 backgroundColour = globals.defaultColours.white,
-                borderAlpha = 1,
-                borderRadius = 5,
-                borderWidth = 3,
-                borderColour = globals.defaultColours.primary
+                strokeAlpha = 1,
+                strokeRadius = 5,
+                strokeWidth = 3,
+                strokeColour = globals.defaultColours.primary
             })
 
             teverse.construct("guiIcon", {
                 parent = bodyContainer,
                 size = guiCoord(0, 16, 0, 16),
                 position = guiCoord(0.05, 0, 0.3, 0),
-                iconId = "fa:s-info-circle",
+                iconId = "info-circle",
                 iconType = "faSolid",
                 iconColour = globals.defaultColours.primary,
                 backgroundColour = globals.defaultColours.white,
@@ -132,7 +132,7 @@ return {
                 size = guiCoord(0.82, 0, 1, 0),
                 position = guiCoord(0.15, 0, 0, 0),
                 text = text,
-                fontSize = 16,
+                textSize = 16,
                 textColour = globals.defaultColours.primary,
                 backgroundColour = globals.defaultColours.white,
                 textAlign = enums.align.middle,

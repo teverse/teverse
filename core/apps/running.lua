@@ -1,13 +1,19 @@
 -- This script is ran when the user is running a shared app
 
-local appsContainer = teverse.construct("guiTextBox", {
+local disclaimer = teverse.construct("guiTextBox", {
     parent = teverse.coreInterface,
-    size = guiCoord(1, 0, 0, 15),
-    position = guiCoord(0, 0, 1, -15),
-    backgroundAlpha = 0,
-    text = "You are running user generated code",
-    textShadowSize = 4,
-    textSize = 12,
-    textColour = colour(1, 1, 1),
-    textAlign = "middle"
+    size = guiCoord(0, 75, 0, 18),
+    position = guiCoord(0, 10, 1, -28),
+    text = "User Content",
+    textSize = 14,
+    textColour = colour(0, 0, 0),
+    textAlign = "middle",
+    textFont = "tevurl:fonts/openSansSemiBold.ttf",
+    strokeRadius = 2,
+    dropShadowAlpha = 0.15,
+    strokeAlpha = 0.05
 })
+
+disclaimer:on("mouseLeftUp", function()
+    teverse.apps:reload()
+end)

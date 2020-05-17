@@ -113,16 +113,29 @@ controller.setup = function()
             strokeRadius = 3
         })
 
+        icon:on("mouseEnter", function()
+            icon.backgroundAlpha = 0.15
+        end)
+
+        icon:on("mouseExit", function()
+            -- container is visible if button is 'active'
+            if not container.visible then
+                icon.backgroundAlpha = 0
+            end
+        end)
+
         icon:on("mouseLeftUp", function()
             for _,v in pairs(pages) do
                 v[1].visible = false
                 v[2].iconAlpha = 0.75
                 v[2].backgroundAlpha = 0.0
+                v[2].dropShadowAlpha = 0.0
             end
 
             container.visible = true
             icon.iconAlpha = 1.0
             icon.backgroundAlpha = 0.2
+            icon.dropShadowAlpha = 0.15
         end)
 
         page.setup(container)
@@ -138,8 +151,12 @@ controller.setup = function()
     setupPage(require("tevgit:core/dashboard/pages/home.lua"))
     setupPage(require("tevgit:core/dashboard/pages/apps.lua"))
 
-    if _DEVICE:sub(0,6) ~= "iPhone" then
-        setupPage(require("tevgit:core/dashboard/pages/develop.lua"))
+    if _DEVICE:sub(0, 6) ~= "iPhone" then
+        if _DEVICE:sub(0, 4) == "iPad" then
+            --setupPage(require("tevgit:core/dashboard/pages/developTablet.lua"))
+        else
+            setupPage(require("tevgit:core/dashboard/pages/developDesktop.lua"))
+        end
     end
 end
 
