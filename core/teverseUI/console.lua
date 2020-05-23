@@ -58,14 +58,9 @@ teverse.debug:on("print", function(msg)
     end)
 end)
 
-if _TEV_VERSION_PATCH and _TEV_VERSION_PATCH >= 9 then
-    for _,v in pairs(teverse.debug:getOutputHistory()) do
-        addLog(v.message, v.time)
-    end
-    logContainer.canvasOffset = vector2(0, lastPos - 200)
-else
-    print("History not supported")
+for _,v in pairs(teverse.debug:getOutputHistory()) do
+    addLog(v.message, v.time)
 end
-
+logContainer.canvasOffset = vector2(0, lastPos - 200)
 
 return container
