@@ -1,5 +1,11 @@
 #ifndef __LIGHTING_SH__
 #define __LIGHTING_SH__
+
+// 
+// Teverse will be rebuilding our PBR shaders shortly
+// To optimise fully for Mobile and low end devices
+//
+
 float remapRoughness(float x)
 {
   return 2.0f * (1.0f / (1.0f - 0.5f + 0.001f) - 1.0f) * (pow(x, 2)) + 0.001f;
@@ -88,7 +94,7 @@ float DistributionGGX(vec3 N, vec3 H, float roughness)
     float denom = (NdotH2 * (a2 - 1.0) + 1.0);
     denom = PI * denom * denom;
 	
-    return num / denom;
+    return NdotH2;
 }
 
 float GeometrySchlickGGX(float NdotV, float roughness)

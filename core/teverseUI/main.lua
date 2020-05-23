@@ -22,13 +22,21 @@ if teverse.dev.localTevGit then
         textAlpha = 0.5,
         backgroundAlpha = 0
     })
-elseif _TEV_VERSION_PATCH and _TEV_VERSION_PATCH >= 12 then
-    teverse.input:on("keyUp", function(key)
-        if key == "KEY_F1" and not teverse.dev.localTevGit and teverse.input:isKeyDown("KEY_LSHIFT") then
-            teverse.dev:promptTevGit()
-        end
-    end)
 end
+
+local debug = false
+teverse.input:on("keyUp", function(key)
+    if key == "KEY_F1" and not teverse.dev.localTevGit and teverse.input:isKeyDown("KEY_LSHIFT") then
+        teverse.dev:promptTevGit()
+    elseif key == "KEY_F2" and teverse.input:isKeyDown("KEY_LSHIFT") then
+        print("Reload")
+        teverse.dev:reloadAllShaders()
+    elseif key == "KEY_F12" and teverse.input:isKeyDown("KEY_LSHIFT") then
+        print("Debug")
+        debug = not debug
+        teverse.graphics:setDebug(debug)
+    end
+end)
 
 local settingsButton = teverse.construct("guiIcon", {
     parent = teverse.coreInterface,

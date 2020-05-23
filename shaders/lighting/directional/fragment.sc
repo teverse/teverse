@@ -1,4 +1,9 @@
-$input v_texcoord0
+$input v_texcoord0, lightDirection, lightColour
+
+// 
+// Teverse will be rebuilding our PBR shaders shortly
+// To optimise fully for Mobile and low end devices
+//
 
 #include <teverse.sh>
 #include <../../instancedGeometry/lighting.sh>
@@ -8,8 +13,6 @@ SAMPLER2D(sNormal, 1);
 SAMPLER2D(sDepth, 2);
 
 uniform mat4 uniformMtx;
-uniform vec4 uniformLightColour;
-uniform vec4 uniformLightDirection;
 uniform vec4 uniformCameraPosition;
 
 void main()
@@ -18,7 +21,7 @@ void main()
 	vec4 normal		= texture2D(sNormal, v_texcoord0);
     normal.xyz      = decodeNormalUint(normal.xyz);
     float depth		= toClipSpaceDepth(texture2D(sDepth, v_texcoord0).x);
-	vec3 lightDir	= normalize(-uniformLightDirection.xyz);
+	vec3 lightDir	= normalize(-lightDirection);
 
     float metallic  = colour.w;
     float roughness = normal.w;
@@ -53,5 +56,5 @@ void main()
     // add to outgoing radiance Lo
     float NdotL = max(dot(normal.xyz, L), 0.0);                
 
-    gl_FragColor = vec4(((kD * colour / PI + specular) * uniformLightColour.xyz * NdotL) + 0.1, 1.0); 
+    gl_FragColor = vec4(((kD * colour / PI + specular) * lightColour * NdotL), 1.0); 
 }
