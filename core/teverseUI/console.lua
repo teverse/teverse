@@ -1,3 +1,6 @@
+local shared = require("tevgit:core/teverseUI/shared.lua")
+local draggableUi = shared.draggableUi
+
 local container = teverse.construct("guiFrame", {
     parent = teverse.coreInterface,
     size = guiCoord(0.1, 150, 0.4, 200),
@@ -9,19 +12,22 @@ local container = teverse.construct("guiFrame", {
     visible = false
 })
 
-teverse.construct("guiTextBox", {
+local top = teverse.construct("guiTextBox", {
     parent = container,
-    size = guiCoord(1, -10, 0, 20),
-    position = guiCoord(0, 5, 0, 0),
-    backgroundAlpha = 0.0,
+    size = guiCoord(1, 0, 0, 20),
+    position = guiCoord(0, 0, 0, 0),
+    backgroundAlpha = 0.5,
     textSize = 20,
     textAlign = "middleLeft",
-    text = "Console"
+    -- bit hacky but works for slight indent
+    text = " Console",
+    backgroundColour = colour.rgb(112, 112, 112)
+
 })
 
 local logContainer = teverse.construct("guiScrollView", {
     parent = container,
-    size = guiCoord(1, -10, 1, -22),
+    size = guiCoord(1, -10, 1, -27),
     position = guiCoord(0, 5, 0, 20),
     backgroundAlpha = 0.0,
     canvasSize = guiCoord(1, -1, 10, 0),
@@ -29,6 +35,8 @@ local logContainer = teverse.construct("guiScrollView", {
     scrollbarRadius = 2
 })
 
+
+draggableUi(container, top)
 local lastPos = 0
 function addLog (msg, time)
     local txt = teverse.construct("guiTextBox", {
@@ -62,5 +70,6 @@ for _,v in pairs(teverse.debug:getOutputHistory()) do
     addLog(v.message, v.time)
 end
 logContainer.canvasOffset = vector2(0, lastPos - 200)
+
 
 return container
