@@ -671,7 +671,7 @@
             "properties": {
                 "absolutePosition": {
                     "hasGetter": true,
-                    "type": "vector",
+                    "type": "vector3",
                     "description": "",
                     "hasSetter": false
                 },
