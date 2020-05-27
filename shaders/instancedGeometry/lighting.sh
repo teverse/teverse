@@ -1,6 +1,30 @@
 #ifndef __LIGHTING_SH__
 #define __LIGHTING_SH__
 
+// 
+// Teverse will be rebuilding our PBR shaders shortly
+// To optimise fully for Mobile and low end devices
+//
+
+float remapRoughness(float x)
+{
+  return 2.0f * (1.0f / (1.0f - 0.5f + 0.001f) - 1.0f) * (pow(x, 2)) + 0.001f;
+}
+
+float schlick(float R0, float cos_theta)
+{
+  float R = R0 + (1.0 - R0) * pow((1.0 - cos_theta), 5.0);
+  return R;
+}
+
+float roughSchlick2(float R0, float cos_theta, float roughness)
+{
+  float area_under_curve = 1.0 / 6.0 * (5.0 * R0 + 1.0);
+  float new_area_under_curve = 1.0 / (6.0 * roughness + 6.0) * (5.0 * R0 + 1.0);
+
+  return schlick(R0, cos_theta) /
+    (1.0 + roughness) + (area_under_curve - new_area_under_curve);
+}
 
 const float PI = 3.1415;
 
@@ -46,11 +70,11 @@ vec3 calcLight(vec3 _wpos, vec3 _normal, vec3 _view, vec3 _lightPos, float _ligh
 
 float toClipSpaceDepth(float _depthTextureZ)
 {
-#if BGFX_SHADER_LANGUAGE_GLSL
+#if GLSL
 	return _depthTextureZ * 2.0 - 1.0;
 #else
 	return _depthTextureZ;
-#endif // BGFX_SHADER_LANGUAGE_GLSL
+#endif
 }
 
 vec3 clipToWorld(mat4 _invViewProj, vec3 _clipPos)
@@ -70,7 +94,7 @@ float DistributionGGX(vec3 N, vec3 H, float roughness)
     float denom = (NdotH2 * (a2 - 1.0) + 1.0);
     denom = PI * denom * denom;
 	
-    return num / denom;
+    return NdotH2;
 }
 
 float GeometrySchlickGGX(float NdotV, float roughness)

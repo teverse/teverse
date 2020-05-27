@@ -1,8 +1,8 @@
 {
     "os": "OSX",
     "arch": "x64",
-    "version": "0.20.13",
-    "generatedAt": "10/05/2020 22:07:37",
+    "version": "0.21.0",
+    "generatedAt": "24/05/2020 00:46:08",
     "sandbox": {
         "coroutine": {
             "status": "function",
@@ -20,10 +20,10 @@
         "xpcall": "function",
         "_DEVICE_PAD_BOTTOM": 0,
         "ipairs": "function",
-        "_TEV_BUILD": "02013",
+        "_TEV_BUILD": "0210",
         "colour": "cdata",
         "print": "function",
-        "_TEV_VERSION_MINOR": 20,
+        "_TEV_VERSION_MINOR": 21,
         "pcall": "function",
         "gcinfo": "function",
         "loadstring": "function",
@@ -45,11 +45,13 @@
             "insert": "function"
         },
         "error": "function",
-        "_TEV_VERSION": "0.20.13",
+        "_TEV_VERSION": "0.21.0",
+        "quaternion": "cdata",
         "_DEVICE": "Mac",
         "require": "function",
+        "unpack": "function",
         "_VERSION": "Lua 5.1",
-        "_TEV_VERSION_PATCH": 13,
+        "_TEV_VERSION_PATCH": 0,
         "next": "function",
         "math": {
             "ceil": "function",
@@ -83,7 +85,6 @@
             "randomseed": "function",
             "rad": "function"
         },
-        "unpack": "function",
         "os": {
             "difftime": "function",
             "date": "function",
@@ -91,6 +92,7 @@
             "clock": "function",
             "parseISO8601": "function"
         },
+        "vector3": "cdata",
         "vector2": "cdata",
         "select": "function",
         "string": {
@@ -419,6 +421,18 @@
                         "boolean"
                     ],
                     "description": "Returns true if the provided key is down"
+                },
+                "isMouseButtonDown": {
+                    "parameters": [
+                        {
+                            "type": "number",
+                            "name": "code"
+                        }
+                    ],
+                    "returns": [
+                        "boolean"
+                    ],
+                    "description": "Returns true if the provided button is down, where code is 1, 2 or 3"
                 }
             },
             "className": "input",
@@ -648,6 +662,39 @@
                 }
             }
         },
+        "sceneObject": {
+            "methods": [],
+            "className": "sceneObject",
+            "events": [],
+            "constructable": false,
+            "extends": "objectBase",
+            "properties": {
+                "absolutePosition": {
+                    "hasGetter": true,
+                    "type": "vector3",
+                    "description": "",
+                    "hasSetter": false
+                },
+                "rotation": {
+                    "hasGetter": true,
+                    "type": "quaternion",
+                    "description": "",
+                    "hasSetter": true
+                },
+                "position": {
+                    "hasGetter": true,
+                    "type": "vector3",
+                    "description": "",
+                    "hasSetter": true
+                },
+                "absoluteRotation": {
+                    "hasGetter": true,
+                    "type": "quaternion",
+                    "description": "",
+                    "hasSetter": false
+                }
+            }
+        },
         "guiBase": {
             "methods": {
                 "child": {
@@ -666,11 +713,6 @@
                     "parameters": [],
                     "returns": [],
                     "description": "Destroys all children"
-                },
-                "destroy": {
-                    "parameters": [],
-                    "returns": [],
-                    "description": "Destroys this object, further accessing this instance will error"
                 }
             },
             "className": "guiBase",
@@ -1043,7 +1085,13 @@
             }
         },
         "objectBase": {
-            "methods": [],
+            "methods": {
+                "destroy": {
+                    "parameters": [],
+                    "returns": [],
+                    "description": "Destroys this object, further accessing this instance will error"
+                }
+            },
             "className": "objectBase",
             "events": [],
             "constructable": false,
@@ -1154,6 +1202,51 @@
             "constructable": false,
             "properties": []
         },
+        "guiRichTextBox": {
+            "methods": {
+                "removeColour": {
+                    "parameters": [
+                        {
+                            "type": "int",
+                            "name": "index"
+                        }
+                    ],
+                    "returns": [],
+                    "description": "Removes any set colour at the index provided"
+                },
+                "setColour": {
+                    "parameters": [
+                        {
+                            "type": "int",
+                            "name": "index"
+                        },
+                        {
+                            "type": "colour",
+                            "name": "colour"
+                        }
+                    ],
+                    "returns": [],
+                    "description": "Sets the colour of text onwards from the provided index"
+                },
+                "clearColours": {
+                    "parameters": [],
+                    "returns": [],
+                    "description": "Removes any set colours at all indexes"
+                }
+            },
+            "className": "guiRichTextBox",
+            "events": [],
+            "constructable": true,
+            "extends": "guiTextBox",
+            "properties": {
+                "colours": {
+                    "hasGetter": true,
+                    "type": "table",
+                    "description": "Returns a table of {index, colour} (e.g: {{1, colour(1,0,0)}, {3, colour(0,1,0)}})",
+                    "hasSetter": false
+                }
+            }
+        },
         "guiLine": {
             "methods": [],
             "className": "guiLine",
@@ -1198,6 +1291,66 @@
                     "hasSetter": true
                 }
             }
+        },
+        "tween": {
+            "methods": {
+                "begin": {
+                    "parameters": [
+                        {
+                            "type": "variant",
+                            "name": "object"
+                        },
+                        {
+                            "type": "number",
+                            "name": "duration"
+                        },
+                        {
+                            "type": "table",
+                            "name": "properties"
+                        },
+                        {
+                            "type": "string",
+                            "name": "easing"
+                        },
+                        {
+                            "type": "function?",
+                            "name": "tweenCallback"
+                        }
+                    ],
+                    "returns": [],
+                    "description": "Creates and starts a tween"
+                },
+                "create": {
+                    "parameters": [
+                        {
+                            "type": "variant",
+                            "name": "object"
+                        },
+                        {
+                            "type": "number",
+                            "name": "duration"
+                        },
+                        {
+                            "type": "table",
+                            "name": "properties"
+                        },
+                        {
+                            "type": "string",
+                            "name": "easing"
+                        },
+                        {
+                            "type": "function?",
+                            "name": "tweenCallback"
+                        }
+                    ],
+                    "returns": [],
+                    "description": "Creates a tween"
+                }
+            },
+            "className": "tween",
+            "events": [],
+            "constructable": false,
+            "properties": []
         },
         "guiFrame": {
             "methods": [],
@@ -1325,47 +1478,39 @@
                 }
             }
         },
-        "guiRichTextBox": {
+        "scene": {
             "methods": {
-                "removeColour": {
+                "child": {
                     "parameters": [
                         {
-                            "type": "int",
-                            "name": "index"
+                            "type": "string",
+                            "name": "name"
                         }
                     ],
-                    "returns": [],
-                    "description": "Removes any set colour at the index provided"
-                },
-                "setColour": {
-                    "parameters": [
-                        {
-                            "type": "int",
-                            "name": "index"
-                        },
-                        {
-                            "type": "colour",
-                            "name": "colour"
-                        }
+                    "returns": [
+                        "sceneObject"
                     ],
-                    "returns": [],
-                    "description": "Sets the colour of text onwards from the provided index"
+                    "description": "Returns nil if not found"
                 },
-                "clearColours": {
+                "destroyChildren": {
                     "parameters": [],
                     "returns": [],
-                    "description": "Removes any set colours at all indexes"
+                    "description": "Destroys all children"
                 }
             },
-            "className": "guiRichTextBox",
+            "className": "scene",
             "events": [],
-            "constructable": true,
-            "extends": "guiTextBox",
+            "constructable": false,
             "properties": {
-                "colours": {
+                "camera": {
+                    "hasGetter": true,
+                    "type": "Undocumented",
+                    "hasSetter": false
+                },
+                "children": {
                     "hasGetter": true,
                     "type": "table",
-                    "description": "Returns a table of {index, colour} (e.g: {{1, colour(1,0,0)}, {3, colour(0,1,0)}})",
+                    "description": "",
                     "hasSetter": false
                 }
             }
@@ -1645,39 +1790,49 @@
                 }
             }
         },
-        "scene": {
+        "light": {
             "methods": [],
-            "className": "scene",
+            "className": "light",
             "events": [],
             "constructable": false,
+            "extends": "sceneObject",
             "properties": {
-                "size": {
+                "colour": {
                     "hasGetter": true,
-                    "type": "Undocumented",
+                    "type": "colour",
+                    "description": "",
                     "hasSetter": true
                 }
             }
         },
         "block": {
-            "methods": {
-                "setShader": {
-                    "parameters": [
-                        {
-                            "type": "string",
-                            "name": "mesh"
-                        }
-                    ],
-                    "returns": [],
-                    "description": "Sets mesh"
-                }
-            },
+            "methods": [],
             "className": "block",
             "events": [],
             "constructable": true,
+            "extends": "sceneObject",
             "properties": {
-                "position": {
+                "roughness": {
+                    "hasGetter": true,
+                    "type": "number",
+                    "description": "",
+                    "hasSetter": true
+                },
+                "scale": {
                     "hasGetter": true,
                     "type": "vector3",
+                    "description": "",
+                    "hasSetter": true
+                },
+                "colour": {
+                    "hasGetter": true,
+                    "type": "colour",
+                    "description": "",
+                    "hasSetter": true
+                },
+                "metalness": {
+                    "hasGetter": true,
+                    "type": "number",
                     "description": "",
                     "hasSetter": true
                 },
@@ -1743,68 +1898,21 @@
             "constructable": false,
             "properties": []
         },
-        "tween": {
-            "methods": {
-                "begin": {
-                    "parameters": [
-                        {
-                            "type": "variant",
-                            "name": "object"
-                        },
-                        {
-                            "type": "number",
-                            "name": "duration"
-                        },
-                        {
-                            "type": "table",
-                            "name": "properties"
-                        },
-                        {
-                            "type": "string",
-                            "name": "easing"
-                        },
-                        {
-                            "type": "function?",
-                            "name": "tweenCallback"
-                        }
-                    ],
-                    "returns": [],
-                    "description": "Creates and starts a tween"
-                },
-                "create": {
-                    "parameters": [
-                        {
-                            "type": "variant",
-                            "name": "object"
-                        },
-                        {
-                            "type": "number",
-                            "name": "duration"
-                        },
-                        {
-                            "type": "table",
-                            "name": "properties"
-                        },
-                        {
-                            "type": "string",
-                            "name": "easing"
-                        },
-                        {
-                            "type": "function?",
-                            "name": "tweenCallback"
-                        }
-                    ],
-                    "returns": [],
-                    "description": "Creates a tween"
-                }
-            },
-            "className": "tween",
+        "directionalLight": {
+            "methods": [],
+            "className": "directionalLight",
             "events": [],
-            "constructable": false,
+            "constructable": true,
+            "extends": "light",
             "properties": []
         },
         "dev": {
             "methods": {
+                "reloadAllShaders": {
+                    "parameters": [],
+                    "returns": [],
+                    "description": "Reloads all shaders."
+                },
                 "promptTevGit": {
                     "parameters": [],
                     "returns": [],
@@ -1902,5 +2010,5 @@
             "properties": []
         }
     },
-    "build": "02013"
+    "build": "0210"
 }
