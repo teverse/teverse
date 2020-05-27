@@ -17,4 +17,4 @@ jobs:
     - name: Install LuaJIT
       run: sudo apt-get install luajit -y
     - name: Load all Lua files
-      run: find . -type f -name '*.lua' -exec echo "{}" \; -exec lua -e "if not loadstring('{}') then print('Fail') os.exit() end" \;
+      run: find . -type f -name '*.lua' -exec echo "{}" \; -exec luajit -e "if not loadstring('{}') then print('Fail') os.exit() end" \;
