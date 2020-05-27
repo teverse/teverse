@@ -17,4 +17,6 @@ jobs:
     - name: Install LuaJIT
       run: sudo apt-get install luajit -y
     - name: Load all Lua files
-      run: find ${{env.GITHUB_WORKSPACE}} -type f -name '*.lua' -exec echo "{}" \; -exec luajit -e "local loaded,res = loadstring('{}') if not loaded then print('Fail', res) os.execute('exit 1') end" \;
+      run: |
+        echo ${{env.GITHUB_WORKSPACE}}
+        find ${{env.GITHUB_WORKSPACE}} -type f -name '*.lua' -exec echo "{}" \; -exec luajit -e "local loaded,res = loadfile('{}') if not loaded then print('Fail', res) os.execute('exit 1') end" \;
