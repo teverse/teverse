@@ -149,13 +149,16 @@ controller.setup = function()
         table.insert(pages, {container, icon})
     end
     setupPage(require("tevgit:core/dashboard/pages/home.lua"))
-    setupPage(require("tevgit:core/dashboard/pages/apps.lua"))
 
-    if _DEVICE:sub(0, 6) ~= "iPhone" then
-        if _DEVICE:sub(0, 4) == "iPad" then
-            --setupPage(require("tevgit:core/dashboard/pages/developTablet.lua"))
-        else
-            setupPage(require("tevgit:core/dashboard/pages/developDesktop.lua"))
+    if not (_TEV_VERSION_MINOR == 21 and _TEV_VERSION_PATCH == 0) then
+        setupPage(require("tevgit:core/dashboard/pages/apps.lua"))
+
+        if _DEVICE:sub(0, 6) ~= "iPhone" then
+            if _DEVICE:sub(0, 4) == "iPad" then
+                --setupPage(require("tevgit:core/dashboard/pages/developTablet.lua"))
+            else
+                setupPage(require("tevgit:core/dashboard/pages/developDesktop.lua"))
+            end
         end
     end
 end
