@@ -29,6 +29,7 @@ defaultPage.registerIcon("exportFileIcon", "file-export", nil)
 --globals.sideBarPageDefault = defaultPage -- Set default sidebar page to default
 --globals.sideBarPageActive = defaultPage -- Set default sidebar page as active
 
+--[[
 local designPage = sideBar.registerPage("Design") -- Register design page to sidebar instance
 designPage.registerIcon("screenContainerIcon", "tv", nil)
 designPage.registerIcon("guiFrameIcon", "square-full", nil)
@@ -49,13 +50,14 @@ testPage.registerIcon("consoleIcon", "terminal", nil)
 testPage.registerIcon("playIcon", "play", nil)
 testPage.registerIcon("serverIcon", "server", nil)
 testPage.registerIcon("fullScreenIcon", "expand-alt", nil)
+]]--
 
 -- Bind pages to labels in menu
 topBar.bindDefaultMenu(defaultPage.getContainer())
-topBar.bindMenu("Design", designPage.getContainer())
-topBar.bindMenu("Model", modelPage.getContainer())
-topBar.bindMenu("Insert", insertPage.getContainer())
-topBar.bindMenu("Test", testPage.getContainer())
+--topBar.bindMenu("Design", designPage.getContainer())
+--topBar.bindMenu("Model", modelPage.getContainer())
+--topBar.bindMenu("Insert", insertPage.getContainer())
+--topBar.bindMenu("Test", testPage.getContainer())
 
 
 

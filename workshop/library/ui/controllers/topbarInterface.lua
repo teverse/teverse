@@ -208,7 +208,7 @@ return {
         self.bindDefaultMenu = function(page)
             self.defaultPage = page
             self.currentPage = page
-            data.animate(page, guiCoord(1, 0, 0, 200))
+            data.animate(page, guiCoord(0, 0, 0, 200))
         end
 
         self.bindMenu = function(name, page)
