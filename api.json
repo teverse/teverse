@@ -1,8 +1,8 @@
 {
     "os": "OSX",
     "arch": "x64",
-    "version": "0.22.0",
-    "generatedAt": "05/06/2020 17:28:20",
+    "version": "0.23.1",
+    "generatedAt": "19/06/2020 13:05:51",
     "sandbox": {
         "coroutine": {
             "status": "function",
@@ -20,10 +20,10 @@
         "xpcall": "function",
         "_DEVICE_PAD_BOTTOM": 0,
         "ipairs": "function",
-        "_TEV_BUILD": "0220",
+        "_TEV_BUILD": "0231",
         "colour": "cdata",
         "print": "function",
-        "_TEV_VERSION_MINOR": 22,
+        "_TEV_VERSION_MINOR": 23,
         "pcall": "function",
         "gcinfo": "function",
         "loadstring": "function",
@@ -45,13 +45,13 @@
             "insert": "function"
         },
         "error": "function",
-        "_TEV_VERSION": "0.22.0",
+        "_TEV_VERSION": "0.23.1",
         "quaternion": "cdata",
         "_DEVICE": "Mac",
         "require": "function",
         "unpack": "function",
         "_VERSION": "Lua 5.1",
-        "_TEV_VERSION_PATCH": 0,
+        "_TEV_VERSION_PATCH": 1,
         "next": "function",
         "math": {
             "ceil": "function",
@@ -1250,6 +1250,66 @@
                 }
             }
         },
+        "tween": {
+            "methods": {
+                "begin": {
+                    "parameters": [
+                        {
+                            "type": "variant",
+                            "name": "object"
+                        },
+                        {
+                            "type": "number",
+                            "name": "duration"
+                        },
+                        {
+                            "type": "table",
+                            "name": "properties"
+                        },
+                        {
+                            "type": "string",
+                            "name": "easing"
+                        },
+                        {
+                            "type": "function?",
+                            "name": "tweenCallback"
+                        }
+                    ],
+                    "returns": [],
+                    "description": "Creates and starts a tween"
+                },
+                "create": {
+                    "parameters": [
+                        {
+                            "type": "variant",
+                            "name": "object"
+                        },
+                        {
+                            "type": "number",
+                            "name": "duration"
+                        },
+                        {
+                            "type": "table",
+                            "name": "properties"
+                        },
+                        {
+                            "type": "string",
+                            "name": "easing"
+                        },
+                        {
+                            "type": "function?",
+                            "name": "tweenCallback"
+                        }
+                    ],
+                    "returns": [],
+                    "description": "Creates a tween"
+                }
+            },
+            "className": "tween",
+            "events": [],
+            "constructable": false,
+            "properties": []
+        },
         "guiLine": {
             "methods": [],
             "className": "guiLine",
@@ -1295,13 +1355,58 @@
                 }
             }
         },
-        "directionalLight": {
-            "methods": [],
-            "className": "directionalLight",
+        "camera": {
+            "methods": {
+                "screenToWorld": {
+                    "parameters": [
+                        {
+                            "type": "vector2",
+                            "name": "screenPos"
+                        }
+                    ],
+                    "returns": [
+                        "vector3",
+                        " number"
+                    ],
+                    "description": "Returns a 3d vector"
+                },
+                "worldToScreen": {
+                    "parameters": [
+                        {
+                            "type": "vector3",
+                            "name": "wPos"
+                        }
+                    ],
+                    "returns": [
+                        "vector2",
+                        " number"
+                    ],
+                    "description": "Returns a 2d screen space vector and a number representing depth"
+                }
+            },
+            "className": "camera",
             "events": [],
-            "constructable": true,
-            "extends": "light",
-            "properties": []
+            "constructable": false,
+            "properties": {
+                "fOV": {
+                    "hasGetter": true,
+                    "type": "number",
+                    "description": "",
+                    "hasSetter": true
+                },
+                "position": {
+                    "hasGetter": true,
+                    "type": "vector3",
+                    "description": "",
+                    "hasSetter": true
+                },
+                "rotation": {
+                    "hasGetter": true,
+                    "type": "quaternion",
+                    "description": "",
+                    "hasSetter": true
+                }
+            }
         },
         "guiFrame": {
             "methods": [],
@@ -1426,6 +1531,136 @@
                     "type": "client",
                     "description": "The current local client, nil when unauthenticated",
                     "hasSetter": false
+                }
+            }
+        },
+        "block": {
+            "methods": {
+                "applyImpulse": {
+                    "parameters": [
+                        {
+                            "type": "vector3",
+                            "name": "force"
+                        }
+                    ],
+                    "returns": [],
+                    "description": ""
+                },
+                "applyTorque": {
+                    "parameters": [
+                        {
+                            "type": "vector3",
+                            "name": "force"
+                        }
+                    ],
+                    "returns": [],
+                    "description": ""
+                },
+                "applyForce": {
+                    "parameters": [
+                        {
+                            "type": "vector3",
+                            "name": "force"
+                        }
+                    ],
+                    "returns": [],
+                    "description": ""
+                },
+                "applyForceAtPosition": {
+                    "parameters": [
+                        {
+                            "type": "vector3",
+                            "name": "force,"
+                        }
+                    ],
+                    "returns": [],
+                    "description": ""
+                },
+                "applyImpulseAtPosition": {
+                    "parameters": [
+                        {
+                            "type": "vector3",
+                            "name": "force,"
+                        }
+                    ],
+                    "returns": [],
+                    "description": ""
+                },
+                "applyTorqueImpulse": {
+                    "parameters": [
+                        {
+                            "type": "vector3",
+                            "name": "force"
+                        }
+                    ],
+                    "returns": [],
+                    "description": ""
+                }
+            },
+            "className": "block",
+            "events": [],
+            "constructable": true,
+            "extends": "sceneObject",
+            "properties": {
+                "velocity": {
+                    "hasGetter": true,
+                    "type": "vector3",
+                    "description": "",
+                    "hasSetter": true
+                },
+                "scale": {
+                    "hasGetter": true,
+                    "type": "vector3",
+                    "description": "",
+                    "hasSetter": true
+                },
+                "colour": {
+                    "hasGetter": true,
+                    "type": "colour",
+                    "description": "",
+                    "hasSetter": true
+                },
+                "angularFactor": {
+                    "hasGetter": true,
+                    "type": "vector3",
+                    "description": "",
+                    "hasSetter": true
+                },
+                "metalness": {
+                    "hasGetter": true,
+                    "type": "number",
+                    "description": "",
+                    "hasSetter": true
+                },
+                "static": {
+                    "hasGetter": true,
+                    "type": "boolean",
+                    "description": "",
+                    "hasSetter": true
+                },
+                "mesh": {
+                    "hasGetter": true,
+                    "type": "string",
+                    "description": "",
+                    "hasSetter": true
+                },
+                "linearFactor": {
+                    "hasGetter": true,
+                    "type": "vector3",
+                    "description": "",
+                    "hasSetter": true
+                },
+                "angularVelocity": {
+                    "hasGetter": true,
+                    "type": "vector3",
+                    "description": "",
+                    "hasSetter": true
+                },
+                "roughness": {
+                    "hasGetter": true,
+                    "type": "number",
+                    "description": "",
+                    "hasSetter": true
                 }
             }
         },
@@ -1560,50 +1795,6 @@
                     "description": "Fired when an download fails or succeeds"
                 }
             },
-            "constructable": false,
-            "properties": []
-        },
-        "json": {
-            "methods": {
-                "decode": {
-                    "parameters": [
-                        {
-                            "type": "string",
-                            "name": "json"
-                        }
-                    ],
-                    "returns": [
-                        "table"
-                    ],
-                    "description": ""
-                },
-                "encodeWithTypes": {
-                    "parameters": [
-                        {
-                            "type": "variant",
-                            "name": "toEncode"
-                        }
-                    ],
-                    "returns": [
-                        "string"
-                    ],
-                    "description": ""
-                },
-                "encode": {
-                    "parameters": [
-                        {
-                            "type": "variant",
-                            "name": "toEncode"
-                        }
-                    ],
-                    "returns": [
-                        "string"
-                    ],
-                    "description": ""
-                }
-            },
-            "className": "json",
-            "events": [],
             "constructable": false,
             "properties": []
         },
@@ -1853,42 +2044,49 @@
                 }
             }
         },
-        "scene": {
+        "json": {
             "methods": {
-                "child": {
+                "decode": {
                     "parameters": [
                         {
                             "type": "string",
-                            "name": "name"
+                            "name": "json"
                         }
                     ],
                     "returns": [
-                        "sceneObject"
+                        "table"
                     ],
-                    "description": "Returns nil if not found"
+                    "description": ""
                 },
-                "destroyChildren": {
-                    "parameters": [],
-                    "returns": [],
-                    "description": "Destroys all children"
+                "encodeWithTypes": {
+                    "parameters": [
+                        {
+                            "type": "variant",
+                            "name": "toEncode"
+                        }
+                    ],
+                    "returns": [
+                        "string"
+                    ],
+                    "description": ""
+                },
+                "encode": {
+                    "parameters": [
+                        {
+                            "type": "variant",
+                            "name": "toEncode"
+                        }
+                    ],
+                    "returns": [
+                        "string"
+                    ],
+                    "description": ""
                 }
             },
-            "className": "scene",
+            "className": "json",
             "events": [],
             "constructable": false,
-            "properties": {
-                "camera": {
-                    "hasGetter": true,
-                    "type": "Undocumented",
-                    "hasSetter": false
-                },
-                "children": {
-                    "hasGetter": true,
-                    "type": "table",
-                    "description": "",
-                    "hasSetter": false
-                }
-            }
+            "properties": []
         },
         "debug": {
             "methods": {
@@ -1944,40 +2142,50 @@
             "constructable": false,
             "properties": []
         },
-        "block": {
-            "methods": [],
-            "className": "block",
+        "scene": {
+            "methods": {
+                "child": {
+                    "parameters": [
+                        {
+                            "type": "string",
+                            "name": "name"
+                        }
+                    ],
+                    "returns": [
+                        "sceneObject"
+                    ],
+                    "description": "Returns nil if not found"
+                },
+                "destroyChildren": {
+                    "parameters": [],
+                    "returns": [],
+                    "description": "Destroys all children"
+                }
+            },
+            "className": "scene",
             "events": [],
-            "constructable": true,
-            "extends": "sceneObject",
+            "constructable": false,
             "properties": {
-                "roughness": {
+                "simulate": {
                     "hasGetter": true,
-                    "type": "number",
+                    "type": "bool",
                     "description": "",
                     "hasSetter": true
                 },
-                "scale": {
+                "camera": {
+                    "hasGetter": true,
+                    "type": "Undocumented",
+                    "hasSetter": false
+                },
+                "children": {
+                    "hasGetter": true,
+                    "type": "table",
+                    "description": "",
+                    "hasSetter": false
+                },
+                "gravity": {
                     "hasGetter": true,
                     "type": "vector3",
-                    "description": "",
-                    "hasSetter": true
-                },
-                "colour": {
-                    "hasGetter": true,
-                    "type": "colour",
-                    "description": "",
-                    "hasSetter": true
-                },
-                "metalness": {
-                    "hasGetter": true,
-                    "type": "number",
-                    "description": "",
-                    "hasSetter": true
-                },
-                "mesh": {
-                    "hasGetter": true,
-                    "type": "string",
                     "description": "",
                     "hasSetter": true
                 }
@@ -2014,72 +2222,20 @@
                 },
                 "localTevGit": {
                     "hasGetter": true,
-                    "type": "boolean",
-                    "description": "True if a local tevgit repo is in use",
+                    "type": "string",
+                    "description": "Returns path to local tevgit",
                     "hasSetter": false
                 }
             }
         },
-        "tween": {
-            "methods": {
-                "begin": {
-                    "parameters": [
-                        {
-                            "type": "variant",
-                            "name": "object"
-                        },
-                        {
-                            "type": "number",
-                            "name": "duration"
-                        },
-                        {
-                            "type": "table",
-                            "name": "properties"
-                        },
-                        {
-                            "type": "string",
-                            "name": "easing"
-                        },
-                        {
-                            "type": "function?",
-                            "name": "tweenCallback"
-                        }
-                    ],
-                    "returns": [],
-                    "description": "Creates and starts a tween"
-                },
-                "create": {
-                    "parameters": [
-                        {
-                            "type": "variant",
-                            "name": "object"
-                        },
-                        {
-                            "type": "number",
-                            "name": "duration"
-                        },
-                        {
-                            "type": "table",
-                            "name": "properties"
-                        },
-                        {
-                            "type": "string",
-                            "name": "easing"
-                        },
-                        {
-                            "type": "function?",
-                            "name": "tweenCallback"
-                        }
-                    ],
-                    "returns": [],
-                    "description": "Creates a tween"
-                }
-            },
-            "className": "tween",
+        "directionalLight": {
+            "methods": [],
+            "className": "directionalLight",
             "events": [],
-            "constructable": false,
+            "constructable": true,
+            "extends": "light",
             "properties": []
         }
     },
-    "build": "0220"
+    "build": "0231"
 }
