@@ -1388,7 +1388,7 @@
             "events": [],
             "constructable": false,
             "properties": {
-                "fOV": {
+                "fov": {
                     "hasGetter": true,
                     "type": "number",
                     "description": "",
