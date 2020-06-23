@@ -106,8 +106,8 @@ return {
             strokeRadius = 3
         })
 
-        -- Test Search Bar
-        local searchIcon = teverse.construct("guiIcon", {
+        -- Test command Bar
+        local commandBarIcon = teverse.construct("guiIcon", {
             parent = container,
             size = guiCoord(0, 32, 0, 32),
             position = guiCoord(0, 160, 0, 4),
@@ -121,7 +121,7 @@ return {
             strokeRadius = 3,
         })
 
-        local searchField = teverse.construct("guiTextBox", {
+        local commandBarField = teverse.construct("guiTextBox", {
             parent = container,
             size = guiCoord(0, 200, 0, 32),
             position = guiCoord(0, 191, 0, 4),
@@ -137,20 +137,20 @@ return {
             visible = false
         })
 
-        searchIcon:on("mouseLeftDown", function()
+        commandBarIcon:on("mouseLeftDown", function()
             if (clicked) then
-                searchIcon.iconColour = globals.defaultColours.white
-                searchIcon.backgroundAlpha = 1
-                searchField.visible = true
+                commandBarIcon.iconColour = globals.defaultColours.white
+                commandBarIcon.backgroundAlpha = 1
+                commandBarField.visible = true
             else
-                searchIcon.iconColour = globals.defaultColours.primary
-                searchIcon.backgroundAlpha = 0.1
-                searchField.visible = false
+                commandBarIcon.iconColour = globals.defaultColours.primary
+                commandBarIcon.backgroundAlpha = 0.1
+                commandBarField.visible = false
             end
             clicked = (not clicked)
         end)
 
-        searchField:on("changed", function(property)
+        commandBarField:on("changed", function(property)
             --if property == "text" then
             print("Property: "..property)
 
@@ -158,7 +158,7 @@ return {
         end)
 
 
-        -- End Test Search Bar
+        -- End Test Command Bar
 
         self.registerIcon = function(icon, callback)
             local icon = teverse.construct("guiIcon", {
