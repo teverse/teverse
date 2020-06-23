@@ -1,8 +1,8 @@
 {
     "os": "OSX",
     "arch": "x64",
-    "version": "0.21.0",
-    "generatedAt": "24/05/2020 00:46:08",
+    "version": "0.23.1",
+    "generatedAt": "19/06/2020 13:05:51",
     "sandbox": {
         "coroutine": {
             "status": "function",
@@ -20,10 +20,10 @@
         "xpcall": "function",
         "_DEVICE_PAD_BOTTOM": 0,
         "ipairs": "function",
-        "_TEV_BUILD": "0210",
+        "_TEV_BUILD": "0231",
         "colour": "cdata",
         "print": "function",
-        "_TEV_VERSION_MINOR": 21,
+        "_TEV_VERSION_MINOR": 23,
         "pcall": "function",
         "gcinfo": "function",
         "loadstring": "function",
@@ -45,13 +45,13 @@
             "insert": "function"
         },
         "error": "function",
-        "_TEV_VERSION": "0.21.0",
+        "_TEV_VERSION": "0.23.1",
         "quaternion": "cdata",
         "_DEVICE": "Mac",
         "require": "function",
         "unpack": "function",
         "_VERSION": "Lua 5.1",
-        "_TEV_VERSION_PATCH": 0,
+        "_TEV_VERSION_PATCH": 1,
         "next": "function",
         "math": {
             "ceil": "function",
@@ -96,21 +96,24 @@
         "vector2": "cdata",
         "select": "function",
         "string": {
-            "split": "function",
             "find": "function",
-            "gsub": "function",
-            "rep": "function",
-            "format": "function",
-            "lower": "function",
+            "len": "function",
             "match": "function",
-            "dump": "function",
-            "gmatch": "function",
             "upper": "function",
             "sub": "function",
             "char": "function",
-            "byte": "function",
+            "split": "function",
+            "rep": "function",
+            "lower": "function",
+            "startsWith": "function",
+            "dump": "function",
+            "gmatch": "function",
             "reverse": "function",
-            "len": "function"
+            "byte": "function",
+            "lastIndexOf": "function",
+            "format": "function",
+            "gsub": "function",
+            "endsWith": "function"
         },
         "type": "function",
         "thread": {
@@ -1247,51 +1250,6 @@
                 }
             }
         },
-        "guiLine": {
-            "methods": [],
-            "className": "guiLine",
-            "events": [],
-            "constructable": true,
-            "extends": "guiBase",
-            "properties": {
-                "pointA": {
-                    "hasGetter": true,
-                    "type": "guiCoord",
-                    "description": "Position of where the line starts relative to the parent element.",
-                    "hasSetter": true
-                },
-                "lineAlpha": {
-                    "hasGetter": true,
-                    "type": "number",
-                    "description": "An alpha value of 1.0 is completely visible, 0.0 is invisible.",
-                    "hasSetter": true
-                },
-                "pointB": {
-                    "hasGetter": true,
-                    "type": "guiCoord",
-                    "description": "Position of where the line ends relative to the parent element.",
-                    "hasSetter": true
-                },
-                "lineCap": {
-                    "hasGetter": true,
-                    "type": "enums.lineCap",
-                    "description": "Determines how lines are capped",
-                    "hasSetter": true
-                },
-                "lineColour": {
-                    "hasGetter": true,
-                    "type": "colour",
-                    "description": "",
-                    "hasSetter": true
-                },
-                "lineWidth": {
-                    "hasGetter": true,
-                    "type": "number",
-                    "description": "",
-                    "hasSetter": true
-                }
-            }
-        },
         "tween": {
             "methods": {
                 "begin": {
@@ -1351,6 +1309,104 @@
             "events": [],
             "constructable": false,
             "properties": []
+        },
+        "guiLine": {
+            "methods": [],
+            "className": "guiLine",
+            "events": [],
+            "constructable": true,
+            "extends": "guiBase",
+            "properties": {
+                "pointA": {
+                    "hasGetter": true,
+                    "type": "guiCoord",
+                    "description": "Position of where the line starts relative to the parent element.",
+                    "hasSetter": true
+                },
+                "lineAlpha": {
+                    "hasGetter": true,
+                    "type": "number",
+                    "description": "An alpha value of 1.0 is completely visible, 0.0 is invisible.",
+                    "hasSetter": true
+                },
+                "pointB": {
+                    "hasGetter": true,
+                    "type": "guiCoord",
+                    "description": "Position of where the line ends relative to the parent element.",
+                    "hasSetter": true
+                },
+                "lineCap": {
+                    "hasGetter": true,
+                    "type": "enums.lineCap",
+                    "description": "Determines how lines are capped",
+                    "hasSetter": true
+                },
+                "lineColour": {
+                    "hasGetter": true,
+                    "type": "colour",
+                    "description": "",
+                    "hasSetter": true
+                },
+                "lineWidth": {
+                    "hasGetter": true,
+                    "type": "number",
+                    "description": "",
+                    "hasSetter": true
+                }
+            }
+        },
+        "camera": {
+            "methods": {
+                "screenToWorld": {
+                    "parameters": [
+                        {
+                            "type": "vector2",
+                            "name": "screenPos"
+                        }
+                    ],
+                    "returns": [
+                        "vector3",
+                        " number"
+                    ],
+                    "description": "Returns a 3d vector"
+                },
+                "worldToScreen": {
+                    "parameters": [
+                        {
+                            "type": "vector3",
+                            "name": "wPos"
+                        }
+                    ],
+                    "returns": [
+                        "vector2",
+                        " number"
+                    ],
+                    "description": "Returns a 2d screen space vector and a number representing depth"
+                }
+            },
+            "className": "camera",
+            "events": [],
+            "constructable": false,
+            "properties": {
+                "fov": {
+                    "hasGetter": true,
+                    "type": "number",
+                    "description": "",
+                    "hasSetter": true
+                },
+                "position": {
+                    "hasGetter": true,
+                    "type": "vector3",
+                    "description": "",
+                    "hasSetter": true
+                },
+                "rotation": {
+                    "hasGetter": true,
+                    "type": "quaternion",
+                    "description": "",
+                    "hasSetter": true
+                }
+            }
         },
         "guiFrame": {
             "methods": [],
@@ -1478,84 +1534,267 @@
                 }
             }
         },
-        "scene": {
+        "block": {
             "methods": {
-                "child": {
+                "applyImpulse": {
                     "parameters": [
                         {
-                            "type": "string",
-                            "name": "name"
+                            "type": "vector3",
+                            "name": "force"
                         }
                     ],
-                    "returns": [
-                        "sceneObject"
-                    ],
-                    "description": "Returns nil if not found"
-                },
-                "destroyChildren": {
-                    "parameters": [],
                     "returns": [],
-                    "description": "Destroys all children"
+                    "description": ""
+                },
+                "applyTorque": {
+                    "parameters": [
+                        {
+                            "type": "vector3",
+                            "name": "force"
+                        }
+                    ],
+                    "returns": [],
+                    "description": ""
+                },
+                "applyForce": {
+                    "parameters": [
+                        {
+                            "type": "vector3",
+                            "name": "force"
+                        }
+                    ],
+                    "returns": [],
+                    "description": ""
+                },
+                "applyForceAtPosition": {
+                    "parameters": [
+                        {
+                            "type": "vector3",
+                            "name": "force,"
+                        }
+                    ],
+                    "returns": [],
+                    "description": ""
+                },
+                "applyImpulseAtPosition": {
+                    "parameters": [
+                        {
+                            "type": "vector3",
+                            "name": "force,"
+                        }
+                    ],
+                    "returns": [],
+                    "description": ""
+                },
+                "applyTorqueImpulse": {
+                    "parameters": [
+                        {
+                            "type": "vector3",
+                            "name": "force"
+                        }
+                    ],
+                    "returns": [],
+                    "description": ""
                 }
             },
-            "className": "scene",
+            "className": "block",
             "events": [],
-            "constructable": false,
+            "constructable": true,
+            "extends": "sceneObject",
             "properties": {
-                "camera": {
+                "velocity": {
                     "hasGetter": true,
-                    "type": "Undocumented",
-                    "hasSetter": false
-                },
-                "children": {
-                    "hasGetter": true,
-                    "type": "table",
+                    "type": "vector3",
                     "description": "",
-                    "hasSetter": false
+                    "hasSetter": true
+                },
+                "scale": {
+                    "hasGetter": true,
+                    "type": "vector3",
+                    "description": "",
+                    "hasSetter": true
+                },
+                "colour": {
+                    "hasGetter": true,
+                    "type": "colour",
+                    "description": "",
+                    "hasSetter": true
+                },
+                "angularFactor": {
+                    "hasGetter": true,
+                    "type": "vector3",
+                    "description": "",
+                    "hasSetter": true
+                },
+                "metalness": {
+                    "hasGetter": true,
+                    "type": "number",
+                    "description": "",
+                    "hasSetter": true
+                },
+                "static": {
+                    "hasGetter": true,
+                    "type": "boolean",
+                    "description": "",
+                    "hasSetter": true
+                },
+                "mesh": {
+                    "hasGetter": true,
+                    "type": "string",
+                    "description": "",
+                    "hasSetter": true
+                },
+                "linearFactor": {
+                    "hasGetter": true,
+                    "type": "vector3",
+                    "description": "",
+                    "hasSetter": true
+                },
+                "angularVelocity": {
+                    "hasGetter": true,
+                    "type": "vector3",
+                    "description": "",
+                    "hasSetter": true
+                },
+                "roughness": {
+                    "hasGetter": true,
+                    "type": "number",
+                    "description": "",
+                    "hasSetter": true
                 }
             }
         },
-        "json": {
+        "apps": {
             "methods": {
-                "decode": {
+                "reset": {
+                    "parameters": [],
+                    "returns": [],
+                    "description": "Resets the environment"
+                },
+                "getSource": {
+                    "parameters": [],
+                    "returns": [
+                        "string"
+                    ],
+                    "description": "Returns the source code of the loaded app or nil if no app is loaded."
+                },
+                "loadRemote": {
+                    "parameters": [],
+                    "returns": [],
+                    "description": "Starts uploading the currently loaded UNPACKAGED app"
+                },
+                "loadDashboard": {
+                    "parameters": [],
+                    "returns": [],
+                    "description": "Resets the environment and loads the default Dashboard app"
+                },
+                "upload": {
+                    "parameters": [],
+                    "returns": [],
+                    "description": "Starts uploading the currently loaded UNPACKAGED app"
+                },
+                "promptApp": {
+                    "parameters": [],
+                    "returns": [
+                        "boolean"
+                    ],
+                    "description": "Prompts the user to select a .tevapp file"
+                },
+                "reload": {
+                    "parameters": [],
+                    "returns": [],
+                    "description": "Resets the environment and reloads the loaded app"
+                },
+                "loadString": {
                     "parameters": [
                         {
                             "type": "string",
-                            "name": "json"
+                            "name": "lua"
                         }
                     ],
                     "returns": [
-                        "table"
+                        "boolean"
                     ],
-                    "description": ""
+                    "description": "Resets the environment and loads the Lua string provided as an app."
                 },
-                "encodeWithTypes": {
+                "promptAppDirectory": {
+                    "parameters": [],
+                    "returns": [
+                        "boolean"
+                    ],
+                    "description": "Prompts the user to select a directory containing the manifest.json file"
+                },
+                "loadWorkshop": {
+                    "parameters": [],
+                    "returns": [],
+                    "description": "Resets the environment and loads the default Workshop app"
+                },
+                "loadScript": {
                     "parameters": [
                         {
-                            "type": "variant",
-                            "name": "toEncode"
+                            "type": "string",
+                            "name": "file"
                         }
                     ],
                     "returns": [
-                        "string"
+                        "boolean"
                     ],
-                    "description": ""
+                    "description": "Resets the environment and loads the Lua file at the provided path as an app."
                 },
-                "encode": {
-                    "parameters": [
-                        {
-                            "type": "variant",
-                            "name": "toEncode"
-                        }
-                    ],
+                "prompt": {
+                    "parameters": [],
                     "returns": [
-                        "string"
+                        "boolean"
                     ],
-                    "description": ""
+                    "description": "Prompts the user to select a Lua file, this method then triggers app:loadScript(path)"
                 }
             },
-            "className": "json",
-            "events": [],
+            "className": "apps",
+            "events": {
+                "changed": {
+                    "parameters": [
+                        {
+                            "type": "string",
+                            "name": "property"
+                        },
+                        {
+                            "type": "variant",
+                            "name": "oldValue"
+                        },
+                        {
+                            "type": "variant",
+                            "name": "newValue"
+                        }
+                    ],
+                    "description": "Fired when a property is changed."
+                },
+                "upload": {
+                    "parameters": [
+                        {
+                            "type": "boolean",
+                            "name": "success"
+                        },
+                        {
+                            "type": "table",
+                            "name": "app"
+                        }
+                    ],
+                    "description": "Fired when an upload fails or succeeds"
+                },
+                "download": {
+                    "parameters": [
+                        {
+                            "type": "boolean",
+                            "name": "success"
+                        },
+                        {
+                            "type": "string",
+                            "name": "message"
+                        }
+                    ],
+                    "description": "Fired when an download fails or succeeds"
+                }
+            },
             "constructable": false,
             "properties": []
         },
@@ -1805,44 +2044,49 @@
                 }
             }
         },
-        "block": {
-            "methods": [],
-            "className": "block",
-            "events": [],
-            "constructable": true,
-            "extends": "sceneObject",
-            "properties": {
-                "roughness": {
-                    "hasGetter": true,
-                    "type": "number",
-                    "description": "",
-                    "hasSetter": true
+        "json": {
+            "methods": {
+                "decode": {
+                    "parameters": [
+                        {
+                            "type": "string",
+                            "name": "json"
+                        }
+                    ],
+                    "returns": [
+                        "table"
+                    ],
+                    "description": ""
                 },
-                "scale": {
-                    "hasGetter": true,
-                    "type": "vector3",
-                    "description": "",
-                    "hasSetter": true
+                "encodeWithTypes": {
+                    "parameters": [
+                        {
+                            "type": "variant",
+                            "name": "toEncode"
+                        }
+                    ],
+                    "returns": [
+                        "string"
+                    ],
+                    "description": ""
                 },
-                "colour": {
-                    "hasGetter": true,
-                    "type": "colour",
-                    "description": "",
-                    "hasSetter": true
-                },
-                "metalness": {
-                    "hasGetter": true,
-                    "type": "number",
-                    "description": "",
-                    "hasSetter": true
-                },
-                "mesh": {
-                    "hasGetter": true,
-                    "type": "string",
-                    "description": "",
-                    "hasSetter": true
+                "encode": {
+                    "parameters": [
+                        {
+                            "type": "variant",
+                            "name": "toEncode"
+                        }
+                    ],
+                    "returns": [
+                        "string"
+                    ],
+                    "description": ""
                 }
-            }
+            },
+            "className": "json",
+            "events": [],
+            "constructable": false,
+            "properties": []
         },
         "debug": {
             "methods": {
@@ -1898,13 +2142,54 @@
             "constructable": false,
             "properties": []
         },
-        "directionalLight": {
-            "methods": [],
-            "className": "directionalLight",
+        "scene": {
+            "methods": {
+                "child": {
+                    "parameters": [
+                        {
+                            "type": "string",
+                            "name": "name"
+                        }
+                    ],
+                    "returns": [
+                        "sceneObject"
+                    ],
+                    "description": "Returns nil if not found"
+                },
+                "destroyChildren": {
+                    "parameters": [],
+                    "returns": [],
+                    "description": "Destroys all children"
+                }
+            },
+            "className": "scene",
             "events": [],
-            "constructable": true,
-            "extends": "light",
-            "properties": []
+            "constructable": false,
+            "properties": {
+                "simulate": {
+                    "hasGetter": true,
+                    "type": "bool",
+                    "description": "",
+                    "hasSetter": true
+                },
+                "camera": {
+                    "hasGetter": true,
+                    "type": "Undocumented",
+                    "hasSetter": false
+                },
+                "children": {
+                    "hasGetter": true,
+                    "type": "table",
+                    "description": "",
+                    "hasSetter": false
+                },
+                "gravity": {
+                    "hasGetter": true,
+                    "type": "vector3",
+                    "description": "",
+                    "hasSetter": true
+                }
+            }
         },
         "dev": {
             "methods": {
@@ -1937,78 +2222,20 @@
                 },
                 "localTevGit": {
                     "hasGetter": true,
-                    "type": "boolean",
-                    "description": "True if a local tevgit repo is in use",
+                    "type": "string",
+                    "description": "Returns path to local tevgit",
                     "hasSetter": false
                 }
             }
         },
-        "apps": {
-            "methods": {
-                "loadDashboard": {
-                    "parameters": [],
-                    "returns": [],
-                    "description": "Resets the environment and loads the default Dashboard app"
-                },
-                "reset": {
-                    "parameters": [],
-                    "returns": [],
-                    "description": "Resets the environment"
-                },
-                "reload": {
-                    "parameters": [],
-                    "returns": [],
-                    "description": "Resets the environment and reloads the loaded app"
-                },
-                "loadString": {
-                    "parameters": [
-                        {
-                            "type": "string",
-                            "name": "lua"
-                        }
-                    ],
-                    "returns": [
-                        "boolean"
-                    ],
-                    "description": "Resets the environment and loads the Lua string provided as an app."
-                },
-                "getSource": {
-                    "parameters": [],
-                    "returns": [
-                        "string"
-                    ],
-                    "description": "Returns the source code of the loaded app or nil if no app is loaded."
-                },
-                "loadScript": {
-                    "parameters": [
-                        {
-                            "type": "string",
-                            "name": "file"
-                        }
-                    ],
-                    "returns": [
-                        "boolean"
-                    ],
-                    "description": "Resets the environment and loads the Lua file at the provided path as an app."
-                },
-                "loadWorkshop": {
-                    "parameters": [],
-                    "returns": [],
-                    "description": "Resets the environment and loads the default Workshop app"
-                },
-                "prompt": {
-                    "parameters": [],
-                    "returns": [
-                        "boolean"
-                    ],
-                    "description": "Prompts the user to select a Lua file, this method then triggers app:loadScript(path)"
-                }
-            },
-            "className": "apps",
+        "directionalLight": {
+            "methods": [],
+            "className": "directionalLight",
             "events": [],
-            "constructable": false,
+            "constructable": true,
+            "extends": "light",
             "properties": []
         }
     },
-    "build": "0210"
+    "build": "0231"
 }

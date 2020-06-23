@@ -88,7 +88,7 @@ void main()
 
     vec3 V = normalize(uniformCameraPosition.xyz - wpos);
 
-    vec3 F0 = vec3(0.04); 
+    vec3 F0 = vec3(0.04, 0.04, 0.04); 
     F0 = mix(F0, colour, metallic);
         
     vec3 L = lightDir;
@@ -100,7 +100,7 @@ void main()
     vec3 F    = fresnelSchlick(max(dot(H, V), 0.0), F0);       
     
     vec3 kS = F;
-    vec3 kD = vec3(1.0) - kS;
+    vec3 kD = vec3(1.0, 1.0, 1.0) - kS;
     kD *= 1.0 - metallic;	  
     
     vec3 numerator    = NDF * G * F;
@@ -110,5 +110,5 @@ void main()
     // add to outgoing radiance Lo
     float NdotL = max(dot(normal.xyz, L), 0.0);                
 
-    gl_FragColor = vec4(((kD * colour / PI + specular) * lightColour * NdotL), 1.0); 
+    gl_FragColor = vec4(((kD * colour / PI + specular) * lightColour * NdotL), colour.w); 
 }

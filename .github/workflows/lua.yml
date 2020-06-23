@@ -1,0 +1,22 @@
+name: Loadstring
+
+# this could be modified to be more helpful when there's a headless teverse client
+on:
+  push:
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  loadstring:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Install LuaJIT
+      run: sudo apt-get install luajit -y
+    - name: Load all Lua files
+      run: |
+        echo ${{env.GITHUB_WORKSPACE}}
+        find ${{env.GITHUB_WORKSPACE}} -type f -name '*.lua' -exec echo "{}" \; -exec luajit -e "local loaded,res = loadfile('{}') if not loaded then print('Fail', res) os.execute('exit 1') end" \;

@@ -121,20 +121,11 @@ return {
 
                     appGui:on("mouseLeftUp", function()
                         if not loading.visible then
-                            loading.text = "Working..."
+                            loading.text = "Loading App"
                             loading.visible = true
-                            teverse.http:get("https://teverse.com/api/apps/" .. app.id .. "/script", {
-                                ["Authorization"] = "BEARER " .. teverse.userToken
-                            }, function(code, body)
-                                if code == 200 then
-                                    loading.visible = false
-                                    teverse.apps:loadString(body)
-                                else
-                                    loading.text = "Unable to load app."
-                                    sleep(1.5)
-                                    loading.visible = false
-                                end
-                            end)
+                            teverse.apps:loadRemote(app.id)
+                            teverse.apps:waitFor("download")
+                            loading.visible = false
                         end
                     end)
                 end
@@ -191,20 +182,11 @@ return {
                     appGui.parent = appsContainer
                     appGui:on("mouseLeftUp", function()
                         if not loading.visible then
-                            loading.text = "Working..."
+                            loading.text = "Loading App"
                             loading.visible = true
-                            teverse.http:get("https://teverse.com/api/apps/" .. app.id .. "/script", {
-                                ["Authorization"] = "BEARER " .. teverse.userToken
-                            }, function(code, body)
-                                if code == 200 then
-                                    loading.visible = false
-                                    teverse.apps:loadString(body)
-                                else
-                                    loading.text = "Unable to load app."
-                                    sleep(1.5)
-                                    loading.visible = false
-                                end
-                            end)
+                            teverse.apps:loadRemote(app.id)
+                            teverse.apps:waitFor("download")
+                            loading.visible = false
                         end
                     end)
                 end
