@@ -125,8 +125,9 @@ return {
             parent = container,
             size = guiCoord(0, 200, 0, 32),
             position = guiCoord(0, 191, 0, 4),
-            text = " PlaceHolder",
+            --text = "  >",
             textAlign = "middleLeft",
+            textFont = "tevurl:fonts/firaCodeBold.otf",
             textSize = 15,
             textColour = globals.defaultColours.primary,
             backgroundColour = globals.defaultColours.primary,
@@ -141,6 +142,7 @@ return {
             if (clicked) then
                 commandBarIcon.iconColour = globals.defaultColours.white
                 commandBarIcon.backgroundAlpha = 1
+                commandBarField.text = "  >"
                 commandBarField.visible = true
             else
                 commandBarIcon.iconColour = globals.defaultColours.primary
@@ -150,11 +152,14 @@ return {
             clicked = (not clicked)
         end)
 
-        commandBarField:on("changed", function(property)
-            --if property == "text" then
-            print("Property: "..property)
+        commandBarField:on("keyDown", function(key)
+            if key == "KEY_RETURN" then
+                print("Command: "..(commandBarField.text))
 
-            --end
+                -- Invoke Command Trigger
+                
+                commandBarField.text = "  >"
+            end
         end)
 
 
