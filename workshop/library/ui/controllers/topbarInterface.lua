@@ -32,6 +32,10 @@ return {
         self.defaultPage = nil
         self.currentPage = nil
 
+        self.animate = function(page, pos)
+            teverse.tween:begin(page, 0.5, { position = pos }, "inOutQuad")
+        end
+
         local container = teverse.construct("guiFrame", {
             parent = teverse.interface,
             name = idValue,
@@ -57,17 +61,13 @@ return {
 
         local menuContainer = teverse.construct("guiFrame", {
             parent = container,
-            size = guiCoord(0, 140, 0.01, 0),
+            size = guiCoord(0, 140, 2.2, 0),
             position = guiCoord(0, 8, 0, 35),
             backgroundColour = globals.defaultColours.primary,
             backgroundAlpha = 0,
             strokeWidth = 1,
             zIndex = 900
         })
-
-        self.animate = function(page, pos)
-            teverse.tween:begin(page, 0.5, { position = pos }, "inOutQuad")
-        end
 
         local headerIcon = teverse.construct("guiIcon", {
             parent = subContainer,
@@ -83,80 +83,12 @@ return {
             strokeRadius = 3,
         })
 
-        local function buildTabMenu()
-            local itemCount = 0
-            if (#data.pages == 0) then return end
-            for _,v in pairs(data.pages) do
-                for key, value in pairs(v) do
-                    
-                    -- Key = (String) name of label
-                    -- Value = (Object(guiFrame)) instance page
-                    local _itemContainer = teverse.construct("guiFrame", {
-                        parent = menuContainer,
-                        size = guiCoord(1, 0, 0.3, 0),
-                        position = guiCoord(0, 0, 0, (itemCount*21)+0),
-                        backgroundColour = globals.defaultColours.red,
-                        backgroundAlpha = 0,
-                        zIndex = 200
-                    })
-
-                    local _itemButton = teverse.construct("guiTextBox", {
-                        parent = _itemContainer,
-                        size = guiCoord(0.97, 0, 1, 0),
-                        position = guiCoord(0.03, 0, 0, 0),
-                        text = key,
-                        textAlign = "middle",
-                        textSize = 20,
-                        textFont = "tevurl:fonts/openSansBold.ttf",
-                        textColour = globals.defaultColours.white,
-                        backgroundColour = globals.defaultColours.primary,
-                        backgroundAlpha = 1,
-                        zIndex = 200
-                    })
-
-                    local _itemContainerShader = teverse.construct("guiFrame", {
-                        parent = _itemContainer,
-                        size = guiCoord(0.03, 0, 1, 0),
-                        position = guiCoord(0, 0, 0, 0),
-                        backgroundColour = globals.defaultColours.white,
-                        backgroundAlpha = 0
-                    })
-
-                    _itemButton:on("mouseEnter", function()
-                        _itemContainerShader.backgroundAlpha = 0.15
-                    end)
-        
-                    _itemButton:on("mouseExit", function()
-                        _itemContainerShader.backgroundAlpha = 0
-                    end)
-
-                    _itemButton:on("mouseLeftUp", function()
-                        print("Clicked")
-                        --[[data.animate(data.currentPage, guiCoord(-1, 0, 0, 200))
-                        sleep(0.5)
-                        data.animate(value, guiCoord(1, 0, 0, 200))
-                        data.currentPage = page]]--
-                    end)
-
-                    itemCount = itemCount + 1
-                end
-            end
-        end
-
         headerIcon:on("mouseLeftUp", function()
             if (clicked) then
-                menuContainer.backgroundAlpha = 1
-                menuContainer.strokeAlpha = 0.15
-                teverse.tween:begin(menuContainer, 0.5, { size = guiCoord(0, 140, 2.2, 0) }, "inOutQuad", buildTabMenu())
+                -- idk
+            else
+                -- idk
             end
-
-            if (not clicked) then
-                teverse.tween:begin(menuContainer, 0.5, { size = guiCoord(0, 140, 0.01, 0) }, "inOutQuad", menuContainer:destroyChildren())
-                sleep(0.5)
-                menuContainer.strokeAlpha = 0
-                menuContainer.backgroundAlpha = 0
-            end
-
             clicked = (not clicked)
         end)
         
@@ -173,6 +105,60 @@ return {
             backgroundAlpha = 0,
             strokeRadius = 3
         })
+
+        -- Test Search Bar
+        local searchIcon = teverse.construct("guiIcon", {
+            parent = container,
+            size = guiCoord(0, 32, 0, 32),
+            position = guiCoord(0, 160, 0, 4),
+            iconId = "search",
+            iconType = "faSolid",
+            iconColour = globals.defaultColours.primary,
+            backgroundColour = globals.defaultColours.primary,
+            backgroundAlpha = 0.1,
+            iconAlpha = 0.75,
+            iconMax = 16,
+            strokeRadius = 3,
+        })
+
+        local searchField = teverse.construct("guiTextBox", {
+            parent = container,
+            size = guiCoord(0, 200, 0, 32),
+            position = guiCoord(0, 191, 0, 4),
+            text = " PlaceHolder",
+            textAlign = "middleLeft",
+            textSize = 15,
+            textColour = globals.defaultColours.primary,
+            backgroundColour = globals.defaultColours.primary,
+            backgroundAlpha = 0.1,
+            strokeRadius = 3,
+            textEditable = true,
+            textMultiline = false,
+            visible = false
+        })
+
+        searchIcon:on("mouseLeftDown", function()
+            if (clicked) then
+                searchIcon.iconColour = globals.defaultColours.white
+                searchIcon.backgroundAlpha = 1
+                searchField.visible = true
+            else
+                searchIcon.iconColour = globals.defaultColours.primary
+                searchIcon.backgroundAlpha = 0.1
+                searchField.visible = false
+            end
+            clicked = (not clicked)
+        end)
+
+        searchField:on("changed", function(property)
+            --if property == "text" then
+            print("Property: "..property)
+
+            --end
+        end)
+
+
+        -- End Test Search Bar
 
         self.registerIcon = function(icon, callback)
             local icon = teverse.construct("guiIcon", {
@@ -216,9 +202,6 @@ return {
             _count = _count + 1
         end
 
-        --self.defaultPage = nil
-        --self.currentPage = nil
-        
         return data
     end
 }
