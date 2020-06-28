@@ -132,7 +132,11 @@ return {
                         if not loading.visible then
                             loading.text = "Loading App"
                             loading.visible = true
-                            teverse.apps:loadRemote(app.id)
+                            if not app.packageNetworked then
+                                teverse.apps:loadRemote(app.id)
+                            else
+                                teverse.networking:initiate(app.id)
+                            end
                             teverse.apps:waitFor("download")
                             loading.visible = false
                         end
