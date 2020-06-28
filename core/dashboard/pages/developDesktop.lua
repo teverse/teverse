@@ -1,3 +1,37 @@
+local function createApp(app)
+    local appGui = teverse.construct("guiFrame", {
+        strokeRadius = 2,
+        dropShadowAlpha = 0.15,
+        strokeAlpha = 0.05
+    })
+
+    teverse.guiHelper.hoverColour(appGui, colour.rgb(247, 247, 247))
+
+    teverse.construct("guiTextBox", {
+        parent = appGui,
+        size = guiCoord(1.0, -20, 0, 22),
+        position = guiCoord(0, 10, 0, 5),
+        backgroundAlpha = 0,
+        text = app.name,
+        textSize = 22,
+        textAlign = "middleLeft",
+        textFont = "tevurl:fonts/openSansBold.ttf",
+        active = false
+    })
+
+    if (app.iconUrl and app.iconUrl ~= "") then
+        local img = teverse.construct("guiImage", {
+            size = guiCoord(1, 0, 1, 0),
+            image = app.iconUrl,
+            parent = appGui,
+            active = false, 
+            zIndex = -1
+        })
+    end
+
+    return appGui
+end
+
 return {
     name = "Develop",
     iconId = "layer-group",
@@ -90,5 +124,42 @@ return {
                 active = false
             })
         end
+
+        local appsContainer = teverse.construct("guiFrame", {
+            parent = page,
+            size = guiCoord(1.0, -20, 1, -150),
+            position = guiCoord(0, 10, 0, 150),
+            backgroundAlpha = 0
+        })
+
+        teverse.guiHelper
+            .gridConstraint(appsContainer, {
+                cellSize = guiCoord(0, 200, 0, 200),
+                cellMargin = guiCoord(0, 15, 0, 25)
+            })
+
+        teverse.http:get("https://teverse.com/api/users/" .. teverse.networking.localClient.id .. "/apps", {
+            ["Authorization"] = "BEARER " .. teverse.userToken
+        }, function(code, body)
+            if code == 200 then
+                local apps = teverse.json:decode(body)
+                for _,app in pairs(apps) do
+                    local appGui = createApp(app)
+                    appGui.parent = appsContainer
+                    appGui:on("mouseLeftUp", function()
+                        if not loading.visible then
+                            loading.text = "Loading App"
+                            loading.visible = true
+                            teverse.apps:loadRemote(app.id)
+                            teverse.apps:waitFor("download")
+                            loading.visible = false
+                        end
+                    end)
+                end
+            else
+                subtitle.text = "Server error."
+            end
+        end)
+
     end
 }
