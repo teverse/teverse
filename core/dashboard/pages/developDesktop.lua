@@ -19,14 +19,17 @@ local function createApp(app)
         active = false
     })
 
+    local img = teverse.construct("guiImage", {
+        size = guiCoord(1, 0, 1, 0),
+        parent = appGui,
+        active = false, 
+        zIndex = -1
+    })
+
     if (app.iconUrl and app.iconUrl ~= "") then
-        local img = teverse.construct("guiImage", {
-            size = guiCoord(1, 0, 1, 0),
-            image = app.iconUrl,
-            parent = appGui,
-            active = false, 
-            zIndex = -1
-        })
+        img.image = app.iconUrl
+    else
+        img.image = "tevurl:img/tevapp.png"
     end
 
     return appGui
