@@ -37,6 +37,19 @@ return {
     iconId = "layer-group",
     iconType = "faSolid",
     setup = function(page)
+        local loading = teverse.construct("guiTextBox", {
+            parent = page,
+            size = guiCoord(1.0, 100, 1.0, 100),
+            position = guiCoord(0, -50, 0, -50),
+            backgroundAlpha = 0.4,
+            backgroundColour = colour(0, 0, 0),
+            text = "Working...",
+            textColour = colour(0,0,0),
+            textAlign = "middle",
+            visible = false,
+            zIndex = 10000
+        })
+        
         teverse.construct("guiTextBox", {
             parent = page,
             size = guiCoord(1.0, -20, 0, 48),
