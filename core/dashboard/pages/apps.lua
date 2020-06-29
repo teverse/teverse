@@ -133,7 +133,7 @@ return {
                     appGui.parent = appsContainer
                     appGui:on("mouseLeftUp", function()
                         if not loading.visible then
-                            loading.text = "Loading App"
+                            loading.text = "Loading App " .. (app.packageNetworked and "Online" or "Offline")
                             loading.visible = true
                             if not app.packageNetworked then
                                 teverse.apps:loadRemote(app.id)
