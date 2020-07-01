@@ -16,7 +16,7 @@ return function()
         strokeAlpha = 0.5
     })
 
-    if _TEV_VERSION_MINOR == 24 and _TEV_VERSION_PATCH < 2 then
+    if _TEV_VERSION_MINOR == 24 and _TEV_VERSION_PATCH < 3 then
         teverse.construct("guiTextBox", {
             parent = container,
             size = guiCoord(0.8, 0, 0.8, 0),
@@ -25,7 +25,7 @@ return function()
             textAlign = "middle",
             textColour = colour(0.5, 0, 0),
             textSize = 16,
-            text = "Network stats are not stable on your version. 0.24.2 is required.",
+            text = "Network stats are not stable on your version. 0.24.3 is required.",
             textMultiline = true,
             textWrap = true
         })
