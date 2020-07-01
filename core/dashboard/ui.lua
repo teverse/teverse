@@ -92,6 +92,7 @@ controller.setup = function()
 
         if page.scrollView then
             container.scrollbarWidth = 4
+            container.active = true
         end
 
         teverse.guiHelper
