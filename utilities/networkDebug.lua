@@ -104,65 +104,72 @@ return function()
         -- Needs reworked
         while sleep(0.5) do
             local stats = teverse.networking:getStats()
-            local pingChildren = pingContainer.children
-            for i,v in pairs(pingChildren) do
-                v.pointA = v.pointA - guiCoord(0.1, 0, 0, 0)
-                v.pointB = v.pointB - guiCoord(0.1, 0, 0, 0)
-                if #pingChildren == 10 and i == 1 then
-                    v:destroy()
-                end
-            end
 
             pingLabel.text = stats.lastPing .. "ms"
             pingLabel.position = guiCoord(1.0, -35, math.min(1 - (stats.lastPing / pingScale), 1), -13)
 
             local newLine = teverse.construct("guiLine", {
                 parent = pingContainer,
-                pointA = guiCoord(0.9, 0, 1 - (lastPing / pingScale), -1),
-                pointB = guiCoord(1.0, 0, 1 - (stats.lastPing / pingScale), -1),
+                pointA = guiCoord(1.0, 0, 1 - (lastPing / pingScale), -1),
+                pointB = guiCoord(1.1, 0, 1 - (stats.lastPing / pingScale), -1),
                 lineColour = colour(1, 0, 0)
             })
             lastPing = stats.lastPing
 
-            local receivedChildren = receivedContainer.children
-            for i,v in pairs(receivedChildren) do
-                v.pointA = v.pointA - guiCoord(0.1, 0, 0, 0)
-                v.pointB = v.pointB - guiCoord(0.1, 0, 0, 0)
-                if #receivedChildren == 10 and i == 1 then
+            local pingChildren = pingContainer.children
+            for i,v in pairs(pingChildren) do
+                teverse.tween:begin(v, 0.5, {
+                    pointA = v.pointA - guiCoord(0.1, 0, 0, 0),
+                    pointB = v.pointB - guiCoord(0.1, 0, 0, 0)
+                }, "linear")
+                if #pingChildren == 12 and i == 1 then
                     v:destroy()
                 end
             end
 
-            receivedLabel.text = string.format("%.2f kb-i", tonumber(stats.lastSecondMessageBytesReceived)/1024)
-            receivedLabel.position = guiCoord(1.0, -50, math.min(1 - (tonumber(stats.lastSecondMessageBytesReceived) / downloadScale), 1), -13)
+            receivedLabel.text = string.format("%.2f kb-i", stats.lastSecondMessageBytesReceived/1024)
+            receivedLabel.position = guiCoord(1.0, -50, math.min(1 - (stats.lastSecondMessageBytesReceived / downloadScale), 1), -13)
 
             local newLine = teverse.construct("guiLine", {
                 parent = receivedContainer,
-                pointA = guiCoord(0.9, 0, 1 - (lastReceive / downloadScale), -1),
-                pointB = guiCoord(1.0, 0, 1 - (tonumber(stats.lastSecondMessageBytesReceived) / downloadScale), -1),
+                pointA = guiCoord(1.0, 0, 1 - (lastReceive / downloadScale), -1),
+                pointB = guiCoord(1.1, 0, 1 - (stats.lastSecondMessageBytesReceived / downloadScale), -1),
                 lineColour = colour(0, 0.5, 0)
             })
-            lastReceive = tonumber(stats.lastSecondMessageBytesReceived)
-            
-            local sentChildren = sentContainer.children
-            for i,v in pairs(sentChildren) do
-                v.pointA = v.pointA - guiCoord(0.1, 0, 0, 0)
-                v.pointB = v.pointB - guiCoord(0.1, 0, 0, 0)
-                if #sentChildren == 10 and i == 1 then
+            lastReceive = stats.lastSecondMessageBytesReceived
+
+            local receivedChildren = receivedContainer.children
+            for i,v in pairs(receivedChildren) do
+                teverse.tween:begin(v, 0.5, {
+                    pointA = v.pointA - guiCoord(0.1, 0, 0, 0),
+                    pointB = v.pointB - guiCoord(0.1, 0, 0, 0)
+                }, "linear")
+                if #receivedChildren == 12 and i == 1 then
                     v:destroy()
                 end
             end
 
-            sentLabel.text = string.format("%.2f kb-o", tonumber(stats.lastSecondMessageBytesSent)/1024)
-            sentLabel.position = guiCoord(1.0, -50, math.min(1 - (tonumber(stats.lastSecondMessageBytesSent) / downloadScale), 1), -13)
+            sentLabel.text = string.format("%.2f kb-o", stats.lastSecondMessageBytesSent/1024)
+            sentLabel.position = guiCoord(1.0, -50, math.min(1 - (stats.lastSecondMessageBytesSent / downloadScale), 1), -13)
 
             local newLine = teverse.construct("guiLine", {
                 parent = sentContainer,
-                pointA = guiCoord(0.9, 0, 1 - (lastSend / downloadScale), -1),
-                pointB = guiCoord(1.0, 0, 1 - (stats.lastSecondMessageBytesSent / downloadScale), -1),
+                pointA = guiCoord(1.0, 0, 1 - (lastSend / downloadScale), -1),
+                pointB = guiCoord(1.1, 0, 1 - (stats.lastSecondMessageBytesSent / downloadScale), -1),
                 lineColour = colour(0, 0, 0.5)
             })
             lastSend = stats.lastSecondMessageBytesSent
+
+            local sentChildren = sentContainer.children
+            for i,v in pairs(sentChildren) do
+                teverse.tween:begin(v, 0.5, {
+                    pointA = v.pointA - guiCoord(0.1, 0, 0, 0),
+                    pointB = v.pointB - guiCoord(0.1, 0, 0, 0)
+                }, "linear")
+                if #sentChildren == 12 and i == 1 then
+                    v:destroy()
+                end
+            end
 
             statOutput.text = "Ping Avg: " .. stats.averagePing .. "ms\n" ..
                 "Lowest Ping: " .. stats.lowestPing .. "ms\n" ..
