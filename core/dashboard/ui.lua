@@ -81,7 +81,7 @@ controller.setup = function()
     local pages = {}
 
     local function setupPage(page)
-        local container = teverse.construct("guiFrame", {
+        local container = teverse.construct(page.scrollView and "guiScrollView" or "guiFrame", {
             parent = body,
             size = guiCoord(1, -40, 1, -80),
             position = guiCoord(0, 10, 0, 80),
@@ -89,6 +89,10 @@ controller.setup = function()
             strokeRadius = 3,
             visible = false
         })
+
+        if page.scrollView then
+            container.scrollbarWidth = 4
+        end
 
         teverse.guiHelper
             .bind(container, "xs", {
