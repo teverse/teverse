@@ -1,8 +1,8 @@
 {
     "os": "OSX",
     "arch": "x64",
-    "version": "0.23.1",
-    "generatedAt": "19/06/2020 13:05:51",
+    "version": "0.24.0",
+    "generatedAt": "28/06/2020 20:32:30",
     "sandbox": {
         "coroutine": {
             "status": "function",
@@ -20,10 +20,10 @@
         "xpcall": "function",
         "_DEVICE_PAD_BOTTOM": 0,
         "ipairs": "function",
-        "_TEV_BUILD": "0231",
+        "_TEV_BUILD": "0240",
         "colour": "cdata",
         "print": "function",
-        "_TEV_VERSION_MINOR": 23,
+        "_TEV_VERSION_MINOR": 24,
         "pcall": "function",
         "gcinfo": "function",
         "loadstring": "function",
@@ -45,13 +45,13 @@
             "insert": "function"
         },
         "error": "function",
-        "_TEV_VERSION": "0.23.1",
+        "_TEV_VERSION": "0.24.0",
         "quaternion": "cdata",
         "_DEVICE": "Mac",
         "require": "function",
         "unpack": "function",
         "_VERSION": "Lua 5.1",
-        "_TEV_VERSION_PATCH": 1,
+        "_TEV_VERSION_PATCH": 0,
         "next": "function",
         "math": {
             "ceil": "function",
@@ -1391,7 +1391,7 @@
                 "fov": {
                     "hasGetter": true,
                     "type": "number",
-                    "description": "",
+                    "description": "field of view",
                     "hasSetter": true
                 },
                 "position": {
@@ -1503,6 +1503,19 @@
         },
         "networking": {
             "methods": {
+                "broadcast": {
+                    "parameters": [
+                        {
+                            "type": "string",
+                            "name": "eventName"
+                        },
+                        {
+                            "type": "..."
+                        }
+                    ],
+                    "returns": [],
+                    "description": "Reliably sends the information you pass to all direct connections. Note that a client cannot broadcast to other clients as they are not directly connected."
+                },
                 "getClient": {
                     "parameters": [
                         {
@@ -1514,16 +1527,133 @@
                         "client"
                     ],
                     "description": "Returns the client for the matching name or id you provide"
+                },
+                "initiate": {
+                    "parameters": [
+                        {
+                            "type": "string",
+                            "name": "appId"
+                        }
+                    ],
+                    "returns": [],
+                    "description": ""
+                },
+                "sendToClient": {
+                    "parameters": [
+                        {
+                            "type": "client",
+                            "name": "client"
+                        },
+                        {
+                            "type": "string",
+                            "name": "eventName"
+                        },
+                        {
+                            "type": "..."
+                        }
+                    ],
+                    "returns": [],
+                    "description": "[SERVER ONLY] Reliably sends the information you pass"
+                },
+                "sendToServer": {
+                    "parameters": [
+                        {
+                            "type": "string",
+                            "name": "eventName"
+                        },
+                        {
+                            "type": "..."
+                        }
+                    ],
+                    "returns": [],
+                    "description": "This is an alias for broadcast that only works on the client side."
                 }
             },
             "className": "networking",
-            "events": [],
+            "events": {
+                "changed": {
+                    "parameters": [
+                        {
+                            "type": "string",
+                            "name": "property"
+                        },
+                        {
+                            "type": "variant",
+                            "name": "oldValue"
+                        },
+                        {
+                            "type": "variant",
+                            "name": "newValue"
+                        }
+                    ],
+                    "description": "Fired when a property is changed."
+                },
+                "_clientConnected": {
+                    "parameters": [
+                        {
+                            "type": "client",
+                            "name": "user"
+                        }
+                    ],
+                    "description": "Fired when a user connects"
+                },
+                "_disconnected": {
+                    "parameters": [],
+                    "description": "Fired when a connection fails or stops"
+                },
+                "_update": {
+                    "parameters": [
+                        {
+                            "type": "string",
+                            "name": "message"
+                        }
+                    ],
+                    "description": "Fired when an update begins"
+                },
+                "_connected": {
+                    "parameters": [],
+                    "description": "Fired when a connection has started"
+                },
+                "_clientDisconnected": {
+                    "parameters": [
+                        {
+                            "type": "client",
+                            "name": "user"
+                        }
+                    ],
+                    "description": "Fired when a user disconnects"
+                },
+                "_downloadProgress": {
+                    "parameters": [
+                        {
+                            "type": "string",
+                            "name": "percentage"
+                        }
+                    ],
+                    "description": "Fired when an update progresses"
+                },
+                "_localAuthenticating": {
+                    "parameters": [
+                        {
+                            "type": "string",
+                            "name": "status"
+                        }
+                    ],
+                    "description": "Fired when the local user authenticates"
+                }
+            },
             "constructable": false,
             "properties": {
                 "clients": {
                     "hasGetter": true,
                     "type": "table",
                     "description": "A readonly list of clients, excluding local client when offline",
+                    "hasSetter": false
+                },
+                "isConnected": {
+                    "hasGetter": true,
+                    "type": "boolean",
+                    "description": "True when a connection is established",
                     "hasSetter": false
                 },
                 "localClient": {
@@ -1598,7 +1728,33 @@
                 }
             },
             "className": "block",
-            "events": [],
+            "events": {
+                "changed": {
+                    "parameters": [
+                        {
+                            "type": "string",
+                            "name": "property"
+                        },
+                        {
+                            "type": "variant",
+                            "name": "oldValue"
+                        },
+                        {
+                            "type": "variant",
+                            "name": "newValue"
+                        }
+                    ],
+                    "description": "Fired when a property is changed."
+                },
+                "collisionEnded": {
+                    "parameters": [],
+                    "description": ""
+                },
+                "collisionStarted": {
+                    "parameters": [],
+                    "description": ""
+                }
+            },
             "constructable": true,
             "extends": "sceneObject",
             "properties": {
@@ -1644,9 +1800,9 @@
                     "description": "",
                     "hasSetter": true
                 },
-                "linearFactor": {
+                "roughness": {
                     "hasGetter": true,
-                    "type": "vector3",
+                    "type": "number",
                     "description": "",
                     "hasSetter": true
                 },
@@ -1656,9 +1812,9 @@
                     "description": "",
                     "hasSetter": true
                 },
-                "roughness": {
+                "linearFactor": {
                     "hasGetter": true,
-                    "type": "number",
+                    "type": "vector3",
                     "description": "",
                     "hasSetter": true
                 }
@@ -1678,20 +1834,27 @@
                     ],
                     "description": "Returns the source code of the loaded app or nil if no app is loaded."
                 },
-                "loadRemote": {
-                    "parameters": [],
-                    "returns": [],
-                    "description": "Starts uploading the currently loaded UNPACKAGED app"
-                },
                 "loadDashboard": {
                     "parameters": [],
                     "returns": [],
                     "description": "Resets the environment and loads the default Dashboard app"
                 },
+                "loadRemote": {
+                    "parameters": [],
+                    "returns": [],
+                    "description": "Starts uploading the currently loaded UNPACKAGED app"
+                },
                 "upload": {
                     "parameters": [],
                     "returns": [],
                     "description": "Starts uploading the currently loaded UNPACKAGED app"
+                },
+                "promptAppDirectory": {
+                    "parameters": [],
+                    "returns": [
+                        "boolean"
+                    ],
+                    "description": "Prompts the user to select a directory containing the manifest.json file"
                 },
                 "promptApp": {
                     "parameters": [],
@@ -1717,12 +1880,10 @@
                     ],
                     "description": "Resets the environment and loads the Lua string provided as an app."
                 },
-                "promptAppDirectory": {
+                "test": {
                     "parameters": [],
-                    "returns": [
-                        "boolean"
-                    ],
-                    "description": "Prompts the user to select a directory containing the manifest.json file"
+                    "returns": [],
+                    "description": "Uploads the unpackaged app and spins up a temporary test server on our cloud"
                 },
                 "loadWorkshop": {
                     "parameters": [],
@@ -2237,5 +2398,5 @@
             "properties": []
         }
     },
-    "build": "0231"
+    "build": "0240"
 }
