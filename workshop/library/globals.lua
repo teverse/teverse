@@ -7,7 +7,7 @@ return {
     developerMode = false, -- Holds the developer_mode boolean and is set in main.lua
     sideBarPageDefault = nil, -- Holds the default sidebar page (view) as a string and is set in topbarInterface.lua
     sideBarPageActive = nil, -- Holds the current active sidebar page (view) as a string and is set in topbarInterface.lua
-    commandBarTriggers = {},
+    commandGroups = {}, -- Holds the core command groups used internally by workshop
     defaultColours = { -- Default colors used for theming UI components (~\library\ui\components)
         --primary = colour.rgb(112, 112, 112),
         primary = colour.rgb(52, 58, 64),

@@ -3,6 +3,7 @@
 
 local globals = require("tevgit:workshop/library/globals.lua") -- globals; variables or instances that can be shared between files
 local toolTip = require("tevgit:workshop/library/ui/components/toolTip.lua") -- UI component
+local commands = require("tevgit:workshop/library/toolchain/commands.lua") -- Commandbar toolchain component
 
 return {
     construct = function(idValue, nameValue)
@@ -157,6 +158,7 @@ return {
                 print("Command: "..(commandBarField.text))
 
                 -- Invoke Command Trigger
+                commands.parse(commandBarField.text)
                 
                 commandBarField.text = "  >"
             end
