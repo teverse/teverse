@@ -5,6 +5,10 @@ local globals = require("tevgit:workshop/library/globals.lua") -- globals; varia
 local toolTip = require("tevgit:workshop/library/ui/components/toolTip.lua") -- UI component
 local commands = require("tevgit:workshop/library/toolchain/commands.lua") -- Commandbar toolchain component
 
+-- Core Command Groups
+local show_commandGroup = commands.createGroup("Show")
+
+
 return {
     construct = function(idValue, nameValue)
         --[[
@@ -30,8 +34,8 @@ return {
         self.name = nameValue -- Name of scene being edited / developed on
         self.keys = {} -- Where item keys are stored
         self.pages = {}
-        self.defaultPage = nil
-        self.currentPage = nil
+        local defaultPage = nil
+        local currentPage = nil
 
         self.animate = function(page, pos)
             teverse.tween:begin(page, 0.5, { position = pos }, "inOutQuad")
@@ -199,13 +203,25 @@ return {
         end
 
         self.bindDefaultMenu = function(page)
-            self.defaultPage = page
-            self.currentPage = page
+            defaultPage = page
+            currentPage = page
             data.animate(page, guiCoord(0, 0, 0, 200))
         end
 
         self.bindMenu = function(name, page)
             table.insert(data.pages, #data.pages+1, { [name] = page })
+            show_commandGroup.command(name, function()
+                if currentPage.id == page.id then
+                    data.animate(currentPage, guiCoord(-1, 0, 0, 200)) 
+                    data.animate(defaultPage, guiCoord(0, 0, 0, 200))
+                    currentPage = defaultPage
+                    return
+                end
+                
+                data.animate(currentPage, guiCoord(-1, 0, 0, 200)) 
+                data.animate(page, guiCoord(0, 0, 0, 200))
+                currentPage = page
+            end)
             _count = _count + 1
         end
 

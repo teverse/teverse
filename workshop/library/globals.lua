@@ -5,11 +5,8 @@ return {
     dev = nil, -- Holds workshop instance and is set in main.lua
     user = nil, -- Holds user instance and is set in main.lua
     developerMode = false, -- Holds the developer_mode boolean and is set in main.lua
-    sideBarPageDefault = nil, -- Holds the default sidebar page (view) as a string and is set in topbarInterface.lua
-    sideBarPageActive = nil, -- Holds the current active sidebar page (view) as a string and is set in topbarInterface.lua
-    commandGroups = {}, -- Holds the core command groups used internally by workshop
+    commandGroups = {}, -- Holds the command groups that have been registered (~\library\toolchain\commands.lua)
     defaultColours = { -- Default colors used for theming UI components (~\library\ui\components)
-        --primary = colour.rgb(112, 112, 112),
         primary = colour.rgb(52, 58, 64),
         secondary = colour.rgb(239, 239, 239),
         background = colour.rgb(33, 33, 33),

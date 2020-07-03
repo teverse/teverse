@@ -53,7 +53,6 @@ return {
                 name = pageName,
                 size = guiCoord(1, 0, 0, 600),
                 position = guiCoord(-1, 0, 0, 200),
-                --backgroundColour = globals.defaultColours.red,
                 backgroundAlpha = 0,
                 zIndex = 200
             })
