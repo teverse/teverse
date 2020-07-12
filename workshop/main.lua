@@ -2,6 +2,7 @@
 -- This script is required when workshop is loaded.
 
 local globals = require("tevgit:workshop/library/globals.lua") -- globals; variables or instances that can be shared between files
+local environmentPresets = require("tevgit:workshop/library/environment/presets.lua") -- 3D environment presets (or defaults)
 
 local function init(dev)
     --[[
@@ -42,6 +43,9 @@ local function init(dev)
     if loadingScreen then
     	loadingScreen:destroy()
     end
+
+    -- Setup Basic Default Scene (3D viewport)
+    environmentPresets.default()
 end
 
 return function(dev)
