@@ -195,8 +195,7 @@ return {
             end)
 
             icon:on("mouseLeftUp", function()
-                icon.iconAlpha = 1.0
-                icon.dropShadowAlpha = 0.2
+                callback()
             end)
 
             count = count + 1
