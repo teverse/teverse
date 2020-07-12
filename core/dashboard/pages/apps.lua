@@ -108,7 +108,7 @@ return {
         local function calculateScrollHeight()
             local y = 0
             for _,v in pairs(appsContainer.children) do
-                y = math.max(y, v.absolutePosition.y + 320)
+                y = math.max(y, v.absolutePosition.y + 350)
             end
             appsContainer.size = guiCoord(1.0, -20, 0, y - appsContainer.absolutePosition.y)
             page.canvasSize = guiCoord(1, 0, 0, y - appsContainer.absolutePosition.y)
