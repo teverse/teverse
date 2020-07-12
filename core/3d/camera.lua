@@ -17,18 +17,12 @@ local cam = teverse.scene.camera
 local db = false
 
 teverse.input:on("keyDown", function(key)
-    if db then return end
-    db = true
-
-    -- Buggy; should be fixed eventually (before beta & workshop release)
     local mapped = keyMap[tonumber(key)]
     if mapped then
         while sleep() and teverse.input:isKeyDown(key) do
             cam.position = cam.position + (cam.rotation * mapped * moveStep)
         end
     end
-
-    db = false
 end)
 
 teverse.input:on("mouseMoved", function( movement )
