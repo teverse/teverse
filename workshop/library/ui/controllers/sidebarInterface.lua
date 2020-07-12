@@ -21,8 +21,6 @@ return {
         local count = 0
         self = data
         self.id = idValue -- Unique Indentifier
-        --self.pages = {} -- Where we store our pages for sidebar
-        --self.activeTool = nil
         
         local toolsContainer = teverse.construct("guiFrame", {
             parent = teverse.interface,
@@ -83,7 +81,7 @@ return {
                 end)
     
                 _icon:on("mouseLeftUp", function()
-                    _icon.dropShadowAlpha = 0.2
+                    callback() 
                 end)
 
                 _count = _count + 1
@@ -114,7 +112,7 @@ return {
             end)
 
             icon:on("mouseLeftUp", function()
-                icon.dropShadowAlpha = 0.2
+                callback()
             end)
 
             count = count + 1
