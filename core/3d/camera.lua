@@ -1,3 +1,6 @@
+-- Copyright 2020- Teverse
+-- This script is required when workshop is loaded & acts as the 3D Camera for the 3D Environment
+
 local keyMap = {
     [tonumber(enums.keys.KEY_W)] = vector3(0, 0, 1),
     [tonumber(enums.keys.KEY_S)] = vector3(0, 0, -1),
@@ -17,6 +20,7 @@ teverse.input:on("keyDown", function(key)
     if db then return end
     db = true
 
+    -- Buggy; should be fixed eventually (before beta & workshop release)
     local mapped = keyMap[tonumber(key)]
     if mapped then
         while sleep() and teverse.input:isKeyDown(key) do

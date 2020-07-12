@@ -3,6 +3,7 @@
 
 local globals = require("tevgit:workshop/library/globals.lua") -- globals; variables or instances that can be shared between files
 local environmentPresets = require("tevgit:workshop/library/environment/presets.lua") -- 3D environment presets (or defaults)
+local camera = require("tevgit:core/3d/camera.lua") -- 3D Camera for 3D Environment
 
 local function init(dev)
     --[[
