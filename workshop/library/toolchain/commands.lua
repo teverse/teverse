@@ -3,20 +3,6 @@
 
 local globals = require("tevgit:workshop/library/globals.lua") -- globals; variables or instances that can be shared between files
 
-function dump(o)
-    if type(o) == 'table' then
-       local s = '{ '
-       for k,v in pairs(o) do
-          if type(k) ~= 'number' then k = '"'..k..'"' end
-          s = s .. '['..k..'] = ' .. dump(v) .. ','
-       end
-       return s .. '} '
-    else
-       return tostring(o)
-    end
-end
-
-
 return {
     createGroup = function(id)
         local data = {}
