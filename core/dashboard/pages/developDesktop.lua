@@ -43,7 +43,7 @@ return {
                 function ()
 
                     -- backwards compatibility
-                    if not teverse.apps.recentDirectories then
+                    if _TEV_VERSION_MINOR < 25 then
                         return teverse.apps:promptAppDirectory()
                     end
 
@@ -95,16 +95,15 @@ return {
                             teverse.apps:promptAppDirectory()
                         end)
 
-                        local y = 10
+                        local y = 0
                         for _,v in pairs(recents) do
 
                             local trigger = teverse.construct("guiTextBox", {
                                 parent = dialog,
                                 size = guiCoord(0.7, -20, 0, 18),
                                 position = guiCoord(0, 10, 0, y),
-                                strokeAlpha = 0.075,
-                                strokeColour = colour(0, 0, 0),
-                                text = " > " .. v,
+                                backgroundAlpha = 0.0,
+                                text = v,
                                 textSize = 18
                             })
 
