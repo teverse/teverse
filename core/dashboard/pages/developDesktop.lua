@@ -43,7 +43,7 @@ return {
                 function ()
 
                     -- backwards compatibility
-                    if not teverse.app.recentDirectories then
+                    if not teverse.apps.recentDirectories then
                         return teverse.apps:promptAppDirectory()
                     end
 
@@ -95,15 +95,16 @@ return {
                             teverse.apps:promptAppDirectory()
                         end)
 
-                        local y = 0
+                        local y = 10
                         for _,v in pairs(recents) do
 
                             local trigger = teverse.construct("guiTextBox", {
                                 parent = dialog,
                                 size = guiCoord(0.7, -20, 0, 18),
                                 position = guiCoord(0, 10, 0, y),
-                                backgroundAlpha = 0.0,
-                                text = v,
+                                strokeAlpha = 0.075,
+                                strokeColour = colour(0, 0, 0),
+                                text = " > " .. v,
                                 textSize = 18
                             })
 
