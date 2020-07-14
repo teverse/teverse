@@ -3,6 +3,11 @@
 
 local globals = require("tevgit:workshop/library/globals.lua") -- globals; variables or instances that can be shared between files
 local toolTip = require("tevgit:workshop/library/ui/components/toolTip.lua") -- UI component
+local commands = require("tevgit:workshop/library/toolchain/commands.lua") -- Commandbar toolchain component
+
+-- Core Command Groups
+local show_commandGroup = commands.createGroup("Show")
+
 
 return {
     construct = function(idValue, nameValue)
@@ -29,8 +34,12 @@ return {
         self.name = nameValue -- Name of scene being edited / developed on
         self.keys = {} -- Where item keys are stored
         self.pages = {}
-        self.defaultPage = nil
-        self.currentPage = nil
+        local defaultPage = nil
+        local currentPage = nil
+
+        self.animate = function(page, pos)
+            teverse.tween:begin(page, 0.5, { position = pos }, "inOutQuad")
+        end
 
         local container = teverse.construct("guiFrame", {
             parent = teverse.interface,
@@ -57,17 +66,13 @@ return {
 
         local menuContainer = teverse.construct("guiFrame", {
             parent = container,
-            size = guiCoord(0, 140, 0.01, 0),
+            size = guiCoord(0, 140, 2.2, 0),
             position = guiCoord(0, 8, 0, 35),
             backgroundColour = globals.defaultColours.primary,
             backgroundAlpha = 0,
             strokeWidth = 1,
             zIndex = 900
         })
-
-        self.animate = function(page, pos)
-            teverse.tween:begin(page, 0.5, { position = pos }, "inOutQuad")
-        end
 
         local headerIcon = teverse.construct("guiIcon", {
             parent = subContainer,
@@ -83,80 +88,12 @@ return {
             strokeRadius = 3,
         })
 
-        local function buildTabMenu()
-            local itemCount = 0
-            if (#data.pages == 0) then return end
-            for _,v in pairs(data.pages) do
-                for key, value in pairs(v) do
-                    
-                    -- Key = (String) name of label
-                    -- Value = (Object(guiFrame)) instance page
-                    local _itemContainer = teverse.construct("guiFrame", {
-                        parent = menuContainer,
-                        size = guiCoord(1, 0, 0.3, 0),
-                        position = guiCoord(0, 0, 0, (itemCount*21)+0),
-                        backgroundColour = globals.defaultColours.red,
-                        backgroundAlpha = 0,
-                        zIndex = 200
-                    })
-
-                    local _itemButton = teverse.construct("guiTextBox", {
-                        parent = _itemContainer,
-                        size = guiCoord(0.97, 0, 1, 0),
-                        position = guiCoord(0.03, 0, 0, 0),
-                        text = key,
-                        textAlign = "middle",
-                        textSize = 20,
-                        textFont = "tevurl:fonts/openSansBold.ttf",
-                        textColour = globals.defaultColours.white,
-                        backgroundColour = globals.defaultColours.primary,
-                        backgroundAlpha = 1,
-                        zIndex = 200
-                    })
-
-                    local _itemContainerShader = teverse.construct("guiFrame", {
-                        parent = _itemContainer,
-                        size = guiCoord(0.03, 0, 1, 0),
-                        position = guiCoord(0, 0, 0, 0),
-                        backgroundColour = globals.defaultColours.white,
-                        backgroundAlpha = 0
-                    })
-
-                    _itemButton:on("mouseEnter", function()
-                        _itemContainerShader.backgroundAlpha = 0.15
-                    end)
-        
-                    _itemButton:on("mouseExit", function()
-                        _itemContainerShader.backgroundAlpha = 0
-                    end)
-
-                    _itemButton:on("mouseLeftUp", function()
-                        print("Clicked")
-                        --[[data.animate(data.currentPage, guiCoord(-1, 0, 0, 200))
-                        sleep(0.5)
-                        data.animate(value, guiCoord(1, 0, 0, 200))
-                        data.currentPage = page]]--
-                    end)
-
-                    itemCount = itemCount + 1
-                end
-            end
-        end
-
         headerIcon:on("mouseLeftUp", function()
             if (clicked) then
-                menuContainer.backgroundAlpha = 1
-                menuContainer.strokeAlpha = 0.15
-                teverse.tween:begin(menuContainer, 0.5, { size = guiCoord(0, 140, 2.2, 0) }, "inOutQuad", buildTabMenu())
+                -- idk
+            else
+                -- idk
             end
-
-            if (not clicked) then
-                teverse.tween:begin(menuContainer, 0.5, { size = guiCoord(0, 140, 0.01, 0) }, "inOutQuad", menuContainer:destroyChildren())
-                sleep(0.5)
-                menuContainer.strokeAlpha = 0
-                menuContainer.backgroundAlpha = 0
-            end
-
             clicked = (not clicked)
         end)
         
@@ -173,6 +110,66 @@ return {
             backgroundAlpha = 0,
             strokeRadius = 3
         })
+
+        -- Test command Bar
+        local commandBarIcon = teverse.construct("guiIcon", {
+            parent = container,
+            size = guiCoord(0, 32, 0, 32),
+            position = guiCoord(0, 160, 0, 4),
+            iconId = "search",
+            iconType = "faSolid",
+            iconColour = globals.defaultColours.primary,
+            backgroundColour = globals.defaultColours.primary,
+            backgroundAlpha = 0.1,
+            iconAlpha = 0.75,
+            iconMax = 16,
+            strokeRadius = 3,
+        })
+
+        local commandBarField = teverse.construct("guiTextBox", {
+            parent = container,
+            size = guiCoord(0, 200, 0, 32),
+            position = guiCoord(0, 191, 0, 4),
+            --text = "  >",
+            textAlign = "middleLeft",
+            textFont = "tevurl:fonts/firaCodeBold.otf",
+            textSize = 15,
+            textColour = globals.defaultColours.primary,
+            backgroundColour = globals.defaultColours.primary,
+            backgroundAlpha = 0.1,
+            strokeRadius = 3,
+            textEditable = true,
+            textMultiline = false,
+            visible = false
+        })
+
+        commandBarIcon:on("mouseLeftDown", function()
+            if (clicked) then
+                commandBarIcon.iconColour = globals.defaultColours.white
+                commandBarIcon.backgroundAlpha = 1
+                commandBarField.text = "  >"
+                commandBarField.visible = true
+            else
+                commandBarIcon.iconColour = globals.defaultColours.primary
+                commandBarIcon.backgroundAlpha = 0.1
+                commandBarField.visible = false
+            end
+            clicked = (not clicked)
+        end)
+
+        commandBarField:on("keyDown", function(key)
+            if key == "KEY_RETURN" then
+                print("Command: "..(commandBarField.text))
+
+                -- Invoke Command Trigger
+                commands.parse(commandBarField.text)
+                
+                commandBarField.text = "  >"
+            end
+        end)
+
+
+        -- End Test Command Bar
 
         self.registerIcon = function(icon, callback)
             local icon = teverse.construct("guiIcon", {
@@ -198,27 +195,35 @@ return {
             end)
 
             icon:on("mouseLeftUp", function()
-                icon.iconAlpha = 1.0
-                icon.dropShadowAlpha = 0.2
+                callback()
             end)
 
             count = count + 1
         end
 
         self.bindDefaultMenu = function(page)
-            self.defaultPage = page
-            self.currentPage = page
-            data.animate(page, guiCoord(1, 0, 0, 200))
+            defaultPage = page
+            currentPage = page
+            data.animate(page, guiCoord(0, 0, 0, 200))
         end
 
         self.bindMenu = function(name, page)
             table.insert(data.pages, #data.pages+1, { [name] = page })
+            show_commandGroup.command(name, function()
+                if currentPage.id == page.id then
+                    data.animate(currentPage, guiCoord(-1, 0, 0, 200)) 
+                    data.animate(defaultPage, guiCoord(0, 0, 0, 200))
+                    currentPage = defaultPage
+                    return
+                end
+                
+                data.animate(currentPage, guiCoord(-1, 0, 0, 200)) 
+                data.animate(page, guiCoord(0, 0, 0, 200))
+                currentPage = page
+            end)
             _count = _count + 1
         end
 
-        --self.defaultPage = nil
-        --self.currentPage = nil
-        
         return data
     end
 }
