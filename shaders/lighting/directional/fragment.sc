@@ -110,5 +110,5 @@ void main()
     // add to outgoing radiance Lo
     float NdotL = max(dot(normal.xyz, L), 0.0);                
 
-    gl_FragColor = vec4(((kD * colour / PI + specular) * lightColour * NdotL), colour.w); 
+    gl_FragColor = vec4(((kD * colour.xyz / PI + specular) * lightColour * NdotL), colour.w); 
 }
