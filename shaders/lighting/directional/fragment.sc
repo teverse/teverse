@@ -89,7 +89,7 @@ void main()
     vec3 V = normalize(uniformCameraPosition.xyz - wpos);
 
     vec3 F0 = vec3(0.04, 0.04, 0.04); 
-    F0 = mix(F0, colour, metallic);
+    F0 = mix(F0, colour.xyz, metallic);
         
     vec3 L = lightDir;
     vec3 H = normalize(V + L);
