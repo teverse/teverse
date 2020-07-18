@@ -21,8 +21,6 @@ return {
         local count = 0
         self = data
         self.id = idValue -- Unique Indentifier
-        --self.pages = {} -- Where we store our pages for sidebar
-        --self.activeTool = nil
         
         local toolsContainer = teverse.construct("guiFrame", {
             parent = teverse.interface,
@@ -52,25 +50,26 @@ return {
                 parent = toolsContainer,
                 name = pageName,
                 size = guiCoord(1, 0, 0, 600),
-                position = guiCoord(0, 0, 0, 200),
+                position = guiCoord(-1, 0, 0, 200),
                 backgroundAlpha = 0,
+                zIndex = 200
             })
 
             self.getContainer = function() return container end
+            self.getParentContainer = function() return toolsContainer end
 
             self.registerIcon = function(name, icon, callback)
                 local _icon = teverse.construct("guiIcon", {
                     parent = container,
                     name = name,
                     size = guiCoord(0, 32, 0, 32),
-                    position = guiCoord(-1, 9, 0, (_count*42)+9),
+                    position = guiCoord(0, 9, 0, (_count*42)+9),
                     iconId = icon,
                     iconType = "faSolid",
                     backgroundColour = globals.defaultColours.white,
                     iconAlpha = 0.75,
                     iconMax = 16,
-                    strokeRadius = 3,
-                    --backgroundAlpha = 0.15
+                    strokeRadius = 3
                 })
 
                 _icon:on("mouseEnter", function()
@@ -82,7 +81,7 @@ return {
                 end)
     
                 _icon:on("mouseLeftUp", function()
-                    _icon.dropShadowAlpha = 0.2
+                    callback() 
                 end)
 
                 _count = _count + 1
@@ -113,7 +112,7 @@ return {
             end)
 
             icon:on("mouseLeftUp", function()
-                icon.dropShadowAlpha = 0.2
+                callback()
             end)
 
             count = count + 1
