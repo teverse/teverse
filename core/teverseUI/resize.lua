@@ -53,6 +53,16 @@ local directionOfResizeOfAxis = function(object, mousePosition, spacing, axis)
 end
 
 local directionOfResize = function(object, mousePosition, spacing)
+	--[[
+		@description
+			Returns the direction of the resize for all axel.
+		@parameters
+			guiObject, object
+			vector2, mousePosition
+			number, spacing
+		@return
+			vector2, direction
+	]]
 	return vector2(
 		directionOfResizeOfAxis(object, mousePosition, spacing, "x"),
 		directionOfResizeOfAxis(object, mousePosition, spacing, "y")
@@ -60,6 +70,17 @@ local directionOfResize = function(object, mousePosition, spacing)
 end
 
 local sizeAxisBy = function(object, mousePosition, direction, axis)
+	--[[
+		@description
+			Returns a new size for the object for an axis.
+		@parameters
+			guiObject, object
+			vector2, mousePosition
+			number, direction
+			axis, string
+		@return
+			number, newSize
+	]]
 	local size = mousePosition[axis] - object.absolutePosition[axis]
 	if direction == 0 then
 		size = object.absoluteSize[axis]
@@ -70,6 +91,16 @@ local sizeAxisBy = function(object, mousePosition, direction, axis)
 end
 
 local sizeBy = function(object, mousePosition, direction)
+	--[[
+		@description
+			Return a new size guiCoord for the given object
+		@parameters
+			guiObject, object
+			vector2, mousePosition
+			vector2, direction
+		@return
+			guiCoord, newSize
+	]]
 	return guiCoord(
 		0,
 		sizeAxisBy(object, mousePosition, direction.x, "x"),
@@ -79,6 +110,18 @@ local sizeBy = function(object, mousePosition, direction)
 end
 
 local new = function(object, spacing)
+	--[[
+		@description
+			Spacing is a defined padding around the object.
+			Allows given object to be resized like a window.
+			So, whenever a user hovers over a vaild area (defined by the padding aformentioned)
+			they can click and hold to resize in that direction.
+		@parameters
+			guiObject, object
+			number, [spacing]
+		@return
+			function, destructor
+	]]
 	spacing = spacing or 5
 
 	local debounce = false
