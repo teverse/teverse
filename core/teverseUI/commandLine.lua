@@ -51,10 +51,10 @@ textBox:on("keyDown", function(key)
 		local function1, errorMessage = loadstring(textBox.text)
 		if errorMessage then
 			local function2 = loadstring("return "..textBox.text)
-			if function2 then
-				print(function2())
-			else
+			if not function2 then
 				print("CONSOLE ERROR: "..errorMessage)
+			else
+				print(function2())
 			end
 		else
 			function1()
