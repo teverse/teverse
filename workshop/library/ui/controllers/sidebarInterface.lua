@@ -17,155 +17,105 @@ return {
                 Instance, sidebar
         ]]--
 
-        local data = {} 
+        local data = {}
+        local count = 0
         self = data
         self.id = idValue -- Unique Indentifier
-        self.pages = {} -- Where we store our pages for sidebar
-
-        teverse.construct("guiFrame", {
-            parent = teverse.interface,
-            size = guiCoord(0, 40, 0, 10),
-            position = guiCoord(0, 0, 0, 40),
-            backgroundColour = globals.defaultColours.secondary,
-        })
-
-        teverse.construct("guiFrame", {
-            parent = teverse.interface,
-            size = guiCoord(0, 40, 0, 10),
-            position = guiCoord(0, 0, 0, 180),
-            backgroundColour = globals.defaultColours.secondary,
-        })
-    
+        
         local toolsContainer = teverse.construct("guiFrame", {
             parent = teverse.interface,
-            size = guiCoord(0, 40, 0, 130),
-            position = guiCoord(0, 0, 0, 50),
-            backgroundColour = globals.defaultColours.white,
-        })
-    
-        local selectTool = teverse.construct("guiIcon", {
-            parent = toolsContainer,
-            size = guiCoord(0, 20, 0, 20),
-            position = guiCoord(0.25, 0, 0, 10),
-            iconId = "location-arrow",
-            iconType = "faSolid",
-            iconColour = globals.defaultColours.primary,
-            backgroundColour = globals.defaultColours.white,
-        })
-    
-        local moveTool = teverse.construct("guiIcon", {
-            parent = toolsContainer,
-            size = guiCoord(0, 20, 0, 20),
-            position = guiCoord(0.25, 0, 0, 40),
-            iconId = "arrows-alt-h",
-            iconType = "faSolid",
-            iconColour = globals.defaultColours.primary,
-            backgroundColour = globals.defaultColours.white,
-        })
-    
-        local rotateTool = teverse.construct("guiIcon", {
-            parent = toolsContainer,
-            size = guiCoord(0, 20, 0, 20),
-            position = guiCoord(0.25, 0, 0, 70),
-            iconId = "sync",
-            iconType = "faSolid",
-            iconColour = globals.defaultColours.primary,
-            backgroundColour = globals.defaultColours.white,
-        })
-
-        local sizeTool = teverse.construct("guiIcon", {
-            parent = toolsContainer,
-            size = guiCoord(0, 20, 0, 20),
-            position = guiCoord(0.25, 0, 0, 100),
-            iconId = "expand",
-            iconType = "faSolid",
-            iconColour = globals.defaultColours.primary,
-            backgroundColour = globals.defaultColours.white,
-        })
-
-        local moreToolsContainer = teverse.construct("guiFrame", {
-            parent = teverse.interface,
-            name = "moreToolsContainer",
-            size = guiCoord(0, 40, 1, -190),
-            position = guiCoord(0, 0, 0, 190),
-            backgroundColour = globals.defaultColours.white,
+            size = guiCoord(0, 50, 1, 0),
+            position = guiCoord(0, 0, 0, 40),
+            backgroundColour = globals.defaultColours.primary,
+            strokeAlpha = 0.1,
+            zIndex = 199
         })
 
         self.registerPage = function(pageName)
             --[[
                 @Description
-                    Registers page to sidebar instance. 
+                    Registers page instance. 
 
                 @Params
                     String, pageName
 
                 @Returns
-                   guiFrame, page
+                   instance, page
             ]]--
+            local _count = 0
+            local metadata = {}
+            self = metadata
 
-            local zIndexRange
-            if pageName == "Default" then -- Default page zIndex is set lower than other pages
-                zIndexRange = 100
-            else
-                zIndexRange = 101
+            local container = teverse.construct("guiFrame", {
+                parent = toolsContainer,
+                name = pageName,
+                size = guiCoord(1, 0, 0, 600),
+                position = guiCoord(-1, 0, 0, 200),
+                backgroundAlpha = 0,
+                zIndex = 200
+            })
+
+            self.getContainer = function() return container end
+            self.getParentContainer = function() return toolsContainer end
+
+            self.registerIcon = function(name, icon, callback)
+                local _icon = teverse.construct("guiIcon", {
+                    parent = container,
+                    name = name,
+                    size = guiCoord(0, 32, 0, 32),
+                    position = guiCoord(0, 9, 0, (_count*42)+9),
+                    iconId = icon,
+                    iconType = "faSolid",
+                    backgroundColour = globals.defaultColours.white,
+                    iconAlpha = 0.75,
+                    iconMax = 16,
+                    strokeRadius = 3
+                })
+
+                _icon:on("mouseEnter", function()
+                    _icon.backgroundAlpha = 0.15
+                end)
+    
+                _icon:on("mouseExit", function()
+                    _icon.backgroundAlpha = 0
+                end)
+    
+                _icon:on("mouseLeftUp", function()
+                    callback() 
+                end)
+
+                _count = _count + 1
             end
 
-            local iconContainer = teverse.construct("guiFrame", {
-                parent = moreToolsContainer,
-                name = pageName,
-                size = guiCoord(1, 0, 1, 0),
-                position = guiCoord(0, 0, 0, 0),
-                backgroundColour = globals.defaultColours.white,
-                zIndex = zIndexRange,
-                visible = false
-            })
-            return iconContainer
+            return metadata
         end
 
-        self.registerIcon = function(page, name, icon, tooltip, callback, ...)
-            --[[
-                @Description
-                    Registers icon to page instance. 
-
-                @Params
-                    Instance, page
-                    String, name
-                    String, icon
-                    String, tooltip
-                    Method, callback
-                    {...}, overrides 
-
-                @Returns
-                   Void, null, nil
-            ]]--
-
-            local args = {...} -- Holds overrides
-            local xPositionOverride = args[1] or 0 -- Override if specified, else 0
-            local positionToolTipOverride = args[2] or guiCoord(0, 0, 0, 0) -- Override if specified, else guiCoord(0, 0, 0, 0)
-            local iconImage = teverse.construct("guiIcon", {
-                parent = page,
-                name = name,
-                size = guiCoord(0, 20, 0, 20),
-                position = guiCoord((0.25+xPositionOverride), 0, 0, 10 + (#page.children*30)), -- Shorthand positioning w/o a for-loop
+        self.registerDefaultIcon = function(icon, callback)
+            local icon = teverse.construct("guiIcon", {
+                parent = toolsContainer,
+                size = guiCoord(0, 32, 0, 32),
+                position = guiCoord(0, 9, 0, (count*42)+9),
                 iconId = icon,
                 iconType = "faSolid",
-                iconColour = globals.defaultColours.primary,
                 backgroundColour = globals.defaultColours.white,
+                iconAlpha = 0.75,
+                iconMax = 16,
+                strokeRadius = 3,
             })
 
-            local _tooltip = toolTip.construct("horizontal", iconImage, tooltip, positionToolTipOverride) -- Initialize tooltip instance
-
-            --button:mouseLeftPressed(callback) -- When button is clicked, perform callback action
-
-            -- When mouse hovers over button, display tooltip
-            iconImage:on("mouseEnter", function() 
-                _tooltip.display()
+            icon:on("mouseEnter", function()
+                icon.backgroundAlpha = 0.15
             end)
 
-            -- When mouse leaves from button, hide tooltip
-            iconImage:on("mouseExit", function() 
-                _tooltip.hide()
+            icon:on("mouseExit", function()
+                icon.backgroundAlpha = 0
             end)
+
+            icon:on("mouseLeftUp", function()
+                callback()
+            end)
+
+            count = count + 1
         end
 
         return data

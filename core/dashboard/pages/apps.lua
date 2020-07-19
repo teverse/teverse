@@ -1,42 +1,10 @@
-local function createApp(app)
-    local appGui = teverse.construct("guiFrame", {
-        strokeRadius = 2,
-        dropShadowAlpha = 0.15,
-        strokeAlpha = 0.05
-    })
-
-    teverse.guiHelper.hoverColour(appGui, colour.rgb(247, 247, 247))
-
-    teverse.construct("guiTextBox", {
-        parent = appGui,
-        size = guiCoord(1.0, -20, 0, 22),
-        position = guiCoord(0, 10, 0, 5),
-        backgroundAlpha = 0,
-        text = app.name,
-        textSize = 22,
-        textAlign = "middleLeft",
-        textFont = "tevurl:fonts/openSansBold.ttf",
-        active = false
-    })
-
-    teverse.construct("guiTextBox", {
-        parent = appGui,
-        size = guiCoord(1.0, -20, 0, 16),
-        position = guiCoord(0, 10, 0, 24),
-        backgroundAlpha = 0,
-        textAlpha = 0.5,
-        text = "by " .. app.owner.username,
-        textSize = 16,
-        active = false
-    })
-
-    return appGui
-end
+local createApp = require("tevgit:core/dashboard/appCard.lua")
 
 return {
     name = "Apps",
     iconId = "shapes",
     iconType = "faSolid",
+    scrollView = true,
     setup = function(page)
         local loading = teverse.construct("guiTextBox", {
             parent = page,
@@ -64,97 +32,35 @@ return {
         local subtitle = teverse.construct("guiTextBox", {
             parent = page,
             size = guiCoord(1.0, -20, 0, 18),
-            position = guiCoord(0, 10, 0, 105),
+            position = guiCoord(0, 10, 0, 55),
             backgroundAlpha = 0,
             text = "Loading Apps",
             textSize = 18,
             textAlign = "middleLeft"
         })
-
-        local myApps = teverse.construct("guiFrame", {
-            parent = page,
-            size = guiCoord(1.0, -20, 0, 38),
-            position = guiCoord(0, 10, 0, 62),
-            backgroundAlpha = 0
-        })
-
-        teverse.http:get("https://teverse.com/api/users/" .. teverse.networking.localClient.id .. "/apps", {
-            ["Authorization"] = "BEARER " .. teverse.userToken
-        }, function(code, body)
-            if code == 200 then
-                local apps = teverse.json:decode(body)
-                for i,app in pairs(apps) do
-                    local appGui = teverse.construct("guiFrame", {
-                        strokeRadius = 2,
-                        dropShadowAlpha = 0.15,
-                        strokeAlpha = 0.05,
-                        parent = myApps,
-                        position = guiCoord(0, (i-1)*140, 0, 0),
-                        size = guiCoord(0, 130, 1, 0)
-                    })
-                
-                    teverse.guiHelper.hoverColour(appGui, colour.rgb(247, 247, 247))
-                
-                    teverse.construct("guiTextBox", {
-                        parent = appGui,
-                        size = guiCoord(1.0, -20, 0, 16),
-                        position = guiCoord(0, 10, 0, 5),
-                        backgroundAlpha = 0,
-                        text = app.name,
-                        textSize = 18,
-                        textAlign = "middleLeft",
-                        textFont = "tevurl:fonts/openSansSemiBold.ttf",
-                        active = false
-                    })
-                    
-                    teverse.construct("guiTextBox", {
-                        parent = appGui,
-                        size = guiCoord(1.0, -20, 0, 14),
-                        position = guiCoord(0, 10, 0, 21),
-                        backgroundAlpha = 0,
-                        text = app.approved and "Approved" or "Pending",
-                        textSize = 14,
-                        textAlign = "middleLeft",
-                        textFont = "tevurl:fonts/openSansBold.ttf",
-                        active = false
-                    })
-
-                    appGui:on("mouseLeftUp", function()
-                        if not loading.visible then
-                            loading.text = "Loading App"
-                            loading.visible = true
-                            teverse.apps:loadRemote(app.id)
-                            teverse.apps:waitFor("download")
-                            loading.visible = false
-                        end
-                    end)
-                end
-            end
-        end)
-
         local appsContainer = teverse.construct("guiFrame", {
             parent = page,
-            size = guiCoord(1.0, -20, 1, -140),
-            position = guiCoord(0, 10, 0, 130),
+            size = guiCoord(1.0, -20, 1, -100),
+            position = guiCoord(0, 10, 0, 80),
             backgroundAlpha = 0
         })
 
         if _DEVICE:sub(0, 6) == "iPhone" then
             teverse.guiHelper
                 .gridConstraint(appsContainer, {
-                    cellSize = guiCoord(0, page.absoluteSize.x - 20, 0, 50),
+                    cellSize = guiCoord(0, page.absoluteSize.x - 20, 0, page.absoluteSize.x - 20),
                     cellMargin = guiCoord(0, 15, 0, 25)
                 })
         else
             teverse.guiHelper
                 .gridConstraint(appsContainer, {
-                    cellSize = guiCoord(0, 160, 0, 50),
+                    cellSize = guiCoord(0, 200, 0, 200),
                     cellMargin = guiCoord(0, 15, 0, 25)
                 })
         end
 
         if _DEVICE:sub(0, 6) ~= "iPhone" then
-            local appGui = createApp({
+            local appGui, button = createApp({
                 id = "",
                 name = "Learn Code",
                 owner = {
@@ -163,7 +69,7 @@ return {
             })
             appGui.name = "a"
             appGui.parent = appsContainer
-            appGui:on("mouseLeftUp", function()
+            button:on("mouseLeftUp", function()
                 if not loading.visible then
                     loading.visible = false
                     teverse.apps:loadString("require('tevgit:core/tutorials/main.lua')")
@@ -178,13 +84,17 @@ return {
                 local apps = teverse.json:decode(body)
                 subtitle.text = "Found " .. #apps .. " public apps:"
                 for _,app in pairs(apps) do
-                    local appGui = createApp(app)
+                    local appGui, button = createApp(app)
                     appGui.parent = appsContainer
-                    appGui:on("mouseLeftUp", function()
+                    button:on("mouseLeftUp", function()
                         if not loading.visible then
-                            loading.text = "Loading App"
+                            loading.text = "Loading App " .. (app.packageNetworked and "Online" or "Offline")
                             loading.visible = true
-                            teverse.apps:loadRemote(app.id)
+                            if not app.packageNetworked then
+                                teverse.apps:loadRemote(app.id)
+                            else
+                                teverse.networking:initiate(app.id)
+                            end
                             teverse.apps:waitFor("download")
                             loading.visible = false
                         end
@@ -194,5 +104,18 @@ return {
                 subtitle.text = "Server error."
             end
         end)
+
+        local function calculateScrollHeight()
+            local y = 0
+            for _,v in pairs(appsContainer.children) do
+                y = math.max(y, v.absolutePosition.y + 350)
+            end
+            appsContainer.size = guiCoord(1.0, -20, 0, y - appsContainer.absolutePosition.y)
+            page.canvasSize = guiCoord(1, 0, 0, y - appsContainer.absolutePosition.y)
+        end
+
+        calculateScrollHeight()
+        appsContainer:on("childAdded", calculateScrollHeight)
+        teverse.input:on("screenResized", calculateScrollHeight)
     end
 }

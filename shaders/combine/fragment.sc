@@ -14,5 +14,5 @@ vec3 colourAt(vec2 coord){
 
 void main()
 {
-	gl_FragColor = vec4(colourAt(v_texcoord0), 1.0);
+	gl_FragColor = vec4(colourAt(v_texcoord0), texture2D(sColour, v_texcoord0).w);
 }
