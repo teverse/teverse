@@ -1,8 +1,8 @@
 {
     "os": "OSX",
     "arch": "x64",
-    "version": "0.22.0",
-    "generatedAt": "05/06/2020 17:28:20",
+    "version": "0.25.0",
+    "generatedAt": "13/07/2020 17:38:36",
     "sandbox": {
         "coroutine": {
             "status": "function",
@@ -20,10 +20,10 @@
         "xpcall": "function",
         "_DEVICE_PAD_BOTTOM": 0,
         "ipairs": "function",
-        "_TEV_BUILD": "0220",
+        "_TEV_BUILD": "0250",
         "colour": "cdata",
         "print": "function",
-        "_TEV_VERSION_MINOR": 22,
+        "_TEV_VERSION_MINOR": 25,
         "pcall": "function",
         "gcinfo": "function",
         "loadstring": "function",
@@ -45,7 +45,7 @@
             "insert": "function"
         },
         "error": "function",
-        "_TEV_VERSION": "0.22.0",
+        "_TEV_VERSION": "0.25.0",
         "quaternion": "cdata",
         "_DEVICE": "Mac",
         "require": "function",
@@ -122,16 +122,17 @@
         "teverse": {
             "input": "input",
             "tween": "tween",
+            "workshop": "workshop",
+            "debug": "debug",
             "networking": "networking",
-            "interface": "guiFrame",
-            "graphics": "graphics",
-            "guiHelper": "guiHelper",
             "json": "json",
+            "guiHelper": "guiHelper",
+            "http": "http",
             "load": "function",
             "construct": "function",
-            "http": "http",
-            "debug": "debug",
             "scene": "scene",
+            "interface": "guiFrame",
+            "graphics": "graphics",
             "dev": "dev",
             "disconnect": "function"
         },
@@ -620,6 +621,7 @@
             "className": "audioEmitter",
             "events": [],
             "constructable": true,
+            "extends": "sceneObject",
             "properties": {
                 "rolloffFactor": {
                     "hasGetter": true,
@@ -1250,6 +1252,67 @@
                 }
             }
         },
+        "directionalLight": {
+            "methods": [],
+            "className": "directionalLight",
+            "events": [],
+            "constructable": true,
+            "extends": "light",
+            "properties": []
+        },
+        "camera": {
+            "methods": {
+                "screenToWorld": {
+                    "parameters": [
+                        {
+                            "type": "vector2",
+                            "name": "screenPos"
+                        }
+                    ],
+                    "returns": [
+                        "vector3",
+                        " number"
+                    ],
+                    "description": "Returns a 3d vector"
+                },
+                "worldToScreen": {
+                    "parameters": [
+                        {
+                            "type": "vector3",
+                            "name": "wPos"
+                        }
+                    ],
+                    "returns": [
+                        "vector2",
+                        " number"
+                    ],
+                    "description": "Returns a 2d screen space vector and a number representing depth"
+                }
+            },
+            "className": "camera",
+            "events": [],
+            "constructable": false,
+            "properties": {
+                "fov": {
+                    "hasGetter": true,
+                    "type": "number",
+                    "description": "field of view",
+                    "hasSetter": true
+                },
+                "position": {
+                    "hasGetter": true,
+                    "type": "vector3",
+                    "description": "",
+                    "hasSetter": true
+                },
+                "rotation": {
+                    "hasGetter": true,
+                    "type": "quaternion",
+                    "description": "",
+                    "hasSetter": true
+                }
+            }
+        },
         "guiLine": {
             "methods": [],
             "className": "guiLine",
@@ -1295,109 +1358,260 @@
                 }
             }
         },
-        "directionalLight": {
-            "methods": [],
-            "className": "directionalLight",
+        "scene": {
+            "methods": {
+                "raycastOne": {
+                    "parameters": [
+                        {
+                            "type": "vector3",
+                            "name": "a"
+                        },
+                        {
+                            "type": "vector3",
+                            "name": "b"
+                        }
+                    ],
+                    "returns": [
+                        "sceneObject",
+                        " vector3",
+                        " vector3"
+                    ],
+                    "description": "Returns an object, pos, normal or nil if there is no hit"
+                },
+                "destroyChildren": {
+                    "parameters": [],
+                    "returns": [],
+                    "description": "Destroys all children"
+                },
+                "raycast": {
+                    "parameters": [
+                        {
+                            "type": "vector3",
+                            "name": "a"
+                        },
+                        {
+                            "type": "vector3",
+                            "name": "b"
+                        }
+                    ],
+                    "returns": [
+                        "table"
+                    ],
+                    "description": "Returns a table of dictionaries for each hit. Example dict: {hit=,position=,normal=}"
+                },
+                "child": {
+                    "parameters": [
+                        {
+                            "type": "string",
+                            "name": "name"
+                        }
+                    ],
+                    "returns": [
+                        "sceneObject"
+                    ],
+                    "description": "Returns nil if not found"
+                }
+            },
+            "className": "scene",
             "events": [],
-            "constructable": true,
-            "extends": "light",
-            "properties": []
-        },
-        "guiFrame": {
-            "methods": [],
-            "className": "guiFrame",
-            "events": [],
-            "constructable": true,
-            "extends": "guiBase",
+            "constructable": false,
             "properties": {
-                "position": {
+                "simulate": {
                     "hasGetter": true,
-                    "type": "guiCoord",
-                    "description": "Position relative to the parent element",
-                    "hasSetter": true
-                },
-                "strokeWidth": {
-                    "hasGetter": true,
-                    "type": "number",
+                    "type": "bool",
                     "description": "",
                     "hasSetter": true
                 },
-                "backgroundAlpha": {
+                "camera": {
                     "hasGetter": true,
-                    "type": "number",
-                    "description": "An alpha value of 1.0 is completely visible, 0.0 is invisible.",
-                    "hasSetter": true
-                },
-                "dropShadowAlpha": {
-                    "hasGetter": true,
-                    "type": "number",
-                    "description": "",
-                    "hasSetter": true
-                },
-                "size": {
-                    "hasGetter": true,
-                    "type": "guiCoord",
-                    "description": "Size relative to the parent element",
-                    "hasSetter": true
-                },
-                "strokeAlpha": {
-                    "hasGetter": true,
-                    "type": "number",
-                    "description": "",
-                    "hasSetter": true
-                },
-                "absolutePosition": {
-                    "hasGetter": true,
-                    "type": "vector2",
-                    "description": "Absolute position in pixels from the top left of the screen",
+                    "type": "Undocumented",
                     "hasSetter": false
                 },
-                "dropShadowColour": {
+                "children": {
                     "hasGetter": true,
-                    "type": "colour",
+                    "type": "table",
+                    "description": "",
+                    "hasSetter": false
+                },
+                "gravity": {
+                    "hasGetter": true,
+                    "type": "vector3",
                     "description": "",
                     "hasSetter": true
+                }
+            }
+        },
+        "tween": {
+            "methods": {
+                "begin": {
+                    "parameters": [
+                        {
+                            "type": "variant",
+                            "name": "object"
+                        },
+                        {
+                            "type": "number",
+                            "name": "duration"
+                        },
+                        {
+                            "type": "table",
+                            "name": "properties"
+                        },
+                        {
+                            "type": "string",
+                            "name": "easing"
+                        },
+                        {
+                            "type": "function?",
+                            "name": "tweenCallback"
+                        }
+                    ],
+                    "returns": [],
+                    "description": "Creates and starts a tween"
                 },
-                "strokeColour": {
-                    "hasGetter": true,
-                    "type": "colour",
-                    "description": "",
-                    "hasSetter": true
+                "create": {
+                    "parameters": [
+                        {
+                            "type": "variant",
+                            "name": "object"
+                        },
+                        {
+                            "type": "number",
+                            "name": "duration"
+                        },
+                        {
+                            "type": "table",
+                            "name": "properties"
+                        },
+                        {
+                            "type": "string",
+                            "name": "easing"
+                        },
+                        {
+                            "type": "function?",
+                            "name": "tweenCallback"
+                        }
+                    ],
+                    "returns": [],
+                    "description": "Creates a tween"
+                }
+            },
+            "className": "tween",
+            "events": [],
+            "constructable": false,
+            "properties": []
+        },
+        "workshop": {
+            "methods": {
+                "writeFile": {
+                    "parameters": [
+                        {
+                            "type": "string",
+                            "name": "file"
+                        },
+                        {
+                            "type": "string",
+                            "name": "contents"
+                        }
+                    ],
+                    "returns": [],
+                    "description": "Writes to the specified file in the app directory"
                 },
-                "strokeRadius": {
-                    "hasGetter": true,
-                    "type": "number",
-                    "description": "",
-                    "hasSetter": true
+                "openRecent": {
+                    "parameters": [
+                        {
+                            "type": "string",
+                            "name": "path"
+                        }
+                    ],
+                    "returns": [
+                        "boolean"
+                    ],
+                    "description": "Open a app directory returned by teverse.apps:recentDirectories"
                 },
-                "backgroundColour": {
-                    "hasGetter": true,
-                    "type": "colour",
-                    "description": "",
-                    "hasSetter": true
+                "serialise": {
+                    "parameters": [
+                        {
+                            "type": "objectBase",
+                            "name": "object"
+                        }
+                    ],
+                    "returns": [
+                        "string"
+                    ],
+                    "description": "Serialises the provided object into JSON"
                 },
-                "dropShadowOffset": {
-                    "hasGetter": true,
-                    "type": "vector2",
-                    "description": "",
-                    "hasSetter": true
+                "promptOpen": {
+                    "parameters": [],
+                    "returns": [
+                        "boolean"
+                    ],
+                    "description": "Prompts the user to select their app directory."
                 },
-                "dropShadowBlur": {
-                    "hasGetter": true,
-                    "type": "number",
-                    "description": "",
-                    "hasSetter": true
+                "readFile": {
+                    "parameters": [
+                        {
+                            "type": "string",
+                            "name": "file"
+                        }
+                    ],
+                    "returns": [
+                        "string"
+                    ],
+                    "description": "Returns the contents of the specified file in the app directory"
                 },
-                "absoluteSize": {
+                "getAppFiles": {
+                    "parameters": [],
+                    "returns": [
+                        "table"
+                    ],
+                    "description": "Returns a table of strings"
+                }
+            },
+            "className": "workshop",
+            "events": [],
+            "constructable": false,
+            "properties": {
+                "appLocation": {
                     "hasGetter": true,
-                    "type": "vector2",
-                    "description": "Absolute size in pixels",
+                    "type": "string",
+                    "description": "Absolute path to the app on the filesystem",
                     "hasSetter": false
                 }
             }
         },
         "networking": {
             "methods": {
+                "broadcast": {
+                    "parameters": [
+                        {
+                            "type": "string",
+                            "name": "eventName"
+                        },
+                        {
+                            "type": "..."
+                        }
+                    ],
+                    "returns": [],
+                    "description": "Reliably sends the information you pass to all direct connections. Note that a client cannot broadcast to other clients as they are not directly connected."
+                },
+                "initiate": {
+                    "parameters": [
+                        {
+                            "type": "string",
+                            "name": "appId"
+                        }
+                    ],
+                    "returns": [],
+                    "description": "Initiate a networked app"
+                },
+                "getStats": {
+                    "parameters": [],
+                    "returns": [
+                        "netStats"
+                    ],
+                    "description": "Internal use"
+                },
                 "getClient": {
                     "parameters": [
                         {
@@ -1409,112 +1623,39 @@
                         "client"
                     ],
                     "description": "Returns the client for the matching name or id you provide"
+                },
+                "sendToClient": {
+                    "parameters": [
+                        {
+                            "type": "client",
+                            "name": "client"
+                        },
+                        {
+                            "type": "string",
+                            "name": "eventName"
+                        },
+                        {
+                            "type": "..."
+                        }
+                    ],
+                    "returns": [],
+                    "description": "[SERVER ONLY] Reliably sends the information you pass"
+                },
+                "sendToServer": {
+                    "parameters": [
+                        {
+                            "type": "string",
+                            "name": "eventName"
+                        },
+                        {
+                            "type": "..."
+                        }
+                    ],
+                    "returns": [],
+                    "description": "This is an alias for broadcast that only works on the client side."
                 }
             },
             "className": "networking",
-            "events": [],
-            "constructable": false,
-            "properties": {
-                "clients": {
-                    "hasGetter": true,
-                    "type": "table",
-                    "description": "A readonly list of clients, excluding local client when offline",
-                    "hasSetter": false
-                },
-                "localClient": {
-                    "hasGetter": true,
-                    "type": "client",
-                    "description": "The current local client, nil when unauthenticated",
-                    "hasSetter": false
-                }
-            }
-        },
-        "apps": {
-            "methods": {
-                "reset": {
-                    "parameters": [],
-                    "returns": [],
-                    "description": "Resets the environment"
-                },
-                "getSource": {
-                    "parameters": [],
-                    "returns": [
-                        "string"
-                    ],
-                    "description": "Returns the source code of the loaded app or nil if no app is loaded."
-                },
-                "loadRemote": {
-                    "parameters": [],
-                    "returns": [],
-                    "description": "Starts uploading the currently loaded UNPACKAGED app"
-                },
-                "loadDashboard": {
-                    "parameters": [],
-                    "returns": [],
-                    "description": "Resets the environment and loads the default Dashboard app"
-                },
-                "upload": {
-                    "parameters": [],
-                    "returns": [],
-                    "description": "Starts uploading the currently loaded UNPACKAGED app"
-                },
-                "promptApp": {
-                    "parameters": [],
-                    "returns": [
-                        "boolean"
-                    ],
-                    "description": "Prompts the user to select a .tevapp file"
-                },
-                "reload": {
-                    "parameters": [],
-                    "returns": [],
-                    "description": "Resets the environment and reloads the loaded app"
-                },
-                "loadString": {
-                    "parameters": [
-                        {
-                            "type": "string",
-                            "name": "lua"
-                        }
-                    ],
-                    "returns": [
-                        "boolean"
-                    ],
-                    "description": "Resets the environment and loads the Lua string provided as an app."
-                },
-                "promptAppDirectory": {
-                    "parameters": [],
-                    "returns": [
-                        "boolean"
-                    ],
-                    "description": "Prompts the user to select a directory containing the manifest.json file"
-                },
-                "loadWorkshop": {
-                    "parameters": [],
-                    "returns": [],
-                    "description": "Resets the environment and loads the default Workshop app"
-                },
-                "loadScript": {
-                    "parameters": [
-                        {
-                            "type": "string",
-                            "name": "file"
-                        }
-                    ],
-                    "returns": [
-                        "boolean"
-                    ],
-                    "description": "Resets the environment and loads the Lua file at the provided path as an app."
-                },
-                "prompt": {
-                    "parameters": [],
-                    "returns": [
-                        "boolean"
-                    ],
-                    "description": "Prompts the user to select a Lua file, this method then triggers app:loadScript(path)"
-                }
-            },
-            "className": "apps",
             "events": {
                 "changed": {
                     "parameters": [
@@ -1533,35 +1674,81 @@
                     ],
                     "description": "Fired when a property is changed."
                 },
-                "upload": {
+                "_clientConnected": {
                     "parameters": [
                         {
-                            "type": "boolean",
-                            "name": "success"
-                        },
-                        {
-                            "type": "table",
-                            "name": "app"
+                            "type": "client",
+                            "name": "user"
                         }
                     ],
-                    "description": "Fired when an upload fails or succeeds"
+                    "description": "Fired when a user connects"
                 },
-                "download": {
+                "_disconnected": {
+                    "parameters": [],
+                    "description": "Fired when a connection fails or stops"
+                },
+                "_update": {
                     "parameters": [
-                        {
-                            "type": "boolean",
-                            "name": "success"
-                        },
                         {
                             "type": "string",
                             "name": "message"
                         }
                     ],
-                    "description": "Fired when an download fails or succeeds"
+                    "description": "Fired when an update begins"
+                },
+                "_connected": {
+                    "parameters": [],
+                    "description": "Fired when a connection has started"
+                },
+                "_clientDisconnected": {
+                    "parameters": [
+                        {
+                            "type": "client",
+                            "name": "user"
+                        }
+                    ],
+                    "description": "Fired when a user disconnects"
+                },
+                "_downloadProgress": {
+                    "parameters": [
+                        {
+                            "type": "string",
+                            "name": "percentage"
+                        }
+                    ],
+                    "description": "Fired when an update progresses"
+                },
+                "_localAuthenticating": {
+                    "parameters": [
+                        {
+                            "type": "string",
+                            "name": "status"
+                        }
+                    ],
+                    "description": "Fired when the local user authenticates"
                 }
             },
             "constructable": false,
-            "properties": []
+            "properties": {
+                "clients": {
+                    "hasGetter": true,
+                    "type": "table",
+                    "description": "A readonly list of clients, excluding local client when offline",
+                    "hasSetter": false
+                },
+                "isConnected": {
+                    "hasGetter": true,
+                    "type": "boolean",
+                    "description": "True when a connection is established",
+                    "hasSetter": false
+                },
+                "localClient": {
+                    "hasGetter": true,
+                    "type": "client",
+                    "description": "The current local client, nil when unauthenticated",
+                    "hasSetter": false
+                }
+            }
         },
         "json": {
             "methods": {
@@ -1853,40 +2040,165 @@
                 }
             }
         },
-        "scene": {
+        "block": {
             "methods": {
-                "child": {
+                "applyImpulse": {
+                    "parameters": [
+                        {
+                            "type": "vector3",
+                            "name": "force"
+                        }
+                    ],
+                    "returns": [],
+                    "description": ""
+                },
+                "applyTorque": {
+                    "parameters": [
+                        {
+                            "type": "vector3",
+                            "name": "force"
+                        }
+                    ],
+                    "returns": [],
+                    "description": ""
+                },
+                "applyForce": {
+                    "parameters": [
+                        {
+                            "type": "vector3",
+                            "name": "force"
+                        }
+                    ],
+                    "returns": [],
+                    "description": ""
+                },
+                "applyForceAtPosition": {
+                    "parameters": [
+                        {
+                            "type": "vector3",
+                            "name": "force,"
+                        }
+                    ],
+                    "returns": [],
+                    "description": ""
+                },
+                "applyImpulseAtPosition": {
+                    "parameters": [
+                        {
+                            "type": "vector3",
+                            "name": "force,"
+                        }
+                    ],
+                    "returns": [],
+                    "description": ""
+                },
+                "applyTorqueImpulse": {
+                    "parameters": [
+                        {
+                            "type": "vector3",
+                            "name": "force"
+                        }
+                    ],
+                    "returns": [],
+                    "description": ""
+                }
+            },
+            "className": "block",
+            "events": {
+                "changed": {
                     "parameters": [
                         {
                             "type": "string",
-                            "name": "name"
+                            "name": "property"
+                        },
+                        {
+                            "type": "variant",
+                            "name": "oldValue"
+                        },
+                        {
+                            "type": "variant",
+                            "name": "newValue"
                         }
                     ],
-                    "returns": [
-                        "sceneObject"
-                    ],
-                    "description": "Returns nil if not found"
+                    "description": "Fired when a property is changed."
                 },
-                "destroyChildren": {
+                "collisionEnded": {
                     "parameters": [],
-                    "returns": [],
-                    "description": "Destroys all children"
+                    "description": ""
+                },
+                "collisionStarted": {
+                    "parameters": [],
+                    "description": ""
                 }
             },
-            "className": "scene",
-            "events": [],
-            "constructable": false,
+            "constructable": true,
+            "extends": "sceneObject",
             "properties": {
-                "camera": {
+                "simulated": {
                     "hasGetter": true,
-                    "type": "Undocumented",
-                    "hasSetter": false
+                    "type": "boolean",
+                    "description": "When false, an object is no longer simulated and doesn't interact with other simulated objects",
+                    "hasSetter": true
                 },
-                "children": {
+                "scale": {
                     "hasGetter": true,
-                    "type": "table",
+                    "type": "vector3",
                     "description": "",
-                    "hasSetter": false
+                    "hasSetter": true
+                },
+                "colour": {
+                    "hasGetter": true,
+                    "type": "colour",
+                    "description": "",
+                    "hasSetter": true
+                },
+                "angularFactor": {
+                    "hasGetter": true,
+                    "type": "vector3",
+                    "description": "",
+                    "hasSetter": true
+                },
+                "metalness": {
+                    "hasGetter": true,
+                    "type": "number",
+                    "description": "",
+                    "hasSetter": true
+                },
+                "static": {
+                    "hasGetter": true,
+                    "type": "boolean",
+                    "description": "When true, an object is unaffected by gravity and other forces, but other objects may still collide with the object",
+                    "hasSetter": true
+                },
+                "mesh": {
+                    "hasGetter": true,
+                    "type": "string",
+                    "description": "",
+                    "hasSetter": true
+                },
+                "linearFactor": {
+                    "hasGetter": true,
+                    "type": "vector3",
+                    "description": "",
+                    "hasSetter": true
+                },
+                "roughness": {
+                    "hasGetter": true,
+                    "type": "number",
+                    "description": "",
+                    "hasSetter": true
+                },
+                "angularVelocity": {
+                    "hasGetter": true,
+                    "type": "vector3",
+                    "description": "",
+                    "hasSetter": true
+                },
+                "velocity": {
+                    "hasGetter": true,
+                    "type": "vector3",
+                    "description": "",
+                    "hasSetter": true
                 }
             }
         },
@@ -1944,42 +2256,96 @@
             "constructable": false,
             "properties": []
         },
-        "block": {
+        "guiFrame": {
             "methods": [],
-            "className": "block",
+            "className": "guiFrame",
             "events": [],
             "constructable": true,
-            "extends": "sceneObject",
+            "extends": "guiBase",
             "properties": {
-                "roughness": {
+                "position": {
+                    "hasGetter": true,
+                    "type": "guiCoord",
+                    "description": "Position relative to the parent element",
+                    "hasSetter": true
+                },
+                "strokeWidth": {
                     "hasGetter": true,
                     "type": "number",
                     "description": "",
                     "hasSetter": true
                 },
-                "scale": {
+                "backgroundAlpha": {
                     "hasGetter": true,
-                    "type": "vector3",
+                    "type": "number",
+                    "description": "An alpha value of 1.0 is completely visible, 0.0 is invisible.",
+                    "hasSetter": true
+                },
+                "dropShadowAlpha": {
+                    "hasGetter": true,
+                    "type": "number",
                     "description": "",
                     "hasSetter": true
                 },
-                "colour": {
+                "size": {
+                    "hasGetter": true,
+                    "type": "guiCoord",
+                    "description": "Size relative to the parent element",
+                    "hasSetter": true
+                },
+                "strokeAlpha": {
+                    "hasGetter": true,
+                    "type": "number",
+                    "description": "",
+                    "hasSetter": true
+                },
+                "absolutePosition": {
+                    "hasGetter": true,
+                    "type": "vector2",
+                    "description": "Absolute position in pixels from the top left of the screen",
+                    "hasSetter": false
+                },
+                "dropShadowColour": {
                     "hasGetter": true,
                     "type": "colour",
                     "description": "",
                     "hasSetter": true
                 },
-                "metalness": {
+                "strokeColour": {
+                    "hasGetter": true,
+                    "type": "colour",
+                    "description": "",
+                    "hasSetter": true
+                },
+                "strokeRadius": {
                     "hasGetter": true,
                     "type": "number",
                     "description": "",
                     "hasSetter": true
                 },
-                "mesh": {
+                "backgroundColour": {
                     "hasGetter": true,
-                    "type": "string",
+                    "type": "colour",
                     "description": "",
                     "hasSetter": true
+                },
+                "dropShadowOffset": {
+                    "hasGetter": true,
+                    "type": "vector2",
+                    "description": "",
+                    "hasSetter": true
+                },
+                "dropShadowBlur": {
+                    "hasGetter": true,
+                    "type": "number",
+                    "description": "",
+                    "hasSetter": true
+                },
+                "absoluteSize": {
+                    "hasGetter": true,
+                    "type": "vector2",
+                    "description": "Absolute size in pixels",
+                    "hasSetter": false
                 }
             }
         },
@@ -2014,72 +2380,170 @@
                 },
                 "localTevGit": {
                     "hasGetter": true,
-                    "type": "boolean",
-                    "description": "True if a local tevgit repo is in use",
+                    "type": "string",
+                    "description": "Returns path to local tevgit",
                     "hasSetter": false
                 }
             }
         },
-        "tween": {
+        "apps": {
             "methods": {
-                "begin": {
-                    "parameters": [
-                        {
-                            "type": "variant",
-                            "name": "object"
-                        },
-                        {
-                            "type": "number",
-                            "name": "duration"
-                        },
-                        {
-                            "type": "table",
-                            "name": "properties"
-                        },
-                        {
-                            "type": "string",
-                            "name": "easing"
-                        },
-                        {
-                            "type": "function?",
-                            "name": "tweenCallback"
-                        }
+                "recentDirectories": {
+                    "parameters": [],
+                    "returns": [
+                        "table"
                     ],
-                    "returns": [],
-                    "description": "Creates and starts a tween"
+                    "description": "Returns a table of strings"
                 },
-                "create": {
+                "reset": {
+                    "parameters": [],
+                    "returns": [],
+                    "description": "Resets the environment"
+                },
+                "loadDashboard": {
+                    "parameters": [],
+                    "returns": [],
+                    "description": "Resets the environment and loads the default Dashboard app"
+                },
+                "getSource": {
+                    "parameters": [],
+                    "returns": [
+                        "string"
+                    ],
+                    "description": "Returns the source code of the loaded app or nil if no app is loaded."
+                },
+                "upload": {
+                    "parameters": [],
+                    "returns": [],
+                    "description": "Starts uploading the currently loaded UNPACKAGED app"
+                },
+                "loadWorkshop": {
+                    "parameters": [],
+                    "returns": [],
+                    "description": "Resets the environment and loads the default Workshop app"
+                },
+                "loadRemote": {
+                    "parameters": [],
+                    "returns": [],
+                    "description": "Starts uploading the currently loaded UNPACKAGED app"
+                },
+                "promptAppDirectory": {
+                    "parameters": [],
+                    "returns": [
+                        "boolean"
+                    ],
+                    "description": "Prompts the user to select a directory containing the manifest.json file"
+                },
+                "promptApp": {
+                    "parameters": [],
+                    "returns": [
+                        "boolean"
+                    ],
+                    "description": "Prompts the user to select a .tevapp file"
+                },
+                "reload": {
+                    "parameters": [],
+                    "returns": [],
+                    "description": "Resets the environment and reloads the loaded app"
+                },
+                "loadString": {
                     "parameters": [
                         {
-                            "type": "variant",
-                            "name": "object"
-                        },
-                        {
-                            "type": "number",
-                            "name": "duration"
-                        },
-                        {
-                            "type": "table",
-                            "name": "properties"
-                        },
-                        {
                             "type": "string",
-                            "name": "easing"
-                        },
-                        {
-                            "type": "function?",
-                            "name": "tweenCallback"
+                            "name": "lua"
                         }
                     ],
+                    "returns": [
+                        "boolean"
+                    ],
+                    "description": "Resets the environment and loads the Lua string provided as an app."
+                },
+                "prompt": {
+                    "parameters": [],
+                    "returns": [
+                        "boolean"
+                    ],
+                    "description": "Prompts the user to select a Lua file, this method then triggers app:loadScript(path)"
+                },
+                "test": {
+                    "parameters": [],
                     "returns": [],
-                    "description": "Creates a tween"
+                    "description": "Uploads the unpackaged app and spins up a temporary test server on our cloud"
+                },
+                "loadScript": {
+                    "parameters": [
+                        {
+                            "type": "string",
+                            "name": "file"
+                        }
+                    ],
+                    "returns": [
+                        "boolean"
+                    ],
+                    "description": "Resets the environment and loads the Lua file at the provided path as an app."
+                },
+                "runRecent": {
+                    "parameters": [
+                        {
+                            "type": "string",
+                            "name": "path"
+                        }
+                    ],
+                    "returns": [
+                        "boolean"
+                    ],
+                    "description": "Run a app directory returned by recentDirectories"
                 }
             },
-            "className": "tween",
-            "events": [],
+            "className": "apps",
+            "events": {
+                "changed": {
+                    "parameters": [
+                        {
+                            "type": "string",
+                            "name": "property"
+                        },
+                        {
+                            "type": "variant",
+                            "name": "oldValue"
+                        },
+                        {
+                            "type": "variant",
+                            "name": "newValue"
+                        }
+                    ],
+                    "description": "Fired when a property is changed."
+                },
+                "upload": {
+                    "parameters": [
+                        {
+                            "type": "boolean",
+                            "name": "success"
+                        },
+                        {
+                            "type": "table",
+                            "name": "app"
+                        }
+                    ],
+                    "description": "Fired when an upload fails or succeeds"
+                },
+                "download": {
+                    "parameters": [
+                        {
+                            "type": "boolean",
+                            "name": "success"
+                        },
+                        {
+                            "type": "string",
+                            "name": "message"
+                        }
+                    ],
+                    "description": "Fired when an download fails or succeeds"
+                }
+            },
             "constructable": false,
             "properties": []
         }
     },
-    "build": "0220"
+    "build": "0250"
 }

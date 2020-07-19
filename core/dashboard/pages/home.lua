@@ -65,7 +65,7 @@ local function createFlair(parent, data)
         end
 
         -- Plus Membership Insignia
-        if data.postedBy.membership == "plus" then
+        if data.postedBy.membership == 1 then
             teverse.construct("guiIcon", {
                 parent = parent:child("username"),
                 size = guiCoord(0, 10, 0, 10),
@@ -76,6 +76,9 @@ local function createFlair(parent, data)
             })
             addTag(parent, "star", "PLUS", colour.rgb(67, 67, 67))
             flairCount = flairCount + 1
+
+            parent:child("username").textColour = globals.defaultColours.purple
+            parent:child("body").textColour = globals.defaultColours.purple
         end
 
         -- Pro Membership Insignia
@@ -385,9 +388,9 @@ return {
         })
 
         local membertype = teverse.networking.localClient.membership
-        if membership == "plus" then
+        if membertype == "Plus" then
             membershipText.text = "Plus"
-        elseif membership == "pro" then
+        elseif membertype == "Pro" then
             membershipText.text = "Pro"
         else
             membershipText.text = "Free"
