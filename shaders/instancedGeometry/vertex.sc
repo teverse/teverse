@@ -10,6 +10,14 @@ $output v_normal, v_colour, v_position, v_pbr
  */
 
 #include <teverse.sh>
+#define __BUFFER_XX(_name, _type, _reg, _access)                \
+	layout(std430, binding=_reg) _access buffer _name ## Buffer \
+	{                                                           \
+		_type _name[];                                          \
+	}
+
+#define BUFFER_RO(_name, _type, _reg) __BUFFER_XX(_name, _type, _reg, readonly)
+
 BUFFER_RO(normalData, vec4, 2);
 
 void main()
@@ -32,8 +40,8 @@ void main()
 	gl_Position = mul(u_viewProj, vec4(wpos, 1.0) );
 
 	vec3 normal = a_normal.xyz * 2.0 - 1.0;
-	vec3 wnormal = instMul(normalMatrix, vec4(normal.xyz, 0.0));
+	vec3 wnormal = instMul(normalMatrix, normal.xyz);
 	v_normal = encodeNormalUint(normalize(wnormal.xyz));
 	v_colour = i_data4;
-	v_position = gl_Position;
+	v_position = gl_Position.xyz;
 }

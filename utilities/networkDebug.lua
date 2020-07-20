@@ -1,6 +1,6 @@
 local pingScale = 300
-local downloadScale = 1024 * 1
-local uploadScale = 1024 * 1
+local downloadScale = 1024 * 5
+local uploadScale = 1024 * 5
 
 return function()
     local main = teverse.construct("guiFrame", {

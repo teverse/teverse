@@ -1,8 +1,8 @@
 {
     "os": "OSX",
     "arch": "x64",
-    "version": "0.24.0",
-    "generatedAt": "28/06/2020 20:32:30",
+    "version": "0.25.0",
+    "generatedAt": "13/07/2020 17:38:36",
     "sandbox": {
         "coroutine": {
             "status": "function",
@@ -20,10 +20,10 @@
         "xpcall": "function",
         "_DEVICE_PAD_BOTTOM": 0,
         "ipairs": "function",
-        "_TEV_BUILD": "0240",
+        "_TEV_BUILD": "0250",
         "colour": "cdata",
         "print": "function",
-        "_TEV_VERSION_MINOR": 24,
+        "_TEV_VERSION_MINOR": 25,
         "pcall": "function",
         "gcinfo": "function",
         "loadstring": "function",
@@ -45,7 +45,7 @@
             "insert": "function"
         },
         "error": "function",
-        "_TEV_VERSION": "0.24.0",
+        "_TEV_VERSION": "0.25.0",
         "quaternion": "cdata",
         "_DEVICE": "Mac",
         "require": "function",
@@ -122,16 +122,17 @@
         "teverse": {
             "input": "input",
             "tween": "tween",
+            "workshop": "workshop",
+            "debug": "debug",
             "networking": "networking",
-            "interface": "guiFrame",
-            "graphics": "graphics",
-            "guiHelper": "guiHelper",
             "json": "json",
+            "guiHelper": "guiHelper",
+            "http": "http",
             "load": "function",
             "construct": "function",
-            "http": "http",
-            "debug": "debug",
             "scene": "scene",
+            "interface": "guiFrame",
+            "graphics": "graphics",
             "dev": "dev",
             "disconnect": "function"
         },
@@ -620,6 +621,7 @@
             "className": "audioEmitter",
             "events": [],
             "constructable": true,
+            "extends": "sceneObject",
             "properties": {
                 "rolloffFactor": {
                     "hasGetter": true,
@@ -1250,6 +1252,195 @@
                 }
             }
         },
+        "directionalLight": {
+            "methods": [],
+            "className": "directionalLight",
+            "events": [],
+            "constructable": true,
+            "extends": "light",
+            "properties": []
+        },
+        "camera": {
+            "methods": {
+                "screenToWorld": {
+                    "parameters": [
+                        {
+                            "type": "vector2",
+                            "name": "screenPos"
+                        }
+                    ],
+                    "returns": [
+                        "vector3",
+                        " number"
+                    ],
+                    "description": "Returns a 3d vector"
+                },
+                "worldToScreen": {
+                    "parameters": [
+                        {
+                            "type": "vector3",
+                            "name": "wPos"
+                        }
+                    ],
+                    "returns": [
+                        "vector2",
+                        " number"
+                    ],
+                    "description": "Returns a 2d screen space vector and a number representing depth"
+                }
+            },
+            "className": "camera",
+            "events": [],
+            "constructable": false,
+            "properties": {
+                "fov": {
+                    "hasGetter": true,
+                    "type": "number",
+                    "description": "field of view",
+                    "hasSetter": true
+                },
+                "position": {
+                    "hasGetter": true,
+                    "type": "vector3",
+                    "description": "",
+                    "hasSetter": true
+                },
+                "rotation": {
+                    "hasGetter": true,
+                    "type": "quaternion",
+                    "description": "",
+                    "hasSetter": true
+                }
+            }
+        },
+        "guiLine": {
+            "methods": [],
+            "className": "guiLine",
+            "events": [],
+            "constructable": true,
+            "extends": "guiBase",
+            "properties": {
+                "pointA": {
+                    "hasGetter": true,
+                    "type": "guiCoord",
+                    "description": "Position of where the line starts relative to the parent element.",
+                    "hasSetter": true
+                },
+                "lineAlpha": {
+                    "hasGetter": true,
+                    "type": "number",
+                    "description": "An alpha value of 1.0 is completely visible, 0.0 is invisible.",
+                    "hasSetter": true
+                },
+                "pointB": {
+                    "hasGetter": true,
+                    "type": "guiCoord",
+                    "description": "Position of where the line ends relative to the parent element.",
+                    "hasSetter": true
+                },
+                "lineCap": {
+                    "hasGetter": true,
+                    "type": "enums.lineCap",
+                    "description": "Determines how lines are capped",
+                    "hasSetter": true
+                },
+                "lineColour": {
+                    "hasGetter": true,
+                    "type": "colour",
+                    "description": "",
+                    "hasSetter": true
+                },
+                "lineWidth": {
+                    "hasGetter": true,
+                    "type": "number",
+                    "description": "",
+                    "hasSetter": true
+                }
+            }
+        },
+        "scene": {
+            "methods": {
+                "raycastOne": {
+                    "parameters": [
+                        {
+                            "type": "vector3",
+                            "name": "a"
+                        },
+                        {
+                            "type": "vector3",
+                            "name": "b"
+                        }
+                    ],
+                    "returns": [
+                        "sceneObject",
+                        " vector3",
+                        " vector3"
+                    ],
+                    "description": "Returns an object, pos, normal or nil if there is no hit"
+                },
+                "destroyChildren": {
+                    "parameters": [],
+                    "returns": [],
+                    "description": "Destroys all children"
+                },
+                "raycast": {
+                    "parameters": [
+                        {
+                            "type": "vector3",
+                            "name": "a"
+                        },
+                        {
+                            "type": "vector3",
+                            "name": "b"
+                        }
+                    ],
+                    "returns": [
+                        "table"
+                    ],
+                    "description": "Returns a table of dictionaries for each hit. Example dict: {hit=,position=,normal=}"
+                },
+                "child": {
+                    "parameters": [
+                        {
+                            "type": "string",
+                            "name": "name"
+                        }
+                    ],
+                    "returns": [
+                        "sceneObject"
+                    ],
+                    "description": "Returns nil if not found"
+                }
+            },
+            "className": "scene",
+            "events": [],
+            "constructable": false,
+            "properties": {
+                "simulate": {
+                    "hasGetter": true,
+                    "type": "bool",
+                    "description": "",
+                    "hasSetter": true
+                },
+                "camera": {
+                    "hasGetter": true,
+                    "type": "Undocumented",
+                    "hasSetter": false
+                },
+                "children": {
+                    "hasGetter": true,
+                    "type": "table",
+                    "description": "",
+                    "hasSetter": false
+                },
+                "gravity": {
+                    "hasGetter": true,
+                    "type": "vector3",
+                    "description": "",
+                    "hasSetter": true
+                }
+            }
+        },
         "tween": {
             "methods": {
                 "begin": {
@@ -1310,193 +1501,81 @@
             "constructable": false,
             "properties": []
         },
-        "guiLine": {
-            "methods": [],
-            "className": "guiLine",
-            "events": [],
-            "constructable": true,
-            "extends": "guiBase",
-            "properties": {
-                "pointA": {
-                    "hasGetter": true,
-                    "type": "guiCoord",
-                    "description": "Position of where the line starts relative to the parent element.",
-                    "hasSetter": true
-                },
-                "lineAlpha": {
-                    "hasGetter": true,
-                    "type": "number",
-                    "description": "An alpha value of 1.0 is completely visible, 0.0 is invisible.",
-                    "hasSetter": true
-                },
-                "pointB": {
-                    "hasGetter": true,
-                    "type": "guiCoord",
-                    "description": "Position of where the line ends relative to the parent element.",
-                    "hasSetter": true
-                },
-                "lineCap": {
-                    "hasGetter": true,
-                    "type": "enums.lineCap",
-                    "description": "Determines how lines are capped",
-                    "hasSetter": true
-                },
-                "lineColour": {
-                    "hasGetter": true,
-                    "type": "colour",
-                    "description": "",
-                    "hasSetter": true
-                },
-                "lineWidth": {
-                    "hasGetter": true,
-                    "type": "number",
-                    "description": "",
-                    "hasSetter": true
-                }
-            }
-        },
-        "camera": {
+        "workshop": {
             "methods": {
-                "screenToWorld": {
+                "writeFile": {
                     "parameters": [
                         {
-                            "type": "vector2",
-                            "name": "screenPos"
+                            "type": "string",
+                            "name": "file"
+                        },
+                        {
+                            "type": "string",
+                            "name": "contents"
                         }
                     ],
-                    "returns": [
-                        "vector3",
-                        " number"
-                    ],
-                    "description": "Returns a 3d vector"
+                    "returns": [],
+                    "description": "Writes to the specified file in the app directory"
                 },
-                "worldToScreen": {
+                "openRecent": {
                     "parameters": [
                         {
-                            "type": "vector3",
-                            "name": "wPos"
+                            "type": "string",
+                            "name": "path"
                         }
                     ],
                     "returns": [
-                        "vector2",
-                        " number"
+                        "boolean"
                     ],
-                    "description": "Returns a 2d screen space vector and a number representing depth"
+                    "description": "Open a app directory returned by teverse.apps:recentDirectories"
+                },
+                "serialise": {
+                    "parameters": [
+                        {
+                            "type": "objectBase",
+                            "name": "object"
+                        }
+                    ],
+                    "returns": [
+                        "string"
+                    ],
+                    "description": "Serialises the provided object into JSON"
+                },
+                "promptOpen": {
+                    "parameters": [],
+                    "returns": [
+                        "boolean"
+                    ],
+                    "description": "Prompts the user to select their app directory."
+                },
+                "readFile": {
+                    "parameters": [
+                        {
+                            "type": "string",
+                            "name": "file"
+                        }
+                    ],
+                    "returns": [
+                        "string"
+                    ],
+                    "description": "Returns the contents of the specified file in the app directory"
+                },
+                "getAppFiles": {
+                    "parameters": [],
+                    "returns": [
+                        "table"
+                    ],
+                    "description": "Returns a table of strings"
                 }
             },
-            "className": "camera",
+            "className": "workshop",
             "events": [],
             "constructable": false,
             "properties": {
-                "fov": {
+                "appLocation": {
                     "hasGetter": true,
-                    "type": "number",
-                    "description": "field of view",
-                    "hasSetter": true
-                },
-                "position": {
-                    "hasGetter": true,
-                    "type": "vector3",
-                    "description": "",
-                    "hasSetter": true
-                },
-                "rotation": {
-                    "hasGetter": true,
-                    "type": "quaternion",
-                    "description": "",
-                    "hasSetter": true
-                }
-            }
-        },
-        "guiFrame": {
-            "methods": [],
-            "className": "guiFrame",
-            "events": [],
-            "constructable": true,
-            "extends": "guiBase",
-            "properties": {
-                "position": {
-                    "hasGetter": true,
-                    "type": "guiCoord",
-                    "description": "Position relative to the parent element",
-                    "hasSetter": true
-                },
-                "strokeWidth": {
-                    "hasGetter": true,
-                    "type": "number",
-                    "description": "",
-                    "hasSetter": true
-                },
-                "backgroundAlpha": {
-                    "hasGetter": true,
-                    "type": "number",
-                    "description": "An alpha value of 1.0 is completely visible, 0.0 is invisible.",
-                    "hasSetter": true
-                },
-                "dropShadowAlpha": {
-                    "hasGetter": true,
-                    "type": "number",
-                    "description": "",
-                    "hasSetter": true
-                },
-                "size": {
-                    "hasGetter": true,
-                    "type": "guiCoord",
-                    "description": "Size relative to the parent element",
-                    "hasSetter": true
-                },
-                "strokeAlpha": {
-                    "hasGetter": true,
-                    "type": "number",
-                    "description": "",
-                    "hasSetter": true
-                },
-                "absolutePosition": {
-                    "hasGetter": true,
-                    "type": "vector2",
-                    "description": "Absolute position in pixels from the top left of the screen",
-                    "hasSetter": false
-                },
-                "dropShadowColour": {
-                    "hasGetter": true,
-                    "type": "colour",
-                    "description": "",
-                    "hasSetter": true
-                },
-                "strokeColour": {
-                    "hasGetter": true,
-                    "type": "colour",
-                    "description": "",
-                    "hasSetter": true
-                },
-                "strokeRadius": {
-                    "hasGetter": true,
-                    "type": "number",
-                    "description": "",
-                    "hasSetter": true
-                },
-                "backgroundColour": {
-                    "hasGetter": true,
-                    "type": "colour",
-                    "description": "",
-                    "hasSetter": true
-                },
-                "dropShadowOffset": {
-                    "hasGetter": true,
-                    "type": "vector2",
-                    "description": "",
-                    "hasSetter": true
-                },
-                "dropShadowBlur": {
-                    "hasGetter": true,
-                    "type": "number",
-                    "description": "",
-                    "hasSetter": true
-                },
-                "absoluteSize": {
-                    "hasGetter": true,
-                    "type": "vector2",
-                    "description": "Absolute size in pixels",
+                    "type": "string",
+                    "description": "Absolute path to the app on the filesystem",
                     "hasSetter": false
                 }
             }
@@ -1516,6 +1595,23 @@
                     "returns": [],
                     "description": "Reliably sends the information you pass to all direct connections. Note that a client cannot broadcast to other clients as they are not directly connected."
                 },
+                "initiate": {
+                    "parameters": [
+                        {
+                            "type": "string",
+                            "name": "appId"
+                        }
+                    ],
+                    "returns": [],
+                    "description": "Initiate a networked app"
+                },
+                "getStats": {
+                    "parameters": [],
+                    "returns": [
+                        "netStats"
+                    ],
+                    "description": "Internal use"
+                },
                 "getClient": {
                     "parameters": [
                         {
@@ -1527,16 +1623,6 @@
                         "client"
                     ],
                     "description": "Returns the client for the matching name or id you provide"
-                },
-                "initiate": {
-                    "parameters": [
-                        {
-                            "type": "string",
-                            "name": "appId"
-                        }
-                    ],
-                    "returns": [],
-                    "description": ""
                 },
                 "sendToClient": {
                     "parameters": [
@@ -1664,298 +1750,47 @@
                 }
             }
         },
-        "block": {
+        "json": {
             "methods": {
-                "applyImpulse": {
-                    "parameters": [
-                        {
-                            "type": "vector3",
-                            "name": "force"
-                        }
-                    ],
-                    "returns": [],
-                    "description": ""
-                },
-                "applyTorque": {
-                    "parameters": [
-                        {
-                            "type": "vector3",
-                            "name": "force"
-                        }
-                    ],
-                    "returns": [],
-                    "description": ""
-                },
-                "applyForce": {
-                    "parameters": [
-                        {
-                            "type": "vector3",
-                            "name": "force"
-                        }
-                    ],
-                    "returns": [],
-                    "description": ""
-                },
-                "applyForceAtPosition": {
-                    "parameters": [
-                        {
-                            "type": "vector3",
-                            "name": "force,"
-                        }
-                    ],
-                    "returns": [],
-                    "description": ""
-                },
-                "applyImpulseAtPosition": {
-                    "parameters": [
-                        {
-                            "type": "vector3",
-                            "name": "force,"
-                        }
-                    ],
-                    "returns": [],
-                    "description": ""
-                },
-                "applyTorqueImpulse": {
-                    "parameters": [
-                        {
-                            "type": "vector3",
-                            "name": "force"
-                        }
-                    ],
-                    "returns": [],
-                    "description": ""
-                }
-            },
-            "className": "block",
-            "events": {
-                "changed": {
+                "decode": {
                     "parameters": [
                         {
                             "type": "string",
-                            "name": "property"
-                        },
-                        {
-                            "type": "variant",
-                            "name": "oldValue"
-                        },
-                        {
-                            "type": "variant",
-                            "name": "newValue"
+                            "name": "json"
                         }
                     ],
-                    "description": "Fired when a property is changed."
-                },
-                "collisionEnded": {
-                    "parameters": [],
+                    "returns": [
+                        "table"
+                    ],
                     "description": ""
                 },
-                "collisionStarted": {
-                    "parameters": [],
-                    "description": ""
-                }
-            },
-            "constructable": true,
-            "extends": "sceneObject",
-            "properties": {
-                "velocity": {
-                    "hasGetter": true,
-                    "type": "vector3",
-                    "description": "",
-                    "hasSetter": true
-                },
-                "scale": {
-                    "hasGetter": true,
-                    "type": "vector3",
-                    "description": "",
-                    "hasSetter": true
-                },
-                "colour": {
-                    "hasGetter": true,
-                    "type": "colour",
-                    "description": "",
-                    "hasSetter": true
-                },
-                "angularFactor": {
-                    "hasGetter": true,
-                    "type": "vector3",
-                    "description": "",
-                    "hasSetter": true
-                },
-                "metalness": {
-                    "hasGetter": true,
-                    "type": "number",
-                    "description": "",
-                    "hasSetter": true
-                },
-                "static": {
-                    "hasGetter": true,
-                    "type": "boolean",
-                    "description": "",
-                    "hasSetter": true
-                },
-                "mesh": {
-                    "hasGetter": true,
-                    "type": "string",
-                    "description": "",
-                    "hasSetter": true
-                },
-                "roughness": {
-                    "hasGetter": true,
-                    "type": "number",
-                    "description": "",
-                    "hasSetter": true
-                },
-                "angularVelocity": {
-                    "hasGetter": true,
-                    "type": "vector3",
-                    "description": "",
-                    "hasSetter": true
-                },
-                "linearFactor": {
-                    "hasGetter": true,
-                    "type": "vector3",
-                    "description": "",
-                    "hasSetter": true
-                }
-            }
-        },
-        "apps": {
-            "methods": {
-                "reset": {
-                    "parameters": [],
-                    "returns": [],
-                    "description": "Resets the environment"
-                },
-                "getSource": {
-                    "parameters": [],
+                "encodeWithTypes": {
+                    "parameters": [
+                        {
+                            "type": "variant",
+                            "name": "toEncode"
+                        }
+                    ],
                     "returns": [
                         "string"
                     ],
-                    "description": "Returns the source code of the loaded app or nil if no app is loaded."
+                    "description": ""
                 },
-                "loadDashboard": {
-                    "parameters": [],
-                    "returns": [],
-                    "description": "Resets the environment and loads the default Dashboard app"
-                },
-                "loadRemote": {
-                    "parameters": [],
-                    "returns": [],
-                    "description": "Starts uploading the currently loaded UNPACKAGED app"
-                },
-                "upload": {
-                    "parameters": [],
-                    "returns": [],
-                    "description": "Starts uploading the currently loaded UNPACKAGED app"
-                },
-                "promptAppDirectory": {
-                    "parameters": [],
-                    "returns": [
-                        "boolean"
-                    ],
-                    "description": "Prompts the user to select a directory containing the manifest.json file"
-                },
-                "promptApp": {
-                    "parameters": [],
-                    "returns": [
-                        "boolean"
-                    ],
-                    "description": "Prompts the user to select a .tevapp file"
-                },
-                "reload": {
-                    "parameters": [],
-                    "returns": [],
-                    "description": "Resets the environment and reloads the loaded app"
-                },
-                "loadString": {
+                "encode": {
                     "parameters": [
-                        {
-                            "type": "string",
-                            "name": "lua"
-                        }
-                    ],
-                    "returns": [
-                        "boolean"
-                    ],
-                    "description": "Resets the environment and loads the Lua string provided as an app."
-                },
-                "test": {
-                    "parameters": [],
-                    "returns": [],
-                    "description": "Uploads the unpackaged app and spins up a temporary test server on our cloud"
-                },
-                "loadWorkshop": {
-                    "parameters": [],
-                    "returns": [],
-                    "description": "Resets the environment and loads the default Workshop app"
-                },
-                "loadScript": {
-                    "parameters": [
-                        {
-                            "type": "string",
-                            "name": "file"
-                        }
-                    ],
-                    "returns": [
-                        "boolean"
-                    ],
-                    "description": "Resets the environment and loads the Lua file at the provided path as an app."
-                },
-                "prompt": {
-                    "parameters": [],
-                    "returns": [
-                        "boolean"
-                    ],
-                    "description": "Prompts the user to select a Lua file, this method then triggers app:loadScript(path)"
-                }
-            },
-            "className": "apps",
-            "events": {
-                "changed": {
-                    "parameters": [
-                        {
-                            "type": "string",
-                            "name": "property"
-                        },
                         {
                             "type": "variant",
-                            "name": "oldValue"
-                        },
-                        {
-                            "type": "variant",
-                            "name": "newValue"
+                            "name": "toEncode"
                         }
                     ],
-                    "description": "Fired when a property is changed."
-                },
-                "upload": {
-                    "parameters": [
-                        {
-                            "type": "boolean",
-                            "name": "success"
-                        },
-                        {
-                            "type": "table",
-                            "name": "app"
-                        }
+                    "returns": [
+                        "string"
                     ],
-                    "description": "Fired when an upload fails or succeeds"
-                },
-                "download": {
-                    "parameters": [
-                        {
-                            "type": "boolean",
-                            "name": "success"
-                        },
-                        {
-                            "type": "string",
-                            "name": "message"
-                        }
-                    ],
-                    "description": "Fired when an download fails or succeeds"
+                    "description": ""
                 }
             },
+            "className": "json",
+            "events": [],
             "constructable": false,
             "properties": []
         },
@@ -2205,49 +2040,167 @@
                 }
             }
         },
-        "json": {
+        "block": {
             "methods": {
-                "decode": {
+                "applyImpulse": {
                     "parameters": [
                         {
-                            "type": "string",
-                            "name": "json"
+                            "type": "vector3",
+                            "name": "force"
                         }
                     ],
-                    "returns": [
-                        "table"
-                    ],
+                    "returns": [],
                     "description": ""
                 },
-                "encodeWithTypes": {
+                "applyTorque": {
                     "parameters": [
                         {
-                            "type": "variant",
-                            "name": "toEncode"
+                            "type": "vector3",
+                            "name": "force"
                         }
                     ],
-                    "returns": [
-                        "string"
-                    ],
+                    "returns": [],
                     "description": ""
                 },
-                "encode": {
+                "applyForce": {
                     "parameters": [
                         {
-                            "type": "variant",
-                            "name": "toEncode"
+                            "type": "vector3",
+                            "name": "force"
                         }
                     ],
-                    "returns": [
-                        "string"
+                    "returns": [],
+                    "description": ""
+                },
+                "applyForceAtPosition": {
+                    "parameters": [
+                        {
+                            "type": "vector3",
+                            "name": "force,"
+                        }
                     ],
+                    "returns": [],
+                    "description": ""
+                },
+                "applyImpulseAtPosition": {
+                    "parameters": [
+                        {
+                            "type": "vector3",
+                            "name": "force,"
+                        }
+                    ],
+                    "returns": [],
+                    "description": ""
+                },
+                "applyTorqueImpulse": {
+                    "parameters": [
+                        {
+                            "type": "vector3",
+                            "name": "force"
+                        }
+                    ],
+                    "returns": [],
                     "description": ""
                 }
             },
-            "className": "json",
-            "events": [],
-            "constructable": false,
-            "properties": []
+            "className": "block",
+            "events": {
+                "changed": {
+                    "parameters": [
+                        {
+                            "type": "string",
+                            "name": "property"
+                        },
+                        {
+                            "type": "variant",
+                            "name": "oldValue"
+                        },
+                        {
+                            "type": "variant",
+                            "name": "newValue"
+                        }
+                    ],
+                    "description": "Fired when a property is changed."
+                },
+                "collisionEnded": {
+                    "parameters": [],
+                    "description": ""
+                },
+                "collisionStarted": {
+                    "parameters": [],
+                    "description": ""
+                }
+            },
+            "constructable": true,
+            "extends": "sceneObject",
+            "properties": {
+                "simulated": {
+                    "hasGetter": true,
+                    "type": "boolean",
+                    "description": "When false, an object is no longer simulated and doesn't interact with other simulated objects",
+                    "hasSetter": true
+                },
+                "scale": {
+                    "hasGetter": true,
+                    "type": "vector3",
+                    "description": "",
+                    "hasSetter": true
+                },
+                "colour": {
+                    "hasGetter": true,
+                    "type": "colour",
+                    "description": "",
+                    "hasSetter": true
+                },
+                "angularFactor": {
+                    "hasGetter": true,
+                    "type": "vector3",
+                    "description": "",
+                    "hasSetter": true
+                },
+                "metalness": {
+                    "hasGetter": true,
+                    "type": "number",
+                    "description": "",
+                    "hasSetter": true
+                },
+                "static": {
+                    "hasGetter": true,
+                    "type": "boolean",
+                    "description": "When true, an object is unaffected by gravity and other forces, but other objects may still collide with the object",
+                    "hasSetter": true
+                },
+                "mesh": {
+                    "hasGetter": true,
+                    "type": "string",
+                    "description": "",
+                    "hasSetter": true
+                },
+                "linearFactor": {
+                    "hasGetter": true,
+                    "type": "vector3",
+                    "description": "",
+                    "hasSetter": true
+                },
+                "roughness": {
+                    "hasGetter": true,
+                    "type": "number",
+                    "description": "",
+                    "hasSetter": true
+                },
+                "angularVelocity": {
+                    "hasGetter": true,
+                    "type": "vector3",
+                    "description": "",
+                    "hasSetter": true
+                },
+                "velocity": {
+                    "hasGetter": true,
+                    "type": "vector3",
+                    "description": "",
+                    "hasSetter": true
+                }
+            }
         },
         "debug": {
             "methods": {
@@ -2303,52 +2256,96 @@
             "constructable": false,
             "properties": []
         },
-        "scene": {
-            "methods": {
-                "child": {
-                    "parameters": [
-                        {
-                            "type": "string",
-                            "name": "name"
-                        }
-                    ],
-                    "returns": [
-                        "sceneObject"
-                    ],
-                    "description": "Returns nil if not found"
-                },
-                "destroyChildren": {
-                    "parameters": [],
-                    "returns": [],
-                    "description": "Destroys all children"
-                }
-            },
-            "className": "scene",
+        "guiFrame": {
+            "methods": [],
+            "className": "guiFrame",
             "events": [],
-            "constructable": false,
+            "constructable": true,
+            "extends": "guiBase",
             "properties": {
-                "simulate": {
+                "position": {
                     "hasGetter": true,
-                    "type": "bool",
+                    "type": "guiCoord",
+                    "description": "Position relative to the parent element",
+                    "hasSetter": true
+                },
+                "strokeWidth": {
+                    "hasGetter": true,
+                    "type": "number",
                     "description": "",
                     "hasSetter": true
                 },
-                "camera": {
+                "backgroundAlpha": {
                     "hasGetter": true,
-                    "type": "Undocumented",
-                    "hasSetter": false
+                    "type": "number",
+                    "description": "An alpha value of 1.0 is completely visible, 0.0 is invisible.",
+                    "hasSetter": true
                 },
-                "children": {
+                "dropShadowAlpha": {
                     "hasGetter": true,
-                    "type": "table",
-                    "description": "",
-                    "hasSetter": false
-                },
-                "gravity": {
-                    "hasGetter": true,
-                    "type": "vector3",
+                    "type": "number",
                     "description": "",
                     "hasSetter": true
+                },
+                "size": {
+                    "hasGetter": true,
+                    "type": "guiCoord",
+                    "description": "Size relative to the parent element",
+                    "hasSetter": true
+                },
+                "strokeAlpha": {
+                    "hasGetter": true,
+                    "type": "number",
+                    "description": "",
+                    "hasSetter": true
+                },
+                "absolutePosition": {
+                    "hasGetter": true,
+                    "type": "vector2",
+                    "description": "Absolute position in pixels from the top left of the screen",
+                    "hasSetter": false
+                },
+                "dropShadowColour": {
+                    "hasGetter": true,
+                    "type": "colour",
+                    "description": "",
+                    "hasSetter": true
+                },
+                "strokeColour": {
+                    "hasGetter": true,
+                    "type": "colour",
+                    "description": "",
+                    "hasSetter": true
+                },
+                "strokeRadius": {
+                    "hasGetter": true,
+                    "type": "number",
+                    "description": "",
+                    "hasSetter": true
+                },
+                "backgroundColour": {
+                    "hasGetter": true,
+                    "type": "colour",
+                    "description": "",
+                    "hasSetter": true
+                },
+                "dropShadowOffset": {
+                    "hasGetter": true,
+                    "type": "vector2",
+                    "description": "",
+                    "hasSetter": true
+                },
+                "dropShadowBlur": {
+                    "hasGetter": true,
+                    "type": "number",
+                    "description": "",
+                    "hasSetter": true
+                },
+                "absoluteSize": {
+                    "hasGetter": true,
+                    "type": "vector2",
+                    "description": "Absolute size in pixels",
+                    "hasSetter": false
                 }
             }
         },
@@ -2389,14 +2386,164 @@
                 }
             }
         },
-        "directionalLight": {
-            "methods": [],
-            "className": "directionalLight",
-            "events": [],
-            "constructable": true,
-            "extends": "light",
+        "apps": {
+            "methods": {
+                "recentDirectories": {
+                    "parameters": [],
+                    "returns": [
+                        "table"
+                    ],
+                    "description": "Returns a table of strings"
+                },
+                "reset": {
+                    "parameters": [],
+                    "returns": [],
+                    "description": "Resets the environment"
+                },
+                "loadDashboard": {
+                    "parameters": [],
+                    "returns": [],
+                    "description": "Resets the environment and loads the default Dashboard app"
+                },
+                "getSource": {
+                    "parameters": [],
+                    "returns": [
+                        "string"
+                    ],
+                    "description": "Returns the source code of the loaded app or nil if no app is loaded."
+                },
+                "upload": {
+                    "parameters": [],
+                    "returns": [],
+                    "description": "Starts uploading the currently loaded UNPACKAGED app"
+                },
+                "loadWorkshop": {
+                    "parameters": [],
+                    "returns": [],
+                    "description": "Resets the environment and loads the default Workshop app"
+                },
+                "loadRemote": {
+                    "parameters": [],
+                    "returns": [],
+                    "description": "Starts uploading the currently loaded UNPACKAGED app"
+                },
+                "promptAppDirectory": {
+                    "parameters": [],
+                    "returns": [
+                        "boolean"
+                    ],
+                    "description": "Prompts the user to select a directory containing the manifest.json file"
+                },
+                "promptApp": {
+                    "parameters": [],
+                    "returns": [
+                        "boolean"
+                    ],
+                    "description": "Prompts the user to select a .tevapp file"
+                },
+                "reload": {
+                    "parameters": [],
+                    "returns": [],
+                    "description": "Resets the environment and reloads the loaded app"
+                },
+                "loadString": {
+                    "parameters": [
+                        {
+                            "type": "string",
+                            "name": "lua"
+                        }
+                    ],
+                    "returns": [
+                        "boolean"
+                    ],
+                    "description": "Resets the environment and loads the Lua string provided as an app."
+                },
+                "prompt": {
+                    "parameters": [],
+                    "returns": [
+                        "boolean"
+                    ],
+                    "description": "Prompts the user to select a Lua file, this method then triggers app:loadScript(path)"
+                },
+                "test": {
+                    "parameters": [],
+                    "returns": [],
+                    "description": "Uploads the unpackaged app and spins up a temporary test server on our cloud"
+                },
+                "loadScript": {
+                    "parameters": [
+                        {
+                            "type": "string",
+                            "name": "file"
+                        }
+                    ],
+                    "returns": [
+                        "boolean"
+                    ],
+                    "description": "Resets the environment and loads the Lua file at the provided path as an app."
+                },
+                "runRecent": {
+                    "parameters": [
+                        {
+                            "type": "string",
+                            "name": "path"
+                        }
+                    ],
+                    "returns": [
+                        "boolean"
+                    ],
+                    "description": "Run a app directory returned by recentDirectories"
+                }
+            },
+            "className": "apps",
+            "events": {
+                "changed": {
+                    "parameters": [
+                        {
+                            "type": "string",
+                            "name": "property"
+                        },
+                        {
+                            "type": "variant",
+                            "name": "oldValue"
+                        },
+                        {
+                            "type": "variant",
+                            "name": "newValue"
+                        }
+                    ],
+                    "description": "Fired when a property is changed."
+                },
+                "upload": {
+                    "parameters": [
+                        {
+                            "type": "boolean",
+                            "name": "success"
+                        },
+                        {
+                            "type": "table",
+                            "name": "app"
+                        }
+                    ],
+                    "description": "Fired when an upload fails or succeeds"
+                },
+                "download": {
+                    "parameters": [
+                        {
+                            "type": "boolean",
+                            "name": "success"
+                        },
+                        {
+                            "type": "string",
+                            "name": "message"
+                        }
+                    ],
+                    "description": "Fired when an download fails or succeeds"
+                }
+            },
+            "constructable": false,
             "properties": []
         }
     },
-    "build": "0240"
+    "build": "0250"
 }
