@@ -80,6 +80,7 @@ local new = function(properties)
 		list = {}
 		viewScroll:destroyChildren()
 		interface.reload()
+		viewScroll.canvasOffset = vector2()
 	end
 
 	viewScroll:on("changed", function(changed)

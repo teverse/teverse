@@ -48,14 +48,16 @@ end)
 --If the code fails, print it out.
 textBox:on("keyDown", function(key)
 	if key == "KEY_RETURN" or key == "KEY_KP_ENTER" then
-		local _, errorMessage = pcall(loadstring(textBox.text))
-		if errorMessage then
-			_, errorMessage = pcall(loadstring("return "..textBox.text))
-			if errorMessage then
-				print("CONSOLE ERROR: "..errorMessage)
+		local success, valueReturned = pcall(loadstring(textBox.text))
+		if not success then
+			success, valueReturned = pcall(loadstring("return "..textBox.text))
+			if not success then
+				print("CONSOLE ERROR: "..valueReturned)
 			else
-				print(function2())
+				print(valueReturned or "Ran without error.")
 			end
+		else
+			print(valueReturned or "Ran without error.")
 		end
 		textBox.text = ""
 	end
