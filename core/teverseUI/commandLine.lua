@@ -1,4 +1,4 @@
-math.clamp = function(x, min, max)
+local clamp = function(x, min, max)
 	--[[
 		@description
 			Clamps a value x with the given arguments.
@@ -32,8 +32,8 @@ local textBox = teverse.construct("guiTextBox", {
 textBox:on("mouseWheel", function(change)
 	local newLocation = container.canvasOffset + vector2(change.y, change.x) * 2
 	container.canvasOffset = vector2(
-		math.clamp(newLocation.x, 0, container.canvasSize.offset.x),
-		math.clamp(newLocation.y, 0, container.canvasSize.offset.y))
+		clamp(newLocation.x, 0, container.canvasSize.offset.x),
+		clamp(newLocation.y, 0, container.canvasSize.offset.y))
 end)
 
 --Adjusting canvas to fit the text.
