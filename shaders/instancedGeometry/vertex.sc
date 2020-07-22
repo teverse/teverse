@@ -10,13 +10,7 @@ $output v_normal, v_colour, v_position, v_pbr
  */
 
 #include <teverse.sh>
-#define __BUFFER_XX(_name, _type, _reg, _access)                \
-	layout(std430, binding=_reg) _access buffer _name ## Buffer \
-	{                                                           \
-		_type _name[];                                          \
-	}
-
-#define BUFFER_RO(_name, _type, _reg) __BUFFER_XX(_name, _type, _reg, readonly)
+#include <teverse_compute.sh>
 
 BUFFER_RO(normalData, vec4, 2);
 
