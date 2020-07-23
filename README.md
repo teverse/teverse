@@ -18,7 +18,7 @@ For those that have contributed, we thank you for your time and service to make 
 
 # Copyright
 
-Copyright (c) 2020 teverse.com
+Copyright (c) 2020 [teverse.com](https://teverse.com/)
 
 # Acknowledgements
 - sound/click.ogg sourced from http://soundbible.com/1705-Click2.html
