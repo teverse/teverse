@@ -13,14 +13,16 @@ teverse.construct("guiFrame", {
 if teverse.dev.localTevGit then
     teverse.construct("guiTextBox", {
         parent = teverse.coreInterface,
-        size = guiCoord(0,60, 0, 12),
-        position = guiCoord(1, -70, 1, -59),
+        size = guiCoord(0,40, 0, 8),
+        position = guiCoord(0, 2, 1, -10),
         zIndex = 1000,
-        textSize = 12,
+        textSize = 8,
         text = "Local TevGit",
         textAlign = "middleRight",
-        textAlpha = 0.5,
-        backgroundAlpha = 0
+        textAlpha = 0.8,
+        backgroundAlpha = 0.5,
+        textAlign = "middle",
+        strokeRadius = 4
     })
 end
 
@@ -38,16 +40,11 @@ teverse.input:on("keyUp", function(key)
     end
 end)
 
-local settingsButton = teverse.construct("guiIcon", {
+local settingsButton = teverse.construct("guiFrame", {
     parent = teverse.coreInterface,
-    size = guiCoord(0, 35, 0, 35),
-    position = guiCoord(1, -45, 1, -45),
-    iconId = "wrench",
-    iconType = "faSolid",
-    iconColour = colour(0, 0, 0),
-    iconMax = 12,
-    iconAlpha = 0.75,
-    strokeRadius = 2,
+    size = guiCoord(0, 40, 0, 40),
+    position = guiCoord(1, -20, 1, -20),
+    strokeRadius = 20,
     dropShadowAlpha = 0.15,
     strokeAlpha = 0.05,
     backgroundAlpha = 1,
@@ -55,17 +52,76 @@ local settingsButton = teverse.construct("guiIcon", {
     zIndex = 1000
 })
 
+local keyboardSupport = false
+if _TEV_VERSION_MINOR >= 27 then
+    keyboardSupport = not teverse.input.hasScreenKeyboard
+end
+
+if keyboardSupport then
+    settingsButton.visible = false
+
+    local reminder = teverse.construct("guiTextBox", {
+        parent = teverse.coreInterface,
+        size = guiCoord(0, 145, 0, 12),
+        position = guiCoord(1, -167, 1, -14),
+        zIndex = 1000,
+        textSize = 12,
+        text = "<ESC> : main menu at anytime",
+        textAlign = "middleRight",
+        textAlpha = 0,
+        textAlign = "middle",
+        textFont = "tevurl:fonts/openSansBold.ttf",
+        strokeRadius = 6,
+        textWrap = true
+    })
+
+    spawn(function() 
+        teverse.tween:begin(reminder, 0.5, {
+            position = guiCoord(1, -147, 1, -14),
+            textAlpha = 0.8,
+            strokeAlpha = 0.1,
+            dropShadowAlpha = 0.1
+        }, "inOutQuad")
+        sleep(3.5)
+        teverse.tween:begin(reminder, 0.5, {
+            position = guiCoord(1, 2, 1, -14)
+        }, "inOutQuad")
+        sleep(0.5)
+        reminder:destroy()
+    end)
+end
+
+teverse.construct("guiIcon", {
+    parent = settingsButton,
+    size = guiCoord(0, 20, 0, 20),
+    position = guiCoord(0, 2, 0, 2),
+    iconId = "wrench",
+    iconType = "faSolid",
+    iconColour = colour(0, 0, 0),
+    iconMax = 8,
+    iconAlpha = 0.75
+})
+
 local container = teverse.construct("guiFrame", {
     parent = teverse.coreInterface,
-    size = guiCoord(0, 100, 0, 35),
-    position = guiCoord(1, -155, 1, -45),
-    backgroundAlpha = 0,
+    size = guiCoord(1, 200, 1, 200),
+    position = guiCoord(0, -100, 0, -100),
+    backgroundAlpha = 0.85,
+    backgroundColour = colour.rgb(0, 0, 0),
     visible = false
+})
+
+local inner = teverse.construct("guiFrame", {
+    parent = container,
+    size = guiCoord(0, 100, 0, 50),
+    position = guiCoord(0.5, -50, 0.5, -25),
+    strokeRadius = 25,
+    strokeAlpha = 0.3,
 })
 
 local console = require("tevgit:core/teverseUI/console.lua")
 local lastClick = 0
-settingsButton:on("mouseLeftUp", function()
+local function onClick()
     if os.clock() - lastClick < 0.4 then
         -- double click
         lastClick = 0
@@ -73,25 +129,75 @@ settingsButton:on("mouseLeftUp", function()
     else
         lastClick = os.clock()
         container.visible = true
-        repeat sleep(0.1) until teverse.input.mousePosition.y < container.absolutePosition.y - 25
-        container.visible = false
+        container.backgroundAlpha = 0
+        container.position = guiCoord(0, -100, 0, -80)
+        teverse.tween:begin(container, 0.25, {
+            position = guiCoord(0, -100, 0, -100),
+            backgroundAlpha = 0.9
+        }, "inOutQuad")
+    end
+end
+
+settingsButton:on("mouseLeftUp", onClick)
+teverse.input:on("keyUp", function(key)
+    if key == "KEY_ESCAPE" then
+        onClick()
     end
 end)
 
+local closeButton = teverse.construct("guiIcon", {
+    parent = inner,
+    size = guiCoord(0, 30, 0, 30),
+    position = guiCoord(0, 10, 0, 10),
+    iconId = "arrow-left",
+    iconType = "faSolid",
+    iconColour = colour(0, 0, 0),
+    iconMax = 12,
+    iconAlpha = 0.75,
+    strokeRadius = 15,
+    dropShadowAlpha = 0.15,
+    strokeAlpha = 0.05,
+    backgroundAlpha = 1
+})
+
+closeButton:on("mouseEnter", function()
+    closeButton.backgroundColour = colour.rgb(45, 45, 45)
+    closeButton.iconColour = colour.rgb(255, 255, 255)
+end)
+
+closeButton:on("mouseExit", function()
+    closeButton.backgroundColour = colour.rgb(255, 255, 2555)
+    closeButton.iconColour = colour.rgb(0, 0, 0)
+end)
+
+closeButton:on("mouseLeftUp", function()
+    container.visible = false
+end)
+
 local homeButton = teverse.construct("guiIcon", {
-    parent = container,
-    size = guiCoord(0, 35, 0, 35),
-    position = guiCoord(1, -35, 0, 0),
+    parent = inner,
+    size = guiCoord(0, 30, 0, 30),
+    position = guiCoord(0, 60, 0, 10),
     iconId = "home",
     iconType = "faSolid",
     iconColour = colour(0, 0, 0),
     iconMax = 12,
     iconAlpha = 0.75,
-    strokeRadius = 2,
+    strokeRadius = 15,
     dropShadowAlpha = 0.15,
     strokeAlpha = 0.05,
     backgroundAlpha = 1
 })
+
+homeButton:on("mouseEnter", function()
+    homeButton.backgroundColour = colour.rgb(45, 45, 45)
+    homeButton.iconColour = colour.rgb(255, 255, 255)
+end)
+
+homeButton:on("mouseExit", function()
+    homeButton.backgroundColour = colour.rgb(255, 255, 2555)
+    homeButton.iconColour = colour.rgb(0, 0, 0)
+end)
 
 homeButton:on("mouseLeftUp", function()
     teverse.apps:loadDashboard()

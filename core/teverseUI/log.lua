@@ -78,6 +78,7 @@ local new = function(properties)
 				Clears the logs
 		]]
 		list = {}
+		teverse.debug:clearOutputHistory()
 		viewScroll:destroyChildren()
 		interface.reload()
 		viewScroll.canvasOffset = vector2()
