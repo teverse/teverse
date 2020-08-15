@@ -62,27 +62,29 @@ if keyboardSupport then
 
     local reminder = teverse.construct("guiTextBox", {
         parent = teverse.coreInterface,
-        size = guiCoord(0, 145, 0, 12),
-        position = guiCoord(1, -167, 1, -14),
+        size = guiCoord(0, 145, 0, 14),
+        position = guiCoord(1, -160, 1, -14),
         zIndex = 1000,
         textSize = 12,
         text = "<ESC> : main menu at anytime",
-        textAlign = "middleRight",
         textAlpha = 0,
         textAlign = "middle",
         textFont = "tevurl:fonts/openSansBold.ttf",
-        strokeRadius = 6,
-        textWrap = true
+        textWrap = true,
+        backgroundColour = colour.rgb(45, 45, 45),
+        textColour = colour.rgb(255, 255, 255),
+        backgroundAlpha = 0
     })
 
     spawn(function() 
         teverse.tween:begin(reminder, 0.5, {
-            position = guiCoord(1, -147, 1, -14),
-            textAlpha = 0.8,
+            position = guiCoord(1, -145, 1, -14),
+            textAlpha = 1.0,
+            backgroundAlpha = 1.0,
             strokeAlpha = 0.1,
             dropShadowAlpha = 0.1
         }, "inOutQuad")
-        sleep(3.5)
+        sleep(1.5)
         teverse.tween:begin(reminder, 0.5, {
             position = guiCoord(1, 2, 1, -14)
         }, "inOutQuad")
