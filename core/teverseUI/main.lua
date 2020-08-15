@@ -42,9 +42,9 @@ end)
 
 local settingsButton = teverse.construct("guiFrame", {
     parent = teverse.coreInterface,
-    size = guiCoord(0, 40, 0, 40),
-    position = guiCoord(1, -20, 1, -20),
-    strokeRadius = 20,
+    size = guiCoord(0, 66, 0, 66),
+    position = guiCoord(1, -33, 1, -33),
+    strokeRadius = 33,
     dropShadowAlpha = 0.15,
     strokeAlpha = 0.05,
     backgroundAlpha = 1,
@@ -93,13 +93,14 @@ end
 
 teverse.construct("guiIcon", {
     parent = settingsButton,
-    size = guiCoord(0, 20, 0, 20),
-    position = guiCoord(0, 2, 0, 2),
+    size = guiCoord(0, 30, 0, 30),
+    position = guiCoord(0, 5, 0, 5),
     iconId = "wrench",
     iconType = "faSolid",
     iconColour = colour(0, 0, 0),
-    iconMax = 8,
-    iconAlpha = 0.75
+    iconMax = 10,
+    iconAlpha = 0.75,
+    active = false
 })
 
 local container = teverse.construct("guiFrame", {
@@ -128,6 +129,7 @@ local function onClick()
         console.visible = not console.visible
     else
         lastClick = os.clock()
+        settingsButton.visible = false
         container.visible = true
         container.backgroundAlpha = 0
         container.position = guiCoord(0, -100, 0, -80)
@@ -141,7 +143,14 @@ end
 settingsButton:on("mouseLeftUp", onClick)
 teverse.input:on("keyUp", function(key)
     if key == "KEY_ESCAPE" then
-        onClick()
+        if container.visible then
+            container.visible = false
+            if not keyboardSupport then
+                settingsButton.visible = true
+            end
+        else
+            onClick()
+        end
     end
 end)
 
@@ -172,6 +181,9 @@ end)
 
 closeButton:on("mouseLeftUp", function()
     container.visible = false
+    if not keyboardSupport then
+        settingsButton.visible = true
+    end
 end)
 
 local homeButton = teverse.construct("guiIcon", {
