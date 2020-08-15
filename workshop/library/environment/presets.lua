@@ -1,6 +1,5 @@
 -- Copyright 2020- Teverse
 -- This script constructs (or builds) the baseline (or default) environment
-
 return {
     default = function()
         teverse.scene.simulate = true
@@ -17,5 +16,7 @@ return {
             scale = vector3(30, 1, 30),
             colour = colour(1, 1, 1)
         })
+
+        -- Load Default PlayerScripts
     end
 }

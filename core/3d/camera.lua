@@ -1,6 +1,8 @@
 -- Copyright 2020- Teverse
 -- This script is required when workshop is loaded & acts as the 3D Camera for the 3D Environment
 
+local globals = require("tevgit:workshop/library/globals.lua") -- globals; variables or instances that can be shared between files
+
 local keyMap = {
     [tonumber(enums.keys.KEY_W)] = vector3(0, 0, 1),
     [tonumber(enums.keys.KEY_S)] = vector3(0, 0, -1),
@@ -19,14 +21,14 @@ local db = false
 teverse.input:on("keyDown", function(key)
     local mapped = keyMap[tonumber(key)]
     if mapped then
-        while sleep() and teverse.input:isKeyDown(key) do
+        while sleep() and teverse.input:isKeyDown(key) and not globals.ignoreCameraInput do
             cam.position = cam.position + (cam.rotation * mapped * moveStep)
         end
     end
 end)
 
 teverse.input:on("mouseMoved", function( movement )
-    if teverse.input:isMouseButtonDown(3) then
+    if teverse.input:isMouseButtonDown(3) and not globals.ignoreCameraInput then
 		local pitch = quaternion.euler(movement.y * rotateStep, 0, 0)
 		local yaw = quaternion.euler(0, movement.x * rotateStep, 0)
 
