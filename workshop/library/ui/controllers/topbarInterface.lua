@@ -111,7 +111,6 @@ return {
             strokeRadius = 3
         })
 
-        -- Test command Bar
         local commandBarIcon = teverse.construct("guiIcon", {
             parent = container,
             size = guiCoord(0, 32, 0, 32),
@@ -130,7 +129,6 @@ return {
             parent = container,
             size = guiCoord(0, 200, 0, 32),
             position = guiCoord(0, 191, 0, 4),
-            --text = "  >",
             textAlign = "middleLeft",
             textFont = "tevurl:fonts/firaCodeBold.otf",
             textSize = 15,
@@ -158,18 +156,16 @@ return {
         end)
 
         commandBarField:on("keyDown", function(key)
+            globals.ignoreCameraInput = true -- Restrict the camera from moving if typing in command bar
             if key == "KEY_RETURN" then
                 print("Command: "..(commandBarField.text))
 
                 -- Invoke Command Trigger
                 commands.parse(commandBarField.text)
-                
                 commandBarField.text = "  >"
+                globals.ignoreCameraInput = false -- Re-enable the camera when the commandbar is done being used
             end
         end)
-
-
-        -- End Test Command Bar
 
         self.registerIcon = function(icon, callback)
             local icon = teverse.construct("guiIcon", {

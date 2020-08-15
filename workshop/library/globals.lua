@@ -5,6 +5,7 @@ return {
     dev = nil, -- Holds workshop instance and is set in main.lua
     user = nil, -- Holds user instance and is set in main.lua
     developerMode = false, -- Holds the developer_mode boolean and is set in main.lua
+    ignoreCameraInput = false, -- Determines if the camera should be able to move or not (useful when we're trying and we don't want the camera to move)
     commandGroups = {}, -- Holds the command groups that have been registered (~\library\toolchain\commands.lua)
     defaultColours = { -- Default colors used for theming UI components (~\library\ui\components)
         primary = colour.rgb(52, 58, 64),
