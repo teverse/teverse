@@ -58,24 +58,6 @@ return {
                     cellMargin = guiCoord(0, 15, 0, 25)
                 })
         end
-
-        if _DEVICE:sub(0, 6) ~= "iPhone" then
-            local appGui, button = createApp({
-                id = "",
-                name = "Learn Code",
-                owner = {
-                    username = "Teverse"
-                }
-            })
-            appGui.name = "a"
-            appGui.parent = appsContainer
-            button:on("mouseLeftUp", function()
-                if not loading.visible then
-                    loading.visible = false
-                    teverse.apps:loadString("require('tevgit:core/tutorials/main.lua')")
-                end
-            end)
-        end
         
         teverse.http:get("https://teverse.com/api/apps", {
             ["Authorization"] = "BEARER " .. teverse.userToken
