@@ -130,13 +130,13 @@ local function onClick()
         lastClick = 0
         console.visible = not console.visible
     else
+        lastClick = os.clock()
         if container.visible then
             container.visible = false
             if not keyboardSupport then
                 settingsButton.visible = true
             end
         else
-            lastClick = os.clock()
             settingsButton.visible = false
             container.visible = true
             container.backgroundAlpha = 0
