@@ -130,29 +130,29 @@ local function onClick()
         lastClick = 0
         console.visible = not console.visible
     else
-        lastClick = os.clock()
-        settingsButton.visible = false
-        container.visible = true
-        container.backgroundAlpha = 0
-        container.position = guiCoord(0, -100, 0, -80)
-        teverse.tween:begin(container, 0.25, {
-            position = guiCoord(0, -100, 0, -100),
-            backgroundAlpha = 0.9
-        }, "inOutQuad")
-    end
-end
-
-settingsButton:on("mouseLeftUp", onClick)
-teverse.input:on("keyUp", function(key)
-    if key == "KEY_ESCAPE" then
         if container.visible then
             container.visible = false
             if not keyboardSupport then
                 settingsButton.visible = true
             end
         else
-            onClick()
+            lastClick = os.clock()
+            settingsButton.visible = false
+            container.visible = true
+            container.backgroundAlpha = 0
+            container.position = guiCoord(0, -100, 0, -80)
+            teverse.tween:begin(container, 0.25, {
+                position = guiCoord(0, -100, 0, -100),
+                backgroundAlpha = 0.9
+            }, "inOutQuad")
         end
+    end
+end
+
+settingsButton:on("mouseLeftUp", onClick)
+teverse.input:on("keyUp", function(key)
+    if key == "KEY_ESCAPE" then
+        onClick()
     end
 end)
 
